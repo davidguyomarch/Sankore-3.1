@@ -75,3 +75,11 @@ plugins/cffadaptor/objects
 ##########
 .directory
 .DS_Store
+
+# Doxygen output #
+###################
+docs/doxygen/
+
+# Test build output #
+#####################
+tests/build/
