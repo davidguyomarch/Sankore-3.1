@@ -1,0 +1,25 @@
+#ifndef TST_UBSTRINGUTILS_H
+#define TST_UBSTRINGUTILS_H
+
+#include <QtTest>
+#include <QObject>
+
+class TestUBStringUtils : public QObject
+{
+    Q_OBJECT
+
+private slots:
+    void testSortByLastDigit();
+    void testSortByLastDigit_emptyList();
+    void testSortByLastDigit_noDigits();
+    void testNetxDigitizedName();
+    void testNetxDigitizedName_noDigit();
+    void testNetxDigitizedName_withDigit();
+    void testToCanonicalUuid();
+    void testToCanonicalUuid_noBraces();
+    void testToUtcIsoDateTime();
+    void testFromUtcIsoDate();
+    void testFromUtcIsoDate_roundtrip();
+};
+
+#endif // TST_UBSTRINGUTILS_H
