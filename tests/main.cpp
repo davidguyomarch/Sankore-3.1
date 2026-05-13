@@ -13,6 +13,7 @@
 #include "tst_UBGeometryUtils.h"
 #include "tst_UBCryptoUtils.h"
 #include "tst_UBDocumentProxy.h"
+#include "tst_UBSettings.h"
 
 int main(int argc, char *argv[])
 {
@@ -43,6 +44,11 @@ int main(int argc, char *argv[])
 
     {
         TestUBDocumentProxy test;
+        status |= QTest::qExec(&test, argc, argv);
+    }
+
+    {
+        TestUBSettings test;
         status |= QTest::qExec(&test, argc, argv);
     }
 
