@@ -31,7 +31,6 @@
 #include "globals/UBGlobals.h"
 
 #include "core/UBApplication.h"
-#include "core/memcheck.h"
 
 /**
  * \brief Constructor

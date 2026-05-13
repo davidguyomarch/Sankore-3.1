@@ -43,7 +43,6 @@
 #include "gui/UBDockTeacherGuideWidget.h"
 #include "gui/UBTeacherGuideWidget.h"
 
-#include "core/memcheck.h"
 
 /**
  * \brief Constructor

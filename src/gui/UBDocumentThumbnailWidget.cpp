@@ -31,7 +31,6 @@
 
 #include "document/UBDocumentController.h"
 
-#include "core/memcheck.h"
 
 
 UBDocumentThumbnailWidget::UBDocumentThumbnailWidget(QWidget* parent)

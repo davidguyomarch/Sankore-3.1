@@ -901,7 +901,7 @@ void UBTGMediaWidget::mousePressEvent(QMouseEvent *event)
         QDrag *drag = new QDrag(this);
         QMimeData *mimeData = new QMimeData();
         QList<QUrl> urlList;
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         urlList << QUrl::fromLocalFile(mMediaPath);
 #else
         urlList << QUrl(mMediaPath);

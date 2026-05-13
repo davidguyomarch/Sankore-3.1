@@ -36,7 +36,6 @@
 
 #include "board/UBBoardController.h"
 
-#include "core/memcheck.h"
 
 /**
  * \brief The constructor

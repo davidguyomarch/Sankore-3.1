@@ -27,7 +27,6 @@
 #include "UBDockTeacherGuideWidget.h"
 #include "UBTeacherGuideWidget.h"
 
-#include "core/memcheck.h"
 
 
 UBDockTeacherGuideWidget::UBDockTeacherGuideWidget(QWidget* parent, const char* name):
