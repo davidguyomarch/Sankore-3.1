@@ -32,18 +32,29 @@ SOURCES += stubs/UBFileSystemUtils_stub.cpp
 HEADERS += stubs/UBCryptoUtils_stub.h
 SOURCES += stubs/UBCryptoUtils_stub.cpp
 
+# UBDocumentProxy stubs (UBSettings, UBFeature, UBDocumentManager, UBDocumentProxy)
+HEADERS += stubs/UBSettings_stub.h \
+           stubs/UBFeature_stub.h \
+           stubs/UBDocumentManager_stub.h \
+           stubs/UBDocumentProxy_stub.h
+SOURCES += stubs/UBSettings_stub.cpp \
+           stubs/UBDocumentManager_stub.cpp \
+           stubs/UBDocumentProxy_stub.cpp
+
 # Test headers
 HEADERS += tst_UBStringUtils.h \
            tst_UBFileSystemUtils.h \
            tst_UBGeometryUtils.h \
-           tst_UBCryptoUtils.h
+           tst_UBCryptoUtils.h \
+           tst_UBDocumentProxy.h
 
 # Test sources
 SOURCES += main.cpp \
            tst_UBStringUtils.cpp \
            tst_UBFileSystemUtils.cpp \
            tst_UBGeometryUtils.cpp \
-           tst_UBCryptoUtils.cpp
+           tst_UBCryptoUtils.cpp \
+           tst_UBDocumentProxy.cpp
 
 # Build output
 DESTDIR = build
