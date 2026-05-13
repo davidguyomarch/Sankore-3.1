@@ -35,7 +35,6 @@
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsDelegateFrame.h"
 
-#include "core/memcheck.h"
 
 UBGraphicsWidgetItemDelegate::UBGraphicsWidgetItemDelegate(UBGraphicsWidgetItem* pDelegated, int widgetType)
     : UBGraphicsItemDelegate(pDelegated, 0, true, false, false, true)

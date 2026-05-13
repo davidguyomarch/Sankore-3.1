@@ -26,7 +26,6 @@
 #include "domain/UBGraphicsPolygonItem.h"
 #include "domain/UBGraphicsStroke.h"
 
-#include "core/memcheck.h"
 
 UBGraphicsPolygonItem::UBGraphicsPolygonItem (QGraphicsItem * parent)
     : QGraphicsPolygonItem(parent)

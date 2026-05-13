@@ -59,7 +59,6 @@
 
 #include "customWidgets/UBGraphicsItemAction.h"
 
-#include "core/memcheck.h"
 
 class UBGraphicsParaschoolEditorWidgetItem;
 

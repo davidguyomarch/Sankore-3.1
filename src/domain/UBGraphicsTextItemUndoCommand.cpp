@@ -24,7 +24,6 @@
 #include "UBGraphicsTextItemUndoCommand.h"
 #include "UBGraphicsTextItem.h"
 
-#include "core/memcheck.h"
 
 UBGraphicsTextItemUndoCommand::UBGraphicsTextItemUndoCommand(UBGraphicsTextItem *textItem)
     : mTextItem(textItem)

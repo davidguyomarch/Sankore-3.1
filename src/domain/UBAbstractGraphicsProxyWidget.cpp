@@ -30,7 +30,6 @@
 
 #include "UBGraphicsDelegateFrame.h"
 
-#include "core/memcheck.h"
 
 UBAbstractGraphicsProxyWidget::UBAbstractGraphicsProxyWidget(QGraphicsItem* parent)
     : QGraphicsProxyWidget(parent, Qt::FramelessWindowHint)

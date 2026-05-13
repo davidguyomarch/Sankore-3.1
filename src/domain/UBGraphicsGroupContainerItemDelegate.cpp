@@ -44,7 +44,6 @@
 
 #include "customWidgets/UBGraphicsItemAction.h"
 
-#include "core/memcheck.h"
 
 UBGraphicsGroupContainerItemDelegate::UBGraphicsGroupContainerItemDelegate(QGraphicsItem *pDelegated, QObject *parent) :
     UBGraphicsItemDelegate(pDelegated, parent, true, false, false), mDestroyGroupButton(0)

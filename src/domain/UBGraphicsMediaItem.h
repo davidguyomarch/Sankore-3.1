@@ -25,9 +25,10 @@
 #define UBGRAPHICSMEDIAITEM_H
 
 #include "UBAbstractGraphicsProxyWidget.h"
-#include <phonon/AudioOutput>
-#include <phonon/MediaObject>
-#include <phonon/VideoWidget>
+#include <QMediaPlayer>
+#include <QAudioOutput>
+#include <QVideoWidget>
+#include <QUrl>
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
 #include "frameworks/UBFileSystemUtils.h"
@@ -73,7 +74,7 @@ public:
         return mMediaFileUrl;
     }
 
-    Phonon::MediaObject* mediaObject() const
+    QMediaPlayer* mediaObject() const
     {
         return mMediaObject;
     }
@@ -90,7 +91,7 @@ public:
         return mMuted;
     }
 
-    Phonon::VideoWidget* videoWidget() const
+    QVideoWidget* videoWidget() const
     {
         return mVideoWidget;
     }
@@ -122,10 +123,10 @@ protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     virtual void clearSource();
 
-    Phonon::MediaObject *mMediaObject;
-    Phonon::VideoWidget *mVideoWidget;
-    Phonon::AudioOutput *mAudioOutput;
-    Phonon::MediaSource mSource;
+    QMediaPlayer *mMediaObject;
+    QVideoWidget *mVideoWidget;
+    QAudioOutput *mAudioOutput;
+    QUrl mSource;
     QWidget *mAudioWidget;
 
 private:

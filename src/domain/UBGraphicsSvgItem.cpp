@@ -38,7 +38,6 @@
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBPersistenceManager.h"
 
-#include "core/memcheck.h"
 
 UBGraphicsSvgItem::UBGraphicsSvgItem(const QString& pFilePath, QGraphicsItem* parent)
     : QGraphicsSvgItem(pFilePath, parent)

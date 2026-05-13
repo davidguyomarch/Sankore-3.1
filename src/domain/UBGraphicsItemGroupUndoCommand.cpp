@@ -25,7 +25,6 @@
 
 #include "UBGraphicsGroupContainerItem.h"
 #include "UBGraphicsScene.h"
-#include "core/memcheck.h"
 
 
 UBGraphicsItemGroupUndoCommand::UBGraphicsItemGroupUndoCommand(UBGraphicsScene *pScene, UBGraphicsGroupContainerItem *pGroupCreated) :

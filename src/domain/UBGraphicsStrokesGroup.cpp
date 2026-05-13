@@ -34,7 +34,6 @@
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBPersistenceManager.h"
 
-#include "core/memcheck.h"
 
 UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
     :QGraphicsItemGroup(parent), UBGraphicsItem()

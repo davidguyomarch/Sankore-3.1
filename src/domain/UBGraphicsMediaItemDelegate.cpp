@@ -37,9 +37,8 @@
 
 #include "domain/UBGraphicsMediaItem.h"
 
-#include "core/memcheck.h"
 
-UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, Phonon::MediaObject* pMedia, QObject * parent)
+UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, QMediaPlayer* pMedia, QObject * parent)
     : UBGraphicsItemDelegate(pDelegated, parent, true, false, true, true)
     , mMedia(pMedia)
     , mToolBarShowTimer(NULL)
@@ -49,7 +48,7 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
     palette.setBrush ( QPalette::Light, Qt::darkGray );
 
     mMedia->setTickInterval(50);
-    connect(mMedia, SIGNAL(stateChanged (Phonon::State, Phonon::State)), this, SLOT(mediaStateChanged (Phonon::State, Phonon::State)));
+    connect(mMedia, SIGNAL(stateChanged (QMediaPlayer::PlaybackState, QMediaPlayer::PlaybackState)), this, SLOT(mediaStateChanged (QMediaPlayer::PlaybackState, QMediaPlayer::PlaybackState)));
     connect(mMedia, SIGNAL(finished()), this, SLOT(updatePlayPauseState()));
     connect(mMedia, SIGNAL(tick(qint64)), this, SLOT(updateTicker(qint64)));
     connect(mMedia, SIGNAL(totalTimeChanged(qint64)), this, SLOT(totalTimeChanged(qint64)));
@@ -225,10 +224,10 @@ void UBGraphicsMediaItemDelegate::togglePlayPause()
 {
     if (delegated() && delegated()->mediaObject()) {
 
-        Phonon::MediaObject* media = delegated()->mediaObject();
-        if (media->state() == Phonon::StoppedState) {
+        QMediaPlayer* media = delegated()->mediaObject();
+        if (media->state() == QMediaPlayer::StoppedState) {
             media->play();
-        } else if (media->state() == Phonon::PlayingState) {
+        } else if (media->state() == QMediaPlayer::PlayingState) {
             if (media->remainingTime() <= 0) {
                 media->stop();
                 media->play();
@@ -237,26 +236,26 @@ void UBGraphicsMediaItemDelegate::togglePlayPause()
                 if(delegated()->scene())
                         delegated()->scene()->setModified(true);
             }
-        } else if (media->state() == Phonon::PausedState) {
+        } else if (media->state() == QMediaPlayer::PausedState) {
             if (media->remainingTime() <= 0) {
                 media->stop();
             }
             media->play();
-        } else  if ( media->state() == Phonon::LoadingState ) {
+        } else  if ( media->state() == QMediaPlayer::StoppedState ) {
             delegated()->mediaObject()->setCurrentSource(delegated()->mediaFileUrl());
             media->play();
-        } else if (media->state() == Phonon::ErrorState){
+        } else if (media->state() == QMediaPlayer::StoppedState){
             qDebug() << "Error appeared." << media->errorString();
         }
     }
 }
 
-void UBGraphicsMediaItemDelegate::mediaStateChanged ( Phonon::State newstate, Phonon::State oldstate )
+void UBGraphicsMediaItemDelegate::mediaStateChanged ( QMediaPlayer::PlaybackState newstate, QMediaPlayer::PlaybackState oldstate )
 {
     Q_UNUSED(newstate);
     Q_UNUSED(oldstate);
 
-    if (oldstate == Phonon::LoadingState)
+    if (oldstate == QMediaPlayer::StoppedState)
     {
         mMediaControl->totalTimeChanged(delegated()->mediaObject()->totalTime());
     }
@@ -266,9 +265,9 @@ void UBGraphicsMediaItemDelegate::mediaStateChanged ( Phonon::State newstate, Ph
 
 void UBGraphicsMediaItemDelegate::updatePlayPauseState()
 {
-    Phonon::MediaObject* media = delegated()->mediaObject();
+    QMediaPlayer* media = delegated()->mediaObject();
 
-    if (media->state() == Phonon::PlayingState)
+    if (media->state() == QMediaPlayer::PlayingState)
         mPlayPauseButton->setFileName(":/images/pause.svg");
     else
         mPlayPauseButton->setFileName(":/images/play.svg");
@@ -277,7 +276,7 @@ void UBGraphicsMediaItemDelegate::updatePlayPauseState()
 
 void UBGraphicsMediaItemDelegate::updateTicker(qint64 time)
 {
-    Phonon::MediaObject* media = delegated()->mediaObject();
+    QMediaPlayer* media = delegated()->mediaObject();
     mMediaControl->totalTimeChanged(media->totalTime());
     mMediaControl->updateTicker(time);
 }

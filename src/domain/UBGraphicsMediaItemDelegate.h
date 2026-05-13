@@ -25,7 +25,7 @@
 #define UBGRAPHICSMEDIAITEMDELEGATE_H_
 
 #include <QtGui>
-#include <phonon/MediaObject>
+#include <QMediaPlayer>
 #include <QTimer>
 
 #include "core/UB.h"
@@ -39,7 +39,7 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
     Q_OBJECT
 
     public:
-        UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, Phonon::MediaObject* pMedia, QObject * parent = 0);
+        UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, QMediaPlayer* pMedia, QObject * parent = 0);
         virtual ~UBGraphicsMediaItemDelegate();
 
         virtual void positionHandles();
@@ -57,7 +57,7 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
 
         void togglePlayPause();
 
-        void mediaStateChanged ( Phonon::State newstate, Phonon::State oldstate );
+        void mediaStateChanged ( QMediaPlayer::PlaybackState newstate, QMediaPlayer::PlaybackState oldstate );
 
         void updatePlayPauseState();
 
@@ -75,7 +75,7 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
         DelegateButton* mMuteButton;
         DelegateMediaControl *mMediaControl;
 
-        Phonon::MediaObject* mMedia;
+        QMediaPlayer* mMedia;
 
         QTimer *mToolBarShowTimer;
         int m_iToolBarShowingInterval;

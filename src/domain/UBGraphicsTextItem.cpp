@@ -45,7 +45,6 @@
 #include "core/UBTextTools.h"
 
 #include "gui/UBCreateTablePalette.h"
-#include "core/memcheck.h"
 
 #include "QDomDocument"
 

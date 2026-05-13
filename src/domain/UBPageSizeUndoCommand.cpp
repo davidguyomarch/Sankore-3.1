@@ -29,7 +29,6 @@
 #include "board/UBBoardController.h"
 #include "UBGraphicsScene.h"
 
-#include "core/memcheck.h"
 
 UBPageSizeUndoCommand::UBPageSizeUndoCommand(UBGraphicsScene* pScene, const QSize& previousSize, const QSize& newSize)
     : mScene(pScene)

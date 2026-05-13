@@ -23,7 +23,6 @@
 
 #include "UBAbstractUndoCommand.h"
 
-#include "core/memcheck.h"
 
 UBAbstractUndoCommand::UBAbstractUndoCommand()
 {

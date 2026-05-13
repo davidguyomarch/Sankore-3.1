@@ -38,7 +38,6 @@
 #include "board/UBBoardView.h"
 #include "domain/UBGraphicsWidgetItem.h"
 
-#include "core/memcheck.h"
 #include "core/UBApplicationController.h"
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"

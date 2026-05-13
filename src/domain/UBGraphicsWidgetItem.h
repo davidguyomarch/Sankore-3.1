@@ -25,7 +25,8 @@
 #define UBGRAPHICSWIDGETITEM_H
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
+#include <QWebEnginePage>
 #include <QDomElement>
 
 #include "core/UB.h"

@@ -31,7 +31,6 @@
 
 #include "board/UBBoardController.h"
 
-#include "core/memcheck.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
 

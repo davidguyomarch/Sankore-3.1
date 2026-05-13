@@ -23,7 +23,6 @@
 
 #include "UBItem.h"
 
-#include "core/memcheck.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsTextItem.h"

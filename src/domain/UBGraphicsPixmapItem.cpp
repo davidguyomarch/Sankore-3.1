@@ -40,7 +40,6 @@
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBPersistenceManager.h"
 
-#include "core/memcheck.h"
 
 UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
     : QGraphicsPixmapItem(parent)

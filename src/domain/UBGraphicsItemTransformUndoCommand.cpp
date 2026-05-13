@@ -25,7 +25,6 @@
 #include "UBResizableGraphicsItem.h"
 #include "domain/UBItem.h"
 
-#include "core/memcheck.h"
 
 UBGraphicsItemTransformUndoCommand::UBGraphicsItemTransformUndoCommand(QGraphicsItem* pItem,
      const QPointF& prevPos, const QTransform& prevTransform, const qreal& prevZValue,

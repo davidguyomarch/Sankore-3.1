@@ -82,7 +82,6 @@
 
 #include "UBGraphicsStroke.h"
 
-#include "core/memcheck.h"
 
 qreal UBZLayerController::errorNumber = -20000001.0;
 
@@ -302,7 +301,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     UBCoreGraphicsScene::setObjectName("BoardScene");
 #ifdef __ppc__
     mShouldUseOMP = false;
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MACOS)
     mShouldUseOMP = QSysInfo::MacintoshVersion >= QSysInfo::MV_10_5;
 #endif
 

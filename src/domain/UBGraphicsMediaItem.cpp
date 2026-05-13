@@ -29,7 +29,6 @@
 #include "document/UBDocumentProxy.h"
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
-#include "core/memcheck.h"
 
 
 UBAudioPresentationWidget::UBAudioPresentationWidget(QWidget *parent)
@@ -78,7 +77,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 {
     update();
 
-    mMediaObject = new Phonon::MediaObject(this);
+    mMediaObject = new QMediaPlayer(this);
 
     QString mediaPath = pMediaFileUrl.toString();
     if ("" == mediaPath)
@@ -88,9 +87,9 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     {
         mMediaType = mediaType_Video;
 
-        mAudioOutput = new Phonon::AudioOutput(Phonon::VideoCategory, this);
+        mAudioOutput = new QAudioOutput(Phonon::VideoCategory, this);
         mMediaObject->setTickInterval(50);
-        mVideoWidget = new Phonon::VideoWidget(); // owned and destructed by the scene ...
+        mVideoWidget = new QVideoWidget(); // owned and destructed by the scene ...
         Phonon::createPath(mMediaObject, mVideoWidget);
 
         if(mVideoWidget->sizeHint() == QSize(1,1)){
@@ -105,7 +104,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     if (mediaPath.toLower().contains("audios"))
     {
         mMediaType = mediaType_Audio;
-        mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
+        mAudioOutput = new QAudioOutput(Phonon::MusicCategory, this);
 
         mMediaObject->setTickInterval(1000);
         mAudioWidget = new UBAudioPresentationWidget();
@@ -124,7 +123,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
     Phonon::createPath(mMediaObject, mAudioOutput);
 
-    mSource = Phonon::MediaSource(pMediaFileUrl);
+    mSource = QUrl(pMediaFileUrl);
     mMediaObject->setCurrentSource(mSource);
 
     // we should create delegate after media objects because delegate uses his properties at creation.
@@ -188,7 +187,7 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
             }
 
             if (absoluteMediaFilename.length() > 0)
-                mMediaObject->setCurrentSource(Phonon::MediaSource(absoluteMediaFilename));
+                mMediaObject->setCurrentSource(QUrl(absoluteMediaFilename));
 
         }
     }
