@@ -79,6 +79,13 @@ private slots:
     // thumbnailPath
     void testThumbnailPath();
 
+    // deletePath
+    void testDeletePath_file();
+    void testDeletePath_dir();
+
+    // mimeTypeFromUrl
+    void testMimeTypeFromUrl();
+
 private:
     QString mTempDir;
 };

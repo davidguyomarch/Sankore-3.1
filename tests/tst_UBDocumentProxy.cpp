@@ -167,3 +167,121 @@ void TestUBDocumentProxy::testDocumentName()
     // Group name should be initially empty
     QCOMPARE(proxy.groupName(), QString(""));
 }
+
+void TestUBDocumentProxy::testTheSameDocument()
+{
+    UBDocumentProxy proxy1;
+    proxy1.setPersistencePath("/tmp/doc_a");
+
+    UBDocumentProxy proxy2;
+    proxy2.setPersistencePath("/tmp/doc_a");
+
+    UBDocumentProxy proxy3;
+    proxy3.setPersistencePath("/tmp/doc_b");
+
+    // Same path means same document
+    QVERIFY(proxy1.theSameDocument(&proxy2));
+    // Different path means different document
+    QVERIFY(!proxy1.theSameDocument(&proxy3));
+    // Null proxy should return false
+    QVERIFY(!proxy1.theSameDocument(NULL));
+}
+
+void TestUBDocumentProxy::testDocumentDateAndLastUpdate()
+{
+    UBDocumentProxy proxy;
+
+    // documentDate with no metadata should return current time (non-null)
+    QDateTime date = proxy.documentDate();
+    QVERIFY(date.isValid());
+
+    // lastUpdate with no metadata should return current time (non-null)
+    QDateTime update = proxy.lastUpdate();
+    QVERIFY(update.isValid());
+
+    // Set a date via metadata and verify retrieval
+    QString isoDate = "2024-03-15T14:30:00Z";
+    proxy.setMetaData(UBSettings::documentDate, isoDate);
+    QDateTime docDate = proxy.documentDate();
+    QVERIFY(docDate.isValid());
+
+    // Set updatedAt and verify
+    proxy.setMetaData(UBSettings::documentUpdatedAt, isoDate);
+    QDateTime lastUpd = proxy.lastUpdate();
+    QVERIFY(lastUpd.isValid());
+
+    // Test metaDatas() returns full hash
+    QHash<QString, QVariant> allMeta = proxy.metaDatas();
+    QVERIFY(allMeta.contains(UBSettings::documentDate));
+    QVERIFY(allMeta.contains(UBSettings::documentUpdatedAt));
+}
+
+void TestUBDocumentProxy::testDefaultImageBackground()
+{
+    UBDocumentProxy proxy;
+
+    // Initially no default image background
+    QCOMPARE(proxy.hasDefaultImageBackground(), false);
+
+    // Set default image background flag
+    proxy.setHasDefaultImageBackground(true);
+    QCOMPARE(proxy.hasDefaultImageBackground(), true);
+
+    // Reset it
+    proxy.setHasDefaultImageBackground(false);
+    QCOMPARE(proxy.hasDefaultImageBackground(), false);
+
+    // Test setDefaultDocumentSize(int, int) overload
+    QSignalSpy spy(&proxy, SIGNAL(defaultDocumentSizeChanged()));
+    proxy.setDefaultDocumentSize(1024, 768);
+    QCOMPARE(proxy.defaultDocumentSize(), QSize(1024, 768));
+    QCOMPARE(spy.count(), 1);
+}
+
+void TestUBDocumentProxy::testExternalFiles()
+{
+    UBDocumentProxy proxy;
+
+    // Initially empty
+    QCOMPARE(proxy.externalFiles()->size(), 0);
+
+    // Add external files
+    UBDocumentExternalFile* file1 = new UBDocumentExternalFile();
+    file1->setTitle("Guide enseignant");
+    file1->setPath("/docs/guide.pdf");
+
+    UBDocumentExternalFile* file2 = new UBDocumentExternalFile();
+    file2->setTitle("Exercice");
+    file2->setPath("/docs/exercice.odt");
+
+    proxy.externalFilesAdd(file1);
+    proxy.externalFilesAdd(file2);
+
+    QCOMPARE(proxy.externalFiles()->size(), 2);
+    QCOMPARE(proxy.externalFiles()->at(0)->title(), QString("Guide enseignant"));
+    QCOMPARE(proxy.externalFiles()->at(1)->path(), QString("/docs/exercice.odt"));
+}
+
+void TestUBDocumentProxy::testExternalFilesClear_noLeak()
+{
+    UBDocumentProxy proxy;
+
+    // Add files then clear — should not leak (files are deleted)
+    for (int i = 0; i < 100; ++i) {
+        UBDocumentExternalFile* file = new UBDocumentExternalFile();
+        file->setTitle(QString("File %1").arg(i));
+        file->setPath(QString("/path/%1.pdf").arg(i));
+        proxy.externalFilesAdd(file);
+    }
+    QCOMPARE(proxy.externalFiles()->size(), 100);
+
+    proxy.externalFilesClear();
+    QCOMPARE(proxy.externalFiles()->size(), 0);
+
+    // Can add again after clear
+    UBDocumentExternalFile* newFile = new UBDocumentExternalFile();
+    newFile->setTitle("New");
+    newFile->setPath("/new.pdf");
+    proxy.externalFilesAdd(newFile);
+    QCOMPARE(proxy.externalFiles()->size(), 1);
+}

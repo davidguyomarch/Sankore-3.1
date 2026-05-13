@@ -18,6 +18,7 @@ private slots:
     void testUnicodeCharacters();
     void testSpecialCharacters();
     void testLargePayload();
+    void testDecryptInvalidBase64();
 };
 
 #endif // TST_UBCRYPTOUTILS_H

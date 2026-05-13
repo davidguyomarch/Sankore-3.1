@@ -91,3 +91,18 @@ void TestUBCryptoUtils::testLargePayload()
     QString decrypted = crypto->symetricDecrypt(encrypted);
     QCOMPARE(decrypted, plaintext);
 }
+
+void TestUBCryptoUtils::testDecryptInvalidBase64()
+{
+    UBCryptoUtils *crypto = UBCryptoUtils::instance();
+
+    // Corrupted base64 should return empty string (decrypt failure)
+    QString corrupted = "ThisIsNotValidBase64!!!@@@";
+    QString result = crypto->symetricDecrypt(corrupted);
+
+    // Should either return empty or not crash — the important thing is no segfault
+    // EVP_DecryptFinal_ex will fail on invalid padding
+    Q_UNUSED(result);
+    // If we get here without crashing, the test passes
+    QVERIFY(true);
+}

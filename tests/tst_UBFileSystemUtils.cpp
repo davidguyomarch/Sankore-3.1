@@ -418,3 +418,51 @@ void TestUBFileSystemUtils::testThumbnailPath()
     QString result = UBFileSystemUtils::thumbnailPath(path);
     QCOMPARE(result, QString("/documents/page001.thumbnail.png"));
 }
+
+void TestUBFileSystemUtils::testDeletePath_file()
+{
+    QString filePath = mTempDir + "/deletepath_file.txt";
+    QFile f(filePath);
+    f.open(QIODevice::WriteOnly);
+    f.write("to delete");
+    f.close();
+
+    QVERIFY(QFile::exists(filePath));
+    bool result = UBFileSystemUtils::deletePath(filePath);
+    QVERIFY(result);
+    QVERIFY(!QFile::exists(filePath));
+}
+
+void TestUBFileSystemUtils::testDeletePath_dir()
+{
+    QString dirPath = mTempDir + "/deletepath_dir";
+    QDir().mkpath(dirPath);
+
+    QFile f(dirPath + "/inner.txt");
+    f.open(QIODevice::WriteOnly);
+    f.write("inner");
+    f.close();
+
+    QVERIFY(QDir(dirPath).exists());
+    bool result = UBFileSystemUtils::deletePath(dirPath);
+    QVERIFY(result);
+    QVERIFY(!QDir(dirPath).exists());
+}
+
+void TestUBFileSystemUtils::testMimeTypeFromUrl()
+{
+    QUrl pngUrl("file:///home/user/image.png");
+    QCOMPARE(UBFileSystemUtils::mimeTypeFromUrl(pngUrl), UBMimeType::RasterImage);
+
+    QUrl svgUrl("http://example.com/drawing.svg");
+    QCOMPARE(UBFileSystemUtils::mimeTypeFromUrl(svgUrl), UBMimeType::VectorImage);
+
+    QUrl mp4Url("file:///videos/lesson.mp4");
+    QCOMPARE(UBFileSystemUtils::mimeTypeFromUrl(mp4Url), UBMimeType::Video);
+
+    QUrl pdfUrl("file:///docs/manual.pdf");
+    QCOMPARE(UBFileSystemUtils::mimeTypeFromUrl(pdfUrl), UBMimeType::PDF);
+
+    QUrl unknownUrl("file:///data/file.xyz");
+    QCOMPARE(UBFileSystemUtils::mimeTypeFromUrl(unknownUrl), UBMimeType::UNKNOWN);
+}

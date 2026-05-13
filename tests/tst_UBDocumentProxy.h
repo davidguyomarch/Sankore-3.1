@@ -19,6 +19,11 @@ private slots:
     void testCopyConstructor();
     void testDefaultDocumentSize();
     void testDocumentName();
+    void testTheSameDocument();
+    void testDocumentDateAndLastUpdate();
+    void testDefaultImageBackground();
+    void testExternalFiles();
+    void testExternalFilesClear_noLeak();
 };
 
 #endif // TST_UBDOCUMENTPROXY_H

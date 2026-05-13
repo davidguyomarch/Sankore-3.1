@@ -200,6 +200,25 @@ void TestUBGeometryUtils::testArcToPolygon_basic()
     QVERIFY(polygon.size() > 2);
 }
 
+void TestUBGeometryUtils::testArcToPolygon_negativeAngle()
+{
+    QLineF startRadius(QPointF(0, 0), QPointF(100, 0));
+    QPolygonF polygon = UBGeometryUtils::arcToPolygon(startRadius, -90.0, 10.0);
+
+    QVERIFY(!polygon.isEmpty());
+    QVERIFY(polygon.size() > 2);
+}
+
+void TestUBGeometryUtils::testArcToPolygon_fullCircle()
+{
+    QLineF startRadius(QPointF(0, 0), QPointF(50, 0));
+    // Angle > 360 should produce a full ring (overlap case)
+    QPolygonF polygon = UBGeometryUtils::arcToPolygon(startRadius, 400.0, 8.0);
+
+    QVERIFY(!polygon.isEmpty());
+    QVERIFY(polygon.size() > 2);
+}
+
 // --- Constants ---
 
 void TestUBGeometryUtils::testConstants()

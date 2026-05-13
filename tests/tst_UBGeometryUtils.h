@@ -39,6 +39,8 @@ private slots:
 
     // arcToPolygon
     void testArcToPolygon_basic();
+    void testArcToPolygon_negativeAngle();
+    void testArcToPolygon_fullCircle();
 
     // Constants
     void testConstants();

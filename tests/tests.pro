@@ -69,3 +69,7 @@ MOC_DIR = build/moc
 
 # OpenSSL for UBCryptoUtils
 LIBS += -lcrypto
+
+# Code coverage (gcov/lcov)
+QMAKE_CXXFLAGS += --coverage
+QMAKE_LFLAGS += --coverage
