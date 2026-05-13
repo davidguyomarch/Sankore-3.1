@@ -23,7 +23,6 @@
 
 #include "UBMousePressFilter.h"
 
-#include "core/memcheck.h"
 
 UBMousePressFilter::UBMousePressFilter(QObject* parent)
     : QObject(parent)

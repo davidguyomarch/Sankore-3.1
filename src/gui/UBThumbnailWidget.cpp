@@ -40,7 +40,6 @@
 #include "domain/UBGraphicsScene.h"
 #include "gui/UBTeacherGuideWidget.h"
 #include "gui/UBDockTeacherGuideWidget.h"
-#include "core/memcheck.h"
 
 UBThumbnailWidget::UBThumbnailWidget(QWidget* parent)
     : QGraphicsView(parent)

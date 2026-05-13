@@ -55,7 +55,6 @@
 
 #include "document/UBDocumentController.h"
 
-#include "core/memcheck.h"
 
 const QString UBPersistenceManager::imageDirectory = "images"; // added to UBPersistenceManager::mAllDirectories
 const QString UBPersistenceManager::objectDirectory = "objects"; // added to UBPersistenceManager::mAllDirectories

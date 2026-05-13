@@ -28,7 +28,6 @@
 #include "../core/UBApplication.h"
 #include "../gui/UBMainWindow.h"
 
-#include "core/memcheck.h"
 
 void UBKeyboardButton::sendUnicodeSymbol(KEYCODE keycode)
 {

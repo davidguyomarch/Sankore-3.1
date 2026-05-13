@@ -28,7 +28,6 @@
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "frameworks/UBFileSystemUtils.h"
-#include "core/memcheck.h"
 
 
 UBResources* UBResources::sSingleton = 0;

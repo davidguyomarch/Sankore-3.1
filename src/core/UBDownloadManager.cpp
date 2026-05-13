@@ -29,7 +29,6 @@
 #include "board/UBBoardPaletteManager.h"
 #include "frameworks/UBFileSystemUtils.h"
 
-#include "core/memcheck.h"
 
 
 UBAsyncLocalFileDownloader::UBAsyncLocalFileDownloader(sDownloadFileDesc desc, QByteArray data, QObject *parent)

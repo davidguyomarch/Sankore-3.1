@@ -23,7 +23,6 @@
 
 #include "UBWidgetMirror.h"
 
-#include "core/memcheck.h"
 
 UBWidgetMirror::UBWidgetMirror(QWidget* sourceWidget, QWidget* parent)
     : QWidget(parent, 0)

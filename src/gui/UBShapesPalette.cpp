@@ -35,7 +35,6 @@
 
 #include "frameworks/UBPlatformUtils.h"
 
-#include "core/memcheck.h"
 
 #include "board/UBBoardController.h"
 #include "domain/UBShapeFactory.h"

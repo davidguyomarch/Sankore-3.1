@@ -36,7 +36,6 @@
 
 #include "gui/UBMainWindow.h"
 
-#include "core/memcheck.h"
 
 UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalette)
     : UBActionPalette(Qt::TopLeftCorner, parent)

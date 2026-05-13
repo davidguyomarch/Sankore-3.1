@@ -32,7 +32,6 @@
 
 #include "gui/UBMainWindow.h"
 
-#include "core/memcheck.h"
 
 UBFavoriteToolPalette::UBFavoriteToolPalette(QWidget* parent)
     : UBActionPalette(Qt::Horizontal, parent)

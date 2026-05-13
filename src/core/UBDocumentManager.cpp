@@ -51,7 +51,6 @@
 
 #include "../adaptors/UBExportWeb.h"
 
-#include "core/memcheck.h"
 
 UBDocumentManager* UBDocumentManager::sDocumentManager = 0;
 
@@ -211,7 +210,7 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
                 {
 
                     UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
-#ifdef Q_WS_MACX
+#ifdef Q_OS_MACOSX
                     //Workaround for issue 912
                     QApplication::processEvents();
 #endif

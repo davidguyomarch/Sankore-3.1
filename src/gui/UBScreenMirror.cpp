@@ -32,7 +32,6 @@
 #include <ApplicationServices/ApplicationServices.h>
 #endif
 
-#include "core/memcheck.h"
 
 
 UBScreenMirror::UBScreenMirror(QWidget* parent)

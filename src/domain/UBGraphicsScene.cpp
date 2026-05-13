@@ -24,7 +24,7 @@
 #include "UBGraphicsScene.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
 #include <QtSvg>
 #include <QGraphicsView>
 

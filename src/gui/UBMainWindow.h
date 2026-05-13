@@ -26,7 +26,7 @@
 
 #include <QMainWindow>
 #include <QWidget>
-#include <QWebView>
+#include <QWebEngineView>
 #include <QMessageBox>
 #include "UBDownloadWidget.h"
 

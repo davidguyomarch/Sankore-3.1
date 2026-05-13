@@ -24,7 +24,7 @@
 #include "UBBoardController.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
 #include <QDir>
 
 #include "frameworks/UBFileSystemUtils.h"

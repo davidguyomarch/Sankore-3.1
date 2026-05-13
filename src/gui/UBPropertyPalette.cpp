@@ -23,7 +23,6 @@
 
 #include "UBPropertyPalette.h"
 
-#include "core/memcheck.h"
 
 /**
  * \brief Constructor

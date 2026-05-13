@@ -35,7 +35,6 @@
 
 #include "frameworks/UBPlatformUtils.h"
 
-#include "core/memcheck.h"
 
 UBRegularShapesPalette::UBRegularShapesPalette(QWidget *parent, Qt::Orientation orient)
     : UBAbstractSubPalette(parent, orient)

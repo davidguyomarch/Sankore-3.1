@@ -33,7 +33,6 @@
 #include "board/UBBoardController.h"
 #include "board/UBBoardView.h"
 
-#include "core/memcheck.h"
 
 UBIdleTimer::UBIdleTimer(QObject *parent)
      : QObject(parent)

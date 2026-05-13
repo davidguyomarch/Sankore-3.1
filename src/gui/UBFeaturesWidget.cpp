@@ -22,7 +22,7 @@
 
 
 #include <QDomDocument>
-#include <QWebView>
+#include <QWebEngineView>
 
 #include "UBFeaturesWidget.h"
 #include "gui/UBThumbnailWidget.h"

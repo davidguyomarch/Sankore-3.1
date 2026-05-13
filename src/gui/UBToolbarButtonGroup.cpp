@@ -30,7 +30,6 @@
 
 #include "board/UBDrawingController.h"
 
-#include "core/memcheck.h"
 
 UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QAction*> &actions)
     : QWidget(toolBar)

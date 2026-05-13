@@ -34,7 +34,6 @@
 
 #include "ui_blackoutWidget.h"
 
-#include "core/memcheck.h"
 
 UBDisplayManager::UBDisplayManager(QObject *parent)
     : QObject(parent)

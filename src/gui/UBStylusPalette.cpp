@@ -35,7 +35,6 @@
 
 #include "frameworks/UBPlatformUtils.h"
 
-#include "core/memcheck.h"
 
 UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
     : UBActionPalette(Qt::TopRightCorner, parent, orient)

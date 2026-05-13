@@ -28,7 +28,7 @@ class QCheckBox;
 class QVBoxLayout;
 class QHBoxLayout;
 
-#include <QWebView>
+#include <QWebEngineView>
 
 #include "UBFloatingPalette.h"
 #include "api/UBWidgetUniboardAPI.h"

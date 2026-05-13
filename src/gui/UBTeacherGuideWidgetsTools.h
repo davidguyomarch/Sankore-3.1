@@ -33,7 +33,7 @@
 #include <QLineEdit>
 #include <QMimeData>
 #include <QStackedWidget>
-#include <QWebView>
+#include <QWebEngineView>
 #include <QFocusEvent>
 #include <QMouseEvent>
 

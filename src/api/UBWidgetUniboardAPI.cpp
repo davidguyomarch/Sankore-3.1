@@ -23,7 +23,7 @@
 
 #include "UBWidgetUniboardAPI.h"
 
-#include <QWebView>
+#include <QWebEngineView>
 #include <QDomDocument>
 #include <QtGui>
 
@@ -48,7 +48,6 @@
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBDownloadManager.h"
 
-#include "core/memcheck.h"
 
 //Known extentions for files, add if you know more supported
 const QString audioExtentions = ".mp3.wma.ogg";

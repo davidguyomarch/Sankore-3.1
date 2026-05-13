@@ -55,7 +55,6 @@
 
 #include "domain/UBGraphicsTextItem.h"
 
-#include "core/memcheck.h"
 
 #include "UBTeacherGuideConstantes.h"
 #include "frameworks/UBWidgetUtils.h"

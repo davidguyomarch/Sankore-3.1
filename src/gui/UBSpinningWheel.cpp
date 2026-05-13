@@ -25,7 +25,6 @@
 
 #include <QtGui>
 
-#include "core/memcheck.h"
 
 UBSpinningWheel::UBSpinningWheel(QWidget *parent)
     : QWidget(parent)

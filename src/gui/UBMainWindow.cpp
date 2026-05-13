@@ -32,7 +32,6 @@
 #include "board/UBBoardView.h"
 #endif
 
-#include "core/memcheck.h"
 
 UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)

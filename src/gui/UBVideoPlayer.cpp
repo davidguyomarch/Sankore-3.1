@@ -29,7 +29,6 @@
 #include <QMediaPlayer>
 #include <QMediaPlayer>
 
-#include "core/memcheck.h"
 
 UBVideoPlayer::UBVideoPlayer(QWidget* pParent)
     : QWidget(pParent)

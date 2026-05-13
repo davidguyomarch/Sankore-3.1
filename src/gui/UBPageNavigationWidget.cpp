@@ -30,7 +30,6 @@
 
 #include "globals/UBGlobals.h"
 
-#include "core/memcheck.h"
 
 /**
  * \brief Constructor

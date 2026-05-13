@@ -29,7 +29,6 @@
 #include "domain/UBGraphicsScene.h"
 #include "board/UBBoardView.h"
 
-#include "core/memcheck.h"
 
 
 UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive)

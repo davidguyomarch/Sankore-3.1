@@ -28,7 +28,6 @@
 #include "core/UBPersistenceManager.h"
 #include "gui/UBMainWindow.h"
 
-#include "core/memcheck.h"
 
 UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
     QObject(parent)
@@ -38,7 +37,7 @@ UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
     mOldSankoreDirectory = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
 
     mUniboardSourceDirectory = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
-#if defined(Q_WS_MACX)
+#if defined(Q_OS_MACOSX)
     mOldSankoreDirectory.replace("Sankore/Sankore 3.1", "Sankore");
     mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Uniboard");
 #else

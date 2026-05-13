@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 
     qInstallMsgHandler(ub_message_output);
 
-#if defined(Q_WS_X11)
+#if defined(Q_OS_LINUX)
     qDebug() << "Setting GraphicsSystem to raster";
     QApplication::setGraphicsSystem("raster");
 #endif

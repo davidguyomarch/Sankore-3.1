@@ -74,7 +74,7 @@ void UBTrapWebPageContentController::text_Changed(const QString &newText)
     QRegExp regExp("[<>:\"/\\\\|?*]");
 #endif
 
-#ifdef Q_WS_QWS // Defined on Qt for Embedded Linux.
+#ifdef Q_OS_LINUX // Defined on Qt for Embedded Linux.
     QString illegalCharList("      < > : \" / \\ | ? * ");
     QRegExp regExp("[<>:\"/\\\\|?*]");
 #endif

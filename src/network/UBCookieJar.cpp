@@ -69,7 +69,7 @@
 #include "core/UBSettings.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
 
 
 static const unsigned int JAR_VERSION = 23;

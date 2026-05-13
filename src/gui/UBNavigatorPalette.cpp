@@ -25,7 +25,6 @@
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
 
-#include "core/memcheck.h"
 
 /**
  * \brief Constructor

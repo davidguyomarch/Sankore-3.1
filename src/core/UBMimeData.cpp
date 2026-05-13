@@ -28,7 +28,6 @@
 #include "core/UBApplication.h"
 #include "domain/UBItem.h"
 
-#include "core/memcheck.h"
 
 UBMimeDataItem::UBMimeDataItem(UBDocumentProxy* proxy, int sceneIndex, UBDocumentProxy *targetProxy)
     : mProxy(proxy)

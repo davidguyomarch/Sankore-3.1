@@ -57,7 +57,6 @@
 
 #include "customWidgets/UBMediaWidget.h"
 
-#include "core/memcheck.h"
 
 
 /***************************************************************************
