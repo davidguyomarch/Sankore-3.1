@@ -86,7 +86,6 @@
 
 #include "customWidgets/UBGraphicsItemAction.h"
 
-#include "core/memcheck.h"
 //#include "qtlogger.h"
 
 const QString UBSvgSubsetAdaptor::nsSvg = "http://www.w3.org/2000/svg";
@@ -2688,7 +2687,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     {
         if (!svgX.isNull() && !svgY.isNull())
         {
-            #ifdef Q_WS_WIN
+            #ifdef Q_OS_WIN
                 gItem->setPos(svgX.toString().toFloat(), svgY.toString().toFloat());
             #endif
         }

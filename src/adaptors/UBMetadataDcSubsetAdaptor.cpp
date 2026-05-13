@@ -32,7 +32,6 @@
 
 #include "document/UBDocumentProxy.h"
 
-#include "core/memcheck.h"
 
 const QString UBMetadataDcSubsetAdaptor::nsRdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 const QString UBMetadataDcSubsetAdaptor::nsDc = "http://purl.org/dc/elements/1.1/";

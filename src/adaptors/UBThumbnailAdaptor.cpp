@@ -38,7 +38,6 @@
 #include "document/UBDocumentProxy.h"
 #include "domain/UBGraphicsScene.h"
 #include "UBSvgSubsetAdaptor.h"
-#include "core/memcheck.h"
 
 void UBThumbnailAdaptor::generateMissingThumbnails(UBDocumentProxy* proxy)
 {
@@ -89,7 +88,7 @@ const QPixmap* UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
     if (file.exists())
     {
         //Warning. Works only with modified Qt
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
         pix->load(fileName, 0, Qt::AutoColor);
 #else
         pix->load(fileName, 0, Qt::AutoColor, false);

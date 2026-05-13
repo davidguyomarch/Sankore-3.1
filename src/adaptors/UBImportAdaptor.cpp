@@ -28,7 +28,6 @@
 
 #include "document/UBDocumentProxy.h"
 
-#include "core/memcheck.h"
 
 UBImportAdaptor::UBImportAdaptor(bool _documentBased, QObject *parent)
     :QObject(parent),

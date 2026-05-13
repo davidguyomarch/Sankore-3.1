@@ -26,7 +26,6 @@
 #include "document/UBDocumentProxy.h"
 #include "core/UBDocumentManager.h"
 #include "core/UBApplication.h"
-#include "core/memcheck.h"
 #include "document/UBDocumentController.h"
 
 #include <QModelIndex>

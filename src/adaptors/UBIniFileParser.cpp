@@ -23,7 +23,6 @@
 
 #include "UBIniFileParser.h"
 
-#include "core/memcheck.h"
 
 UBIniFileParser::UBIniFileParser(const QString& pFileName)
 {

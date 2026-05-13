@@ -45,7 +45,6 @@
 #include <Exception.h>
 #include <Transformation.h>
 
-#include "core/memcheck.h"
 
 
 using namespace merge_lib;

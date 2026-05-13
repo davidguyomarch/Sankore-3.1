@@ -60,7 +60,6 @@ THIRD_PARTY_WARNINGS_ENABLE
 
 #include "../../core/UBApplication.h"
 
-#include "core/memcheck.h"
 
 
 UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *parent)

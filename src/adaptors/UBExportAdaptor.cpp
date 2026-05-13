@@ -34,7 +34,6 @@
 #include "gui/UBMainWindow.h"
 #include "gui/UBMessagesDialog.h"
 
-#include "core/memcheck.h"
 
 UBExportAdaptor::UBExportAdaptor(QObject *parent)
     : QObject(parent)

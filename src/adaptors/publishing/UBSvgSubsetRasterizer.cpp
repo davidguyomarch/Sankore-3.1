@@ -26,7 +26,6 @@
 #include "domain/UBGraphicsScene.h"
 #include "adaptors/UBSvgSubsetAdaptor.h"
 
-#include "core/memcheck.h"
 
 UBSvgSubsetRasterizer::UBSvgSubsetRasterizer(UBDocumentProxy* document, int pageIndex, QObject* parent)
     : QObject(parent)
