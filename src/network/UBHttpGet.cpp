@@ -28,7 +28,6 @@
 #include "network/UBNetworkAccessManager.h"
 #include "core/UBDownloadManager.h"
 
-#include "core/memcheck.h"
 
 sDownloadFileDesc desc;
 

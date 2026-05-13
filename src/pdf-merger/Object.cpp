@@ -28,7 +28,6 @@
 #include <algorithm>
 #include <fstream>
 
-#include "core/memcheck.h"
 
 using namespace merge_lib;
 

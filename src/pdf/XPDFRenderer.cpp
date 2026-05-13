@@ -23,11 +23,10 @@
 
 #include "XPDFRenderer.h"
 
-#include <QtGui>
+#include <QWidget>
 
 #include <frameworks/UBPlatformUtils.h>
 
-#include "core/memcheck.h"
 
 QAtomicInt XPDFRenderer::sInstancesCount = 0;
 

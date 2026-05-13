@@ -71,7 +71,6 @@
 #include <QtGui>
 #include <QtWebKit>
 
-#include "core/memcheck.h"
 
 static const unsigned int JAR_VERSION = 23;
 

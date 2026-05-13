@@ -32,7 +32,6 @@
 #include <fstream>
 #include <string.h>
 
-#include "core/memcheck.h"
 
 using namespace merge_lib;
 

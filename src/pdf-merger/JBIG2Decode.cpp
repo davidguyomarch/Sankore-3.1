@@ -23,7 +23,6 @@
 
 #include <QtGlobal>
 #include "JBIG2Decode.h"
-#include "core/memcheck.h"
 
 using namespace merge_lib;
 

@@ -24,7 +24,6 @@
 #include <QtGlobal>
 #include "CCITTFaxDecode.h"
 
-#include "core/memcheck.h"
 
 using namespace merge_lib;
 

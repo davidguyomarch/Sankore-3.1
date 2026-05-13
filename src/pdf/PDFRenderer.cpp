@@ -28,7 +28,6 @@
 #include "XPDFRenderer.h"
 
 #include "core/UBApplication.h"
-#include "core/memcheck.h"
 
 
 QMap< QUuid, QPointer<PDFRenderer> > PDFRenderer::sRenderers;

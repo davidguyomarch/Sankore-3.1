@@ -66,7 +66,6 @@
 
 #include <QtCore>
 
-#include "core/memcheck.h"
 
 #define AUTOSAVE_IN  1000 * 3  // seconds
 #define MAXWAIT      1000 * 15 // seconds

@@ -28,7 +28,6 @@
 #include "Exception.h"
 #include "Object.h"
 
-#include "core/memcheck.h"
 
 using namespace merge_lib;
 using namespace std;

@@ -28,7 +28,6 @@
 
 #include <iostream>
 
-#include "core/memcheck.h"
 
 using namespace merge_lib;
 

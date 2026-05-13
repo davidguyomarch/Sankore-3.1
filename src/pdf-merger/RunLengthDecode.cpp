@@ -23,7 +23,6 @@
 
 #include "RunLengthDecode.h"
 #include <QtGlobal>
-#include "core/memcheck.h"
 
 using namespace merge_lib;
 
