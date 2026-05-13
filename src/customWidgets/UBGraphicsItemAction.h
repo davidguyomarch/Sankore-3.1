@@ -83,8 +83,8 @@ public slots:
 
 private:
     QString mAudioPath;
-    Phonon::MediaObject *mMediaObject;
-    Phonon::AudioOutput *mAudioOutput;
+    QMediaPlayer *mMediaObject;
+    QAudioOutput *mAudioOutput;
     bool mIsLoading;
     QString mFullPath;
 };

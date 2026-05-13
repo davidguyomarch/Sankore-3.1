@@ -26,7 +26,7 @@
 
 
 #include <QtGui>
-#include <phonon/VideoPlayer>
+#include <QMediaPlayer>
 
 class UBVideoPlayerTransport;
 
@@ -45,7 +45,7 @@ class UBVideoPlayer : public QWidget
 
         void loadMedia(QUrl url)
         {
-            mVideoPlayer->load(Phonon::MediaSource(url));
+            mVideoPlayer->load(QUrl(url));
         }
 
     protected:

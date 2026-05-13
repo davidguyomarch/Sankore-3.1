@@ -23,7 +23,6 @@
 
 #include "UBAbstractVideoEncoder.h"
 
-#include "core/memcheck.h"
 
 UBAbstractVideoEncoder::UBAbstractVideoEncoder(QObject *pParent)
     : QObject(pParent)

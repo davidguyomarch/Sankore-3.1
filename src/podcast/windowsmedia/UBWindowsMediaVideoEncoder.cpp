@@ -31,7 +31,6 @@
 
 #include "UBWindowsMediaFile.h"
 
-#include "core/memcheck.h"
 
 UBWindowsMediaVideoEncoder::UBWindowsMediaVideoEncoder(QObject* pParent)
     : UBAbstractVideoEncoder(pParent)

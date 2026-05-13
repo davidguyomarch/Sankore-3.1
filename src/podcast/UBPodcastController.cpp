@@ -52,15 +52,14 @@
 
 
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     #include "windowsmedia/UBWindowsMediaVideoEncoder.h"
     #include "windowsmedia/UBWaveRecorder.h"
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MACOS)
     #include "quicktime/UBQuickTimeVideoEncoder.h"
     #include "quicktime/UBAudioQueueRecorder.h"
 #endif
 
-#include "core/memcheck.h"
 
 UBPodcastController* UBPodcastController::sInstance = 0;
 
@@ -299,9 +298,9 @@ void UBPodcastController::start()
 
         applicationMainModeChanged(UBApplication::applicationController->displayMode());
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         mVideoEncoder = new UBWindowsMediaVideoEncoder(this);  //deleted on stop
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MACOS)
         mVideoEncoder = new UBQuickTimeVideoEncoder(this);  //deleted on stop
 #endif
 
@@ -789,9 +788,9 @@ QStringList UBPodcastController::audioRecordingDevices()
 {
     QStringList devices;
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     devices = UBWaveRecorder::waveInDevices();
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MACOS)
     devices = UBAudioQueueRecorder::waveInDevices();
 #endif
 

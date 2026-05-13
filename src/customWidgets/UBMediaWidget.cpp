@@ -25,7 +25,6 @@
 #include "globals/UBGlobals.h"
 #include "UBMediaWidget.h"
 
-#include "core/memcheck.h"
 
 /**
   * \brief Constructor
@@ -103,12 +102,12 @@ void UBMediaWidget::setFile(const QString &filePath)
 {
     Q_ASSERT("" != filePath);
     mFilePath = filePath;
-    mpMediaObject = new Phonon::MediaObject(this);
+    mpMediaObject = new QMediaPlayer(this);
     mpMediaObject->setTickInterval(TICK_INTERVAL);
     connect(mpMediaObject, SIGNAL(stateChanged(Phonon::State,Phonon::State)), this, SLOT(onStateChanged(Phonon::State,Phonon::State)));
     connect(mpMediaObject, SIGNAL(totalTimeChanged(qint64)), this, SLOT(onTotalTimeChanged(qint64)));
     connect(mpMediaObject, SIGNAL(tick(qint64)), this, SLOT(onTick(qint64)));
-    mpMediaObject->setCurrentSource(Phonon::MediaSource(filePath));
+    mpMediaObject->setCurrentSource(QUrl(filePath));
     createMediaPlayer();
 }
 
@@ -127,7 +126,7 @@ void UBMediaWidget::showEvent(QShowEvent* event)
 		return;
 	}else{
 		if(!mpVideoWidget){
-			mpVideoWidget = new Phonon::VideoWidget(this);
+			mpVideoWidget = new QVideoWidget(this);
 			mMediaLayout->addStretch(1);
 			mMediaLayout->addWidget(mpVideoWidget);
 			mMediaLayout->addStretch(1);
@@ -160,14 +159,14 @@ void UBMediaWidget::createMediaPlayer()
     if(eMediaType_Video == mType){
         mMediaLayout->setContentsMargins(10, 10, 10, 10);
         if(isVisible()){
-            mpVideoWidget = new Phonon::VideoWidget(this);
+            mpVideoWidget = new QVideoWidget(this);
             mMediaLayout->addStretch(1);
             mMediaLayout->addWidget(mpVideoWidget);
             mMediaLayout->addStretch(1);
             Phonon::createPath(mpMediaObject, mpVideoWidget);
             adaptSizeToVideo();
         }
-        mpAudioOutput = new Phonon::AudioOutput(Phonon::VideoCategory, this);
+        mpAudioOutput = new QAudioOutput(Phonon::VideoCategory, this);
         Phonon::createPath(mpMediaObject, mpAudioOutput);
     }else if(eMediaType_Audio == mType){
         mMediaLayout->setContentsMargins(10, 10, 10, 10);
@@ -178,7 +177,7 @@ void UBMediaWidget::createMediaPlayer()
         mMediaLayout->addStretch(1);
         mMediaLayout->addWidget(mpCover);
         mMediaLayout->addStretch(1);
-        mpAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
+        mpAudioOutput = new QAudioOutput(Phonon::MusicCategory, this);
         Phonon::createPath(mpMediaObject, mpAudioOutput);
     }
     mpLayout->addWidget(mpMediaContainer, 1);

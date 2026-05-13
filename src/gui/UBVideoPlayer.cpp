@@ -25,9 +25,9 @@
 
 #include <QtGui>
 
-#include <phonon/MediaObject>
-#include <phonon/SeekSlider>
-#include <phonon/VolumeSlider>
+#include <QMediaPlayer>
+#include <QMediaPlayer>
+#include <QMediaPlayer>
 
 #include "core/memcheck.h"
 

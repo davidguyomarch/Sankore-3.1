@@ -72,10 +72,10 @@ UBGraphicsItemPlayAudioAction::UBGraphicsItemPlayAudioAction(QString audioFile, 
         mFullPath = mAudioPath;
     }
 
-    mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
-    mMediaObject = new Phonon::MediaObject(this);
+    mAudioOutput = new QAudioOutput(Phonon::MusicCategory, this);
+    mMediaObject = new QMediaPlayer(this);
     Phonon::createPath(mMediaObject, mAudioOutput);
-    mMediaObject->setCurrentSource(Phonon::MediaSource(mAudioPath));
+    mMediaObject->setCurrentSource(QUrl(mAudioPath));
 }
 
 
@@ -92,10 +92,10 @@ void UBGraphicsItemPlayAudioAction::setPath(QString audioPath)
     Q_ASSERT(audioPath.length() > 0);
     mAudioPath = audioPath;
     mFullPath = mAudioPath;
-    mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
-    mMediaObject = new Phonon::MediaObject(this);
+    mAudioOutput = new QAudioOutput(Phonon::MusicCategory, this);
+    mMediaObject = new QMediaPlayer(this);
     Phonon::createPath(mMediaObject, mAudioOutput);
-    mMediaObject->setCurrentSource(Phonon::MediaSource(mAudioPath));
+    mMediaObject->setCurrentSource(QUrl(mAudioPath));
 }
 
 QString UBGraphicsItemPlayAudioAction::fullPath()

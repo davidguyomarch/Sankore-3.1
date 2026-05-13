@@ -32,9 +32,9 @@
 #include <QMouseEvent>
 #include <QStackedWidget>
 
-#include <phonon/MediaObject>
-#include <phonon/VideoWidget>
-#include <phonon/AudioOutput>
+#include <QMediaPlayer>
+#include <QMediaPlayer>
+#include <QMediaPlayer>
 
 #include "UBActionableWidget.h"
 
@@ -103,11 +103,11 @@ private:
     /** The current media type */
     eMediaType mType;
     /** The media object */
-    Phonon::MediaObject* mpMediaObject;
+    QMediaPlayer* mpMediaObject;
     /** The video renderer */
-    Phonon::VideoWidget* mpVideoWidget;
+    QVideoWidget* mpVideoWidget;
     /** The audio renderer */
-    Phonon::AudioOutput* mpAudioOutput;
+    QAudioOutput* mpAudioOutput;
     /** The principal layout of this widget */
     QVBoxLayout* mpLayout;
     /** The seeker layout */

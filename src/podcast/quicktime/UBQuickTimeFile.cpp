@@ -28,7 +28,6 @@
 #include "UBAudioQueueRecorder.h"
 #include <QtGui>
 
-#include "core/memcheck.h"
 
 QQueue<UBQuickTimeFile::VideoFrame> UBQuickTimeFile::frameQueue;
 QMutex UBQuickTimeFile::frameQueueMutex;
@@ -637,7 +636,7 @@ void UBQuickTimeFile::appendAudioBuffer(void* pBuffer, long pLength, int inNumbe
             }
         }
     }
-#ifdef Q_WS_MACX
+#ifdef Q_OS_MACOSX
     free((void*)inPacketDescs);
 #endif
 }
