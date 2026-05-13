@@ -27,7 +27,6 @@
 #include <QStringList>
 
 
-#include "core/memcheck.h"
 
 UBVersion::UBVersion()
     : mIsValid(false)

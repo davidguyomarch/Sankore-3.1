@@ -27,8 +27,6 @@
 #include <QtCore>
 #include <openssl/evp.h>
 
-#include "core/UBApplication.h"
-
 
 class UBCryptoUtils : public QObject
 {
@@ -45,7 +43,7 @@ class UBCryptoUtils : public QObject
 
     private:
 
-        UBCryptoUtils(QObject * pParent = 0);
+        UBCryptoUtils(QObject * pParent = nullptr);
         virtual ~UBCryptoUtils();
 
         static UBCryptoUtils* sInstance;
@@ -54,8 +52,8 @@ class UBCryptoUtils : public QObject
 
         void aesInit();
 
-        EVP_CIPHER_CTX mAesEncryptContext;
-        EVP_CIPHER_CTX mAesDecryptContext;
+        EVP_CIPHER_CTX *mAesEncryptContext;
+        EVP_CIPHER_CTX *mAesDecryptContext;
 
 };
 

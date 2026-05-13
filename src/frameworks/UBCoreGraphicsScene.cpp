@@ -28,8 +28,6 @@
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
 
-#include "core/memcheck.h"
-
 UBCoreGraphicsScene::UBCoreGraphicsScene(QObject * parent)
     : QGraphicsScene ( parent  )
     , mIsModified(true)
@@ -42,8 +40,8 @@ UBCoreGraphicsScene::~UBCoreGraphicsScene()
     //we must delete removed items that are no more in any scene
     //at groups deleting some items can be added to mItemsToDelete, so we need to use iterators.    
 
-    foreach(QGraphicsItem* item, mItemsToDelete){
-        if (item && item->type() != UBGraphicsItemType::PolygonItemType && item->type() != QGraphicsItem::UserType && item->type() != UBGraphicsItemType::groupContainerType && (item->scene() == NULL || item->scene() == this))
+    for (QGraphicsItem* item : mItemsToDelete) {
+        if (item && item->type() != UBGraphicsItemType::PolygonItemType && item->type() != QGraphicsItem::UserType && item->type() != UBGraphicsItemType::groupContainerType && (item->scene() == nullptr || item->scene() == this))
             delete item;
     }
     mItemsToDelete.clear();
@@ -54,7 +52,7 @@ void UBCoreGraphicsScene::addItem(QGraphicsItem* item)
     addItemToDeletion(item);
 
     if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count()) {
-        foreach (QGraphicsItem *curItem, item->childItems()) {
+        for (QGraphicsItem *curItem : item->childItems()) {
             removeItemFromDeletion(curItem);
         }
     }
@@ -71,7 +69,6 @@ void UBCoreGraphicsScene::removeItem(QGraphicsItem* item, bool forceDelete)
     QGraphicsScene::removeItem(item);
     if (forceDelete)
     {
-//        qDebug() << "force delete is " << forceDelete;
         deleteItem(item);
     }
     setModified(true);
@@ -83,19 +80,11 @@ bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
     {
 
         UBGraphicsItem *item_casted = dynamic_cast<UBGraphicsItem *>(item);
-        if (item_casted != NULL)
+        if (item_casted != nullptr)
             item_casted->clearSource();
 
         mItemsToDelete.remove(item);
 
-        //Issue NC - CFA - 20140417 : [QT-BUG18021] -> https://bugreports.qt-project.org/browse/QTBUG-18021
-        //it seems that in some cases, remove item from scene then delete item (which also tries to remove item from scene...)
-        //makes application crash. The entire code to clear undoStack was commented for that reason.
-        //Now, we have to clear sources to make documents lighter, even if we're not able for the moment
-        //to prevent these memory leaks (only for UBGraphicsW3CWidgetItems ?)
-
-        //delete item
-        //item = NULL;
         return true;
     }
     else
@@ -104,7 +93,7 @@ bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
 
 void UBCoreGraphicsScene::removeItemFromDeletion(QGraphicsItem *item)
 {
-    if(NULL != item){
+    if(nullptr != item){
         mItemsToDelete.remove(item);
     }
 }

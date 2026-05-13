@@ -24,7 +24,10 @@
 #include "UBFileSystemUtils.h"
 #include <limits>
 
-#include <QtGui>
+#include <QApplication>
+#include <QStandardPaths>
+#include <QDir>
+#include <QFileInfo>
 
 #include "core/UBApplication.h"
 
@@ -37,7 +40,6 @@ THIRD_PARTY_WARNINGS_DISABLE
 #include <openssl/md5.h>
 THIRD_PARTY_WARNINGS_ENABLE
 
-#include "core/memcheck.h"
 
 QStringList UBFileSystemUtils::sTempDirToCleanUp;
 
@@ -56,7 +58,7 @@ UBFileSystemUtils::~UBFileSystemUtils()
 
 QString UBFileSystemUtils::removeLocalFilePrefix(QString input)
 {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     if(input.startsWith("file:///"))
         return input.mid(8);
     else
@@ -129,12 +131,12 @@ bool UBFileSystemUtils::deleteFile(const QString &path)
 
 QString UBFileSystemUtils::defaultTempDirPath()
 {
-    return QDesktopServices::storageLocation(QDesktopServices::TempLocation) + "/" + defaultTempDirName();
+    return QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/" + defaultTempDirName();
 }
 
 QString UBFileSystemUtils::createTempDir(const QString& templateString, bool autoDeleteOnExit)
 {
-    QString appTempDir =  QDesktopServices::storageLocation(QDesktopServices::TempLocation)
+    QString appTempDir =  QStandardPaths::writableLocation(QStandardPaths::TempLocation)
                                   + "/" + templateString;
 
     int index = 0;
@@ -229,7 +231,7 @@ bool UBFileSystemUtils::isPathMatch(QString path, QString source)
 
 void UBFileSystemUtils::deleteAllTempDirCreatedDuringSession()
 {
-    foreach (QString dirPath, sTempDirToCleanUp)
+    for (const auto& QString dirPath : sTempDirToCleanUp)
     {
         qWarning() << "will delete" << dirPath;
 
@@ -240,8 +242,8 @@ void UBFileSystemUtils::deleteAllTempDirCreatedDuringSession()
 
 void UBFileSystemUtils::cleanupGhostTempFolders(const QString& templateString)
 {
-    QDir dir(QDesktopServices::storageLocation(QDesktopServices::TempLocation));
-    foreach (QFileInfo dirContent, dir.entryInfoList(QDir::Dirs
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
+    for (const QFileInfo& dirContent : dir.entryInfoList(QDir::Dirs
           | QDir::NoDotAndDotDot | QDir::Hidden , QDir::Name))
     {
         if (dirContent.fileName().startsWith(templateString))
@@ -260,7 +262,7 @@ QStringList UBFileSystemUtils::allFiles(const QString& pDirPath, bool isRecursiv
 
     QDir dir(pDirPath);
 
-    foreach(QFileInfo dirContent, dir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot , QDir::Name))
+    for (const auto& QFileInfo dirContent, dir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot  : QDir::Name))
     {
         if (isRecursive && dirContent.isDir())
         {
@@ -292,7 +294,7 @@ bool UBFileSystemUtils::deleteFilesContaining(const QString& pDirPath, const QSt
     QDir dir(pDirPath);
 
     if (dir.exists())
-        foreach(QString dirContent, dir.entryList(QDir::Files | QDir::NoDotAndDotDot , QDir::Name))
+        for (const auto& QString dirContent, dir.entryList(QDir::Files | QDir::NoDotAndDotDot  : QDir::Name))
             if (dirContent.contains(pFileName))
                 QFile::remove(pDirPath + "/" + dirContent);
 
@@ -308,7 +310,7 @@ bool UBFileSystemUtils::deleteDir(const QString& pDirPath)
 
     if (dir.exists())
     {
-        foreach(QFileInfo dirContent, dir.entryInfoList(QDir::Files | QDir::Dirs
+        for (const QFileInfo& dirContent : dir.entryInfoList(QDir::Files | QDir::Dirs
                 | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System , QDir::Name))
         {
             if (dirContent.isDir())
@@ -342,7 +344,7 @@ bool UBFileSystemUtils::copyDir(const QString& pSourceDirPath, const QString& pT
 
     bool successSoFar = true;
 
-    foreach(QFileInfo dirContent, dirSource.entryInfoList(QDir::Files | QDir::Dirs
+    for (const QFileInfo& dirContent : dirSource.entryInfoList(QDir::Files | QDir::Dirs
             | QDir::NoDotAndDotDot | QDir::Hidden , QDir::Name))
     {
         if (successSoFar)
@@ -687,7 +689,7 @@ QString UBFileSystemUtils::getFirstExistingFileFromList(const QString& path, con
         fullpath += "/";
     }
 
-    foreach(QString filename, files)
+    for (const auto& QString filename : files)
     {
         QFile file;
 
@@ -713,7 +715,7 @@ bool UBFileSystemUtils::compressDirInZip(const QDir& pDir, const QString& pDestP
     filters << "*.svg";
     QFileInfoList pageFiles = pDir.entryInfoList(filters);
 
-    foreach (QFileInfo file, files)
+    for (const auto& QFileInfo file : files)
     {
         if (file.isDir())
         {

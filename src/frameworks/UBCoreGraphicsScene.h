@@ -24,14 +24,16 @@
 #ifndef UBCOREGRAPHICSSCENE_H_
 #define UBCOREGRAPHICSSCENE_H_
 
-#include <QtGui>
+#include <QGraphicsScene>
+#include <QGraphicsItem>
+#include <QSet>
 
 class UBCoreGraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
 
     public:
-        UBCoreGraphicsScene(QObject * parent = 0);
+        UBCoreGraphicsScene(QObject * parent = nullptr);
         virtual ~UBCoreGraphicsScene();
 
         virtual void addItem(QGraphicsItem* item);

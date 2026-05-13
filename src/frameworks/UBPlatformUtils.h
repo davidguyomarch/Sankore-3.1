@@ -90,7 +90,7 @@ struct KEYBT
 {
     QChar simpleSymbol;
     QChar shiftedSymbol;
-#if defined(Q_WS_MACX)
+#if defined(Q_OS_MACOS)
     QChar capsedSymbol;
 #else
     bool capsLockSwitch;
@@ -102,14 +102,14 @@ struct KEYBT
 
     KEYBT(  QChar _simple,
             QChar _shifted,
-#if defined(Q_WS_MACX)
+#if defined(Q_OS_MACOS)
             QChar _capsed,
 #else 
             bool _capsLockSwitch,
 #endif
             int _modNo,
             int _modShift,
-#if defined(Q_WS_MACX)
+#if defined(Q_OS_MACOS)
             int _modCaps,
 #endif
             KEYCODE c1 = 0,
@@ -122,14 +122,14 @@ struct KEYBT
             KEYCODE c8 = 0)
                 :simpleSymbol(_simple)
                 ,shiftedSymbol(_shifted)
-#if defined(Q_WS_MACX)
+#if defined(Q_OS_MACOS)
                 ,capsedSymbol(_capsed)
 #else
                 ,capsLockSwitch(_capsLockSwitch)
 #endif
                 ,modifierNo(_modNo)
                 ,modifierShift(_modShift)
-#if defined(Q_WS_MACX)
+#if defined(Q_OS_MACOS)
                 ,modifierCaps(_modCaps)
 #endif
     {
@@ -158,7 +158,7 @@ struct KEYBT
 			QIcon* _icon,
 			KEYBT** _symbols)
 			:fullName(_fullName),name(_name), id(_id), icon(_icon),
-                        constSymbols(NULL), varSymbols(_symbols)
+                        constSymbols(nullptr), varSymbols(_symbols)
 		{}
 		UBKeyboardLocale(const QString& _fullName,
 			const QString& _name,
@@ -166,7 +166,7 @@ struct KEYBT
 			QIcon* _icon,
             KEYBT _symbols[])
 			:fullName(_fullName),name(_name),  id(_id), icon(_icon),
-                        constSymbols(_symbols), varSymbols(NULL)
+                        constSymbols(_symbols), varSymbols(nullptr)
 		{}
 
 		~UBKeyboardLocale();
@@ -177,7 +177,7 @@ struct KEYBT
 		QIcon* icon;
         KEYBT* operator[] (int index) const
 		{
-			return (varSymbols==NULL)? constSymbols + index : varSymbols[index];
+			return (varSymbols==nullptr)? constSymbols + index : varSymbols[index];
 		}
 	private:
         KEYBT* constSymbols;
@@ -221,7 +221,7 @@ public:
         static QString urlFromClipboard();
         static QStringList availableTranslations();
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MACOS
         static void SetMacLocaleByIdentifier(const QString& id);
 #endif
 };

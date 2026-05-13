@@ -23,7 +23,6 @@
 
 #include "UBPlatformUtils.h"
 
-#include "core/memcheck.h"
 
 void UBPlatformUtils::destroy()
 {

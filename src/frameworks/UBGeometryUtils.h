@@ -24,7 +24,12 @@
 #ifndef UBGEOMETRYUTILS_H_
 #define UBGEOMETRYUTILS_H_
 
-#include <QtGui>
+#include <QPointF>
+#include <QPolygonF>
+#include <QRectF>
+#include <QLineF>
+#include <QVector>
+#include <QPainterPath>
 
 class UBGeometryUtils
 {
