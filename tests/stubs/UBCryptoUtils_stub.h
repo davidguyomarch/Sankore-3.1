@@ -43,7 +43,7 @@ public:
     QString symetricDecrypt(const QString& encrypted);
 
 private:
-    UBCryptoUtils(QObject *pParent = 0);
+    UBCryptoUtils(QObject *pParent = nullptr);
     virtual ~UBCryptoUtils();
 
     static UBCryptoUtils* sInstance;
@@ -52,8 +52,8 @@ private:
 
     void aesInit();
 
-    EVP_CIPHER_CTX mAesEncryptContext;
-    EVP_CIPHER_CTX mAesDecryptContext;
+    EVP_CIPHER_CTX *mAesEncryptContext;
+    EVP_CIPHER_CTX *mAesDecryptContext;
 };
 
 #endif // UBCRYPTOUTILS_STUB_H

@@ -23,24 +23,29 @@
 
 #include "UBStringUtils.h"
 
-#include "core/memcheck.h"
+#include <QRegularExpression>
+#include <algorithm>
 
 QStringList UBStringUtils::sortByLastDigit(const QStringList& sourceList)
 {
     // we look for a set of digit after non digits and before a .
-    QRegExp rx("\\D(\\d+)\\.");
+    QRegularExpression rx("\\D(\\d+)\\.");
 
     QMultiMap<int, QString> elements;
 
-    foreach(QString source, sourceList)
+    for (const QString& source : sourceList)
     {
-        int pos = rx.lastIndexIn(source);
+        QRegularExpressionMatch match;
+        QRegularExpressionMatchIterator it = rx.globalMatch(source);
+        while (it.hasNext()) {
+            match = it.next();
+        }
 
         int digit = -1;
 
-        if (pos >= 0)
+        if (match.hasMatch())
         {
-            digit = rx.cap(1).toInt();
+            digit = match.captured(1).toInt();
         }
 
         elements.insert(digit, source);
@@ -49,13 +54,13 @@ QStringList UBStringUtils::sortByLastDigit(const QStringList& sourceList)
     QStringList result;
 
     QList<int> keys = elements.keys();
-    qSort(keys);
+    std::sort(keys.begin(), keys.end());
 
-    foreach(int key, keys)
+    for (int key : keys)
     {
         QList<QString> values = elements.values(key);
-        qSort(values);
-        foreach(QString val, values)
+        std::sort(values.begin(), values.end());
+        for (const QString& val : values)
         {
             if (!result.contains(val))
                 result << val;
@@ -70,15 +75,19 @@ QString UBStringUtils::netxDigitizedName(const QString& source)
 {
 
     // we look for a set of digit after non digits and at the end
-    QRegExp rx("\\D(\\d+)");
+    QRegularExpression rx("\\D(\\d+)");
 
-    int pos = rx.lastIndexIn(source);
+    QRegularExpressionMatch match;
+    QRegularExpressionMatchIterator it = rx.globalMatch(source);
+    while (it.hasNext()) {
+        match = it.next();
+    }
 
     int digit = -1;
 
-    if (pos >= 0)
+    if (match.hasMatch())
     {
-        digit = rx.cap(1).toInt();
+        digit = match.captured(1).toInt();
     }
 
     QString ret(source);
@@ -91,7 +100,7 @@ QString UBStringUtils::netxDigitizedName(const QString& source)
     {
         QString s("%1");
         s = s.arg(digit + 1);
-        return ret.replace(rx.cap(1), s);
+        return ret.replace(match.captured(1), s);
     }
 }
 
@@ -111,7 +120,11 @@ QString UBStringUtils::toCanonicalUuid(const QUuid& uuid)
 
 QString UBStringUtils::toUtcIsoDateTime(const QDateTime& dateTime)
 {
-    return dateTime.toUTC().toString(Qt::ISODate) + "Z";
+    QString isoStr = dateTime.toUTC().toString(Qt::ISODate);
+    // In Qt 6, toString(ISODate) for UTC already appends 'Z'
+    if (!isoStr.endsWith('Z'))
+        isoStr += "Z";
+    return isoStr;
 }
 
 QDateTime UBStringUtils::fromUtcIsoDate(const QString& dateString)

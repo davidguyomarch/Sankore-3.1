@@ -21,16 +21,16 @@
 
 #include "UBCryptoUtils_stub.h"
 
-#include <openssl/aes.h>
+#include <openssl/evp.h>
 
-UBCryptoUtils* UBCryptoUtils::sInstance(0);
+UBCryptoUtils* UBCryptoUtils::sInstance(nullptr);
 QString UBCryptoUtils::sAESKey("9ecHaspud9uD9ste5erAchehefrup3echej-caje6&thestawacuk=h#F3jet3aF");
 QString UBCryptoUtils::sAESSalt("6f0083e0-a90c-11de-ac21-0002a5d5c51b");
 
 UBCryptoUtils* UBCryptoUtils::instance()
 {
     if (!sInstance)
-        sInstance = new UBCryptoUtils(0);  // No UBApplication dependency
+        sInstance = new UBCryptoUtils(nullptr);
 
     return sInstance;
 }
@@ -39,60 +39,64 @@ void UBCryptoUtils::destroy()
 {
     if (sInstance)
         delete sInstance;
-    sInstance = NULL;
+    sInstance = nullptr;
 }
 
 UBCryptoUtils::UBCryptoUtils(QObject *pParent)
     : QObject(pParent)
+    , mAesEncryptContext(nullptr)
+    , mAesDecryptContext(nullptr)
 {
     aesInit();
 }
 
 UBCryptoUtils::~UBCryptoUtils()
 {
-    EVP_CIPHER_CTX_cleanup(&mAesEncryptContext);
-    EVP_CIPHER_CTX_cleanup(&mAesDecryptContext);
+    if (mAesEncryptContext)
+        EVP_CIPHER_CTX_free(mAesEncryptContext);
+    if (mAesDecryptContext)
+        EVP_CIPHER_CTX_free(mAesDecryptContext);
 }
 
 QString UBCryptoUtils::symetricEncrypt(const QString& clear)
 {
     QByteArray clearData = clear.toUtf8();
 
-    int cipheredLength = clearData.length() + AES_BLOCK_SIZE;
+    int cipheredLength = clearData.length() + EVP_MAX_BLOCK_LENGTH;
     int paddingLength = 0;
     unsigned char *ciphertext = (unsigned char *)malloc(cipheredLength);
 
-    if (!EVP_EncryptInit_ex(&mAesEncryptContext, NULL, NULL, NULL, NULL))
+    if (!EVP_EncryptInit_ex(mAesEncryptContext, nullptr, nullptr, nullptr, nullptr))
         return QString();
 
-    if (!EVP_EncryptUpdate(&mAesEncryptContext, ciphertext, &cipheredLength, (unsigned char *)clearData.data(), clearData.length()))
+    if (!EVP_EncryptUpdate(mAesEncryptContext, ciphertext, &cipheredLength, (unsigned char *)clearData.data(), clearData.length()))
         return QString();
 
-    if (!EVP_EncryptFinal_ex(&mAesEncryptContext, ciphertext + cipheredLength, &paddingLength))
+    if (!EVP_EncryptFinal_ex(mAesEncryptContext, ciphertext + cipheredLength, &paddingLength))
         return QString();
 
     QByteArray cipheredData((const char *)ciphertext, cipheredLength + paddingLength);
 
     free(ciphertext);
 
-    return QString::fromAscii(cipheredData.toBase64());
+    return QString::fromLatin1(cipheredData.toBase64());
 }
 
 QString UBCryptoUtils::symetricDecrypt(const QString& encrypted)
 {
-    QByteArray encryptedData = QByteArray::fromBase64(encrypted.toAscii());
+    QByteArray encryptedData = QByteArray::fromBase64(encrypted.toLatin1());
 
     int encryptedLength = encryptedData.length();
     int paddingLength = 0;
     unsigned char *plaintext = (unsigned char *)malloc(encryptedLength);
 
-    if (!EVP_DecryptInit_ex(&mAesDecryptContext, NULL, NULL, NULL, NULL))
+    if (!EVP_DecryptInit_ex(mAesDecryptContext, nullptr, nullptr, nullptr, nullptr))
         return QString();
 
-    if (!EVP_DecryptUpdate(&mAesDecryptContext, plaintext, &encryptedLength, (const unsigned char *)encryptedData.data(), encryptedData.length()))
+    if (!EVP_DecryptUpdate(mAesDecryptContext, plaintext, &encryptedLength, (const unsigned char *)encryptedData.data(), encryptedData.length()))
         return QString();
 
-    if (!EVP_DecryptFinal_ex(&mAesDecryptContext, plaintext + encryptedLength, &paddingLength))
+    if (!EVP_DecryptFinal_ex(mAesDecryptContext, plaintext + encryptedLength, &paddingLength))
         return QString();
 
     int len = encryptedLength + paddingLength;
@@ -107,10 +111,13 @@ void UBCryptoUtils::aesInit()
 {
     int i, nrounds = 5;
     unsigned char key[32], iv[32];
-    unsigned char *key_data = (unsigned char *)sAESKey.toAscii().data();
-    int key_data_len = sAESKey.length();
+    QByteArray keyBytes = sAESKey.toLatin1();
+    unsigned char *key_data = (unsigned char *)keyBytes.data();
+    int key_data_len = keyBytes.length();
 
-    i = EVP_BytesToKey(EVP_aes_256_cbc(), EVP_sha1(), (unsigned char *)sAESSalt.toAscii().data(), key_data,
+    QByteArray saltBytes = sAESSalt.toLatin1();
+
+    i = EVP_BytesToKey(EVP_aes_256_cbc(), EVP_sha1(), (unsigned char *)saltBytes.data(), key_data,
             key_data_len, nrounds, key, iv);
 
     if (i != 32)
@@ -119,8 +126,8 @@ void UBCryptoUtils::aesInit()
         return;
     }
 
-    EVP_CIPHER_CTX_init(&mAesEncryptContext);
-    EVP_EncryptInit_ex(&mAesEncryptContext, EVP_aes_256_cbc(), NULL, key, iv);
-    EVP_CIPHER_CTX_init(&mAesDecryptContext);
-    EVP_DecryptInit_ex(&mAesDecryptContext, EVP_aes_256_cbc(), NULL, key, iv);
+    mAesEncryptContext = EVP_CIPHER_CTX_new();
+    EVP_EncryptInit_ex(mAesEncryptContext, EVP_aes_256_cbc(), nullptr, key, iv);
+    mAesDecryptContext = EVP_CIPHER_CTX_new();
+    EVP_DecryptInit_ex(mAesDecryptContext, EVP_aes_256_cbc(), nullptr, key, iv);
 }

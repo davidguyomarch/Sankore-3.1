@@ -1,11 +1,10 @@
 TARGET = OpenSankoreTests
 TEMPLATE = app
 
-CONFIG += testcase console c++11
+CONFIG += testcase console c++17
 CONFIG -= app_bundle
 
-QT += core gui testlib
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += core gui widgets testlib
 
 # Paths
 INCLUDEPATH += ../src
