@@ -35,7 +35,6 @@
 #include <QRadialGradient>
 #include <QString>
 
-#include "core/memcheck.h"
 
 const QRectF UBGraphicsAristo::sDefaultRect =  QRectF(0, 0, 800, 500);
 const UBGraphicsAristo::Orientation UBGraphicsAristo::sDefaultOrientation = UBGraphicsAristo::Top;
@@ -345,7 +344,7 @@ void UBGraphicsAristo::paintProtractorGraduations(QPainter* painter)
     painter->save();
 
     QFont font1 = painter->font();
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MACOS
     font1.setPointSizeF(font1.pointSizeF() - 3);
 #endif
     QFontMetricsF fm1(font1);
@@ -469,7 +468,7 @@ void UBGraphicsAristo::paintMarker(QPainter *painter)
     QString angleText = QString("%1°").arg(rightAngle, 0, 'f', 1);
 
     QFont font1 = painter->font();
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MACOS
     font1.setPointSizeF(font1.pointSizeF() - 3);
 #endif
     QFontMetricsF fm1(font1);

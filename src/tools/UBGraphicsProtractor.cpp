@@ -29,7 +29,6 @@
 #include "board/UBDrawingController.h"
 #include "UBAbstractDrawRuler.h"
 
-#include "core/memcheck.h"
 
 
 const QRectF UBGraphicsProtractor::sDefaultRect = QRectF(-175, -175, 350, 350);
@@ -375,7 +374,7 @@ void UBGraphicsProtractor::paintGraduations(QPainter *painter)
     const int  oneDegreeGraduationLength = 5;
 
     QFont font1 = painter->font();
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MACOS
     font1.setPointSizeF(font1.pointSizeF() - 3);
 #endif
     QFontMetricsF fm1(font1);

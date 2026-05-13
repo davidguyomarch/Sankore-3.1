@@ -90,7 +90,6 @@
 
 #include "core/UBSettings.h"
 
-#include "core/memcheck.h"
 
 #include "web/UBWebController.h"
 
@@ -2856,7 +2855,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
             }
         }
         else{
-#ifdef Q_WS_MACX
+#ifdef Q_OS_MACOSX
                 //  With Safari, in 95% of the drops, the mime datas are hidden in Apple Web Archive pasteboard type.
                 //  This is due to the way Safari is working so we have to dig into the pasteboard in order to retrieve
                 //  the data.

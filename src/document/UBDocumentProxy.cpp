@@ -30,7 +30,6 @@
 #include "core/UBSettings.h"
 #include "core/UBDocumentManager.h"
 
-#include "core/memcheck.h"
 
 UBDocumentProxy::UBDocumentProxy()
     : mPageCount(0)

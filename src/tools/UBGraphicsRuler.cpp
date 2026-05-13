@@ -30,7 +30,6 @@
 #include "board/UBBoardController.h" // TODO UB 4.x clean that dependency
 #include "board/UBDrawingController.h"
 
-#include "core/memcheck.h"
 
 const QRect UBGraphicsRuler::sDefaultRect = QRect(0, 0, 800, 96);
 

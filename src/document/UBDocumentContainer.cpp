@@ -24,7 +24,6 @@
 #include "adaptors/UBThumbnailAdaptor.h"
 
 #include "core/UBPersistenceManager.h"
-#include "core/memcheck.h"
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
 

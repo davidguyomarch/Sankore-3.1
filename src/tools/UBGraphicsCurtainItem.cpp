@@ -35,7 +35,6 @@
 #include "board/UBBoardController.h"
 #include "board/UBBoardView.h"
 
-#include "core/memcheck.h"
 
 const QColor                        UBGraphicsCurtainItem::sDrawColor = Qt::white;
 const QColor          UBGraphicsCurtainItem::sDarkBackgroundDrawColor = Qt::black;

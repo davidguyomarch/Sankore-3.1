@@ -31,7 +31,6 @@
 #include "board/UBBoardView.h"
 #include "domain/UBGraphicsScene.h"
 
-#include "core/memcheck.h"
 
 QMap<UBGraphicsScene*, UBGraphicsCache*> UBGraphicsCache::sInstances;
 

@@ -270,10 +270,10 @@ const QList<UBDocumentExternalFile *> *UBDocumentProxy::externalFiles() const
 }
 
 void UBDocumentProxy::externalFilesClear(){
-    foreach(UBDocumentExternalFile* ef, mExternalFiles)
+    for (UBDocumentExternalFile* ef : mExternalFiles)
     {
         delete ef;
-        ef = NULL;
+        ef = nullptr;
     }
     mExternalFiles.clear();
 }

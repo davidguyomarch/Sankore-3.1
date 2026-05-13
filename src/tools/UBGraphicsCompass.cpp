@@ -31,7 +31,6 @@
 #include "board/UBBoardController.h" // TODO UB 4.x clean that dependency
 #include "board/UBDrawingController.h" // TODO UB 4.x clean that dependency
 
-#include "core/memcheck.h"
 
 const QRect UBGraphicsCompass::sDefaultRect = QRect(0, -20, 300, 48);
 const QColor UBGraphicsCompass::sLightBackgroundMiddleFillColor = QColor(0x72, 0x72, 0x72, sFillTransparency);
