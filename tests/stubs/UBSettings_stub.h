@@ -6,7 +6,9 @@
 #define UBSETTINGS_STUB_H
 
 #include <QtCore>
-#include <QtGui>
+#include <QColor>
+#include <QVariant>
+#include <QSize>
 
 class UBSettings;
 
@@ -15,7 +17,7 @@ class UBSetting : public QObject
     Q_OBJECT
 
 public:
-    UBSetting(UBSettings* parent = 0) : QObject(), mOwner(0), mDefaultValue(QVariant()) { Q_UNUSED(parent); }
+    UBSetting(UBSettings* parent = nullptr) : QObject(), mOwner(nullptr), mDefaultValue(QVariant()) { Q_UNUSED(parent); }
     UBSetting(UBSettings* owner, const QString& pDomain, const QString& pKey,
               const QVariant& pDefaultValue)
         : QObject(), mOwner(owner), mDomain(pDomain), mKey(pKey), mDefaultValue(pDefaultValue)
@@ -72,7 +74,7 @@ public:
     static UBSettings* settings();
     static void destroy();
 
-    UBSettings(QObject *parent = 0);
+    UBSettings(QObject *parent = nullptr);
     virtual ~UBSettings();
 
     // Static string constants used by UBDocumentProxy
