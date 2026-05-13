@@ -25,13 +25,13 @@
 #define UBWEBPAGE_H_
 
 /*
- * Use UBWebPage instead of QWebPage to log JavaScript console messages with qDebug
+ * Use UBWebPage instead of QWebEnginePage to log JavaScript console messages with qDebug
  */
 
 #include <QtCore>
-#include <QWebPage>
+#include <QWebEnginePage>
 
-class UBWebPage : public QWebPage
+class UBWebPage : public QWebEnginePage
 {
     Q_OBJECT;
 

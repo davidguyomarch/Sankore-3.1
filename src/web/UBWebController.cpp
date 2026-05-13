@@ -23,7 +23,7 @@
 
 #include <QtGui>
 #include <QDomDocument>
-#include <QXmlQuery>
+#include <QXmlStreamReader>
 
 #include "frameworks/UBPlatformUtils.h"
 
@@ -58,7 +58,6 @@
 #include "desktop/UBCustomCaptureWindow.h"
 #include "board/UBBoardPaletteManager.h"
 
-#include "core/memcheck.h"
 
 UBWebController::UBWebController(UBMainWindow* mainWindow)
     : QObject(mainWindow->centralWidget())
@@ -193,7 +192,7 @@ void UBWebController::tutorialWebInstance()
 
     QString tutorialHtmlIndexFile = 0;
     QString tutorialPath = "/etc/Tutorial/tutorial" + language + "/index.html";
-#if defined(Q_WS_MAC)
+#if defined(Q_OS_MACOS)
     tutorialHtmlIndexFile = QApplication::applicationDirPath()+ "/../Resources" + tutorialPath;
 #else
     tutorialHtmlIndexFile = QApplication::applicationDirPath() + tutorialPath;
@@ -252,9 +251,9 @@ void UBWebController::paraschoolWebInstance()
     QString language = "_" + locale.name().left(2);
     QString editorPath = "/etc/SankoreEditor/editor" + language + "/index.html";
     QString editorHtmlIndexFile;
-#if defined(Q_WS_MAC)
+#if defined(Q_OS_MACOS)
     editorHtmlIndexFile = QApplication::applicationDirPath() + "/../Resources" + editorPath;
-#elif defined(Q_WS_WIN)
+#elif defined(Q_OS_WIN)
     editorHtmlIndexFile = QApplication::applicationDirPath() + editorPath;
 #else
     editorHtmlIndexFile = QApplication::applicationDirPath() + editorPath;
@@ -387,7 +386,7 @@ QPixmap UBWebController::captureCurrentPage()
             && (*mCurrentWebBrowser)->currentTabWebView()->page()
             && (*mCurrentWebBrowser)->currentTabWebView()->page()->mainFrame())
     {
-        QWebFrame* frame = (*mCurrentWebBrowser)->currentTabWebView()->page()->mainFrame();
+        QWebEnginePage* frame = (*mCurrentWebBrowser)->currentTabWebView()->page()->mainFrame();
         QSize size = frame->contentsSize();
 
         qDebug() << size;
@@ -435,7 +434,7 @@ void UBWebController::setupPalettes()
     {
         (*mToolsCurrentPalette) = new UBWebToolsPalette(UBApplication::mainWindow, false);
         UBApplication::boardController->paletteManager()->setCurrentWebToolsPalette(*mToolsCurrentPalette);
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
         if (UBPlatformUtils::hasVirtualKeyboard() && UBApplication::boardController->paletteManager()->mKeyboardPalette)
             connect(UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(closed()),
                     UBApplication::boardController->paletteManager()->mKeyboardPalette, SLOT(onDeactivated()));
@@ -592,7 +591,7 @@ void UBWebController::captureoEmbed()
 
         // And comment from here
 
-        QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
+        QWebEngineView* webView = (*mCurrentWebBrowser)->currentTabWebView();
         QUrl currentUrl = webView->url();
 
         if (isOEmbedable(currentUrl))
@@ -661,7 +660,7 @@ void UBWebController::captureEduMedia()
     if (mCurrentWebBrowser && (*mCurrentWebBrowser)
             && (*mCurrentWebBrowser)->currentTabWebView())
     {
-        QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
+        QWebEngineView* webView = (*mCurrentWebBrowser)->currentTabWebView();
         QUrl currentUrl = webView->url();
 
         if (isEduMedia(currentUrl))
@@ -771,7 +770,7 @@ void UBWebController::loadUrl(const QUrl& url)
 }
 
 
-QWebView* UBWebController::createNewTab()
+QWebEngineView* UBWebController::createNewTab()
 {
     if (mCurrentWebBrowser && !(*mCurrentWebBrowser))
     {
@@ -791,8 +790,8 @@ void UBWebController::copy()
 {
     if (mCurrentWebBrowser && (*mCurrentWebBrowser) && (*mCurrentWebBrowser)->currentTabWebView())
     {
-        QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
-        QAction *act = webView->pageAction(QWebPage::Copy);
+        QWebEngineView* webView = (*mCurrentWebBrowser)->currentTabWebView();
+        QAction *act = webView->pageAction(QWebEnginePage::Copy);
         if(act)
             act->trigger();
     }
@@ -803,8 +802,8 @@ void UBWebController::paste()
 {
     if (mCurrentWebBrowser && (*mCurrentWebBrowser) && (*mCurrentWebBrowser)->currentTabWebView())
     {
-        QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
-        QAction *act = webView->pageAction(QWebPage::Paste);
+        QWebEngineView* webView = (*mCurrentWebBrowser)->currentTabWebView();
+        QAction *act = webView->pageAction(QWebEnginePage::Paste);
         if(act)
             act->trigger();
     }
@@ -824,8 +823,8 @@ void UBWebController::cut()
 {
     if (mCurrentWebBrowser && (*mCurrentWebBrowser) && (*mCurrentWebBrowser)->currentTabWebView())
     {
-        QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
-        QAction *act = webView->pageAction(QWebPage::Cut);
+        QWebEngineView* webView = (*mCurrentWebBrowser)->currentTabWebView();
+        QAction *act = webView->pageAction(QWebEnginePage::Cut);
         if(act)
             act->trigger();
     }

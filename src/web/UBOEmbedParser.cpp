@@ -32,7 +32,6 @@
 
 #include "UBOEmbedParser.h"
 
-#include "core/memcheck.h"
 
 UBOEmbedParser::UBOEmbedParser(QObject *parent, const char* name)
 {

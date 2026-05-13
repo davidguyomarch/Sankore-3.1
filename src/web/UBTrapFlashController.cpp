@@ -46,7 +46,6 @@
 
 #include "ui_trapFlash.h"
 
-#include "core/memcheck.h"
 
 #include "web/UBWebController.h"
 #include "browser/WBBrowserWindow.h"
@@ -70,7 +69,7 @@ void UBTrapWebPageContentController::text_Changed(const QString &newText)
 {
     QString new_text = newText;
 
-#ifdef Q_WS_WIN // Defined on Windows.
+#ifdef Q_OS_WIN // Defined on Windows.
     QString illegalCharList("      < > : \" / \\ | ? * ");
     QRegExp regExp("[<>:\"/\\\\|?*]");
 #endif
@@ -80,12 +79,12 @@ void UBTrapWebPageContentController::text_Changed(const QString &newText)
     QRegExp regExp("[<>:\"/\\\\|?*]");
 #endif
 
-#ifdef Q_WS_MAC // Defined on Mac OS X.
+#ifdef Q_OS_MACOS // Defined on Mac OS X.
     QString illegalCharList("      < > : \" / \\ | ? * ");
     QRegExp regExp("[<>:\"/\\\\|?*]");
 #endif
 
-#ifdef Q_WS_X11 // Defined on X11.
+#ifdef Q_OS_LINUX // Defined on X11.
     QString illegalCharList("      < > : \" / \\ | ? * ");
     QRegExp regExp("[<>:\"/\\\\|?*]");
 #endif
@@ -110,13 +109,13 @@ void UBTrapWebPageContentController::showTrapContent()
     {
         mTrapWebContentDialog = new WBTrapWebPageContentWindow(this, mParentWidget);
         mTrapWebContentDialog->webView()->page()->setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
-        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebSettings::JavaEnabled, true);
-        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
-        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
-        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
-        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
-        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebEngineSettings::JavaEnabled, true);
+        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebEngineSettings::LocalStorageDatabaseEnabled, true);
+        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebEngineSettings::OfflineWebApplicationCacheEnabled, true);
+        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebEngineSettings::OfflineStorageDatabaseEnabled, true);
+        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
+        mTrapWebContentDialog->webView()->settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
     }
 
     mTrapWebContentDialog->show();
@@ -301,7 +300,7 @@ void UBTrapWebPageContentController::addLinkToBoard()
     mTrapWebContentDialog->setReadyForTrap(true);
 }
 
-void UBTrapWebPageContentController::updateTrapContentFromPage(QWebFrame* pCurrentWebFrame)
+void UBTrapWebPageContentController::updateTrapContentFromPage(QWebEnginePage* pCurrentWebFrame)
 {
     if (pCurrentWebFrame && (mTrapWebContentDialog && mTrapWebContentDialog->isVisible()))
     {

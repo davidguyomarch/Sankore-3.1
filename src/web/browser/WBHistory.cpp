@@ -67,17 +67,18 @@
 #include "WBBrowserWindow.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 
 #include "core/UBSettings.h"
 #include "network/UBAutoSaver.h"
 
-#include "core/memcheck.h"
 
 static const unsigned int HISTORY_VERSION = 23;
 
 WBHistoryManager::WBHistoryManager(QObject *parent)
-    : QWebHistoryInterface(parent)
+    : QWebEngineHistoryInterface(parent)
     , m_saveTimer(new UBAutoSaver(this))
     , m_historyLimit(30)
     , m_historyModel(0)
@@ -97,8 +98,8 @@ WBHistoryManager::WBHistoryManager(QObject *parent)
     m_historyFilterModel = new WBHistoryFilterModel(m_historyModel, this);
     m_historyTreeModel = new WBHistoryTreeModel(m_historyFilterModel, this);
 
-    // QWebHistoryInterface will delete the history manager
-    QWebHistoryInterface::setDefaultInterface(this);
+    // QWebEngineHistoryInterface will delete the history manager
+    QWebEngineHistoryInterface::setDefaultInterface(this);
 }
 
 WBHistoryManager::~WBHistoryManager()
@@ -194,8 +195,8 @@ void WBHistoryManager::checkForExpired()
 
 void WBHistoryManager::addHistoryItem(const WBHistoryItem &item)
 {
-    QWebSettings *globalSettings = QWebSettings::globalSettings();
-    if (globalSettings->testAttribute(QWebSettings::PrivateBrowsingEnabled))
+    QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
+    if (globalSettings->testAttribute(QWebEngineSettings::PrivateBrowsingEnabled))
         return;
 
     m_history.prepend(item);

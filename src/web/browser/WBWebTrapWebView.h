@@ -25,10 +25,12 @@
 #define WBWEBTRAPWEBVIEW_H_
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 
 
-class WBWebTrapWebView : public QWebView
+class WBWebTrapWebView : public QWebEngineView
 {
     Q_OBJECT
 

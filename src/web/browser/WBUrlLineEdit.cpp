@@ -71,7 +71,6 @@
 
 #include <QtGui>
 
-#include "core/memcheck.h"
 
 WBExLineEdit::WBExLineEdit(QWidget *parent)
     : QWidget(parent)

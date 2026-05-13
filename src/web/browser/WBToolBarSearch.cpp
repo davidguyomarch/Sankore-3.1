@@ -65,11 +65,12 @@
 #include "WBToolBarSearch.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 
 #include "network/UBAutoSaver.h"
 
-#include "core/memcheck.h"
 
 /*
     ToolbarSearch is a very basic search widget that also contains a small history.
@@ -130,8 +131,8 @@ void WBToolbarSearch::searchNow()
     if (newList.size() >= mMaxSavedSearches)
         newList.removeLast();
 
-    QWebSettings *globalSettings = QWebSettings::globalSettings();
-    if (!globalSettings->testAttribute(QWebSettings::PrivateBrowsingEnabled))
+    QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
+    if (!globalSettings->testAttribute(QWebEngineSettings::PrivateBrowsingEnabled))
     {
         mStringListModel->setStringList(newList);
         mAutosaver->changeOccurred();

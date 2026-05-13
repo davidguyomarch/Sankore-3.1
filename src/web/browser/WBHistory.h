@@ -68,7 +68,9 @@
 #include "WBModelMenu.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 
 class WBHistoryItem
 {
@@ -97,7 +99,7 @@ class WBHistoryModel;
 class WBHistoryFilterModel;
 class WBHistoryTreeModel;
 
-class WBHistoryManager : public QWebHistoryInterface
+class WBHistoryManager : public QWebEngineHistoryInterface
 {
     Q_OBJECT;
     Q_PROPERTY(int historyLimit READ historyLimit WRITE setHistoryLimit);

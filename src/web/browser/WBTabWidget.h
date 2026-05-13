@@ -66,7 +66,9 @@
 #define WBTABWIDGET_H
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 
 /*
     Tab bar with a few more features such as a context menu and shortcuts
@@ -119,10 +121,10 @@ class WBWebActionMapper : public QObject
     Q_OBJECT;
 
     public:
-        WBWebActionMapper(QAction *root, QWebPage::WebAction webAction, QObject *parent);
-        QWebPage::WebAction webAction() const;
+        WBWebActionMapper(QAction *root, QWebEnginePage::WebAction webAction, QObject *parent);
+        QWebEnginePage::WebAction webAction() const;
         void addChild(QAction *action);
-        void updateCurrent(QWebPage *currentParent);
+        void updateCurrent(QWebEnginePage *currentParent);
 
     private slots:
         void rootTriggered();
@@ -131,9 +133,9 @@ class WBWebActionMapper : public QObject
         void currentDestroyed();
 
     private:
-        QWebPage *mCurrentParent;
+        QWebEnginePage *mCurrentParent;
         QAction *mRootAction;
-        QWebPage::WebAction mWebAction;
+        QWebEnginePage::WebAction mWebAction;
 };
 
 
@@ -162,12 +164,12 @@ class WBTabWidget : public QTabWidget
         void menuBarVisibilityChangeRequested(bool visible);
         void statusBarVisibilityChangeRequested(bool visible);
         void toolBarVisibilityChangeRequested(bool visible);
-        void printRequested(QWebFrame *frame);
+        void printRequested(QWebEnginePage *frame);
 
     public:
         WBTabWidget(QWidget *parent = 0);
         void clear();
-        void addWebAction(QAction *action, QWebPage::WebAction webAction);
+        void addWebAction(QAction *action, QWebEnginePage::WebAction webAction);
 
         QWidget *lineEditStack() const;
         QLineEdit *currentLineEdit() const;

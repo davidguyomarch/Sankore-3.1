@@ -75,7 +75,6 @@
 #include <QtGui>
 #include <QSvgWidget>
 
-#include "core/memcheck.h"
 
 WBTabBar::WBTabBar(QWidget *parent)
     : QTabBar(parent)
@@ -103,7 +102,7 @@ WBTabBar::WBTabBar(QWidget *parent)
     setMovable(true);
     setDocumentMode(false);
 
-#ifdef Q_WS_MACX
+#ifdef Q_OS_MACOSX
     QFont baseFont = font();
     baseFont.setPointSize(baseFont.pointSize() - 2);
     setFont(baseFont);
@@ -300,7 +299,7 @@ void WBTabWidget::moveTab(int fromIndex, int toIndex)
     mLineEdits->insertWidget(toIndex, lineEdit);
 }
 
-void WBTabWidget::addWebAction(QAction *action, QWebPage::WebAction webAction)
+void WBTabWidget::addWebAction(QAction *action, QWebEnginePage::WebAction webAction)
 {
     if (!action)
         return;
@@ -451,7 +450,7 @@ WBWebView *WBTabWidget::newTab(bool makeCurrent)
     connect(webView, SIGNAL(urlChanged(const QUrl &)), this, SLOT(webViewUrlChanged(const QUrl &)));
     connect(webView->page(), SIGNAL(windowCloseRequested()), this, SLOT(windowCloseRequested()));
     connect(webView->page(), SIGNAL(geometryChangeRequested(const QRect &)), this, SIGNAL(geometryChangeRequested(const QRect &)));
-    connect(webView->page(), SIGNAL(printRequested(QWebFrame *)), this, SIGNAL(printRequested(QWebFrame *)));
+    connect(webView->page(), SIGNAL(printRequested(QWebEnginePage *)), this, SIGNAL(printRequested(QWebEnginePage *)));
     connect(webView->page(), SIGNAL(menuBarVisibilityChangeRequested(bool)), this, SIGNAL(menuBarVisibilityChangeRequested(bool)));
     connect(webView->page(), SIGNAL(statusBarVisibilityChangeRequested(bool)), this, SIGNAL(statusBarVisibilityChangeRequested(bool)));
     connect(webView->page(), SIGNAL(toolBarVisibilityChangeRequested(bool)), this, SIGNAL(toolBarVisibilityChangeRequested(bool)));
@@ -769,7 +768,7 @@ bool WBTabWidget::restoreState(const QByteArray &state)
     return true;
 }
 
-WBWebActionMapper::WBWebActionMapper(QAction *root, QWebPage::WebAction webAction, QObject *parent)
+WBWebActionMapper::WBWebActionMapper(QAction *root, QWebEnginePage::WebAction webAction, QObject *parent)
     : QObject(parent)
     , mCurrentParent(0)
     , mRootAction(root)
@@ -799,7 +798,7 @@ void WBWebActionMapper::addChild(QAction *action)
     connect(action, SIGNAL(changed()), this, SLOT(childChanged()));
 }
 
-QWebPage::WebAction WBWebActionMapper::webAction() const
+QWebEnginePage::WebAction WBWebActionMapper::webAction() const
 {
     return mWebAction;
 }
@@ -827,7 +826,7 @@ void WBWebActionMapper::childChanged()
     }
 }
 
-void WBWebActionMapper::updateCurrent(QWebPage *currentParent)
+void WBWebActionMapper::updateCurrent(QWebEnginePage *currentParent)
 {
     if (mCurrentParent)
         disconnect(mCurrentParent, SIGNAL(destroyed(QObject *)),

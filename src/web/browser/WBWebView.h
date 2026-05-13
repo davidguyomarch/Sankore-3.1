@@ -66,7 +66,9 @@
 #define WBWEBVIEW_H
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 
 #include "WBWebTrapWebView.h"
 #include "web/UBWebPage.h"
@@ -85,8 +87,8 @@ class WBWebPage : public UBWebPage
         WBBrowserWindow *mainWindow();
 
     protected:
-        bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type);
-        QWebPage *createWindow(QWebPage::WebWindowType type);
+        bool acceptNavigationRequest(QWebEnginePage *frame, const QNetworkRequest &request, NavigationType type);
+        QWebEnginePage *createWindow(QWebEnginePage::WebWindowType type);
         QObject *createPlugin(const QString &classId, const QUrl &url, const QStringList &paramNames, const QStringList &paramValues);
 
     private slots:

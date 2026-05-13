@@ -76,10 +76,11 @@
 #include "network/UBCookieJar.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 #include <QtUiTools/QUiLoader>
 
-#include "core/memcheck.h"
 
 WBWebPage::WBWebPage(QObject *parent)
     : UBWebPage(parent)
@@ -107,12 +108,12 @@ WBBrowserWindow *WBWebPage::mainWindow()
         return 0;
 }
 
-bool WBWebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type)
+bool WBWebPage::acceptNavigationRequest(QWebEnginePage *frame, const QNetworkRequest &request, NavigationType type)
 {
     // ctrl open in new tab
     // ctrl-shift open in new tab and select
     // ctrl-alt open in new window
-    if (type == QWebPage::NavigationTypeLinkClicked
+    if (type == QWebEnginePage::NavigationTypeLinkClicked
         && (mKeyboardModifiers & Qt::ControlModifier
             || mPressedButtons == Qt::MidButton))
     {
@@ -134,11 +135,11 @@ bool WBWebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest 
         emit loadingUrl(mLoadingUrl);
     }
 
-    return QWebPage::acceptNavigationRequest(frame, request, type);
+    return QWebEnginePage::acceptNavigationRequest(frame, request, type);
 }
 
 
-QWebPage *WBWebPage::createWindow(QWebPage::WebWindowType type)
+QWebEnginePage *WBWebPage::createWindow(QWebEnginePage::WebWindowType type)
 {
     Q_UNUSED(type);
 
@@ -224,18 +225,18 @@ void WBWebPage::handleUnsupportedContent(QNetworkReply *reply)
                         .arg(reply->url().toString());
     }
 
-    QList<QWebFrame*> frames;
+    QList<QWebEnginePage*> frames;
     frames.append(mainFrame());
     while (!frames.isEmpty())
     {
-        QWebFrame *frame = frames.takeFirst();
+        QWebEnginePage *frame = frames.takeFirst();
         if (frame->url() == reply->url())
         {
             frame->setHtml(html, reply->url());
             return;
         }
-        QList<QWebFrame *> children = frame->childFrames();
-        foreach(QWebFrame *frame, children)
+        QList<QWebEnginePage *> children = frame->childFrames();
+        foreach(QWebEnginePage *frame, children)
             frames.append(frame);
     }
 
@@ -255,7 +256,7 @@ WBWebView::WBWebView(QWidget* parent)
 
     setPage(mPage);
 
-    QWebView::setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+    QWebEngineView::setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 
     connect(page(), SIGNAL(statusBarMessage(const QString&)),
             this, SLOT(setStatusBarText(const QString&)));
@@ -287,15 +288,15 @@ void WBWebView::contextMenuEvent(QContextMenuEvent *event)
     if (!r.linkUrl().isEmpty())
     {
         QMenu menu(this);
-        menu.addAction(pageAction(QWebPage::OpenLinkInNewWindow));
+        menu.addAction(pageAction(QWebEnginePage::OpenLinkInNewWindow));
         menu.addAction(tr("Open in New Tab"), this, SLOT(openLinkInNewTab()));
         menu.addSeparator();
-        menu.addAction(pageAction(QWebPage::DownloadLinkToDisk));
+        menu.addAction(pageAction(QWebEnginePage::DownloadLinkToDisk));
         // Add link to bookmarks...
         menu.addSeparator();
-        menu.addAction(pageAction(QWebPage::CopyLinkToClipboard));
-        if (page()->settings()->testAttribute(QWebSettings::DeveloperExtrasEnabled))
-            menu.addAction(pageAction(QWebPage::InspectElement));
+        menu.addAction(pageAction(QWebEnginePage::CopyLinkToClipboard));
+        if (page()->settings()->testAttribute(QWebEngineSettings::DeveloperExtrasEnabled))
+            menu.addAction(pageAction(QWebEnginePage::InspectElement));
         menu.exec(mapToGlobal(event->pos()));
         return;
     }
@@ -320,7 +321,7 @@ void WBWebView::wheelEvent(QWheelEvent *event)
 void WBWebView::openLinkInNewTab()
 {
     mPage->mOpenInNewTab = true;
-    pageAction(QWebPage::OpenLinkInNewWindow)->trigger();
+    pageAction(QWebEnginePage::OpenLinkInNewWindow)->trigger();
 }
 
 
@@ -382,7 +383,7 @@ QUrl WBWebView::url() const
 {
     QUrl url;
     try{
-        url = QWebView::url();
+        url = QWebEngineView::url();
     } catch(...)
     {}
     

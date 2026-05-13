@@ -24,7 +24,7 @@
 #define WB_TRAP_WEB_PAGE_CONTENT_H
 
 #include <QtGui>
-#include <QWebView>
+#include <QWebEngineView>
 
 #include "WBWebView.h"
 
@@ -38,7 +38,7 @@ class WBTrapWebPageContentWindow : public QDialog
 
         void setUrl(const QUrl &url);
         void setReadyForTrap(bool bReady);
-        QWebView *webView() const {return mTrapContentPreview;}
+        QWebEngineView *webView() const {return mTrapContentPreview;}
         QComboBox *itemsComboBox() const {return mSelectContentCombobox;}
         QLineEdit *applicationNameLineEdit() const {return mApplicationNameEdit;}
 

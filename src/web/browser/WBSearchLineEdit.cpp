@@ -66,7 +66,6 @@
 
 #include <QtGui>
 
-#include "core/memcheck.h"
 
 WBClearButton::WBClearButton(QWidget *parent)
   : QAbstractButton(parent)

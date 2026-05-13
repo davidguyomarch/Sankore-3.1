@@ -23,7 +23,6 @@
 
 #include "UBWebKitUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
-#include "core/memcheck.h"
 #include "core/UBApplication.h"
 #include "web/UBWebController.h"
 
@@ -37,7 +36,7 @@ UBWebKitUtils::~UBWebKitUtils()
     // NOOP
 }
 
-QList<UBWebKitUtils::HtmlObject> UBWebKitUtils::objectsInFrameByTag(QWebFrame* frame, QString tagName)
+QList<UBWebKitUtils::HtmlObject> UBWebKitUtils::objectsInFrameByTag(QWebEnginePage* frame, QString tagName)
 {
     QList<UBWebKitUtils::HtmlObject> htmlObjects;
 

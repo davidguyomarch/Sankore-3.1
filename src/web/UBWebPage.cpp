@@ -28,7 +28,6 @@
 
 #include "pdf/UBWebPluginPDFWidget.h"
 
-#include "core/memcheck.h"
 
 class UBWebPluginFactory : public QWebPluginFactory
 {
@@ -71,10 +70,10 @@ class UBWebPluginFactory : public QWebPluginFactory
 
 
 UBWebPage::UBWebPage(QObject *parent)
-    : QWebPage(parent)
+    : QWebEnginePage(parent)
     , mPluginFactory(0)
 {
-    mCachedUserAgentString = QWebPage::userAgentForUrl(QUrl());
+    mCachedUserAgentString = QWebEnginePage::userAgentForUrl(QUrl());
     //mPluginFactory = new UBWebPluginFactory();
     //setPluginFactory(mPluginFactory);
 

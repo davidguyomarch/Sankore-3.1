@@ -24,7 +24,9 @@
 #include "WBWebTrapWebView.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 
 #include "web/UBWebKitUtils.h"
 
@@ -32,10 +34,9 @@
 #include "core/UBApplicationController.h"
 #include "board/UBBoardController.h"
 
-#include "core/memcheck.h"
 
 WBWebTrapWebView::WBWebTrapWebView(QWidget* parent)
-    : QWebView(parent)
+    : QWebEngineView(parent)
     , mCurrentContentType(Unknown)
     , mIsTrapping(false)
     , m_bContentForTrapSelected(false)
@@ -62,7 +63,7 @@ void WBWebTrapWebView::setIsTrapping(bool pIsTrapping)
 
 void WBWebTrapWebView::hideEvent ( QHideEvent * event )
 {
-    QWebView::hideEvent(event);
+    QWebEngineView::hideEvent(event);
 }
 
 void WBWebTrapWebView::highliteElementAtPos ( const QPoint& pos)
@@ -300,7 +301,7 @@ void WBWebTrapWebView::mouseMoveEvent ( QMouseEvent * event )
     else
     {
 
-        QWebView::mouseMoveEvent(event);
+        QWebEngineView::mouseMoveEvent(event);
     }
 }
 
@@ -316,7 +317,7 @@ void WBWebTrapWebView::mousePressEvent(QMouseEvent* event)
         if (mIsTrapping)
             m_bScrollingInProcess = true; 
 
-        QWebView::mousePressEvent(event);
+        QWebEngineView::mousePressEvent(event);
     }
 }
 
@@ -336,7 +337,7 @@ void WBWebTrapWebView::mouseReleaseEvent ( QMouseEvent * event )
     {
         m_bScrollingInProcess = false;
 
-        QWebView::mouseReleaseEvent(event);
+        QWebEngineView::mouseReleaseEvent(event);
     }
 
     //if (!eventConsumed)
@@ -392,7 +393,7 @@ void WBWebTrapWebView::mouseReleaseEvent ( QMouseEvent * event )
 
 void WBWebTrapWebView::paintEvent ( QPaintEvent * event )
 {
-    QWebView::paintEvent(event);
+    QWebEngineView::paintEvent(event);
 
     if (mIsTrapping && mDomElementRect.isValid()
             && page() && page()->currentFrame())

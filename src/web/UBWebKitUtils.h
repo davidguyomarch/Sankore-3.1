@@ -24,7 +24,9 @@
 #ifndef UBWEBKITUTILS_H_
 #define UBWEBKITUTILS_H_
 
-#include <QtWebKit>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 
 class UBWebKitUtils
 {
@@ -53,7 +55,7 @@ class UBWebKitUtils
 
         };
         static QString widgetNameFromUrl(QString pObjectUrl);
-        static QList<UBWebKitUtils::HtmlObject> objectsInFrameByTag(QWebFrame* frame, QString tagName);
+        static QList<UBWebKitUtils::HtmlObject> objectsInFrameByTag(QWebEnginePage* frame, QString tagName);
         static QStringList validUrl(QUrl& baseUrl,QStringList& list);
         static QStringList getUrls(QUrl& baseUrl,QWebElement& element);
         static QStringList getArgumentsValues(QString& string);

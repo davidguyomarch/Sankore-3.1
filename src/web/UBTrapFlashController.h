@@ -55,7 +55,7 @@ class UBTrapWebPageContentController : public QObject
         void setLastWebHitTestResult(const QWebHitTestResult &result);
 
     public slots:
-        void updateTrapContentFromPage(QWebFrame* pCurrentWebFrame);
+        void updateTrapContentFromPage(QWebEnginePage* pCurrentWebFrame);
         void text_Changed(const QString &);
         void text_Edited(const QString &);
         void addItemToLibrary();
@@ -84,7 +84,7 @@ class UBTrapWebPageContentController : public QObject
 
 
         QWidget* mParentWidget;
-        QWebFrame* mCurrentWebFrame;
+        QWebEnginePage* mCurrentWebFrame;
         QList<UBWebKitUtils::HtmlObject> mAvaliableObjects;
         QMap<int, int> mObjectNoToTrapByTrapWebComboboxIndex;
 

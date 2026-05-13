@@ -65,7 +65,9 @@
 #include "WBDownloadManager.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 
 #include "network/UBAutoSaver.h"
 #include "network/UBNetworkAccessManager.h"
@@ -73,7 +75,6 @@
 
 #include <math.h>
 
-#include "core/memcheck.h"
 
 /*!
     DownloadItem is a widget that is displayed in the download manager list.
@@ -531,9 +532,9 @@ void WBDownloadManager::updateRow()
     downloadsView->setRowHeight(row, item->minimumSizeHint().height());
 
     bool remove = false;
-    QWebSettings *globalSettings = QWebSettings::globalSettings();
+    QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
 
-    if (!item->downloading() && globalSettings->testAttribute(QWebSettings::PrivateBrowsingEnabled))
+    if (!item->downloading() && globalSettings->testAttribute(QWebEngineSettings::PrivateBrowsingEnabled))
         remove = true;
 
     if (item->downloadedSuccessfully() && removePolicy() == WBDownloadManager::SuccessFullDownload)

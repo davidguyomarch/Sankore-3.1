@@ -66,7 +66,6 @@
 
 #include <QtCore>
 
-#include "core/memcheck.h"
 
 WBModelMenu::WBModelMenu(QWidget * parent)
     : QMenu(parent)

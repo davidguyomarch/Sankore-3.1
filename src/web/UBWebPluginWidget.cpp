@@ -26,7 +26,6 @@
 #include "pdf/UBWebPluginPDFWidget.h"
 #include "frameworks/UBFileSystemUtils.h"
 
-#include "core/memcheck.h"
 
 UBWebPluginWidget::UBWebPluginWidget(const QUrl &url, QWidget *parent)
     : QWidget(parent)
