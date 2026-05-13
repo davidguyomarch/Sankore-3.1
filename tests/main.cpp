@@ -11,6 +11,7 @@
 #include "tst_UBStringUtils.h"
 #include "tst_UBFileSystemUtils.h"
 #include "tst_UBGeometryUtils.h"
+#include "tst_UBCryptoUtils.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,6 +32,11 @@ int main(int argc, char *argv[])
 
     {
         TestUBGeometryUtils test;
+        status |= QTest::qExec(&test, argc, argv);
+    }
+
+    {
+        TestUBCryptoUtils test;
         status |= QTest::qExec(&test, argc, argv);
     }
 
