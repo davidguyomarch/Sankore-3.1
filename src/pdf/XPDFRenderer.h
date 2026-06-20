@@ -33,7 +33,7 @@ THIRD_PARTY_WARNINGS_DISABLE
 // #include <xpdf/Object.h> // XPDF not available
 // #include <xpdf/GlobalParams.h> // XPDF not available
 // #include <xpdf/SplashOutputDev.h> // XPDF not available
-#include <xpdf/PDFDoc.h>
+// #include <xpdf/PDFDoc.h> // XPDF not available
 THIRD_PARTY_WARNINGS_ENABLE
 
 class PDFDoc;
