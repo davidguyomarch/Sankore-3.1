@@ -20,7 +20,7 @@ UBCellPropertiesPalette::UBCellPropertiesPalette(QWidget *parent) :
     mVLayout->addItem(mWidthLayout);
     mVLayout->addWidget(mValidateButton);
 
-    mVLayout->setMargin(mClosePixmap.width());
+    { int m = mClosePixmap.width(); mVLayout->setContentsMargins(m,m,m,m); };
 
     setGeometry(QRect(QPoint(), mVLayout->sizeHint()));
 

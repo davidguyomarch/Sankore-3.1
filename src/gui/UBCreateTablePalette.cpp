@@ -28,7 +28,7 @@ UBCreateTablePalette::UBCreateTablePalette(QWidget *parent) :
     mVLayout->addItem(mLinesLayout);
     mVLayout->addWidget(mValidateButton);
 
-    mVLayout->setMargin(mClosePixmap.width());
+    { int m = mClosePixmap.width(); mVLayout->setContentsMargins(m,m,m,m); };
 
     setGeometry(QRect(QPoint(), mVLayout->sizeHint()));
 
