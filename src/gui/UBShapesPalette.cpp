@@ -66,7 +66,7 @@ UBShapesPalette::UBShapesPalette(Qt::Orientation orient, QWidget *parent )
 
     adjustSizeAndPosition();
 
-    for (const auto& const UBActionPaletteButton* button : mButtons)
+    for (UBActionPaletteButton* button : mButtons)
     {
         connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
     }

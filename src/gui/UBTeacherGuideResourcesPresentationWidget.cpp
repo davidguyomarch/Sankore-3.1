@@ -22,6 +22,7 @@ UBTeacherGuideResourcesPresentationWidget::UBTeacherGuideResourcesPresentationWi
     mpModePushButton = new QPushButton(this);
     mpModePushButton->setIcon(QIcon(":images/teacherGuide/pencil.svg"));
     mpModePushButton->setMaximumWidth(32);
+#include <QHeaderView>
     mpModePushButton->installEventFilter(this);
 
     connect(mpModePushButton, SIGNAL(clicked()), parentWidget(), SLOT(changeMode()));
@@ -156,7 +157,7 @@ void UBTeacherGuideResourcesPresentationWidget::cleanData()
 {
     //tree clean
     QList<QTreeWidgetItem*> itemToRemove = mpRootWidgetItem->takeChildren();
-    for (const auto& QTreeWidgetItem* eachItem : itemToRemove) {
+    for (QTreeWidgetItem* eachItem : itemToRemove) {
         delete eachItem;
     }
     // the mpMediaSwitchItem is deleted by the previous loop but the pointer is not set to zero

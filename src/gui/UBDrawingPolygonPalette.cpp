@@ -32,7 +32,7 @@ UBDrawingPolygonPalette::UBDrawingPolygonPalette(Qt::Orientation orient, QWidget
 
     adjustSizeAndPosition();
 
-    for (const auto& const UBActionPaletteButton* button : mButtons)
+    for (UBActionPaletteButton* button : mButtons)
     {
         connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
     }

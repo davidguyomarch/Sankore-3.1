@@ -201,7 +201,7 @@ void UBDrawingPalette::initSubPalettesPosition()
 
 void UBDrawingPalette::hideSubPalettes()
 {
-    for (const auto& UBAbstractSubPalette* subPalette : mSubPalettes.values())
+    for (UBAbstractSubPalette* subPalette : mSubPalettes.values())
     {
         subPalette->hide();
     }
@@ -213,7 +213,7 @@ void UBDrawingPalette::setVisible(bool checked)
 
     if ( ! checked)
     {
-        for (const auto& UBAbstractSubPalette* subPalette : mSubPalettes.values())
+        for (UBAbstractSubPalette* subPalette : mSubPalettes.values())
         {
             subPalette->hide();
         }
@@ -232,7 +232,7 @@ void UBDrawingPalette::mouseMoveEvent(QMouseEvent *event)
 
 void UBDrawingPalette::updateSubPalettesPosition(const QPoint& delta)
 {
-    for (const auto& UBAbstractSubPalette* subPalette : mSubPalettes.values()) {
+    for (UBAbstractSubPalette* subPalette : mSubPalettes.values()) {
         QPoint newPos = subPalette->pos() + delta;
         subPalette->move(newPos);
     }
@@ -243,7 +243,7 @@ void UBDrawingPalette::stackUnder(QWidget * w)
     UBActionPalette::stackUnder(w);
 
     // For all subpalettes :
-    for (const auto& UBAbstractSubPalette* subPalette : mSubPalettes.values()) {
+    for (UBAbstractSubPalette* subPalette : mSubPalettes.values()) {
         subPalette->stackUnder(w);
     }
 }
@@ -253,7 +253,7 @@ void UBDrawingPalette::raise()
     UBActionPalette::raise();
 
     // For all subpalettes :
-    for (const auto& UBAbstractSubPalette* subPalette : mSubPalettes.values()) {
+    for (UBAbstractSubPalette* subPalette : mSubPalettes.values()) {
         subPalette->raise();
     }
 }
