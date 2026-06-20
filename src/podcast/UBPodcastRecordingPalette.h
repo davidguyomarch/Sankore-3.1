@@ -27,6 +27,8 @@
 #include "gui/UBActionPalette.h"
 #include "UBPodcastController.h"
 
+#include <QLabel>
+#include <QMenu>
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>

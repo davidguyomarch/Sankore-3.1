@@ -22,6 +22,8 @@
 
 
 #include <QWidget>
+#include <QPainter>
+#include <QPen>
 
 #include "UBWebPluginPDFWidget.h"
 #include "XPDFRenderer.h"

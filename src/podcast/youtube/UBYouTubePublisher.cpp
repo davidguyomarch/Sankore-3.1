@@ -132,7 +132,7 @@ void UBYouTubePublisher::postClientLoginResponse(bool success, const QByteArray&
         {
             if(line.startsWith("Auth="))
             {
-                mAuthToken = line.replace("Auth=", "");
+                mAuthToken = QString(line).replace("Auth=", "");
                 break;
             }
         }

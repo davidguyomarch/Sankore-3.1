@@ -68,8 +68,8 @@ class XPDFRenderer : public PDFRenderer
         qreal mSliceX;
         qreal mSliceY;
 
-        SplashBitmap* mpSplashBitmap;
-        SplashOutputDev* mSplash;
+        void* mpSplashBitmap; // SplashBitmap* - XPDF not available
+        void* mSplash; // SplashOutputDev* - XPDF not available
 };
 
 #endif // XPDFRENDERER_H

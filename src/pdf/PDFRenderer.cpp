@@ -22,6 +22,8 @@
 
 
 #include <QFile>
+#include <QScreen>
+#include <QGuiApplication>
 
 #include "PDFRenderer.h"
 
