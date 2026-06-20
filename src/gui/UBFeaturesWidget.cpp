@@ -22,6 +22,7 @@
 
 
 #include <QDomDocument>
+#include <QWebEngineProfile>
 #include <QWebEngineView>
 
 #include "UBFeaturesWidget.h"
@@ -293,7 +294,7 @@ void UBFeaturesWidget::addToFavorite( const UBFeaturesMimeData * mimeData )
         return;
 
     QList<QUrl> urls = mimeData->urls();
-    for (const auto&  QUrl url : urls ) {
+    for (const QUrl& url : urls ) {
         controller->addToFavorite(url);
     }
 
@@ -307,7 +308,7 @@ void UBFeaturesWidget::removeFromFavorite( const UBFeaturesMimeData * mimeData )
 
     QList<QUrl> urls = mimeData->urls();
 
-    for (const auto&  QUrl url : urls ) {
+    for (const QUrl& url : urls ) {
         controller->removeFromFavorite(url);
     }
 }
@@ -419,7 +420,7 @@ void UBFeaturesWidget::removeElementsFromFavorite()
         items.append( feature.getFullPath() );
     }
 
-    for (const auto&  QUrl url : items )  {
+    for (const QUrl& url : items )  {
         controller->removeFromFavorite(url, true);
     }
 
@@ -552,7 +553,7 @@ void UBFeaturesListView::dragMoveEvent( QDragMoveEvent *event )
 
 void UBFeaturesListView::dropEvent( QDropEvent *event )
 {
-    QWidget *eventSource = event->source();
+    QWidget *eventSource = qobject_cast<QWidget*>(event->source());
     if (eventSource && eventSource->objectName() == UBFeaturesWidget::objNameFeatureList) {
         event->setDropAction( Qt::MoveAction );
     }
@@ -946,7 +947,7 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     mpView->setObjectName("SearchEngineView");
     mpSankoreAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
     mpView->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
-    connect(mpView->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
+    connect(mpView->page(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     mpWebSettings = QWebEngineProfile::defaultProfile()->settings();
     // JavaEnabled removed in Qt6
     mpWebSettings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
@@ -1697,7 +1698,7 @@ bool UBFeaturesProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & 
 
     QString path = index.data( Qt::UserRole ).toString();
 
-    return filterRegularExpression().exactMatch(path);
+    return filterRegularExpression().match(path).hasMatch();
 }
 
 bool UBFeaturesProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
@@ -1738,7 +1739,7 @@ bool UBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
 
     return isFile
             && feature.getFullVirtualPath().contains(mFilterPrefix)
-            && filterRegularExpression().exactMatch( feature.getName() );
+            && filterRegularExpression().match(feature.getName()).hasMatch();
 }
 
 bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const
@@ -1762,7 +1763,7 @@ QString	UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLoc
     {
         const QFontMetrics fm = listView->fontMetrics();
         const QSize iSize = listView->gridSize();
-        return elidedText( fm, iSize.width(), Qt::ElideRight, text );
+        return fm.elidedText(text, Qt::ElideRight, iSize.width());
     }
     return text;
 }

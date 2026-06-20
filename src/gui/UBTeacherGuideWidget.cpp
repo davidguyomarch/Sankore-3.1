@@ -124,8 +124,8 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
     mpTreeWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mpTreeWidget->setColumnCount(2);
     mpTreeWidget->header()->setStretchLastSection(false);
-    mpTreeWidget->header()->setResizeMode(0, QHeaderView::Stretch);
-    mpTreeWidget->header()->setResizeMode(1, QHeaderView::Fixed);
+    mpTreeWidget->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    mpTreeWidget->header()->setSectionResizeMode(1, QHeaderView::Fixed);
 
     //N/C - NNE - 20140401
     mpTreeWidget->header()->setDefaultSectionSize(40);
@@ -277,7 +277,7 @@ QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save(int pageIndex)
     children += getChildrenList(mpAddALinkItem);
     children += getChildrenList(mpAddAFileItem); //Issue 1716 - ALTI/AOU - 20140128
 
-    for (const auto& QTreeWidgetItem* widgetItem : children) {
+    for (QTreeWidgetItem* widgetItem : children) {
         tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget( widgetItem, 0))->saveData();
         if (node) {
             data = new tIDataStorage();
@@ -314,7 +314,7 @@ void UBTeacherGuideEditionWidget::cleanData()
     children += mpAddALinkItem->takeChildren();
     children += mpAddAFileItem->takeChildren(); //Issue 1716 - ALTI/AOU - 20140128
 
-    for (const auto& QTreeWidgetItem* item : children) {
+    for (QTreeWidgetItem* item : children) {
         DELETEPTR(item);
     }
 }
@@ -364,7 +364,7 @@ QVector<tUBGEElementNode*> UBTeacherGuideEditionWidget::getData()
     children += getChildrenList(mpAddAFileItem); //Issue 1716 - ALTI/AOU - 20140128
 
     result << getPageAndCommentData();
-    for (const auto& QTreeWidgetItem* widgetItem : children) {
+    for (QTreeWidgetItem* widgetItem : children) {
         tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget( widgetItem, 0))->saveData();
         if (node)
             result << node;
@@ -576,7 +576,7 @@ void UBTeacherGuidePresentationWidget::cleanData()
     mpComment->showText("");
     //tree clean
     QList<QTreeWidgetItem*> itemToRemove = mpRootWidgetItem->takeChildren();
-    for (const auto& QTreeWidgetItem* eachItem : itemToRemove) {
+    for (QTreeWidgetItem* eachItem : itemToRemove) {
         DELETEPTR(eachItem);
     }
     // the mpMediaSwitchItem is deleted by the previous loop but the pointer is not set to zero
@@ -616,7 +616,7 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
     }
 #endif
 
-    for (const auto& tUBGEElementNode* element : data) {
+    for (tUBGEElementNode* element : data) {
         if (element->name == "pageTitle")
             mpPageTitle->showText(element->attributes.value("value"));
         else if (element->name == "comment")
@@ -987,8 +987,8 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpTreeWidgetEdition->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mpTreeWidgetEdition->setColumnCount(2);
     mpTreeWidgetEdition->header()->setStretchLastSection(false);
-    mpTreeWidgetEdition->header()->setResizeMode(0, QHeaderView::Stretch);
-    mpTreeWidgetEdition->header()->setResizeMode(1, QHeaderView::Fixed);
+    mpTreeWidgetEdition->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    mpTreeWidgetEdition->header()->setSectionResizeMode(1, QHeaderView::Fixed);
     mpTreeWidgetEdition->header()->setDefaultSectionSize(18);
     mpTreeWidgetEdition->setSelectionMode(QAbstractItemView::NoSelection);
 
@@ -1187,9 +1187,9 @@ void UBTeacherGuidePageZeroWidget::onActiveSceneChanged()
     UBDocumentProxy* documentProxy = UBApplication::boardController->selectedDocument();
     if (documentProxy && UBApplication::boardController->currentPage() == 0) {
         QDateTime creationDate = documentProxy->documentDate();
-        mpCreationLabel->setText( tr("Created the:\n") + creationDate.toString(Qt::DefaultLocaleShortDate));
+        mpCreationLabel->setText( tr("Created the:\n") + creationDate.toString(QLocale::ShortFormat));
         QDateTime updatedDate = documentProxy->lastUpdate();
-        mpLastModifiedLabel->setText( tr("Updated the:\n") + updatedDate.toString(Qt::DefaultLocaleShortDate));
+        mpLastModifiedLabel->setText( tr("Updated the:\n") + updatedDate.toString(QLocale::ShortFormat));
         loadData();
         updateSceneTitle();
     }
@@ -1638,7 +1638,7 @@ void UBTeacherGuidePageZeroWidget::setFilesChanged()
     for (int i = 0; i < mpAddAFileItem->childCount(); i += 1)
         children << mpAddAFileItem->child(i);
 
-    for (const auto& QTreeWidgetItem* widgetItem : children) {
+    for (QTreeWidgetItem* widgetItem : children) {
 
         tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidgetEdition->itemWidget( widgetItem, 0))->saveData();
         if (node) {
@@ -1673,14 +1673,14 @@ void UBTeacherGuidePageZeroWidget::cleanData(tUBTGZeroPageMode mode)
     if (mode == tUBTGZeroPageMode_EDITION)
     {
         QList<QTreeWidgetItem*> itemToRemove = mpAddAFileItem->takeChildren();
-        for (const auto& QTreeWidgetItem* eachItem : itemToRemove) {
+        for (QTreeWidgetItem* eachItem : itemToRemove) {
             DELETEPTR(eachItem);
         }
     }
     else if (mode == tUBTGZeroPageMode_PRESENTATION)
     {
         QList<QTreeWidgetItem*> itemToRemove = mpTreeWidgetPresentation->invisibleRootItem()->takeChildren();
-        for (const auto& QTreeWidgetItem* eachItem : itemToRemove) {
+        for (QTreeWidgetItem* eachItem : itemToRemove) {
             DELETEPTR(eachItem);
         }
         // the mpMediaSwitchItem is deleted by the previous loop but the pointer is not set to zero
