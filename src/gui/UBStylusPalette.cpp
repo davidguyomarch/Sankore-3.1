@@ -93,7 +93,7 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
 
     initPosition();
 
-    for (const auto& const UBActionPaletteButton* button : mButtons)
+    for (UBActionPaletteButton* button : mButtons)
     {
         connect(button, SIGNAL(doubleClicked()), this, SLOT(stylusToolDoubleClicked()));
     }

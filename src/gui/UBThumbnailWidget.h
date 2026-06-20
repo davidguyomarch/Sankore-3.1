@@ -29,6 +29,11 @@
 #include <QPainter>
 #include <QtSvg>
 #include <QTime>
+#include <QGraphicsView>
+#include <QStyleOptionGraphicsItem>
+#include <QDrag>
+#include <QActionGroup>
+#include <QElapsedTimer>
 #include <QGraphicsSceneHoverEvent>
 
 #include "frameworks/UBCoreGraphicsScene.h"

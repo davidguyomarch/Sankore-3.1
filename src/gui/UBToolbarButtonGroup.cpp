@@ -59,7 +59,7 @@ UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QActio
 
     int i = 0;
 
-    for (const auto& QAction *action : actions)
+    for (QAction *action : actions)
     {
         mActionGroup->addAction(action);
 
@@ -99,7 +99,7 @@ void UBToolbarButtonGroup::setIcon(const QIcon &icon, int index)
 {
     Q_ASSERT(index < mActions.size());
 
-    for (const auto& QWidget *widget : mActions.at(index)->associatedWidgets())
+    for (QWidget *widget : mActions.at(index)->associatedWidgets())
     {
         QToolButton *button = qobject_cast<QToolButton*>(widget);
         if (button)
@@ -119,13 +119,13 @@ void UBToolbarButtonGroup::setColor(const QColor &color, int index)
 
 void UBToolbarButtonGroup::selected(QAction *action)
 {
-    for (const auto& QWidget *widget : action->associatedWidgets())
+    for (QWidget *widget : action->associatedWidgets())
     {
         QToolButton *button = qobject_cast<QToolButton*>(widget);
         if (button)
         {
             int i = 0;
-            for (const auto& QAction *eachAction : mActions)
+            for (QAction *eachAction : mActions)
             {
                 if (eachAction == action)
                 {
