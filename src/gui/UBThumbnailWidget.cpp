@@ -242,7 +242,7 @@ QList<QGraphicsItem*> UBThumbnailWidget::selectedItems()
 
 void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
 {
-    mClickTime = QTime::currentTime();
+    mClickTime.start();
     mMousePressPos = event->pos();
 
     UBSceneThumbnailPixmap* sceneItem = dynamic_cast<UBSceneThumbnailPixmap*>(itemAt(mMousePressPos));
@@ -845,7 +845,7 @@ UBSceneThumbnailNavigPixmap::UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBD
     , bCanDuplicate(false)
 {
     if(0 <= UBDocumentContainer::pageFromSceneIndex(pSceneIndex)){
-        setAcceptsHoverEvents(true);
+        setAcceptHoverEvents(true);
         setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
 }

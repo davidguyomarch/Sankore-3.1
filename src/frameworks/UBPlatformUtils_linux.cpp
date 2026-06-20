@@ -324,7 +324,7 @@ KEYBT FRENCH_LOCALE[] = {
     /* i I */ KEYBTDECLEX6(0x69, 0x49, true, 23, 0x69, 0x49, 0xee, 0xce, 0xef, 0xcf),
     /* o O */ KEYBTDECLEX6(0x6f, 0x4f, true, 24, 0x6f, 0x4f, 0xf4, 0xd4, 0xf6, 0xd6),
     /* p P */ KEYBTDECL(0x70, 0x50, true, 25),
-    /* ^ ? */ KEYBT(0x5e, 0xa8, true, 1, 2, KEYCODE(0x5e, 26, 0), KEYCODE(0xa8, 26, 1)),
+    /* ^ ? */ KEYBT(QChar(char16_t(0x5e)), QChar(char16_t(0xa8)), true, 1, 2, KEYCODE(0x5e, 26, 0), KEYCODE(0xa8, 26, 1)),
     /* $ ? } */ KEYBTDECL(0x24, 0xa3, true, 27),
 
     /* q Q */ KEYBTDECL(0x71, 0x51, true, 30),
@@ -365,7 +365,7 @@ KEYBT SWISS_FRENCH_LOCALE[] = {
     /* 9 )*/	KEYBTDECL(0x39, 0x29, false, 10),
     /* 0 =*/	KEYBTDECL(0x30, 0x3d, false, 11),
     /* ' ?*/	KEYBTDECL(0x27, 0x5f, false, 12),
-    /* ^ `*/	KEYBT(0x5e, 0x60, false, 1, 2, KEYCODE(0x5e, 13, 0), KEYCODE(0x60, 13, 1)),
+    /* ^ `*/	KEYBT(QChar(char16_t(0x5e)), QChar(char16_t(0x60)), false, 1, 2, KEYCODE(0x5e, 13, 0), KEYCODE(0x60, 13, 1)),
 
     /* q Q*/	KEYBTDECL(0x71, 0x51, true, 16),
     /* w W*/	KEYBTDECL(0x77, 0x57, true, 17),
@@ -377,16 +377,16 @@ KEYBT SWISS_FRENCH_LOCALE[] = {
     /* i I*/	KEYBTDECLEX8(0x69, 0x49, true, 23, 0x69, 0x49, 0xee, 0xce, 0xec, 0xcc, 0xef, 0xcf),
 
     //issue 1036 - NNE - 20140306 : Bug for the unwanted shortcut
-    /* o O*/	KEYBT(0x6f, 0x4f, true, 0, 0, KEYCODE(0x6f, 24, 0), KEYCODE(0x4f, 24, 1), KEYCODE(0xf4, 24, 2),
+    /* o O*/	KEYBT(QChar(char16_t(0x6f)), QChar(char16_t(0x4f)), true, 0, 0, KEYCODE(0x6f, 24, 0), KEYCODE(0x4f, 24, 1), KEYCODE(0xf4, 24, 2),
                 KEYCODE(0xd4, 24, 3), KEYCODE(0xf2, 24, 4), KEYCODE(0xd2, 24, 5), KEYCODE(0xf6, 24, 3), KEYCODE(0xd6, 24, 7)),
     //issue 1036 - NNE - 20140306 : END
 
     /* p P*/	KEYBTDECL(0x70, 0x50, true, 25),
     /* è ü*/	KEYBTDECL(0xe8, 0xfa, false, 26),
-    /* ¨ !*/	KEYBT(0xa8, 0x21, false, 3, 0, KEYCODE(0xa8, 27, 0), KEYCODE(0x21, 27, 1)),
+    /* ¨ !*/	KEYBT(QChar(char16_t(0xa8)), QChar(char16_t(0x21)), false, 3, 0, KEYCODE(0xa8, 27, 0), KEYCODE(0x21, 27, 1)),
 
     //issue 1036 - NNE - 20140306 : Bug for the unwanted shortcut
-    /* a A*/	KEYBT(0x61, 0x41, true, 0, 0, KEYCODE(0x61, 30, 0), KEYCODE(0x41, 30, 1), KEYCODE(0xe2, 30, 2),
+    /* a A*/	KEYBT(QChar(char16_t(0x61)), QChar(char16_t(0x41)), true, 0, 0, KEYCODE(0x61, 30, 0), KEYCODE(0x41, 30, 1), KEYCODE(0xe2, 30, 2),
     KEYCODE(0xc2, 30, 3), KEYCODE(0xe0, 30, 4), KEYCODE(0xc0, 30, 5), KEYCODE(0xe4, 30, 3), KEYCODE(0xc4, 30, 7)),
     //issue 1036 - NNE - 20140306 : END
 

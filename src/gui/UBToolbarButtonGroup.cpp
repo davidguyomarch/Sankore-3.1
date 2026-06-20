@@ -22,6 +22,7 @@
 
 
 #include "UBToolbarButtonGroup.h"
+#include <QActionGroup>
 
 #include <QWidget>
 #include <QApplication>
