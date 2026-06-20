@@ -196,7 +196,7 @@ void UBPodcastController::setSourceWidget(QWidget* pWidget)
             QSizeF sourceWidgetSize(mSourceWidget->size());
 
             if (mSourceWidget == nullptr /* QDesktopWidget removed */)
-                sourceWidgetSize = QGuiApplication::primaryScreen()->availableGeometry()->controleScreenIndex()).size();
+                sourceWidgetSize = QGuiApplication::primaryScreen()->availableGeometry().size();
 
             QSizeF videoFrameSize(mVideoFrameSizeAtStart);
 
