@@ -43,7 +43,7 @@ UBDisplayManager::UBDisplayManager(QObject *parent)
     , mDisplayScreenIndex(-1)
     , mControlWidget(0)
     , mDisplayWidget(0)
-    , QGuiApplication::primaryScreen()Widget(0)
+    , mDesktopWidget(0)
 {
     
 
@@ -51,8 +51,8 @@ UBDisplayManager::UBDisplayManager(QObject *parent)
 
     initScreenIndexes();
 
-    connect(QGuiApplication::primaryScreen(), SIGNAL(resized(int)), this, SLOT(adjustScreens(int)));
-    connect(QGuiApplication::primaryScreen(), SIGNAL(workAreaResized(int)), this, SLOT(adjustScreens(int)));
+        // TODO: connect to QGuiApplication::screenAdded/screenRemoved
+    
 }
 
 
@@ -64,7 +64,7 @@ void UBDisplayManager::initScreenIndexes()
 
     if (screenCount > 0)
     {
-        mControlScreenIndex = QGuiApplication::primaryScreen()->primaryScreen();
+        mControlScreenIndex = 0;
         if (UBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
         {
            mControlScreenIndex = mControlScreenIndex^1;
@@ -136,7 +136,7 @@ void UBDisplayManager::setControlWidget(QWidget* pControlWidget)
 void UBDisplayManager::setDesktopWidget(QWidget* pControlWidget )
 {
     if(pControlWidget && (pControlWidget != mControlWidget))
-        QGuiApplication::primaryScreen()Widget = pControlWidget;
+        mDesktopWidget = pControlWidget;
 }
 
 void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
@@ -194,10 +194,10 @@ void UBDisplayManager::adjustScreens(int screen)
 void UBDisplayManager::positionScreens()
 {
 
-    if(QGuiApplication::primaryScreen()Widget && mControlScreenIndex > -1)
+    if(mDesktopWidget && mControlScreenIndex > -1)
     {
-        QGuiApplication::primaryScreen()Widget->hide();
-        QGuiApplication::primaryScreen()Widget->setGeometry(QGuiApplication::screens().at(mControlScreenIndex)->geometry());
+        mDesktopWidget->hide();
+        mDesktopWidget->setGeometry(QGuiApplication::screens().at(mControlScreenIndex)->geometry());
     }
     if (mControlWidget && mControlScreenIndex > -1)
     {

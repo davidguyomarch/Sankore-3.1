@@ -40,7 +40,7 @@ class UBVersion;
 class UBSoftwareUpdate;
 class QNetworkAccessManager;
 class QNetworkReply;
-class QHttp;
+// class QHttp; -- removed in Qt6
 class UBRightPalette;
 
 
@@ -181,7 +181,7 @@ class UBApplicationController : public QObject
         QNetworkAccessManager *networkAccessManager;
 
         void downloadJsonFinished(QString updateString);
-        QHttp* mHttp;
+        // QHttp removed in Qt6 - TODO: use QNetworkAccessManager
 };
 
 #endif /* UBAPPLICATIONCONTROLLER_H_ */

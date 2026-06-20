@@ -20,6 +20,11 @@
  */
 
 #include "UBApplicationController.h"
+#include <QJSEngine>
+#include <QJSValue>
+#include <QDesktopServices>
+#include <QScreen>
+#include <QGuiApplication>
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBVersion.h"
@@ -80,7 +85,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     , mAutomaticCheckForUpdates(false)
     , mCheckingForUpdates(false)
     , mIsShowingDesktop(false)
-    , mHttp(0)
+    
 {
     mDisplayManager = new UBDisplayManager(this);
 
@@ -130,7 +135,7 @@ UBApplicationController::~UBApplicationController()
 
     delete mBlackScene;
     delete mMirror;
-    if (mHttp) delete mHttp;
+    
 }
 
 
@@ -559,24 +564,23 @@ void UBApplicationController::showSankoreEditor()
 
 void UBApplicationController::checkUpdate()
 {
-    if(mHttp)
-        delete mHttp;
+    if(false) // QHttp removed        // QHttp removed
     QUrl url("http://ftp.open-sankore.org/update.json");
-    mHttp = new QHttp(url.host());
-    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
-    mHttp->get(url.path());
+    // TODO: Replace QHttp with QNetworkAccessManager
+    // TODO: Replace QHttp signal connection
+    // TODO: Replace QHttp get
 }
 
 void UBApplicationController::updateRequestFinished(int id, bool error)
 {
    if (error){
-       qWarning() << "http command id" << id << "return the error: " << mHttp->errorString();
-       mHttp->close();
+       qWarning() << "http command id" << id << "return the error: " << QString("HTTP error");
+       
    }
    else{
-       QString responseString =  QString(mHttp->readAll());
+       QString responseString =  QString();
        if (!responseString.isEmpty() && responseString.contains("version") && responseString.contains("url")){
-           mHttp->close();
+           
            downloadJsonFinished(responseString);
        }
    }
@@ -586,8 +590,8 @@ void UBApplicationController::updateRequestFinished(int id, bool error)
 
 void UBApplicationController::downloadJsonFinished(QString currentJson)
 {
-    QScriptValue scriptValue;
-    QScriptEngine scriptEngine;
+    QJSValue scriptValue;
+    QJSEngine scriptEngine;
     scriptValue = scriptEngine.evaluate ("(" + currentJson + ")");
 
     UBVersion installedVersion (qApp->applicationVersion().left(4));
