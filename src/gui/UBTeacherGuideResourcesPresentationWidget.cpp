@@ -77,7 +77,7 @@ void UBTeacherGuideResourcesPresentationWidget::showData( QVector<tUBGEElementNo
     }
 #endif
 
-    for (const auto& tUBGEElementNode* element : data) {
+    for (tUBGEElementNode* element : data) {
         if (element->name == "media") {
             createMediaButtonItem();
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpMediaSwitchItem);

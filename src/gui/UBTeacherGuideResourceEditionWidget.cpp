@@ -26,8 +26,8 @@ UBTeacherGuideResourceEditionWidget::UBTeacherGuideResourceEditionWidget(QWidget
     mpTreeWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mpTreeWidget->setColumnCount(2);
     mpTreeWidget->header()->setStretchLastSection(false);
-    mpTreeWidget->header()->setResizeMode(0, QHeaderView::Stretch);
-    mpTreeWidget->header()->setResizeMode(1, QHeaderView::Fixed);
+    mpTreeWidget->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    mpTreeWidget->header()->setSectionResizeMode(1, QHeaderView::Fixed);
 
     //N/C - NNE - 20140401
     mpTreeWidget->header()->setDefaultSectionSize(40);
@@ -131,7 +131,7 @@ QVector<tIDataStorage*> UBTeacherGuideResourceEditionWidget::save(int pageIndex)
     QList<QTreeWidgetItem*> children;
 
     children << getChildrenList(mpAddAMediaItem);
-    for (const auto& QTreeWidgetItem* widgetItem : children) {
+    for (QTreeWidgetItem* widgetItem : children) {
         tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget( widgetItem, 0))->saveData();
         if (node) {
             tIDataStorage *data = new tIDataStorage(node->name, eElementType_UNIQUE);
@@ -146,7 +146,7 @@ QVector<tIDataStorage*> UBTeacherGuideResourceEditionWidget::save(int pageIndex)
     //For the links and files, we have to add the "student" attribute
     children = getChildrenList(mpAddALinkItem);
     children << getChildrenList(mpAddAFileItem); //Issue 1716 - ALTI/AOU - 20140128
-    for (const auto& QTreeWidgetItem* widgetItem : children) {
+    for (QTreeWidgetItem* widgetItem : children) {
         tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget( widgetItem, 0))->saveData();
         if (node) {
             tIDataStorage *data = new tIDataStorage(node->name, eElementType_UNIQUE);
@@ -187,7 +187,7 @@ QVector<tUBGEElementNode*> UBTeacherGuideResourceEditionWidget::getData()
     children << getChildrenList(mpAddALinkItem);
     children << getChildrenList(mpAddAFileItem); //Issue 1716 - ALTI/AOU - 20140128
 
-    for (const auto& QTreeWidgetItem* widgetItem : children) {
+    for (QTreeWidgetItem* widgetItem : children) {
         tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget( widgetItem, 0))->saveData();
         if (node)
             result << node;
@@ -212,7 +212,7 @@ void UBTeacherGuideResourceEditionWidget::cleanData()
     children << mpAddALinkItem->takeChildren();
     children << mpAddAFileItem->takeChildren(); //Issue 1716 - ALTI/AOU - 20140128
 
-    for (const auto& QTreeWidgetItem* item : children) {
+    for (QTreeWidgetItem* item : children) {
         delete item;
     }
 }

@@ -3,6 +3,7 @@
 
 #include <QMap>
 #include <QButtonGroup>
+#include <QElapsedTimer>
 
 #include "UBAbstractSubPalette.h"
 #include "UBShapesPalette.h"
@@ -38,7 +39,7 @@ class UBDrawingPalette : public UBActionPalette
     private:
         QMap<UBActionPaletteButton*, UBAbstractSubPalette*> mSubPalettes;
 
-        QTime mActionButtonPressedTime;
+        QElapsedTimer mActionButtonPressedTime;
         bool mPendingActionButtonPressed;
 
         UBActionPaletteButton *addActionButton(QAction *action);

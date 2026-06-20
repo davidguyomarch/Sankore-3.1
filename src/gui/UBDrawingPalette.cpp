@@ -182,7 +182,7 @@ void UBDrawingPalette::initPosition()
 
 void UBDrawingPalette::initSubPalettesPosition()
 {
-    for (const auto& UBActionPaletteButton* button : mSubPalettes.keys())
+    for (UBActionPaletteButton* button : mSubPalettes.keys())
     {
         UBAbstractSubPalette* subPalette = mSubPalettes.value(button);
 
