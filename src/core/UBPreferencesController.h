@@ -107,7 +107,7 @@ class UBPreferencesController : public QObject
         static qreal sMinPenWidth;
         static qreal sMaxPenWidth;
         void persistanceCheckboxUpdate();
-        QDesktopWidget* mDesktop;
+        // QDesktopWidget removed - use QGuiApplication::screens()
 
 };
 

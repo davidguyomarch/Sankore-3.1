@@ -27,6 +27,8 @@
 #include <QApplication>
 #include <QPainter>
 #include <QWebEngineView>
+#include <QWebEngineProfile>
+#include <QDesktopServices>
 #include <QtXml>
 #include <QFontDatabase>
 
@@ -286,17 +288,17 @@ int UBApplication::exec(const QString& pFileToImport)
     if (!webDbDir.exists(webDbPath))
         webDbDir.mkpath(webDbPath);
 
-    QWebEngineSettings::setIconDatabasePath(webDbPath);
-    QWebEngineSettings::setOfflineStoragePath (webDbPath);
+    // setIconDatabasePath removed in Qt6
+    // setOfflineStoragePath removed in Qt6
 
-    QWebEngineSettings *gs = QWebEngineSettings::globalSettings();
-    gs->setAttribute(QWebEngineSettings::JavaEnabled, true);
+    QWebEngineSettings *gs = QWebEngineProfile::defaultProfile()->settings();
+    // JavaEnabled removed in Qt6
     gs->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    gs->setAttribute(QWebEngineSettings::LocalStorageDatabaseEnabled, true);
-    gs->setAttribute(QWebEngineSettings::OfflineWebApplicationCacheEnabled, true);
-    gs->setAttribute(QWebEngineSettings::OfflineStorageDatabaseEnabled, true);
+    gs->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
+    // OfflineWebApplicationCacheEnabled removed in Qt6
+    // OfflineStorageDatabaseEnabled removed in Qt6
     gs->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
-    gs->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
+    // DnsPrefetchEnabled removed in Qt6
 
 
     mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint); // deleted by application destructor
@@ -383,7 +385,7 @@ int UBApplication::exec(const QString& pFileToImport)
         applicationController->showBoard();
 
     onScreenCountChanged(1);
-    connect(desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
+        // screenCountChanged handled via QGuiApplication::screens()
     return QApplication::exec();
 }
 

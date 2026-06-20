@@ -26,6 +26,8 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QDesktopServices>
+#include <QStandardPaths>
 
 
 #include "frameworks/UBPlatformUtils.h"
