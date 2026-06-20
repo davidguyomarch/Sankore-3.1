@@ -135,7 +135,7 @@ QTransform UBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
 
     if (sl.size() >= 6)
     {
-        matrix.setMatrix(
+        matrix.setTransform(
             sl.at(0).toFloat(),
             sl.at(1).toFloat(),
             0,
@@ -1348,7 +1348,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         // Get the items from the scene
         QList<QGraphicsItem*> items = mScene->items();
 
-        qSort(items.begin(), items.end(), itemZIndexComp);
+        std::sort(items.begin(), items.end(), itemZIndexComp);
 
         UBGraphicsStroke *openStroke = 0;
 
@@ -1428,7 +1428,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                         strokeToSvgPolyline(stroke, groupHoldsInfo);
 
                         //we can dequeue all polygons belonging to that stroke
-                        for (const auto& UBGraphicsPolygonItem* gi : stroke->polygons())
+                        for (UBGraphicsPolygonItem* gi : stroke->polygons())
                         {
                             items.removeOne(gi);
                         }
@@ -1651,7 +1651,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         {
             QVector<tIDataStorage*> result;
 
-            for (const auto& UBDocumentExternalFile* ef : *(mpDocument->externalFiles())) {
+            for (UBDocumentExternalFile* ef : *(mpDocument->externalFiles())) {
                 data = new tIDataStorage();
                 data->name = "file";
                 data->type = eElementType_UNIQUE;
@@ -1667,7 +1667,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         dataStorageItems << new tIDataStorage("teacherGuide", eElementType_END);
         //issue 1682 - NNE - 20140122 : END
 
-        for (const auto& tIDataStorage* eachItem : dataStorageItems){
+        for (tIDataStorage* eachItem : dataStorageItems){
             if(eachItem->type == eElementType_START){
                 mXmlWriter.writeStartElement(eachItem->name);
                 for (const QString& key : eachItem->attributes.keys())
@@ -1832,7 +1832,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::strokeToSvgPolyline(UBGraphicsStroke
         mXmlWriter.writeStartElement("polyline");
         QVector<QPointF> points;
 
-        for (const auto& UBGraphicsPolygonItem* polygon : pols)
+        for (UBGraphicsPolygonItem* polygon : pols)
         {
             points << polygon->originalLine().p1();
         }
@@ -1882,7 +1882,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::strokeToSvgPolygon(UBGraphicsStroke*
     {
         QPolygonF united;
 
-        for (const auto& UBGraphicsPolygonItem* pi : pis)
+        for (UBGraphicsPolygonItem* pi : pis)
         {
             united = united.united(pi->polygon());
         }
@@ -2010,7 +2010,7 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
     if (!svgTransform.isNull())
     {
         itemMatrix = fromSvgTransform(svgTransform.toString());
-        polygonItem->setMatrix(itemMatrix);
+        polygonItem->setTransform(itemMatrix);
     }
 
     QStringView svgFill = mXmlReader.attributes().value("fill");
@@ -2671,7 +2671,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     if (!svgTransform.isNull())
     {
         itemMatrix = fromSvgTransform(svgTransform.toString());
-        gItem->setMatrix(itemMatrix);
+        gItem->setTransform(itemMatrix);
     }
 
     QStringView svgX = mXmlReader.attributes().value("x");
@@ -3770,7 +3770,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::getStyleFromSvg(UBAbstractGraphicsIt
     if (!svgTransform.isNull())
     {
         itemMatrix = fromSvgTransform(svgTransform.toString());
-        item->setMatrix(itemMatrix);
+        item->setTransform(itemMatrix);
     }
 }
 

@@ -270,7 +270,7 @@ void UBDisplayManager::blackout()
 
     UBPlatformUtils::fadeDisplayOut();
 
-    for (const auto& UBBlackoutWidget *blackoutWidget : mBlackoutWidgets)
+    for (UBBlackoutWidget *blackoutWidget : mBlackoutWidgets)
     {
         blackoutWidget->showFullScreen();
     }

@@ -153,7 +153,7 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
     //select only items wiht the same z-level as item's one and push it to sortedItems QMultiMap
     QMultiMap<qreal, QGraphicsItem*> sortedItems;
     if (mScene->items().count()) {
-        for (const auto& QGraphicsItem *tmpItem : mScene->items()) {
+        for (QGraphicsItem *tmpItem : mScene->items()) {
             if (typeForData(tmpItem) == curItemLayerType) {
 
                 sortedItems.insert(tmpItem->data(UBGraphicsItemData::ItemOwnZValue).toReal(), tmpItem);
@@ -630,7 +630,7 @@ bool UBGraphicsScene::inputDeviceRelease()
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
                 // Remove the strokes that were just drawn here and replace them by a stroke item
-                for (const auto& UBGraphicsPolygonItem* poly : mCurrentStroke->polygons()){
+                for (UBGraphicsPolygonItem* poly : mCurrentStroke->polygons()){
                     mPreviousPolygonItems.removeAll(poly);
                     removeItem(poly);
                     UBCoreGraphicsScene::removeItemFromDeletion(poly);
@@ -992,7 +992,7 @@ void UBGraphicsScene::recolorAllItems()
     }
 
     bool currentIslight = isLightBackground();
-    for (const auto& QGraphicsItem *item : items()) {
+    for (QGraphicsItem *item : items()) {
         if (item->type() == UBGraphicsStrokesGroup::Type) {
             UBGraphicsStrokesGroup *curGroup = static_cast<UBGraphicsStrokesGroup*>(item);
 //            QColor compareColor =  curGroup->color(currentIslight ? UBGraphicsStrokesGroup::colorOnDarkBackground
@@ -1449,14 +1449,14 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
     UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
 
     addItem(groupItem);
-    for (const auto& QGraphicsItem *item : items) {
+    for (QGraphicsItem *item : items) {
         if (item->type() == UBGraphicsGroupContainerItem::Type) {
             QList<QGraphicsItem*> childItems = item->childItems();
             UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
             if (currentGroup) {
                 currentGroup->destroy();
             }
-            for (const auto& QGraphicsItem *chItem : childItems) {
+            for (QGraphicsItem *chItem : childItems) {
                 groupItem->addToGroup(chItem);
                 mFastAccessItems.removeAll(chItem);
             }
@@ -1757,7 +1757,7 @@ void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
 
 void UBGraphicsScene::deselectAllItems()
 {
-    for (const auto& QGraphicsItem *gi : selectedItems ())
+    for (QGraphicsItem *gi : selectedItems ())
     {
         gi->setSelected(false);
 
@@ -1778,7 +1778,7 @@ void UBGraphicsScene::deselectAllItems()
 //issue 1554 - NNE - 20131010
 void UBGraphicsScene::deselectAllItemsExcept(QGraphicsItem* gti)
 {
-    for (const auto& QGraphicsItem *gi : selectedItems ())
+    for (QGraphicsItem *gi : selectedItems ())
     {
         if(gi != gti){
             gi->setSelected(false);
@@ -1900,7 +1900,7 @@ QGraphicsItem *UBGraphicsScene::itemForUuid(QUuid uuid)
     QString ui = uuid.toString();
 
     //simple search before implementing container for fast access
-    for (const auto& QGraphicsItem *item : items()) {
+    for (QGraphicsItem *item : items()) {
         if (UBGraphicsScene::getPersonalUuid(item) == uuid && !uuid.isNull()) {
             result = item;
         }

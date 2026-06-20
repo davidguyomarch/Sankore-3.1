@@ -283,7 +283,7 @@ void UBGraphicsGroupContainerItem::setUuid(const QUuid &pUuid)
 
 void UBGraphicsGroupContainerItem::destroy(bool canUndo) {
 
-    for (const auto& QGraphicsItem *item : childItems()) {
+    for (QGraphicsItem *item : childItems()) {
         pRemoveFromGroup(item);
         item->setFlag(QGraphicsItem::ItemIsSelectable, true);
         item->setFlag(QGraphicsItem::ItemIsFocusable, true);
@@ -294,7 +294,7 @@ void UBGraphicsGroupContainerItem::destroy(bool canUndo) {
 
 void UBGraphicsGroupContainerItem::clearSource()
 {
-    for (const auto& QGraphicsItem *child : childItems())
+    for (QGraphicsItem *child : childItems())
     {
         UBGraphicsItem *item = dynamic_cast<UBGraphicsItem *>(child);
         if (item)
@@ -337,7 +337,7 @@ QVariant UBGraphicsGroupContainerItem::itemChange(GraphicsItemChange change, con
 {
     QVariant newValue = Delegate()->itemChange(change, value);
 
-    for (const auto& QGraphicsItem *child : children())
+    for (QGraphicsItem *child : children())
     {
         UBGraphicsItem *item = dynamic_cast<UBGraphicsItem*>(child);
         if (item)
@@ -369,7 +369,7 @@ void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
             bool rotatableNow = true;
             bool lockedNow = false;
 
-            for (const auto& QGraphicsItem *item : childItems()) {
+            for (QGraphicsItem *item : childItems()) {
                 if (!UBGraphicsItem::isFlippable(item)) {
                     flippableNow = false;
                 }

@@ -690,7 +690,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
 
     }
 
-    qSort(compactedIndexes);
+    std::sort(compactedIndexes.begin(), compactedIndexes.end());
 
     int offset = 1;
 
@@ -1091,7 +1091,7 @@ void UBPersistenceManager::purgeEmptyDocuments()
 {
     QList<UBDocumentProxy*> toBeDeleted;
 
-    for (const auto& UBDocumentProxy* docProxy : mDocumentTreeStructureModel->newDocuments())
+    for (UBDocumentProxy* docProxy : mDocumentTreeStructureModel->newDocuments())
     {
         if (isEmpty(docProxy)
             && !docProxy->metaData(UBSettings::sessionTitle).toString().size()
@@ -1108,7 +1108,7 @@ void UBPersistenceManager::purgeEmptyDocuments()
         }
     }
 
-    for (const auto& UBDocumentProxy* docProxy : toBeDeleted)
+    for (UBDocumentProxy* docProxy : toBeDeleted)
     {
         deleteDocument(docProxy);
     }

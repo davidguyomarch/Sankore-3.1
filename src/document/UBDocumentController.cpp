@@ -2214,7 +2214,7 @@ void UBDocumentController::duplicateSelectedItem()
     {
         QList<QGraphicsItem*> selectedItems = mDocumentUI->thumbnailWidget->selectedItems();
         QList<int> selectedSceneIndexes;
-        for (const auto& QGraphicsItem *item : selectedItems)
+        for (QGraphicsItem *item : selectedItems)
         {
             UBSceneThumbnailPixmap *thumb = dynamic_cast<UBSceneThumbnailPixmap*>(item);
             if (thumb)

@@ -235,7 +235,7 @@ void UBThumbnailWidget::refreshScene()
 QList<QGraphicsItem*> UBThumbnailWidget::selectedItems()
 {
     QList<QGraphicsItem*> sortedSelectedItems = mThumbnailsScene.selectedItems();
-    qSort(sortedSelectedItems.begin(), sortedSelectedItems.end(), thumbnailLessThan);
+    std::sort(sortedSelectedItems.begin(), sortedSelectedItems.end(), thumbnailLessThan);
     return sortedSelectedItems;
 }
 
@@ -381,7 +381,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
         // for horizontal moving
         QSet<QGraphicsItem*> incSelectedItemsX = scene()->items(incrementXSelection, Qt::IntersectsItemBoundingRect).toSet();
-        for (const auto& QGraphicsItem *lassoSelectedItem : incSelectedItemsX)
+        for (QGraphicsItem *lassoSelectedItem : incSelectedItemsX)
         {
             if (lassoSelectedItem)
             {
@@ -407,7 +407,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         // for vertical moving
 
         QSet<QGraphicsItem*> incSelectedItemsY = scene()->items(incrementYSelection, Qt::IntersectsItemBoundingRect).toSet();
-        for (const auto& QGraphicsItem *lassoSelectedItem : incSelectedItemsY)
+        for (QGraphicsItem *lassoSelectedItem : incSelectedItemsY)
         {
             if (lassoSelectedItem)
             {
@@ -432,12 +432,12 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
         toSet -= toUnset;
 
-        for (const auto& QGraphicsItem *item : toSet)
+        for (QGraphicsItem *item : toSet)
         {
             item->setSelected(true);
         }
 
-        for (const auto& QGraphicsItem *item : toUnset)
+        for (QGraphicsItem *item : toUnset)
         {
             item->setSelected(false);
         }

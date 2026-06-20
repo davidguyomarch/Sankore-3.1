@@ -168,7 +168,7 @@ void UBGraphicsMediaItemDelegate::positionHandles()
 
     int toolBarMinimumWidth = 0;
     int mediaItemWidth = mToolBarItem->boundingRect().width();
-    for (const auto& DelegateButton* button : mToolBarButtons)
+    for (DelegateButton* button : mToolBarButtons)
     {
         mediaItemWidth -= button->boundingRect().width() + mToolBarItem->getElementsPadding();
         toolBarMinimumWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();

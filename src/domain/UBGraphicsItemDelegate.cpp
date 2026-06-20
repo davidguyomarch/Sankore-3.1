@@ -231,7 +231,7 @@ void UBGraphicsItemDelegate::init()
 
     buildButtons();
 
-    for (const auto& DelegateButton* button : mButtons)
+    for (DelegateButton* button : mButtons)
     {
         if (button->getSection() != Qt::TitleBarArea)
         {
@@ -375,7 +375,7 @@ bool UBGraphicsItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (delegated()->scene()
             && delegated()->scene()->selectedItems().count()
             && event->modifiers() != Qt::ControlModifier) {
-        for (const auto& QGraphicsItem *item : delegated()->scene()->selectedItems()) {
+        for (QGraphicsItem *item : delegated()->scene()->selectedItems()) {
             if (item != delegated()) {
                 item->setSelected(false);
             }
@@ -429,7 +429,7 @@ void UBGraphicsItemDelegate::positionHandles()
             mToolBarItem->show();
         }
     } else {
-        for (const auto& DelegateButton* button : mButtons)
+        for (DelegateButton* button : mButtons)
             button->hide();
 
         mFrame->hide();
@@ -476,7 +476,7 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
         mFrame->positionHandles();
         updateButtons(true);
 
-        for (const auto& DelegateButton* button : mButtons) {
+        for (DelegateButton* button : mButtons) {
             scene->removeItem(button);
         }
         scene->removeItem(mFrame);
@@ -556,7 +556,7 @@ void UBGraphicsItemDelegate::lock(bool locked)
 void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem)
 {
     pItem->setData(UBGraphicsItemData::ItemLayerType, pShow);
-    for (const auto& QGraphicsItem *insideItem : pItem->childItems()) {
+    for (QGraphicsItem *insideItem : pItem->childItems()) {
         showHideRecurs(pShow, insideItem);
     }
 }
@@ -900,7 +900,7 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
 
 void UBGraphicsItemDelegate::setButtonsVisible(bool visible)
 {
-    for (const auto& DelegateButton* pButton : mButtons){
+    for (DelegateButton* pButton : mButtons){
         pButton->setVisible(visible);
     }
 }

@@ -110,7 +110,7 @@ QStringList UBDocumentManager::importFileExtensions(bool notUbx)
 {
     QStringList result;
 
-    for (const auto& UBImportAdaptor *importAdaptor : mImportAdaptors)
+    for (UBImportAdaptor *importAdaptor : mImportAdaptors)
     {
         //issue 1629 - NNE - 20131213 : add test to remove ubx extention if necessary
         if(!(notUbx && importAdaptor->supportedExtentions().at(0) == "ubx")){
@@ -126,7 +126,7 @@ QString UBDocumentManager::importFileFilter(bool notUbx)
     QString result;
 
     result += tr("All supported files (*.%1)").arg(importFileExtensions(notUbx).join(" *."));
-    for (const auto& UBImportAdaptor *importAdaptor : mImportAdaptors)
+    for (UBImportAdaptor *importAdaptor : mImportAdaptors)
     {
         if (importAdaptor->importFileFilter().length() > 0)
         {
@@ -148,7 +148,7 @@ QString UBDocumentManager::importFileFilter(bool notUbx)
 QFileInfoList UBDocumentManager::importUbx(const QString &Incomingfile, const QString &destination)
 {
     UBImportDocumentSetAdaptor *docSetAdaptor;
-    for (const auto& UBImportAdaptor *curAdaptor : mImportAdaptors) {
+    for (UBImportAdaptor *curAdaptor : mImportAdaptors) {
         docSetAdaptor = qobject_cast<UBImportDocumentSetAdaptor*>(curAdaptor);
         if (docSetAdaptor) {
             break;
@@ -165,7 +165,7 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
 {
     QFileInfo fileInfo(pFile);
 
-    for (const auto& UBImportAdaptor *adaptor : mImportAdaptors)
+    for (UBImportAdaptor *adaptor : mImportAdaptors)
     {
         if (adaptor->supportedExtentions().lastIndexOf(fileInfo.suffix().toLower()) != -1)
         {
@@ -206,7 +206,7 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
 
                 QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
                 int nPage = 0;
-                for (const auto& UBGraphicsItem* page : pages)
+                for (UBGraphicsItem* page : pages)
                 {
 
                     UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
@@ -243,7 +243,7 @@ int UBDocumentManager::addFilesToDocument(UBDocumentProxy* document, QStringList
         QFile file(fileName);
         QFileInfo fileInfo(file);
 
-        for (const auto& UBImportAdaptor *adaptor : mImportAdaptors)
+        for (UBImportAdaptor *adaptor : mImportAdaptors)
         {
             if (adaptor->supportedExtentions().lastIndexOf(fileInfo.suffix().toLower()) != -1)
             {
@@ -275,7 +275,7 @@ int UBDocumentManager::addFilesToDocument(UBDocumentProxy* document, QStringList
 
                     QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
                     int nPage = 0;
-                    for (const auto& UBGraphicsItem* page : pages)
+                    for (UBGraphicsItem* page : pages)
                     {
                         UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
                         int pageIndex = document->pageCount();

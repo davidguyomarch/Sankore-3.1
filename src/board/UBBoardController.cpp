@@ -1010,7 +1010,7 @@ void UBBoardController::zoomRestore()
 
     centerRestore();
 
-    for (const auto& QGraphicsItem *gi : mActiveScene->selectedItems ())
+    for (QGraphicsItem *gi : mActiveScene->selectedItems ())
     {
         //force item to redraw the frame (for the anti scale calculation)
         gi->setSelected(false);
@@ -2781,7 +2781,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
         if (mimeData)
         {
-            for (const auto& UBItem* item : mimeData->items())
+            for (UBItem* item : mimeData->items())
             {
                 QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(item);
                 if(nullptr != pItem){
@@ -2983,7 +2983,7 @@ void UBBoardController::freezeW3CWidgets(bool freeze)
     if (mActiveSceneIndex >= 0)
     {
         QList<QGraphicsItem *> list = UBApplication::boardController->activeScene()->getFastAccessItems();
-        for (const auto& QGraphicsItem *item : list)
+        for (QGraphicsItem *item : list)
         {
             if(item != nullptr){
                 freezeW3CWidget(item, freeze);

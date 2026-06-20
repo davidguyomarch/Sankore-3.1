@@ -113,7 +113,7 @@ void UBDrawingController::setStylusTool(int tool)
         }
         else
         {
-            for (const auto& QGraphicsItem *gi : UBApplication::boardController->activeScene()->selectedItems())
+            for (QGraphicsItem *gi : UBApplication::boardController->activeScene()->selectedItems())
             {
                 UBShapeFactory::desactivateEditionMode(gi);
             }

@@ -752,7 +752,7 @@ QString UBFeaturesController::uniqNameForFeature(const UBFeature &feature, const
     QString resultName;
 
     qDebug() << "start";
-    for (const auto& UBFeature curFeature : *featuresList) {
+    for (const UBFeature& curFeature : *featuresList) {
 
         if (curFeature.getFullVirtualPath().startsWith(feature.getFullVirtualPath())) {
 
@@ -1332,7 +1332,7 @@ CategoryData UBFeaturesController::getDestinationCategoryForMimeType(const QStri
 QString UBFeaturesController::getFeaturePathByName(const QString &featureName) const
 {
     QString videoPickerWidgetPath;
-    for (const auto& UBFeature curFeature : *featuresList)
+    for (const UBFeature& curFeature : *featuresList)
     {
         if (curFeature.getName().contains(featureName))
             videoPickerWidgetPath = curFeature.getFullPath().toLocalFile();
@@ -1729,7 +1729,7 @@ void UBFeaturesController::restoreFeature(const QVector<UBFeature> features)
     QString textHasBeenRestored = tr("has been restored to");
     QString confirmationMessage = "";
 
-    for (const auto& UBFeature feature : features) {
+    for (const UBFeature& feature : features) {
         RegisteryEntry entry = mTrashRegistery.getEntry(feature.getName());
         QStringList path = entry.originalVirtualPath.split("/");
 

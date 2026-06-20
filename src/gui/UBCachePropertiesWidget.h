@@ -31,6 +31,7 @@
 #include <QPushButton>
 #include <QSlider>
 #include <QVector>
+#include <QComboBox>
 
 #include "UBDockPaletteWidget.h"
 #include "tools/UBGraphicsCache.h"

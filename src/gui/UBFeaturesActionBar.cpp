@@ -262,7 +262,7 @@ void UBFeaturesActionBar::dropEvent(QDropEvent *event)
     QWidget *dest = childAt(event->pos());
     if (dest == mpDeleteBtn) {
         QList<UBFeature> featuresList = fMimeData->features();
-        for (const auto& UBFeature curFeature : featuresList) {
+        for (const UBFeature& curFeature : featuresList) {
             if (!curFeature.isDeletable()) {
                 qWarning() << "Undeletable feature found, stopping deleting process";
                 event->ignore();
@@ -292,7 +292,7 @@ bool UBFeaturesActionBar::eventFilter(QObject *obj, QEvent *event)
         if (fMimeData) {
 
             if (obj == mpDeleteBtn) {
-                for (const auto& UBFeature curFeature : fMimeData->features()) {
+                for (const UBFeature& curFeature : fMimeData->features()) {
                     if (!curFeature.isDeletable()) {
                         event->ignore();
                         return true;
@@ -301,7 +301,7 @@ bool UBFeaturesActionBar::eventFilter(QObject *obj, QEvent *event)
                 event->accept();
 
             } else if (obj == mpFavoriteBtn) {
-                for (const auto& UBFeature curFeature : fMimeData->features()) {
+                for (const UBFeature& curFeature : fMimeData->features()) {
                     if (curFeature.getType() == FEATURE_FOLDER) {
                         event->ignore();
                         return true;

@@ -1203,7 +1203,7 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
     {
         UBGraphicsStrokesGroup* pStrokesGroup = new UBGraphicsStrokesGroup();
         UBGraphicsStroke *currentStroke = new UBGraphicsStroke();
-        for (const auto& UBGraphicsPolygonItem* poly : strokesGroupsContainer.values(key))
+        for (UBGraphicsPolygonItem* poly : strokesGroupsContainer.values(key))
         {
             if (poly)
             {

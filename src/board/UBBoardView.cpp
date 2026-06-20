@@ -927,7 +927,7 @@ void UBBoardView::rubberItems()
     if (mUBRubberBand)
         mRubberedItems = items(mUBRubberBand->geometry());
 
-    for (const auto& QGraphicsItem *item : mRubberedItems)
+    for (QGraphicsItem *item : mRubberedItems)
     {
         if (item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type())
             mRubberedItems.removeOne(item);
@@ -938,7 +938,7 @@ void UBBoardView::moveRubberedItems(QPointF movingVector)
 {
     QRectF invalidateRect = scene()->itemsBoundingRect();
 
-    for (const auto& QGraphicsItem *item : mRubberedItems)
+    for (QGraphicsItem *item : mRubberedItems)
     {
 
         if (item->type() == UBGraphicsW3CWidgetItem::Type
@@ -1277,7 +1277,7 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
               QList<QGraphicsItem *> rubberItems = items(bandRect);
               if (currentTool == UBStylusTool::Selector)
               {
-                  for (const auto& QGraphicsItem *item : items())
+                  for (QGraphicsItem *item : items())
                   {
                       // Issue 1569 - CFA - 20131113 : le traitement spécifique aux polygones (fait partout ailleurs) n'était pas fait ici
                       if (item->type() == UBGraphicsItemType::PolygonItemType)

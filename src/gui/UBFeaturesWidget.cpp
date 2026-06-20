@@ -217,7 +217,7 @@ void UBFeaturesWidget::deleteElements( const UBFeaturesMimeData * mimeData )
 
     QList<UBFeature> featuresList = mimeData->features();
 
-    for (const auto& UBFeature curFeature : featuresList){
+    for (const UBFeature& curFeature : featuresList){
         if(curFeature.inTrash()){
             //issue 1474 - NNE - 20131120
             controller->removeFromTrashRegistery(curFeature);
@@ -240,7 +240,7 @@ void UBFeaturesWidget::deleteSelectedElements()
         featureasToMove.append(controller->getFeature(selected.at(i), objNameFeatureList));
     }
 
-    for (const auto& UBFeature feature : featureasToMove)
+    for (const UBFeature& feature : featureasToMove)
     {
         if (feature.isDeletable()) {
             if (feature.inTrash()) {
@@ -535,7 +535,7 @@ void UBFeaturesListView::dragMoveEvent( QDragMoveEvent *event )
             event->ignore();
             return;
         }
-        for (const auto& UBFeature curFeature : fMimeData->features()) {
+        for (const UBFeature& curFeature : fMimeData->features()) {
             if (curFeature == onFeature) {
                 event->ignore();
                 return;

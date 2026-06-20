@@ -123,7 +123,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
 
 UBApplicationController::~UBApplicationController()
 {
-    for (const auto& UBBoardView* view : mPreviousViews)
+    for (UBBoardView* view : mPreviousViews)
     {
         delete view;
     }
@@ -246,7 +246,7 @@ void UBApplicationController::adjustPreviousViews(int pActiveSceneIndex, UBDocum
 {
     int viewIndex = pActiveSceneIndex;
 
-    for (const auto& UBBoardView* previousView : mPreviousViews)
+    for (UBBoardView* previousView : mPreviousViews)
     {
         if (viewIndex > 0)
         {
@@ -793,7 +793,7 @@ QStringList UBApplicationController::widgetInlineJavaScripts()
         }
     }
 
-    qSort(scripts);
+    std::sort(scripts.begin(), scripts.end());
 
     return scripts;
 }

@@ -647,7 +647,7 @@ QList<UBGraphicsDelegateFrame *> UBGraphicsDelegateFrame::getLinkedFrames()
     {
         sItems.removeAll(delegated());
 
-        for (const auto& QGraphicsItem *item : sItems)
+        for (QGraphicsItem *item : sItems)
         {
             UBGraphicsItem *gitem = dynamic_cast<UBGraphicsItem*>(item);
             if (gitem)

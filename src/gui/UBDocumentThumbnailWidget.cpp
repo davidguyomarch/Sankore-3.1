@@ -79,7 +79,7 @@ void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         if(pageIndex != 0){
         	QDrag *drag = new QDrag(this);
         	QList<UBMimeDataItem> mimeDataItems;
-        	for (const auto& QGraphicsItem *item : selectedItems())
+        	for (QGraphicsItem *item : selectedItems())
         		mimeDataItems.append(UBMimeDataItem(sceneItem->proxy(), mGraphicItems.indexOf(item)));
 
         	UBMimeData *mime = new UBMimeData(mimeDataItems);
@@ -147,7 +147,7 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
 	}
 
 	QList<UBSceneThumbnailPixmap*> pixmapItems;
-    for (const auto& QGraphicsItem *item : scene()->items(mapToScene(boundingFrame)))
+    for (QGraphicsItem *item : scene()->items(mapToScene(boundingFrame)))
     {
         UBSceneThumbnailPixmap* sceneItem = dynamic_cast<UBSceneThumbnailPixmap*>(item);
         if (sceneItem)

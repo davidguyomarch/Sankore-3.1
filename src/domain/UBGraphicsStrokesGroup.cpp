@@ -67,7 +67,7 @@ void UBGraphicsStrokesGroup::setColor(const QColor &color, colorType pColorType)
 {
     //TODO Implement common mechanism of managing groups, drop UBGraphicsStroke if it's obsolete
     //Using casting for the moment
-    for (const auto& QGraphicsItem *item : childItems()) {
+    for (QGraphicsItem *item : childItems()) {
         if (item->type() == UBGraphicsPolygonItem::Type) {
             UBGraphicsPolygonItem *curPolygon = static_cast<UBGraphicsPolygonItem *>(item);
 
@@ -90,7 +90,7 @@ QColor UBGraphicsStrokesGroup::color(colorType pColorType) const
 {
     QColor result;
 
-    for (const auto& QGraphicsItem *item : childItems()) {
+    for (QGraphicsItem *item : childItems()) {
         if (item->type() == UBGraphicsPolygonItem::Type) {
             UBGraphicsPolygonItem *curPolygon = static_cast<UBGraphicsPolygonItem *>(item);
 
@@ -144,7 +144,7 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
 
     QList<QGraphicsItem*> chl = childItems();
 
-    for (const auto& QGraphicsItem *child : chl)
+    for (QGraphicsItem *child : chl)
     {
         UBGraphicsPolygonItem *polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
 
