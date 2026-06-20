@@ -27,6 +27,7 @@
 #include <QWidget>
 #include <QToolButton>
 #include <QDropEvent>
+#include <QHBoxLayout>
 #include <QLineEdit>
 #include "board/UBFeaturesController.h"
 

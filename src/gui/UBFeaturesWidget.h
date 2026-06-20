@@ -49,6 +49,9 @@
 #include "UBFeaturesActionBar.h"
 #include "UBRubberBand.h"
 #include <QWebEngineView>
+#include <QPushButton>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 #include <QWebEngineView>
 #include <QWebEngineSettings>
 #include "UBActionPalette.h"

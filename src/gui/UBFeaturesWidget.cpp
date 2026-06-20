@@ -275,7 +275,7 @@ void UBFeaturesWidget::processViewSelectionChanged(const QItemSelection &selecte
     if (!selected.indexes().count()) {
         selectedDeletable = false;
     } else {
-        for (const auto& QModelIndex curIndex : selected.indexes()) {
+        for (const QModelIndex& curIndex : selected.indexes()) {
             UBFeature curFeature = curIndex.data(Qt::UserRole + 1).value<UBFeature>();
             if (!curFeature.isDeletable()) {
                 selectedDeletable = false;
@@ -615,7 +615,7 @@ void UBFeaturesListView::emitRestoreFeature()
     QModelIndexList selectedModel = this->selectionModel()->selectedIndexes();
     QVector<UBFeature> selectedFeatures;
 
-    for (const auto& QModelIndex m : selectedModel) {
+    for (const QModelIndex& m : selectedModel) {
         selectedFeatures.push_back(model()->data(m, Qt::UserRole + 1).value<UBFeature>());
     }
 
@@ -654,7 +654,7 @@ UBFeaturesNavigatorWidget::UBFeaturesNavigatorWidget(QWidget *parent, const char
 
     mainLayer->addWidget(mListView, 1);
     mainLayer->addWidget(mListSlider, 0);
-    mainLayer->setMargin(0);
+    mainLayer->setContentsMargins(0,0,0,0);
 
     connect(mListSlider, SIGNAL(valueChanged(int)), mListView, SLOT(thumbnailSizeChanged(int)));
 }
@@ -945,19 +945,19 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     mpView = new QWebEngineView(this);
     mpView->setObjectName("SearchEngineView");
     mpSankoreAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
-    mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
-    connect(mpView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
-    mpWebSettings = QWebEngineSettings::globalSettings();
-    mpWebSettings->setAttribute(QWebEngineSettings::JavaEnabled, true);
+    mpView->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+    connect(mpView->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
+    mpWebSettings = QWebEngineProfile::defaultProfile()->settings();
+    // JavaEnabled removed in Qt6
     mpWebSettings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    mpWebSettings->setAttribute(QWebEngineSettings::LocalStorageDatabaseEnabled, true);
-    mpWebSettings->setAttribute(QWebEngineSettings::OfflineWebApplicationCacheEnabled, true);
-    mpWebSettings->setAttribute(QWebEngineSettings::OfflineStorageDatabaseEnabled, true);
+    // LocalStorageDatabaseEnabled removed in Qt6
+    // OfflineWebApplicationCacheEnabled removed in Qt6
+    // OfflineStorageDatabaseEnabled removed in Qt6
     mpWebSettings->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
     mpWebSettings->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
 
     mpLayout->addWidget(mpView);
-    mpLayout->setMargin(0);
+    mpLayout->setContentsMargins(0,0,0,0);
 
     connect(mpView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished(bool)));
 }
@@ -983,7 +983,7 @@ UBFeaturesWebView::~UBFeaturesWebView()
 
 void UBFeaturesWebView::javaScriptWindowObjectCleared()
 {
-    mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+    mpView->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
 }
 
 void UBFeaturesWebView::showElement(const UBFeature &elem)
@@ -1023,7 +1023,7 @@ void UBFeaturesWebView::showElement(const UBFeature &elem)
 void UBFeaturesWebView::onLoadFinished(bool ok)
 {
     if(ok && nullptr != mpSankoreAPI){
-        mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+        mpView->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
     }
 }
 
@@ -1089,7 +1089,7 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     mpObjInfos->setObjectName("DockPaletteWidgetBox");
     mpObjInfos->setStyleSheet("background:white;");
     mpLayout->addWidget(mpObjInfos, 1);
-    mpLayout->setMargin(0);
+    mpLayout->setContentsMargins(0,0,0,0);
 
     connect( mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()) );
     // Issue 1684 - CFA - 20131120
@@ -1397,7 +1397,7 @@ QMimeData* UBFeaturesModel::mimeData(const QModelIndexList &indexes) const
     QList <UBFeature> featuresList;
     QByteArray typeData;
 
-    for (const auto& QModelIndex index : indexes) {
+    for (const QModelIndex& index : indexes) {
 
         if (index.isValid()) {
             UBFeature element = data(index, Qt::UserRole + 1).value<UBFeature>();
@@ -1697,7 +1697,7 @@ bool UBFeaturesProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & 
 
     QString path = index.data( Qt::UserRole ).toString();
 
-    return filterRegExp().exactMatch(path);
+    return filterRegularExpression().exactMatch(path);
 }
 
 bool UBFeaturesProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
@@ -1738,7 +1738,7 @@ bool UBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
 
     return isFile
             && feature.getFullVirtualPath().contains(mFilterPrefix)
-            && filterRegExp().exactMatch( feature.getName() );
+            && filterRegularExpression().exactMatch( feature.getName() );
 }
 
 bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const
