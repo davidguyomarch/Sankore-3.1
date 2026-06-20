@@ -22,6 +22,7 @@
 
 
 #include <QWidget>
+#include <QGraphicsSceneMouseEvent>
 #include <QApplication>
 #include <QPainter>
 #include "UBGraphicsGroupContainerItem.h"

@@ -22,6 +22,7 @@
 
 
 #include "UBGraphicsGroupContainerItem.h"
+#include <QGraphicsSceneMouseEvent>
 #include "UBGraphicsMediaItem.h"
 #include "UBGraphicsMediaItemDelegate.h"
 #include "UBGraphicsScene.h"
@@ -88,7 +89,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         mMediaType = mediaType_Video;
 
         mAudioOutput = new QAudioOutput(this);
-        mMediaObject
         mVideoWidget = new QVideoWidget(); // owned and destructed by the scene ...
         mMediaObject->setAudioOutput(mVideoWidget);
 
@@ -106,7 +106,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         mMediaType = mediaType_Audio;
         mAudioOutput = new QAudioOutput(this);
 
-        mMediaObject
         mAudioWidget = new UBAudioPresentationWidget();
         int borderSize = 0;
         UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
@@ -124,7 +123,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     mMediaObject->setAudioOutput(mAudioOutput);
 
     mSource = QUrl(pMediaFileUrl);
-    mMediaObject->setSource(QUrl::fromLocalFile(mSource));
+    mMediaObject->setSource(mSource);
 
     // we should create delegate after media objects because delegate uses his properties at creation.
     setDelegate(new UBGraphicsMediaItemDelegate(this, mMediaObject));
@@ -187,7 +186,7 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
             }
 
             if (absoluteMediaFilename.length() > 0)
-                mMediaObject->setSource(QUrl::fromLocalFile(QUrl(absoluteMediaFilename)));
+                mMediaObject->setSource(QUrl::fromLocalFile(absoluteMediaFilename));
 
         }
     }
