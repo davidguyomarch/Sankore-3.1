@@ -23,7 +23,9 @@
 
 #include "UBWindowsMediaFile.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "core/UBApplication.h"
 
@@ -94,7 +96,7 @@ bool UBWindowsMediaFile::init(const QString& videoFileName, const QString& profi
         return false;
     }
 
-    if (FAILED(WMCreateWriter(NULL, &mWMWriter)))
+    if (FAILED(WMCreateWriter(nullptr, &mWMWriter)))
     {
         setLastErrorMessage("Unable to create WMMediaWriter Object");
         close();
@@ -219,7 +221,7 @@ bool UBWindowsMediaFile::close()
         editor->Open((LPCTSTR) mVideoFileName.utf16());
         editor->QueryInterface(IID_IWMHeaderInfo, (void**)&headerInfo);
 
-        foreach(MarkerInfo mi, mChapters)
+        for (const auto& MarkerInfo mi : mChapters)
         {
             headerInfo->AddMarker((LPWSTR)mi.label.utf16(),  msToSampleTime(mi.timestamp));
         }
@@ -289,9 +291,9 @@ bool UBWindowsMediaFile::initVideoStream(int nFrameWidth, int nFrameHeight, int 
 {
     BITMAPINFO bmpInfo;
 
-    mWMhDC = CreateCompatibleDC(NULL);
+    mWMhDC = CreateCompatibleDC(nullptr);
 
-    if (mWMhDC == NULL)
+    if (mWMhDC == nullptr)
     {
         setLastErrorMessage("Unable to create a device context");
         return false;
@@ -352,7 +354,7 @@ bool UBWindowsMediaFile::initVideoStream(int nFrameWidth, int nFrameHeight, int 
     mt.bTemporalCompression = false;
     mt.lSampleSize = 0;
     mt.formattype = WMFORMAT_VideoInfo;
-    mt.pUnk = NULL;
+    mt.pUnk = nullptr;
     mt.cbFormat = sizeof(WMVIDEOINFOHEADER);
     mt.pbFormat = (BYTE*) &videoInfo;
 

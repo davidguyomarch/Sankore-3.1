@@ -24,7 +24,9 @@
 #ifndef UBYOUTUBEPUBLISHER_H_
 #define UBYOUTUBEPUBLISHER_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "ui_youTubePublishingDialog.h"
 

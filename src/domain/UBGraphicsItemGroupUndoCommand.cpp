@@ -32,7 +32,7 @@ UBGraphicsItemGroupUndoCommand::UBGraphicsItemGroupUndoCommand(UBGraphicsScene *
 
 {
     if (pGroupCreated->childItems().count()) {
-        foreach (QGraphicsItem *item, pGroupCreated->childItems()) {
+        for (const auto& QGraphicsItem *item : pGroupCreated->childItems()) {
             mItems << item;
         }
     }
@@ -45,7 +45,7 @@ UBGraphicsItemGroupUndoCommand::~UBGraphicsItemGroupUndoCommand()
 void UBGraphicsItemGroupUndoCommand::undo()
 {
     mGroup->destroy(false);
-    foreach(QGraphicsItem *item, mItems) {
+    for (const auto& QGraphicsItem *item : mItems) {
         item->setSelected(true);
     }
 }
@@ -58,14 +58,14 @@ void UBGraphicsItemGroupUndoCommand::redo()
         return;
     }
 
-    foreach (QGraphicsItem *item, mItems) {
+    for (const auto& QGraphicsItem *item : mItems) {
         if (item->type() == UBGraphicsGroupContainerItem::Type) {
             QList<QGraphicsItem*> childItems = item->childItems();
             UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
             if (currentGroup) {
                 currentGroup->destroy(false);
             }
-            foreach (QGraphicsItem *chItem, childItems) {
+            for (const auto& QGraphicsItem *chItem : childItems) {
                 mGroup->addToGroup(chItem);
             }
         } else {

@@ -31,15 +31,15 @@
 
 UBDocumentContainer::UBDocumentContainer(QObject * parent)
     :QObject(parent)
-    ,mCurrentDocument(NULL)
+    ,mCurrentDocument(nullptr)
 {}
 
 UBDocumentContainer::~UBDocumentContainer()
 {
     if (mDocumentThumbs.size() > 0){
-        foreach(const QPixmap* pm, mDocumentThumbs){
+        for (const auto& const QPixmap* pm : mDocumentThumbs){
             delete pm;
-            pm = NULL;
+            pm = nullptr;
         }
     }
 }
@@ -57,7 +57,7 @@ void UBDocumentContainer::setDocument(UBDocumentProxy* document, bool forceReloa
 void UBDocumentContainer::duplicatePages(QList<int>& pageIndexes)
 {
     int offset = 0;
-    foreach(int sceneIndex, pageIndexes) {
+    for (const auto& int sceneIndex : pageIndexes) {
 //        UBPersistenceManager::persistenceManager()->duplicateDocumentScene(mCurrentDocument, sceneIndex + offset);
         UBPersistenceManager::persistenceManager()->copyDocumentScene(mCurrentDocument, sceneIndex + offset,
                                                                       mCurrentDocument, sceneIndex + offset + 1);
@@ -83,7 +83,7 @@ void UBDocumentContainer::deletePages(QList<int>& pageIndexes)
 {
     UBPersistenceManager::persistenceManager()->deleteDocumentScenes(mCurrentDocument, pageIndexes);
     int offset = 0;
-    foreach(int index, pageIndexes)
+    for (const auto& int index : pageIndexes)
     {
         deleteThumbPage(index - offset);
         offset++;

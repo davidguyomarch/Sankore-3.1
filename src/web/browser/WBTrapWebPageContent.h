@@ -23,7 +23,9 @@
 #ifndef WB_TRAP_WEB_PAGE_CONTENT_H
 #define WB_TRAP_WEB_PAGE_CONTENT_H
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QWebEngineView>
 
 #include "WBWebView.h"
@@ -33,7 +35,7 @@ class WBTrapWebPageContentWindow : public QDialog
     Q_OBJECT
 
     public:
-        WBTrapWebPageContentWindow(QObject *controller, QWidget *parent = NULL);
+        WBTrapWebPageContentWindow(QObject *controller, QWidget *parent = nullptr);
         virtual ~WBTrapWebPageContentWindow();
 
         void setUrl(const QUrl &url);

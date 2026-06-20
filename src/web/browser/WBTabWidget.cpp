@@ -72,7 +72,9 @@
 #include "core/UBApplication.h" // TODO UB 4.x remove this nasty dependency
 #include "core/UBApplicationController.h"// TODO UB 4.x remove this nasty dependency
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QSvgWidget>
 
 

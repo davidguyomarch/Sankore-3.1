@@ -24,7 +24,9 @@
 #ifndef UBWIDGETMIRROR_H_
 #define UBWIDGETMIRROR_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 class UBWidgetMirror : public QWidget
 {

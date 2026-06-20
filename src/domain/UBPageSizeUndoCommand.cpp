@@ -23,7 +23,9 @@
 
 #include "UBPageSizeUndoCommand.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"

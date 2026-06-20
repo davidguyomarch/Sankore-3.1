@@ -23,41 +23,61 @@
 
 #include "UBVideoPlayer.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QPushButton>
 
 #include <QMediaPlayer>
-#include <QMediaPlayer>
-#include <QMediaPlayer>
+#include <QAudioOutput>
+#include <QVideoWidget>
 
 
 UBVideoPlayer::UBVideoPlayer(QWidget* pParent)
     : QWidget(pParent)
-    , mVideoPlayer(0)
+    , mMediaPlayer(nullptr)
+    , mAudioOutput(nullptr)
+    , mVideoWidget(nullptr)
 {
-    mVideoPlayer = new Phonon::VideoPlayer(Phonon::VideoCategory, this);
+    mMediaPlayer = new QMediaPlayer(this);
+    mAudioOutput = new QAudioOutput(this);
+    mVideoWidget = new QVideoWidget(this);
+
+    mMediaPlayer->setAudioOutput(mAudioOutput);
+    mMediaPlayer->setVideoOutput(mVideoWidget);
+
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     setLayout(mainLayout);
 
     mainLayout->setContentsMargins(0, 0, 0, 0);
-    mainLayout->addWidget(mVideoPlayer);
+    mainLayout->addWidget(mVideoWidget);
 
-    QHBoxLayout* transportLayout = new QHBoxLayout(this);
+    QHBoxLayout* transportLayout = new QHBoxLayout();
     mainLayout->addLayout(transportLayout);
 
     mPlayPause = new QPushButton(this);
     transportLayout->addWidget(mPlayPause);
 
-    Phonon::SeekSlider *slider = new Phonon::SeekSlider(this);
-    slider->setMediaObject(mVideoPlayer->mediaObject());
-    slider->setPageStep(100);
-    transportLayout->addWidget(slider);
+    mSeekSlider = new QSlider(Qt::Horizontal, this);
+    mSeekSlider->setRange(0, 0);
+    transportLayout->addWidget(mSeekSlider);
 
     connect(mPlayPause, SIGNAL(clicked()),
             this, SLOT(tooglePlayPause()));
 
-    connect(mVideoPlayer->mediaObject(), SIGNAL(stateChanged ( Phonon::State, Phonon::State)),
-            this, SLOT(mediaStateChanged ( Phonon::State, Phonon::State)));
+    connect(mMediaPlayer, &QMediaPlayer::playbackStateChanged,
+            this, &UBVideoPlayer::mediaStateChanged);
 
+    connect(mMediaPlayer, &QMediaPlayer::durationChanged,
+            this, &UBVideoPlayer::durationChanged);
+
+    connect(mMediaPlayer, &QMediaPlayer::positionChanged,
+            this, &UBVideoPlayer::positionChanged);
+
+    connect(mSeekSlider, &QSlider::sliderMoved,
+            this, &UBVideoPlayer::seekTo);
 }
 
 
@@ -69,23 +89,20 @@ UBVideoPlayer::~UBVideoPlayer()
 
 void UBVideoPlayer::tooglePlayPause()
 {
-    if(mVideoPlayer->mediaObject()->state() == Phonon::PlayingState)
+    if(mMediaPlayer->playbackState() == QMediaPlayer::PlayingState)
     {
-        mVideoPlayer->mediaObject()->pause();
+        mMediaPlayer->pause();
     }
     else
     {
-         mVideoPlayer->mediaObject()->play();
+         mMediaPlayer->play();
     }
-
 }
 
 
-void UBVideoPlayer::mediaStateChanged( Phonon::State newstate, Phonon::State oldstate )
+void UBVideoPlayer::mediaStateChanged(QMediaPlayer::PlaybackState newState)
 {
-    Q_UNUSED(oldstate);
-
-    if (newstate == Phonon::PlayingState)
+    if (newState == QMediaPlayer::PlayingState)
     {
         mPlayPause->setIcon(QPixmap(":/images/pause.svg"));
     }
@@ -95,3 +112,17 @@ void UBVideoPlayer::mediaStateChanged( Phonon::State newstate, Phonon::State old
     }
 }
 
+void UBVideoPlayer::durationChanged(qint64 duration)
+{
+    mSeekSlider->setRange(0, static_cast<int>(duration / 1000));
+}
+
+void UBVideoPlayer::positionChanged(qint64 position)
+{
+    mSeekSlider->setValue(static_cast<int>(position / 1000));
+}
+
+void UBVideoPlayer::seekTo(int position)
+{
+    mMediaPlayer->setPosition(static_cast<qint64>(position) * 1000);
+}

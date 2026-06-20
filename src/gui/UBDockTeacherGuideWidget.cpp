@@ -31,7 +31,7 @@
 
 UBDockTeacherGuideWidget::UBDockTeacherGuideWidget(QWidget* parent, const char* name):
     UBDockPaletteWidget(parent,name)
-  , mpTeacherGuideWidget(NULL)
+  , mpTeacherGuideWidget(nullptr)
 {
     mName = "TeacherGuide";
     mVisibleState = true;

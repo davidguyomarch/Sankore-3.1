@@ -63,7 +63,7 @@ bool UBGraphicsStroke::hasPressure()
     {
         qreal nominalWidth = mPolygons.at(0)->originalWidth();
 
-        foreach(UBGraphicsPolygonItem* pol, mPolygons)
+        for (const auto& UBGraphicsPolygonItem* pol : mPolygons)
         {
             if (!pol->isNominalLine() || pol->originalWidth() != nominalWidth)
                 return true;

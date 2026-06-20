@@ -23,7 +23,9 @@
 
 #include "UBDesktopPalette.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "frameworks/UBPlatformUtils.h"
 
@@ -39,8 +41,8 @@
 
 UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalette)
     : UBActionPalette(Qt::TopLeftCorner, parent)
-    , mShowHideAction(NULL)
-    , mDisplaySelectAction(NULL)
+    , mShowHideAction(nullptr)
+    , mDisplaySelectAction(nullptr)
     , rightPalette(_rightPalette)
 {
     QList<QAction*> actions;
@@ -235,7 +237,7 @@ QPoint UBDesktopPalette::buttonPos(QAction *action)
     QPoint p;
 
     UBActionPaletteButton* pB = mMapActionToButton[action];
-    if(NULL != pB)
+    if(nullptr != pB)
     {
         p = pB->pos();
     }

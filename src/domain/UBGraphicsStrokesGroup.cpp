@@ -67,7 +67,7 @@ void UBGraphicsStrokesGroup::setColor(const QColor &color, colorType pColorType)
 {
     //TODO Implement common mechanism of managing groups, drop UBGraphicsStroke if it's obsolete
     //Using casting for the moment
-    foreach (QGraphicsItem *item, childItems()) {
+    for (const auto& QGraphicsItem *item : childItems()) {
         if (item->type() == UBGraphicsPolygonItem::Type) {
             UBGraphicsPolygonItem *curPolygon = static_cast<UBGraphicsPolygonItem *>(item);
 
@@ -90,7 +90,7 @@ QColor UBGraphicsStrokesGroup::color(colorType pColorType) const
 {
     QColor result;
 
-    foreach (QGraphicsItem *item, childItems()) {
+    for (const auto& QGraphicsItem *item : childItems()) {
         if (item->type() == UBGraphicsPolygonItem::Type) {
             UBGraphicsPolygonItem *curPolygon = static_cast<UBGraphicsPolygonItem *>(item);
 
@@ -144,7 +144,7 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
 
     QList<QGraphicsItem*> chl = childItems();
 
-    foreach(QGraphicsItem *child, chl)
+    for (const auto& QGraphicsItem *child : chl)
     {
         UBGraphicsPolygonItem *polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
 
@@ -168,7 +168,7 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
 void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
 {
     QGraphicsItem *cp = dynamic_cast<QGraphicsItem*>(copy);
-    if(NULL != cp)
+    if(nullptr != cp)
     {
         cp->setTransform(transform());
 
@@ -215,7 +215,7 @@ QPainterPath UBGraphicsStrokesGroup::shape () const
     }
     else
     {
-        foreach(QGraphicsItem* item, childItems())
+        for (const auto& QGraphicsItem* item : childItems())
         {
             path.addPath(item->shape());
         }

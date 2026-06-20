@@ -24,7 +24,9 @@
 #ifndef UBGRAPHICSTEXTITEMUNDOCOMMAND_H_
 #define UBGRAPHICSTEXTITEMUNDOCOMMAND_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include "UBAbstractUndoCommand.h"
 
 #include "UBGraphicsTextItem.h"

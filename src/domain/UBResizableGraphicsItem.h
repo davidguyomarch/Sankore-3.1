@@ -24,7 +24,9 @@
 #ifndef UBRESIZABLEGRAPHICSITEM_H_
 #define UBRESIZABLEGRAPHICSITEM_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 class UBResizableGraphicsItem
 {

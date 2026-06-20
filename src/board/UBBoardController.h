@@ -24,7 +24,9 @@
 #ifndef UBBOARDCONTROLLER_H_
 #define UBBOARDCONTROLLER_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include <QObject>
 #include "document/UBDocumentContainer.h"

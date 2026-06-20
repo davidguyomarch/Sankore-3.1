@@ -24,7 +24,9 @@
 #ifndef UBIMPORTADAPTOR_H_
 #define UBIMPORTADAPTOR_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 class UBGraphicsItem;
 class UBGraphicsScene;

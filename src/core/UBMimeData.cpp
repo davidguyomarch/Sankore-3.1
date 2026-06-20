@@ -23,7 +23,9 @@
 
 #include "UBMimeData.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "core/UBApplication.h"
 #include "domain/UBItem.h"

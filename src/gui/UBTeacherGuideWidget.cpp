@@ -68,15 +68,15 @@
 
 UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const char* name) :
     QWidget(parent)
-  , mpLayout(NULL)
-  , mpDocumentTitle(NULL)
-  , mpPageNumberLabel(NULL)
-  , mpPageTitle(NULL)
-  , mpComment(NULL)
-  , mpSeparator(NULL)
-  , mpTreeWidget(NULL)
-  , mpRootWidgetItem(NULL)
-  , mpAddAnActionItem(NULL)
+  , mpLayout(nullptr)
+  , mpDocumentTitle(nullptr)
+  , mpPageNumberLabel(nullptr)
+  , mpPageTitle(nullptr)
+  , mpComment(nullptr)
+  , mpSeparator(nullptr)
+  , mpTreeWidget(nullptr)
+  , mpRootWidgetItem(nullptr)
+  , mpAddAnActionItem(nullptr)
   , mIsModified(false)
 {
     setObjectName(name);
@@ -277,13 +277,13 @@ QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save(int pageIndex)
     children += getChildrenList(mpAddALinkItem);
     children += getChildrenList(mpAddAFileItem); //Issue 1716 - ALTI/AOU - 20140128
 
-    foreach(QTreeWidgetItem* widgetItem, children) {
+    for (const auto& QTreeWidgetItem* widgetItem : children) {
         tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget( widgetItem, 0))->saveData();
         if (node) {
             data = new tIDataStorage();
             data->name = node->name;
             data->type = eElementType_UNIQUE;
-            foreach(QString currentKey, node->attributes.keys())
+            for (const auto& QString currentKey : node->attributes.keys())
                 data->attributes.insert(currentKey, node->attributes.value(currentKey));
             result << data;
         }
@@ -314,7 +314,7 @@ void UBTeacherGuideEditionWidget::cleanData()
     children += mpAddALinkItem->takeChildren();
     children += mpAddAFileItem->takeChildren(); //Issue 1716 - ALTI/AOU - 20140128
 
-    foreach(QTreeWidgetItem* item, children) {
+    for (const auto& QTreeWidgetItem* item : children) {
         DELETEPTR(item);
     }
 }
@@ -364,7 +364,7 @@ QVector<tUBGEElementNode*> UBTeacherGuideEditionWidget::getData()
     children += getChildrenList(mpAddAFileItem); //Issue 1716 - ALTI/AOU - 20140128
 
     result << getPageAndCommentData();
-    foreach(QTreeWidgetItem* widgetItem, children) {
+    for (const auto& QTreeWidgetItem* widgetItem : children) {
         tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget( widgetItem, 0))->saveData();
         if (node)
             result << node;
@@ -460,17 +460,17 @@ bool UBTeacherGuideEditionWidget::hasUserDataInTeacherGuide()
 
 UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *parent, const char *name) :
     QWidget(parent)
-  , mpPageTitle(NULL)
-  , mpComment(NULL)
-  , mpLayout(NULL)
-  , mpButtonTitleLayout(NULL)
-  , mpDocumentTitle(NULL)
-  , mpPageNumberLabel(NULL)
-  , mpSeparator(NULL)
-  , mpModePushButton(NULL)
-  , mpTreeWidget(NULL)
-  , mpRootWidgetItem(NULL)
-  , mpMediaSwitchItem(NULL)
+  , mpPageTitle(nullptr)
+  , mpComment(nullptr)
+  , mpLayout(nullptr)
+  , mpButtonTitleLayout(nullptr)
+  , mpDocumentTitle(nullptr)
+  , mpPageNumberLabel(nullptr)
+  , mpSeparator(nullptr)
+  , mpModePushButton(nullptr)
+  , mpTreeWidget(nullptr)
+  , mpRootWidgetItem(nullptr)
+  , mpMediaSwitchItem(nullptr)
 {
     setObjectName(name);
 
@@ -576,11 +576,11 @@ void UBTeacherGuidePresentationWidget::cleanData()
     mpComment->showText("");
     //tree clean
     QList<QTreeWidgetItem*> itemToRemove = mpRootWidgetItem->takeChildren();
-    foreach(QTreeWidgetItem* eachItem, itemToRemove) {
+    for (const auto& QTreeWidgetItem* eachItem : itemToRemove) {
         DELETEPTR(eachItem);
     }
     // the mpMediaSwitchItem is deleted by the previous loop but the pointer is not set to zero
-    mpMediaSwitchItem = NULL;
+    mpMediaSwitchItem = nullptr;
 }
 
 void UBTeacherGuidePresentationWidget::onActiveSceneChanged()
@@ -616,7 +616,7 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
     }
 #endif
 
-    foreach(tUBGEElementNode* element, data) {
+    for (const auto& tUBGEElementNode* element : data) {
         if (element->name == "pageTitle")
             mpPageTitle->showText(element->attributes.value("value"));
         else if (element->name == "comment")
@@ -744,46 +744,46 @@ void UBTeacherGuidePresentationWidget::onAddItemClicked(QTreeWidgetItem* widget,
  ***************************************************************************/
 UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, const char* name) :
     QWidget(parent)
-  , mpLayout(NULL)
-  , mpButtonTitleLayout(NULL)
-  , mpContainerWidgetLayout(NULL)
-  , mpModePushButton(NULL)
-  , mpPageNumberLabel(NULL)
-  , mpScrollArea(NULL)
-  , mpContainerWidget(NULL)
-  , mpSessionTitle(NULL)
-  , mpSeparatorSessionTitle(NULL)
-  , mpAuthorsLabel(NULL)
-  , mpAuthors(NULL)
-  , mpSeparatorAuthors(NULL)
-  , mpCreationLabel(NULL)
-  , mpLastModifiedLabel(NULL)
-  , mpObjectivesLabel(NULL)
-  , mpObjectives(NULL)
-  , mpSeparatorObjectives(NULL)
-  , mpIndexLabel(NULL)
-  , mpKeywordsLabel(NULL)
-  , mpKeywords(NULL)
-  , mpSchoolLevelItemLabel(NULL)
-  , mpSchoolLevelBox(NULL)
-  , mpSchoolLevelValueLabel(NULL)
-  , mpSchoolSubjectsItemLabel(NULL)
-  , mpSchoolSubjectsBox(NULL)
-  , mpSchoolSubjectsValueLabel(NULL)
-  , mpSchoolTypeItemLabel(NULL)
-  , mpSchoolTypeBox(NULL)
-  , mpSchoolTypeValueLabel(NULL)
-  , mpSeparatorIndex(NULL)
-  , mpLicenceLabel(NULL)
-  , mpLicenceBox( NULL)
-  , mpLicenceIcon(NULL)
-  , mpLicenceLayout(NULL)
-  , mpSceneItemSessionTitle(NULL)
-  , mCurrentDocument(NULL)
+  , mpLayout(nullptr)
+  , mpButtonTitleLayout(nullptr)
+  , mpContainerWidgetLayout(nullptr)
+  , mpModePushButton(nullptr)
+  , mpPageNumberLabel(nullptr)
+  , mpScrollArea(nullptr)
+  , mpContainerWidget(nullptr)
+  , mpSessionTitle(nullptr)
+  , mpSeparatorSessionTitle(nullptr)
+  , mpAuthorsLabel(nullptr)
+  , mpAuthors(nullptr)
+  , mpSeparatorAuthors(nullptr)
+  , mpCreationLabel(nullptr)
+  , mpLastModifiedLabel(nullptr)
+  , mpObjectivesLabel(nullptr)
+  , mpObjectives(nullptr)
+  , mpSeparatorObjectives(nullptr)
+  , mpIndexLabel(nullptr)
+  , mpKeywordsLabel(nullptr)
+  , mpKeywords(nullptr)
+  , mpSchoolLevelItemLabel(nullptr)
+  , mpSchoolLevelBox(nullptr)
+  , mpSchoolLevelValueLabel(nullptr)
+  , mpSchoolSubjectsItemLabel(nullptr)
+  , mpSchoolSubjectsBox(nullptr)
+  , mpSchoolSubjectsValueLabel(nullptr)
+  , mpSchoolTypeItemLabel(nullptr)
+  , mpSchoolTypeBox(nullptr)
+  , mpSchoolTypeValueLabel(nullptr)
+  , mpSeparatorIndex(nullptr)
+  , mpLicenceLabel(nullptr)
+  , mpLicenceBox( nullptr)
+  , mpLicenceIcon(nullptr)
+  , mpLicenceLayout(nullptr)
+  , mpSceneItemSessionTitle(nullptr)
+  , mCurrentDocument(nullptr)
   // Issue 1683 (Evolution) - AOU - 20131206
-  , mpSeparatorFiles(NULL)
-  , mpTreeWidgetEdition(NULL)
-  , mpTreeWidgetPresentation(NULL)
+  , mpSeparatorFiles(nullptr)
+  , mpTreeWidgetEdition(nullptr)
+  , mpTreeWidgetPresentation(nullptr)
   , mMode(tUBTGZeroPageMode_EDITION)
   , mbFilesChanged(false)
   // Fin Issue 1683 (Evolution) - AOU - 20131206
@@ -1237,7 +1237,7 @@ void UBTeacherGuidePageZeroWidget::loadData()
 void UBTeacherGuidePageZeroWidget::persistData()
 {
     // check necessary because at document closing hide event is send after boardcontroller set
-    // to NULL
+    // to nullptr
     if (UBApplication::boardController) {
         UBDocumentProxy* documentProxy = UBApplication::boardController->selectedDocument();
 
@@ -1638,7 +1638,7 @@ void UBTeacherGuidePageZeroWidget::setFilesChanged()
     for (int i = 0; i < mpAddAFileItem->childCount(); i += 1)
         children << mpAddAFileItem->child(i);
 
-    foreach(QTreeWidgetItem* widgetItem, children) {
+    for (const auto& QTreeWidgetItem* widgetItem : children) {
 
         tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidgetEdition->itemWidget( widgetItem, 0))->saveData();
         if (node) {
@@ -1673,18 +1673,18 @@ void UBTeacherGuidePageZeroWidget::cleanData(tUBTGZeroPageMode mode)
     if (mode == tUBTGZeroPageMode_EDITION)
     {
         QList<QTreeWidgetItem*> itemToRemove = mpAddAFileItem->takeChildren();
-        foreach(QTreeWidgetItem* eachItem, itemToRemove) {
+        for (const auto& QTreeWidgetItem* eachItem : itemToRemove) {
             DELETEPTR(eachItem);
         }
     }
     else if (mode == tUBTGZeroPageMode_PRESENTATION)
     {
         QList<QTreeWidgetItem*> itemToRemove = mpTreeWidgetPresentation->invisibleRootItem()->takeChildren();
-        foreach(QTreeWidgetItem* eachItem, itemToRemove) {
+        for (const auto& QTreeWidgetItem* eachItem : itemToRemove) {
             DELETEPTR(eachItem);
         }
         // the mpMediaSwitchItem is deleted by the previous loop but the pointer is not set to zero
-        mpMediaSwitchItem = NULL;
+        mpMediaSwitchItem = nullptr;
     }
 }
 // Fin Issue 1683 (Evolution) - AOU - 20131206
@@ -1694,9 +1694,9 @@ void UBTeacherGuidePageZeroWidget::cleanData(tUBTGZeroPageMode mode)
  ***************************************************************************/
 UBTeacherGuideWidget::UBTeacherGuideWidget(QWidget* parent, const char* name) :
     UBAbstractTeacherGuide(parent)
-  , mpPageZeroWidget(NULL)
-  , mpEditionWidget(NULL)
-  , mpPresentationWidget(NULL)
+  , mpPageZeroWidget(nullptr)
+  , mpEditionWidget(nullptr)
+  , mpPresentationWidget(nullptr)
 {
     setObjectName(name);
     if (UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()) {

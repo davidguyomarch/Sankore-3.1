@@ -111,7 +111,7 @@ static bool mIsOldVersionFileWithText = false;
 
 QMap<QString,IDataStorage*> UBSvgSubsetAdaptor::additionalElementToStore;
 
-QString UBSvgSubsetAdaptor::toSvgTransform(const QMatrix& matrix)
+QString UBSvgSubsetAdaptor::toSvgTransform(const QTransform& matrix)
 {
     return QString("matrix(%1, %2, %3, %4, %5, %6)")
            .arg(matrix.m11(), 0 , 'g')
@@ -123,9 +123,9 @@ QString UBSvgSubsetAdaptor::toSvgTransform(const QMatrix& matrix)
 }
 
 
-QMatrix UBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
+QTransform UBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
 {
-    QMatrix matrix;
+    QTransform matrix;
     QString ts = transform;
     ts.replace("matrix(", "");
     ts.replace(")", "");
@@ -635,7 +635,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     QString parentId = QUuid::createUuid().toString();
 
-                    foreach(UBGraphicsPolygonItem* polygonItem, polygonItems)
+                    for (const auto& UBGraphicsPolygonItem* polygonItem : polygonItems)
                     {
                         polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
@@ -1186,7 +1186,7 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup(U
             mXmlReader.readNext();
     }
 
-    foreach(QGraphicsItem* item, groupContainer)
+    for (const auto& QGraphicsItem* item : groupContainer)
         group->addToGroup(item,false);
 
     if(action && !isAnActionForStroke){
@@ -1360,9 +1360,9 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             bool isFirstItem = true;
             if(strokesGroupItem && strokesGroupItem->isVisible()){
                 // Add the polygons
-                foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
+                for (const auto& QGraphicsItem* item : strokesGroupItem->childItems()){
                     UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
-                    if(NULL != poly){
+                    if(nullptr != poly){
                         polygonItemToSvgPolygon(poly, true, isFirstItem ? strokesGroupItem->Delegate()->action(): 0);
                         items.removeOne(poly);
                         isFirstItem = false;
@@ -1391,7 +1391,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                     mXmlWriter.writeStartElement("g");
                     openStroke = currentStroke;
 
-                    QMatrix matrix = item->sceneMatrix();
+                    QTransform matrix = item->sceneTransform();
 
                     if (!matrix.isIdentity())
                         mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
@@ -1423,7 +1423,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                         strokeToSvgPolyline(stroke, groupHoldsInfo);
 
                         //we can dequeue all polygons belonging to that stroke
-                        foreach(UBGraphicsPolygonItem* gi, stroke->polygons())
+                        for (const auto& UBGraphicsPolygonItem* gi : stroke->polygons())
                         {
                             items.removeOne(gi);
                         }
@@ -1646,7 +1646,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         {
             QVector<tIDataStorage*> result;
 
-            foreach (UBDocumentExternalFile* ef, *(mpDocument->externalFiles())) {
+            for (const auto& UBDocumentExternalFile* ef : *(mpDocument->externalFiles())) {
                 data = new tIDataStorage();
                 data->name = "file";
                 data->type = eElementType_UNIQUE;
@@ -1662,17 +1662,17 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         dataStorageItems << new tIDataStorage("teacherGuide", eElementType_END);
         //issue 1682 - NNE - 20140122 : END
 
-        foreach(tIDataStorage* eachItem, dataStorageItems){
+        for (const auto& tIDataStorage* eachItem : dataStorageItems){
             if(eachItem->type == eElementType_START){
                 mXmlWriter.writeStartElement(eachItem->name);
-                foreach(QString key,eachItem->attributes.keys())
+                for (const auto& QString key : eachItem->attributes.keys())
                     mXmlWriter.writeAttribute(key,eachItem->attributes.value(key));
             }
             else if (eachItem->type == eElementType_END)
                 mXmlWriter.writeEndElement();
             else if (eachItem->type == eElementType_UNIQUE){
                 mXmlWriter.writeStartElement(eachItem->name);
-                foreach(QString key,eachItem->attributes.keys())
+                for (const auto& QString key : eachItem->attributes.keys())
                     mXmlWriter.writeAttribute(key,eachItem->attributes.value(key));
                 mXmlWriter.writeEndElement();
             }
@@ -1764,7 +1764,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
 
         curParent->appendChild(curGroupElement);
 
-        foreach (QGraphicsItem *item, groupItem->childItems()) {
+        for (const auto& QGraphicsItem *item : groupItem->childItems()) {
             QUuid tmpUuid = UBGraphicsScene::getPersonalUuid(item);
             if (!tmpUuid.isNull()) {
                 if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count()) {
@@ -1827,7 +1827,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::strokeToSvgPolyline(UBGraphicsStroke
         mXmlWriter.writeStartElement("polyline");
         QVector<QPointF> points;
 
-        foreach(UBGraphicsPolygonItem* polygon, pols)
+        for (const auto& UBGraphicsPolygonItem* polygon : pols)
         {
             points << polygon->originalLine().p1();
         }
@@ -1877,7 +1877,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::strokeToSvgPolygon(UBGraphicsStroke*
     {
         QPolygonF united;
 
-        foreach(UBGraphicsPolygonItem* pi, pis)
+        for (const auto& UBGraphicsPolygonItem* pi : pis)
         {
             united = united.united(pi->polygon());
         }
@@ -1902,7 +1902,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgPolygon(UBGraphicsPo
 
         QString points = pointsToSvgPointsAttribute(polygon);
         mXmlWriter.writeAttribute("points", points);
-        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->sceneMatrix()));
+        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->sceneTransform()));
         mXmlWriter.writeAttribute("fill", polygonItem->brush().color().name());
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
                                   , "fill-on-dark-background", polygonItem->colorOnDarkBackground().name());
@@ -1965,7 +1965,7 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
                          QString::SkipEmptyParts);
 
-        foreach(const QString sPoint, ts)
+        for (const auto& const QString sPoint : ts)
         {
             QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
 
@@ -2000,7 +2000,7 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
     QStringRef svgTransform = mXmlReader.attributes().value("transform");
 
-    QMatrix itemMatrix;
+    QTransform itemMatrix;
 
     if (!svgTransform.isNull())
     {
@@ -2262,7 +2262,7 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
 
         QList<QPointF> points;
 
-        foreach(const QString sPoint, ts)
+        for (const auto& const QString sPoint : ts)
         {
             QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
 
@@ -2536,9 +2536,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsMed
 
     graphicsItemToSvg(audioItem);
 
-    if (audioItem->mediaObject()->state() == Phonon::PausedState && audioItem->mediaObject()->remainingTime() > 0)
+    if (audioItem->mediaPlayer()->playbackState() == QMediaPlayer::PausedState && audioItem->mediaPlayer()->duration() - audioItem->mediaPlayer()->position() > 0)
     {
-        qint64 pos = audioItem->mediaObject()->currentTime();
+        qint64 pos = audioItem->mediaPlayer()->position();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
@@ -2564,9 +2564,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsMed
 
     graphicsItemToSvg(videoItem);
 
-    if (videoItem->mediaObject()->state() == Phonon::PausedState && videoItem->mediaObject()->remainingTime() > 0)
+    if (videoItem->mediaPlayer()->playbackState() == QMediaPlayer::PausedState && videoItem->mediaPlayer()->duration() - videoItem->mediaPlayer()->position() > 0)
     {
-        qint64 pos = videoItem->mediaObject()->currentTime();
+        qint64 pos = videoItem->mediaPlayer()->position();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
@@ -2661,7 +2661,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
 
     QStringRef svgTransform = mXmlReader.attributes().value("transform");
 
-    QMatrix itemMatrix;
+    QTransform itemMatrix;
 
     if (!svgTransform.isNull())
     {
@@ -2795,7 +2795,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
     mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
 
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
 
     QString zs;
     zs.setNum(item->zValue(), 'f'); // 'f' keeps precision
@@ -2915,7 +2915,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
     //persists widget state
     QMap<QString, QString> preferences = item->preferences();
 
-    foreach(QString key, preferences.keys())
+    for (const auto& QString key : preferences.keys())
     {
         QString value = preferences.value(key);
 
@@ -2930,7 +2930,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
     //persists datasore state
     QMap<QString, QString> datastore = item->datastoreEntries();
 
-    foreach(QString key, datastore.keys())
+    for (const auto& QString key : datastore.keys())
     {
         QString value = datastore.value(key);
 
@@ -3160,7 +3160,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                 }
                 QStringRef fontStyle = mXmlReader.attributes().value("style");
                 if (!fontStyle.isNull()) {
-                    foreach (QString styleToken, fontStyle.toString().split(";")) {
+                    for (const auto& QString styleToken : fontStyle.toString().split(";")) {
                         styleToken = styleToken.trimmed();
                         if (styleToken.startsWith(sFontSizePrefix) && styleToken.endsWith(sPixelUnit)) {
                             int fontSize = styleToken.mid(
@@ -3241,7 +3241,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::curtainItemToSvg(UBGraphicsCurtainIt
     mXmlWriter.writeAttribute("y", QString("%1").arg(curtainItem->boundingRect().center().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(curtainItem->boundingRect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(curtainItem->boundingRect().height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(curtainItem->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(curtainItem->sceneTransform()));
 
     //graphicsItemToSvg(curtainItem);
     QString zs;
@@ -3299,7 +3299,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::rulerToSvg(UBGraphicsRuler* item)
     mXmlWriter.writeAttribute("y", QString("%1").arg(item->boundingRect().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
 
     QString zs;
     zs.setNum(item->zValue(), 'f'); // 'f' keeps precision
@@ -3354,7 +3354,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::compassToSvg(UBGraphicsCompass* item
     mXmlWriter.writeAttribute("y", QString("%1").arg(item->boundingRect().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
 
     QString zs;
     zs.setNum(item->zValue(), 'f'); // 'f' keeps precision
@@ -3411,7 +3411,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::protractorToSvg(UBGraphicsProtractor
     mXmlWriter.writeAttribute("y", QString("%1").arg(item->rect().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(item->rect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->rect().height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
 
     QString angle;
     angle.setNum(item->angle(), 'f'); // 'f' keeps precision
@@ -3485,7 +3485,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::triangleToSvg(UBGraphicsTriangle *it
     mXmlWriter.writeAttribute("y", QString("%1").arg(item->boundingRect().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
     mXmlWriter.writeAttribute("orientation", UBGraphicsTriangle::orientationToStr(item->getOrientation()));
 
     QString zs;
@@ -3761,7 +3761,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::getStyleFromSvg(UBAbstractGraphicsIt
 
     // Transform matrix
     QStringRef svgTransform = mXmlReader.attributes().value("transform");
-    QMatrix itemMatrix;
+    QTransform itemMatrix;
     if (!svgTransform.isNull())
     {
         itemMatrix = fromSvgTransform(svgTransform.toString());
@@ -3875,7 +3875,7 @@ UBAbstractGraphicsPathItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::shapePathFrom
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
                          QString::SkipEmptyParts);
 
-        foreach(const QString sPoint, ts)
+        for (const auto& const QString sPoint : ts)
         {
             QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
 
@@ -3943,7 +3943,7 @@ UBEditableGraphicsRegularShapeItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::shape
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
                          QString::SkipEmptyParts);
 
-        foreach(const QString sPoint, ts)
+        for (const auto& const QString sPoint : ts)
         {
             QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
 
@@ -4166,7 +4166,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeAbstractGraphicsItemStyle(UBAbs
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(item->uuid()));
 
     //transform matrix
-    mXmlWriter.writeAttribute("transform",toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform",toSvgTransform(item->sceneTransform()));
 }
 
 void UBSvgSubsetAdaptor::convertPDFObjectsToImages(UBDocumentProxy* proxy)
@@ -4179,7 +4179,7 @@ void UBSvgSubsetAdaptor::convertPDFObjectsToImages(UBDocumentProxy* proxy)
         {
             bool foundPDFItem = false;
 
-            foreach(QGraphicsItem* item, scene->items())
+            for (const auto& QGraphicsItem* item : scene->items())
             {
                 UBGraphicsPDFItem *pdfItem = dynamic_cast<UBGraphicsPDFItem*>(item);
 
@@ -4214,7 +4214,7 @@ void UBSvgSubsetAdaptor::convertSvgImagesToImages(UBDocumentProxy* proxy)
         {
             bool foundSvgItem = false;
 
-            foreach(QGraphicsItem* item, scene->items())
+            for (const auto& QGraphicsItem* item : scene->items())
             {
                 UBGraphicsSvgItem *svgItem = dynamic_cast<UBGraphicsSvgItem*>(item);
 

@@ -23,7 +23,9 @@
 
 #include "UBSetting.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "UBSettings.h"
 
@@ -98,7 +100,7 @@ UBColorListSetting::UBColorListSetting(UBSettings* owner, const QString& pDomain
     : UBSetting(owner, pDomain, pKey, pDefaultValue)
     , mAlpha(pAlpha)
 {
-    foreach(QString s, get().toStringList())
+    for (const auto& QString s : get().toStringList())
     {
         QColor color;
         color.setNamedColor(s);
@@ -118,7 +120,7 @@ QVariant UBColorListSetting::reset()
 
     mColors.clear();
 
-    foreach(QString s, get().toStringList())
+    for (const auto& QString s : get().toStringList())
     {
         QColor color;
         color.setNamedColor(s);

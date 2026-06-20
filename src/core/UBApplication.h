@@ -24,7 +24,10 @@
 #ifndef UBAPPLICATION_H_
 #define UBAPPLICATION_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
+#include <QProxyStyle>
 
 #include "qtsingleapplication.h"
 
@@ -148,12 +151,12 @@ class UBApplication : public QtSingleApplication
 };
 
 
-class UBStyle : public QPlastiqueStyle
+class UBStyle : public QProxyStyle
 {
     public:
 
         UBStyle()
-            : QPlastiqueStyle()
+            : QProxyStyle("Fusion")
         {
             // NOOP
         }

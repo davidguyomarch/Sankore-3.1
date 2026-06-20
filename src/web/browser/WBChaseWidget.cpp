@@ -64,7 +64,9 @@
 
 #include "WBChaseWidget.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 
 WBChaseWidget::WBChaseWidget(QWidget *parent, QPixmap pixmap, bool pixmapEnabled)

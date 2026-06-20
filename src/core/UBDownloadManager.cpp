@@ -79,7 +79,7 @@ void UBAsyncLocalFileDownloader::run()
                                                                   destDirectory,
                                                                   uuid,
                                                                   mTo,
-                                                                  NULL);
+                                                                  nullptr);
 
     if (m_bAborting)
     {
@@ -87,7 +87,7 @@ void UBAsyncLocalFileDownloader::run()
             QFile::remove(mTo);
     }
     else
-        emit signal_asyncCopyFinished(descriptor.id, !mTo.isEmpty(), QUrl::fromLocalFile(mTo), QUrl(descriptor.originalSrcUrl), "", NULL, descriptor.pos, descriptor.size, descriptor.isBackground);
+        emit signal_asyncCopyFinished(descriptor.id, !mTo.isEmpty(), QUrl::fromLocalFile(mTo), QUrl(descriptor.originalSrcUrl), "", nullptr, descriptor.pos, descriptor.size, descriptor.isBackground);
 }
 
 void UBAsyncLocalFileDownloader::abort()
@@ -96,7 +96,7 @@ void UBAsyncLocalFileDownloader::abort()
 }
 
 /** The unique instance of the download manager */
-static UBDownloadManager* pInstance = NULL;
+static UBDownloadManager* pInstance = nullptr;
 
 /**
  * \brief Constructor
@@ -125,7 +125,7 @@ UBDownloadManager::~UBDownloadManager()
  */
 UBDownloadManager* UBDownloadManager::downloadManager()
 {
-    if(NULL == pInstance)
+    if(nullptr == pInstance)
     {
         pInstance = new UBDownloadManager();
     }
@@ -138,7 +138,7 @@ void UBDownloadManager::destroy()
     {
         delete pInstance;
     }
-    pInstance = NULL;
+    pInstance = nullptr;
 }
 
 /**
@@ -473,7 +473,7 @@ void UBDownloadManager::onDownloadError(int id)
 {
     QNetworkReply *pReply = dynamic_cast<QNetworkReply *>(mDownloads.value(id));
 
-    if(NULL != pReply)
+    if(nullptr != pReply)
     {
         QString errorString = tr("Download failed.");
         // Check which error occured:

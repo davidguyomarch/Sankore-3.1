@@ -26,24 +26,24 @@
 
 UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWidget* parent, const char* name ) : QWidget (parent)
 	, featuresController(controller)
-    , mButtonGroup(NULL)
-    , mSearchBar(NULL)
-    , mLayout(NULL)
-    , mpFavoriteAction(NULL)
-    , mpSocialAction(NULL)
-    , mpRescanModelAction(NULL)
-    , mpDeleteAction(NULL)
-    , mpSearchAction(NULL)
-    , mpCloseAction(NULL)
-    , mpRemoveFavorite(NULL)
-    , mpNewFolderAction(NULL)
-    , mpFavoriteBtn(NULL)
-    , mpSocialBtn(NULL)
-    , mpRescanModelBtn(NULL)
-    , mpDeleteBtn(NULL)
-    , mpCloseBtn(NULL)
-    , mpRemoveFavoriteBtn(NULL)
-    , mpNewFolderBtn(NULL)
+    , mButtonGroup(nullptr)
+    , mSearchBar(nullptr)
+    , mLayout(nullptr)
+    , mpFavoriteAction(nullptr)
+    , mpSocialAction(nullptr)
+    , mpRescanModelAction(nullptr)
+    , mpDeleteAction(nullptr)
+    , mpSearchAction(nullptr)
+    , mpCloseAction(nullptr)
+    , mpRemoveFavorite(nullptr)
+    , mpNewFolderAction(nullptr)
+    , mpFavoriteBtn(nullptr)
+    , mpSocialBtn(nullptr)
+    , mpRescanModelBtn(nullptr)
+    , mpDeleteBtn(nullptr)
+    , mpCloseBtn(nullptr)
+    , mpRemoveFavoriteBtn(nullptr)
+    , mpNewFolderBtn(nullptr)
 {
 	setObjectName(name);
     setStyleSheet(QString("background: #EEEEEE; border-radius : 10px; border : 2px solid #999999;"));
@@ -262,7 +262,7 @@ void UBFeaturesActionBar::dropEvent(QDropEvent *event)
     QWidget *dest = childAt(event->pos());
     if (dest == mpDeleteBtn) {
         QList<UBFeature> featuresList = fMimeData->features();
-        foreach (UBFeature curFeature, featuresList) {
+        for (const auto& UBFeature curFeature : featuresList) {
             if (!curFeature.isDeletable()) {
                 qWarning() << "Undeletable feature found, stopping deleting process";
                 event->ignore();
@@ -292,7 +292,7 @@ bool UBFeaturesActionBar::eventFilter(QObject *obj, QEvent *event)
         if (fMimeData) {
 
             if (obj == mpDeleteBtn) {
-                foreach (UBFeature curFeature, fMimeData->features()) {
+                for (const auto& UBFeature curFeature : fMimeData->features()) {
                     if (!curFeature.isDeletable()) {
                         event->ignore();
                         return true;
@@ -301,7 +301,7 @@ bool UBFeaturesActionBar::eventFilter(QObject *obj, QEvent *event)
                 event->accept();
 
             } else if (obj == mpFavoriteBtn) {
-                foreach (UBFeature curFeature, fMimeData->features()) {
+                for (const auto& UBFeature curFeature : fMimeData->features()) {
                     if (curFeature.getType() == FEATURE_FOLDER) {
                         event->ignore();
                         return true;

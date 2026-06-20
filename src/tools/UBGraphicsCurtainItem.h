@@ -24,7 +24,9 @@
 #ifndef UBGRAPHICSCURTAINITEM_H_
 #define UBGRAPHICSCURTAINITEM_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "core/UB.h"
 

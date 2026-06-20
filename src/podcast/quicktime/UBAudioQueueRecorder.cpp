@@ -92,7 +92,7 @@ QList<AudioDeviceID> UBAudioQueueRecorder::inputDeviceIDs()
     }
 
     /*
-    foreach(AudioDeviceID id, inputDeviceIDs)
+    for (const auto& AudioDeviceID id : inputDeviceIDs)
     {
             qDebug() << "Device" << id <<  deviceNameFromDeviceID(id) << deviceUIDFromDeviceID(id);
     }
@@ -262,7 +262,7 @@ bool UBAudioQueueRecorder::init(const QString& waveInDeviceName)
         mBuffers << outBuffer;
     }
 
-    foreach(AudioQueueBufferRef buffer, mBuffers)
+    for (const auto& AudioQueueBufferRef buffer : mBuffers)
     {
         err = AudioQueueEnqueueBuffer(mQueue, buffer, 0, 0);
         if (err)
@@ -306,7 +306,7 @@ bool UBAudioQueueRecorder::close()
         }
     }
 
-    foreach(AudioQueueBufferRef buffer, mBuffers)
+    for (const auto& AudioQueueBufferRef buffer : mBuffers)
     {
         OSStatus err = AudioQueueFreeBuffer(mQueue, buffer);
         if (err)

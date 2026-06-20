@@ -24,7 +24,9 @@
 #ifndef UBWEBCONTROLLER_H_
 #define UBWEBCONTROLLER_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>
@@ -69,8 +71,8 @@ class UBWebController : public QObject
 
         WBBrowserWindow* GetCurrentWebBrowser()
         {
-            if( mCurrentWebBrowser != NULL ) return *mCurrentWebBrowser;
-            else return NULL;
+            if( mCurrentWebBrowser != nullptr ) return *mCurrentWebBrowser;
+            else return nullptr;
         };
 
 

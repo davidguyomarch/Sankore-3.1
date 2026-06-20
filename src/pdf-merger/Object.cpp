@@ -572,7 +572,7 @@ Object* Object::findPatternInObjOrParents(const std::string &pattern)
    }
 
    Object * parent = this;
-   Object *foundObj = NULL;
+   Object *foundObj = nullptr;
    while(1)
    {
       unsigned int startOfParent = content.find("/Parent");

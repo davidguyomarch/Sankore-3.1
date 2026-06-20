@@ -158,7 +158,7 @@ bool UBWaveRecorder::close()
         return false;
     }
 
-    foreach(WAVEHDR* buffer, mWaveBuffers)
+    for (const auto& WAVEHDR* buffer : mWaveBuffers)
     {
         waveInUnprepareHeader(mWaveInDevice, buffer, sizeof(WAVEHDR));
         delete [] buffer->lpData;

@@ -65,7 +65,9 @@
 #ifndef WBWEBVIEW_H
 #define WBWEBVIEW_H
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>

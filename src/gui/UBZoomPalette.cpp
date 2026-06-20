@@ -23,7 +23,9 @@
 
 #include "UBZoomPalette.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <math.h>
 
 #include "core/UBApplication.h"

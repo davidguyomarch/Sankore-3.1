@@ -25,7 +25,8 @@
 #define UBGRAPHICSITEMSACTIONS_H
 
 #include <QObject>
-#include <phonon>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 
 enum eUBGraphicsItemMovePageAction {

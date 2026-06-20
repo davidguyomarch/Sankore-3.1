@@ -23,7 +23,9 @@
 
 #include "UBGraphicsPDFItem.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "UBGraphicsScene.h"
 #include "UBGraphicsPixmapItem.h"

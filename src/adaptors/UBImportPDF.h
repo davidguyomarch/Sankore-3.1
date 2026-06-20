@@ -24,7 +24,9 @@
 #ifndef UBIMPORTPDF_H_
 #define UBIMPORTPDF_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include "UBImportAdaptor.h"
 
 class UBDocumentProxy;

@@ -182,7 +182,7 @@ private:
 };
 
 
-class UBDraggableWeb : public QWebView
+class UBDraggableWeb : public QWebEngineView
 {
     Q_OBJECT
 public:

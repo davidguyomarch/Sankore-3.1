@@ -104,24 +104,24 @@ void UBCachePreviewWidget::resizeEvent(QResizeEvent *event)
 }
 
 UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
-  , mpLayout(NULL)
-  , mpCachePropertiesLabel(NULL)
-  , mpColorLabel(NULL)
-  , mpShapeLabel(NULL)
-  , mpWidthLabel(NULL)
-  , mpSelectColorButton(NULL)
-  , mpSquareButton(NULL)
-  , mpCircleButton(NULL)
-  , mpCloseButton(NULL)
-  , mpWidthSlider(NULL)
-  , mpColorLayout(NULL)
-  , mpShapeLayout(NULL)
-  , mpCloseLayout(NULL)
-  , mpProperties(NULL)
-  , mpSizeLayout(NULL)
-  , mpPropertiesLayout(NULL)
+  , mpLayout(nullptr)
+  , mpCachePropertiesLabel(nullptr)
+  , mpColorLabel(nullptr)
+  , mpShapeLabel(nullptr)
+  , mpWidthLabel(nullptr)
+  , mpSelectColorButton(nullptr)
+  , mpSquareButton(nullptr)
+  , mpCircleButton(nullptr)
+  , mpCloseButton(nullptr)
+  , mpWidthSlider(nullptr)
+  , mpColorLayout(nullptr)
+  , mpShapeLayout(nullptr)
+  , mpCloseLayout(nullptr)
+  , mpProperties(nullptr)
+  , mpSizeLayout(nullptr)
+  , mpPropertiesLayout(nullptr)
   , mActualShape(eMaskShape_Circle)
-  , mpCurrentCache(NULL)
+  , mpCurrentCache(nullptr)
   , mKeepAspectRatio(true)
   , mOtherSliderUsed(false)
 {
@@ -282,7 +282,7 @@ void UBCachePropertiesWidget::onCloseClicked()
 
         // Remove the cache from the board
         UBApplication::boardController->activeScene()->removeItem(mpCurrentCache);
-        mpCurrentCache = NULL;
+        mpCurrentCache = nullptr;
 
         if(mCaches.empty())
         {
@@ -312,7 +312,7 @@ void UBCachePropertiesWidget::syncCacheColor(QColor color)
 
     mpSelectColorButton->setIcon(QIcon(pix));
 
-    if(NULL != mpCurrentCache)
+    if(nullptr != mpCurrentCache)
     {
         mpCurrentCache->setMaskColor(mActualColor);
     }
@@ -342,12 +342,12 @@ void UBCachePropertiesWidget::updateShapeButtons()
         mpCircleButton->setChecked(false);
     }
 
-    if(NULL != mpCurrentCache)
+    if(nullptr != mpCurrentCache)
     {
         mpCurrentCache->setMaskShape(mActualShape);
     }
 
-    if (NULL != mpPreviewWidget)
+    if (nullptr != mpPreviewWidget)
     {
         mpPreviewWidget->setShape(mActualShape);
     }
@@ -357,7 +357,7 @@ void UBCachePropertiesWidget::updateCurrentCache()
 {
     bool isBoardMode = false;
     // this widget can work only on Board mode
-    if( UBApplication::applicationController != NULL )
+    if( UBApplication::applicationController != nullptr )
     {
         // if app controller is available, and current mode is Board, and no show desktop, than all ok, just process
         if( UBApplication::applicationController->displayMode() == UBApplicationController::Board &&
@@ -372,14 +372,14 @@ void UBCachePropertiesWidget::updateCurrentCache()
     {
         // Get the current page cache
         QList<QGraphicsItem*> items = UBApplication::boardController->activeScene()->items();
-        foreach(QGraphicsItem* it, items)
+        for (const auto& QGraphicsItem* it : items)
         {
             if("Cache" == it->data(Qt::UserRole).toString())
             {
                 setEnabled(true);
                 emit showTab(this);
                 mpCurrentCache = dynamic_cast<UBGraphicsCache*>(it);
-                if((NULL != mpCurrentCache) && (!mCaches.contains(mpCurrentCache)))
+                if((nullptr != mpCurrentCache) && (!mCaches.contains(mpCurrentCache)))
                     mCaches.append(mpCurrentCache);
                 else
                     return
@@ -417,13 +417,13 @@ void UBCachePropertiesWidget::updateCurrentCache()
     // 2 - we are not in Board mode
     // 3 - we are in Board mode, but show desktop (as really - Desktop mode)
     emit hideTab(this);
-    mpCurrentCache = NULL;
+    mpCurrentCache = nullptr;
     setDisabled(true);
 }
 
 void UBCachePropertiesWidget::onWidthChanged(int newSize)
 {
-    if(NULL != mpCurrentCache)
+    if(nullptr != mpCurrentCache)
     {
         if(mKeepAspectRatio)
         {
@@ -451,7 +451,7 @@ void UBCachePropertiesWidget::onWidthChanged(int newSize)
 
 void UBCachePropertiesWidget::onHeightChanged(int newSize)
 {
-    if(NULL != mpCurrentCache)
+    if(nullptr != mpCurrentCache)
     {
         if (mKeepAspectRatio)
         {

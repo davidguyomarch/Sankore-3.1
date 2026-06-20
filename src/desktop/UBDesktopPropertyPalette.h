@@ -23,7 +23,9 @@
 #ifndef UBDESKTOPPENPALETTE_H
 #define UBDESKTOPPENPALETTE_H
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QResizeEvent>
 
 #include "gui/UBPropertyPalette.h"

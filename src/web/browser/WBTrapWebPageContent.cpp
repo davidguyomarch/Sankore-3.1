@@ -186,7 +186,7 @@ void WBTrapWebPageContentWindow::setUrl(const QUrl &url)
 
 void WBTrapWebPageContentWindow::setReadyForTrap(bool bReady)
 {
-    foreach (QToolButton *button, mTrapButtons)
+    for (const auto& QToolButton *button : mTrapButtons)
     {
         button->defaultAction()->setEnabled(bReady);
     }

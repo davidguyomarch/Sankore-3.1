@@ -23,7 +23,9 @@
 
 #include "UBGraphicsPixmapItem.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QMimeData>
 #include <QDrag>
 

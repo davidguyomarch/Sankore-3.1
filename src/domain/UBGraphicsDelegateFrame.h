@@ -24,7 +24,9 @@
 #ifndef UBGRAPHICSDELEGATEFRAME_H_
 #define UBGRAPHICSDELEGATEFRAME_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include "core/UB.h"
 
 class QGraphicsSceneMouseEvent;

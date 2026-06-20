@@ -31,8 +31,8 @@
 
 UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
     QObject(parent)
-    , mTransitionDlg(NULL)
-    , mThread(NULL)
+    , mTransitionDlg(nullptr)
+    , mThread(nullptr)
 {
     mOldSankoreDirectory = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
 
@@ -48,15 +48,15 @@ UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
 
 UniboardSankoreTransition::~UniboardSankoreTransition()
 {
-    if(NULL != mTransitionDlg)
+    if(nullptr != mTransitionDlg)
     {
         delete mTransitionDlg;
-        mTransitionDlg = NULL;
+        mTransitionDlg = nullptr;
     }
 
     if(mThread){
         delete mThread;
-        mThread = NULL;
+        mThread = nullptr;
     }
 }
 
@@ -95,7 +95,7 @@ void UniboardSankoreTransition::documentTransition()
         QString backupDirectoryPath = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
 
         if (fileInfoList.count() != 0){
-            mTransitionDlg = new UBUpdateDlg(NULL, fileInfoList.count(), backupDirectoryPath);
+            mTransitionDlg = new UBUpdateDlg(nullptr, fileInfoList.count(), backupDirectoryPath);
             connect(mTransitionDlg, SIGNAL(updateFiles()), this, SLOT(startDocumentTransition()));
             connect(this, SIGNAL(transitionFinished(bool)), mTransitionDlg, SLOT(onFilesUpdated(bool)));
             mTransitionDlg->show();

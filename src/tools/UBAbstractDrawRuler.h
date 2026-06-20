@@ -24,7 +24,9 @@
 #ifndef UB_ABSTRACTDRAWRULER_H_
 #define UB_ABSTRACTDRAWRULER_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include "frameworks/UBGeometryUtils.h"
 
 class UBGraphicsScene;

@@ -23,7 +23,9 @@
 
 #include "UBGraphicsDelegateFrame.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtSvg>
 
 #include "core/UBApplication.h"
@@ -645,7 +647,7 @@ QList<UBGraphicsDelegateFrame *> UBGraphicsDelegateFrame::getLinkedFrames()
     {
         sItems.removeAll(delegated());
 
-        foreach(QGraphicsItem *item, sItems)
+        for (const auto& QGraphicsItem *item : sItems)
         {
             UBGraphicsItem *gitem = dynamic_cast<UBGraphicsItem*>(item);
             if (gitem)
@@ -658,7 +660,7 @@ QList<UBGraphicsDelegateFrame *> UBGraphicsDelegateFrame::getLinkedFrames()
 void UBGraphicsDelegateFrame::prepareFramesToMove(QList<UBGraphicsDelegateFrame *> framesToMove)
 {
     mLinkedFrames = framesToMove;
-    foreach (UBGraphicsDelegateFrame *frame, mLinkedFrames)
+    for (const auto& UBGraphicsDelegateFrame *frame : mLinkedFrames)
     {
         frame->prepareLinkedFrameToMove();
     }
@@ -696,7 +698,7 @@ void UBGraphicsDelegateFrame::moveLinkedItems(QLineF movingVector, bool bLinked)
     }
     else
     {
-        foreach(UBGraphicsDelegateFrame* frame, mLinkedFrames)
+        for (const auto& UBGraphicsDelegateFrame* frame : mLinkedFrames)
         {
            frame->moveLinkedItems(movingVector, true);
         }

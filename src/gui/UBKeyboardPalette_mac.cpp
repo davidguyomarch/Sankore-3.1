@@ -35,27 +35,27 @@ void UBKeyboardButton::sendUnicodeSymbol(KEYCODE keycode)
 {
     // if shift pressrd
     if (1 == keycode.modifier)
-        CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, 56, true));
+        CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(nullptr, 56, true));
     //if caps pressed
     if (2 == keycode.modifier)
-        CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, 57, true));
+        CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(nullptr, 57, true));
 
-    CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, keycode.code, true));
-    CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, keycode.code, false));
+    CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(nullptr, keycode.code, true));
+    CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(nullptr, keycode.code, false));
 
     //release shift
     if (keycode.modifier)
-		CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, 56, false));
+		CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(nullptr, 56, false));
     //release caps
     if (2 == keycode.modifier)
-        CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, 57, false));
+        CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(nullptr, 57, false));
 	
 }
 
 void UBKeyboardButton::sendControlSymbol(int nSymbol)
 {
-	CGEventRef event1 = CGEventCreateKeyboardEvent(NULL, nSymbol, true);
-	CGEventRef event2 = CGEventCreateKeyboardEvent(NULL, nSymbol, false);
+	CGEventRef event1 = CGEventCreateKeyboardEvent(nullptr, nSymbol, true);
+	CGEventRef event2 = CGEventCreateKeyboardEvent(nullptr, nSymbol, false);
 
 	CGEventPost(kCGHIDEventTap, event1);
 	CGEventPost(kCGHIDEventTap, event2);
@@ -85,7 +85,7 @@ void UBKeyboardPalette::checkLayout()
     CFStringRef sr = (CFStringRef) TISGetInputSourceProperty(selectedLocale,
                                                           kTISPropertyInputSourceID);
 
-    if (sr!=NULL)
+    if (sr!=nullptr)
     {
         char clId[1024];
         CFStringGetCString(sr, clId, 1024, 0);

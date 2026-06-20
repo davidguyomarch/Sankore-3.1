@@ -33,11 +33,11 @@
  */
 UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):
 	UBDockPalette(eUBDockPaletteType_LEFT, parent, name)
-	, mNavigator(NULL)
-	, mLayout(NULL)
-    , mHLayout(NULL)
-    , mPageNbr(NULL)
-    , mClock(NULL)
+	, mNavigator(nullptr)
+	, mLayout(nullptr)
+    , mHLayout(nullptr)
+    , mPageNbr(nullptr)
+    , mClock(nullptr)
 {
     // Build the gui
     mLayout = new QVBoxLayout(this);
@@ -80,30 +80,30 @@ UBNavigatorPalette::~UBNavigatorPalette()
 {
     killTimer(mTimerID);
 
-    if(NULL != mClock)
+    if(nullptr != mClock)
     {
         delete mClock;
-        mClock = NULL;
+        mClock = nullptr;
     }
-    if(NULL != mPageNbr)
+    if(nullptr != mPageNbr)
     {
         delete mPageNbr;
-        mPageNbr = NULL;
+        mPageNbr = nullptr;
     }
-    if(NULL != mHLayout)
+    if(nullptr != mHLayout)
     {
         delete mHLayout;
-        mHLayout = NULL;
+        mHLayout = nullptr;
     }
-    if(NULL != mLayout)
+    if(nullptr != mLayout)
     {
 	delete mLayout;
-	mLayout = NULL;
+	mLayout = nullptr;
     }
-    if(NULL != mNavigator)
+    if(nullptr != mNavigator)
     {
 	delete mNavigator;
-	mNavigator = NULL;
+	mNavigator = nullptr;
     }
 }
 
@@ -126,7 +126,7 @@ void UBNavigatorPalette::refresh()
 void UBNavigatorPalette::resizeEvent(QResizeEvent *event)
 {
     UBDockPalette::resizeEvent(event);
-    if(NULL != mNavigator)
+    if(nullptr != mNavigator)
     {
         mNavigator->setMinimumHeight(height() - 2*border());
     }

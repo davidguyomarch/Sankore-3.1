@@ -63,7 +63,7 @@ UBDrawingStrokePropertiesPalette::UBDrawingStrokePropertiesPalette(Qt::Orientati
 
     //group thickness buttons
     mButtonGroupStrokeThickness = new QButtonGroup(this);
-    foreach(UBActionPaletteButton* button, mListBtnStrokeThickness)
+    for (const auto& UBActionPaletteButton* button : mListBtnStrokeThickness)
     {
         mButtonGroupStrokeThickness->addButton(button);
         thicknessLayout->addWidget(button);
@@ -93,7 +93,7 @@ UBDrawingStrokePropertiesPalette::UBDrawingStrokePropertiesPalette(Qt::Orientati
 
     //group style buttons
     mButtonGroupStrokeStyle = new QButtonGroup(this);
-    foreach(UBActionPaletteButton* button, mListBtnStrokeStyle)
+    for (const auto& UBActionPaletteButton* button : mListBtnStrokeStyle)
     {
         mButtonGroupStrokeStyle->addButton(button);
         styleLayout->addWidget(button);
@@ -117,12 +117,12 @@ UBDrawingStrokePropertiesPalette::~UBDrawingStrokePropertiesPalette()
 {
     DELETEPTR(mBtnColorPicker);
 
-    foreach(UBActionPaletteButton * button, mListBtnStrokeThickness){
+    for (const auto& UBActionPaletteButton * button : mListBtnStrokeThickness){
         DELETEPTR(button);
     }
     DELETEPTR(mButtonGroupStrokeThickness);
 
-    foreach(UBActionPaletteButton * button, mListBtnStrokeStyle){
+    for (const auto& UBActionPaletteButton * button : mListBtnStrokeStyle){
         DELETEPTR(button);
     }
     DELETEPTR(mButtonGroupStrokeStyle);

@@ -24,7 +24,9 @@
 #ifndef UBGRAPHICSMEDIAITEMDELEGATE_H_
 #define UBGRAPHICSMEDIAITEMDELEGATE_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QMediaPlayer>
 #include <QTimer>
 

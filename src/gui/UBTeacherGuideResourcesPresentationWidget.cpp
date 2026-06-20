@@ -77,7 +77,7 @@ void UBTeacherGuideResourcesPresentationWidget::showData( QVector<tUBGEElementNo
     }
 #endif
 
-    foreach(tUBGEElementNode* element, data) {
+    for (const auto& tUBGEElementNode* element : data) {
         if (element->name == "media") {
             createMediaButtonItem();
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpMediaSwitchItem);
@@ -156,11 +156,11 @@ void UBTeacherGuideResourcesPresentationWidget::cleanData()
 {
     //tree clean
     QList<QTreeWidgetItem*> itemToRemove = mpRootWidgetItem->takeChildren();
-    foreach(QTreeWidgetItem* eachItem, itemToRemove) {
+    for (const auto& QTreeWidgetItem* eachItem : itemToRemove) {
         delete eachItem;
     }
     // the mpMediaSwitchItem is deleted by the previous loop but the pointer is not set to zero
-    mpMediaSwitchItem = NULL;
+    mpMediaSwitchItem = nullptr;
 }
 
 void UBTeacherGuideResourcesPresentationWidget::onAddItemClicked(QTreeWidgetItem* widget,int column)

@@ -57,7 +57,7 @@ private:
     QVBoxLayout* mLayout;
     QHBoxLayout* mButtonLayout;
     UBWidgetUniboardAPI *mpSankoreAPI;
-    QWebView* mpWebView;
+    QWebEngineView * mpWebView;
 
 private slots:
     void onShowNextTimeStateChanged(int state);

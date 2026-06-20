@@ -66,7 +66,7 @@ QString UBImportImage::importFileFilter()
     QStringList formats = supportedExtentions();
     bool isFirst = true;
 
-    foreach(QString format, formats)
+    for (const auto& QString format : formats)
     {
             if(isFirst)
                     isFirst = false;
@@ -100,7 +100,7 @@ void UBImportImage::placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsI
 {
     UBGraphicsPixmapItem* pixmapItem = (UBGraphicsPixmapItem*)item;
     
-     UBGraphicsPixmapItem* sceneItem = scene->addPixmap(pixmapItem->pixmap(), NULL, QPointF(0, 0));
+     UBGraphicsPixmapItem* sceneItem = scene->addPixmap(pixmapItem->pixmap(), nullptr, QPointF(0, 0));
      scene->setAsBackgroundObject(sceneItem, true);
 
      // Only stored pixmap, should be deleted now

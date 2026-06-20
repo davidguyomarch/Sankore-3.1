@@ -21,7 +21,9 @@
 
 
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "pdf/UBWebPluginPDFWidget.h"
 #include "frameworks/UBFileSystemUtils.h"

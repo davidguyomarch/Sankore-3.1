@@ -16,8 +16,8 @@
 #include "UBGraphicsScene.h"
 
 UBShapeFactory::UBShapeFactory():
-    mCurrentShape(NULL),
-    mBoardView(NULL),
+    mCurrentShape(nullptr),
+    mBoardView(nullptr),
     mIsCreating(false),
     mIsPress(false),
     mIsRegularShape(true),
@@ -25,7 +25,7 @@ UBShapeFactory::UBShapeFactory():
     mCurrentStrokeColor(Qt::black),
     mCurrentFillFirstColor(Qt::transparent),
     mCurrentFillSecondColor(Qt::transparent),
-    mDrawingController(NULL),
+    mDrawingController(nullptr),
     mCurrentBrushStyle(Qt::SolidPattern),
     mCurrentPenStyle(Qt::SolidLine),
     mThickness(3),
@@ -505,7 +505,7 @@ void UBShapeFactory::onMousePress(QMouseEvent *event)
                     }
                 }else{
                     UBEditableGraphicsPolygonItem* pathItem = dynamic_cast<UBEditableGraphicsPolygonItem*>(mCurrentShape);
-                    if (mCurrentShape == NULL || pathItem == NULL)
+                    if (mCurrentShape == nullptr || pathItem == nullptr)
                     {
                         pathItem = dynamic_cast<UBEditableGraphicsPolygonItem*>(instanciateCurrentShape());
                         mBoardView->scene()->addItem(pathItem);
@@ -518,7 +518,7 @@ void UBShapeFactory::onMousePress(QMouseEvent *event)
                     {
                         if (pathItem->path().elementCount() < 2)
                             mBoardView->scene()->removeItem(pathItem);
-                        mCurrentShape = NULL;
+                        mCurrentShape = nullptr;
                     }
                 }
             }
@@ -603,7 +603,7 @@ void UBShapeFactory::onMouseRelease(QMouseEvent *event)
         mBoardView->scene()->removeItem(mCurrentShape);
 
     if (mShapeType != Polygon)
-        mCurrentShape = NULL;
+        mCurrentShape = nullptr;
 
 }
 
@@ -640,7 +640,7 @@ void UBShapeFactory::desactivate()
 {
     mIsPress = false;
     mIsCreating = false;
-    mCurrentShape = NULL;
+    mCurrentShape = nullptr;
     mShapeType = None;
 }
 
@@ -655,7 +655,7 @@ void UBShapeFactory::terminateShape()
     }
 
     // Ends the current shape :
-    mCurrentShape = NULL;
+    mCurrentShape = nullptr;
 }
 
 bool UBShapeFactory::isShape(QGraphicsItem *item)

@@ -80,7 +80,7 @@ void UBActionPalette::setActions(QList<QAction*> actions)
 {
     mMapActionToButton.clear();
 
-    foreach(QAction* action, actions)
+    for (const auto& QAction* action : actions)
     {
         addAction(action);
     }
@@ -141,7 +141,7 @@ UBActionPalette::~UBActionPalette()
 
 void UBActionPalette::setButtonIconSize(const QSize& size)
 {
-    foreach(QToolButton* button, mButtons)
+    for (const auto& QToolButton* button : mButtons)
         button->setIconSize(size);
 
     mButtonSize = size;
@@ -152,7 +152,7 @@ void UBActionPalette::groupActions()
 {
     mButtonGroup = new QButtonGroup(this);
     int i = 0;
-    foreach(QToolButton* button, mButtons)
+    for (const auto& QToolButton* button : mButtons)
     {
         mButtonGroup->addButton(button, i);
         ++i;
@@ -164,7 +164,7 @@ void UBActionPalette::groupActions()
 
 void UBActionPalette::setToolButtonStyle(Qt::ToolButtonStyle tbs)
 {
-    foreach(QToolButton* button, mButtons)
+    for (const auto& QToolButton* button : mButtons)
         button->setToolButtonStyle(tbs);
 
     mToolButtonStyle = tbs;
@@ -251,7 +251,7 @@ void UBActionPalette::actionChanged()
 void UBActionPalette::clearLayout()
 {
     QLayout* pLayout = layout();
-    if(NULL != pLayout)
+    if(nullptr != pLayout)
     {
         while(!pLayout->isEmpty())
         {
@@ -304,7 +304,7 @@ QSize UBActionPalette::buttonSize()
  */
 UBActionPaletteButton* UBActionPalette::getButtonFromAction(QAction *action)
 {
-    UBActionPaletteButton* pButton = NULL;
+    UBActionPaletteButton* pButton = nullptr;
 
     pButton = mMapActionToButton.value(action);
 

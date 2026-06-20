@@ -24,7 +24,9 @@
 #ifndef UBTOOLSMANAGER_H_
 #define UBTOOLSMANAGER_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "core/UBApplication.h"
 
@@ -58,7 +60,7 @@ class UBToolsManager : public QObject
         {
             QStringList ids;
 
-            foreach(UBToolDescriptor tool, allTools())
+            for (const auto& UBToolDescriptor tool : allTools())
             {
                 ids << tool.id;
             }
@@ -68,7 +70,7 @@ class UBToolsManager : public QObject
 
         UBToolDescriptor toolByID(const QString& id)
         {
-            foreach(UBToolDescriptor tool, allTools())
+            for (const auto& UBToolDescriptor tool : allTools())
             {
                 if (tool.id == id)
                     return tool;

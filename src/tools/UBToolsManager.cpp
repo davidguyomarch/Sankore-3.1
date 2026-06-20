@@ -37,7 +37,7 @@ void UBToolsManager::destroy()
 {
     if (sManager)
         delete sManager;
-    sManager = NULL;
+    sManager = nullptr;
 }
 
 

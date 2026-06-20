@@ -74,7 +74,7 @@ void UBServerXMLHttpRequest::post(const QUrl& pUrl, const QByteArray& payload)
     //request.setRawHeader("ACCEPT", "application/xml");
     request.setHeader(QNetworkRequest::ContentLengthHeader, payload.length());
 
-    foreach(QString key, mExtraHeaders.keys())
+    for (const auto& QString key : mExtraHeaders.keys())
     {
         request.setRawHeader(key.toUtf8(), mExtraHeaders.value(key).toUtf8());
 
@@ -122,7 +122,7 @@ void UBServerXMLHttpRequest::put(const QUrl& pUrl, const QByteArray& payload)
     request.setRawHeader("ACCEPT", "application/xml");
     request.setHeader(QNetworkRequest::ContentLengthHeader, payload.length());
 
-    foreach(QString key, mExtraHeaders.keys())
+    for (const auto& QString key : mExtraHeaders.keys())
     {
         request.setRawHeader(key.toUtf8(), mExtraHeaders.value(key).toUtf8());
     }
@@ -155,7 +155,7 @@ void UBServerXMLHttpRequest::get(const QUrl& pUrl)
 
     request.setRawHeader("ACCEPT", "application/xml");
 
-    foreach(QString key, mExtraHeaders.keys())
+    for (const auto& QString key : mExtraHeaders.keys())
     {
         request.setRawHeader(key.toUtf8(), mExtraHeaders.value(key).toUtf8());
     }
@@ -188,7 +188,7 @@ void UBServerXMLHttpRequest::syntheticRubyOnRailsDelete(const QUrl& pUrl)
     request.setRawHeader("ACCEPT", "application/xml");
     request.setRawHeader("X_HTTP_METHOD_OVERRIDE", "delete");
 
-    foreach(QString key, mExtraHeaders.keys())
+    for (const auto& QString key : mExtraHeaders.keys())
     {
         request.setRawHeader(key.toUtf8(), mExtraHeaders.value(key).toUtf8());
     }

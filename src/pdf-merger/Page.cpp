@@ -44,7 +44,7 @@
 using namespace merge_lib;
 
 
-Page::Page(unsigned int pageNumber): _root(NULL),_pageNumber(pageNumber), _rotation(0)
+Page::Page(unsigned int pageNumber): _root(nullptr),_pageNumber(pageNumber), _rotation(0)
 {
 
 }
@@ -327,7 +327,7 @@ static void _updateAnnotFormColor(Object *annotation )
 // for correct X-Object transformation
 static void processBasePageResources(Object *basePage)
 {
-   if( basePage == NULL )
+   if( basePage == nullptr )
    {
       return;
    }
@@ -464,7 +464,7 @@ std::string Page::_getMergedPageContent(  unsigned int & contentPosition,
 
 void Page::merge(Page * sourcePage, Document * parentDocument, MergePageDescription & description, bool isPageDuplicated)
 {   
-   if( sourcePage == NULL )
+   if( sourcePage == nullptr )
    {
       description.skipBasePage = true;
    }

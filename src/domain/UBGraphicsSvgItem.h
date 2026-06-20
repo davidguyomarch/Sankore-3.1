@@ -24,7 +24,9 @@
 #ifndef UBGRAPHICSSVGITEM_H_
 #define UBGRAPHICSSVGITEM_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtSvg>
 
 #include "UBItem.h"

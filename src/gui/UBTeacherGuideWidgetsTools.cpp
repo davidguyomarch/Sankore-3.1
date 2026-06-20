@@ -28,10 +28,10 @@
 #include <QLabel>
 #include <QDebug>
 #include <QUrl>
-#include <QWebSettings>
+#include <QWebEngineSettings>
 #include <QApplication>
 #include <QDomElement>
-#include <QWebFrame>
+#include <QWebEnginePage>
 #include <QTextDocument>
 #include <QTextBlock>
 #include <QTextCursor>
@@ -82,9 +82,9 @@ UBAddItem::~UBAddItem()
  *                      class    UBTGActionWidget                          *
  ***************************************************************************/
 UBTGActionWidget::UBTGActionWidget(QTreeWidgetItem* widget, QWidget* parent, const char* name) : QWidget(parent)
-  , mpLayout(NULL)
-  , mpOwner(NULL)
-  , mpTask(NULL)
+  , mpLayout(nullptr)
+  , mpOwner(nullptr)
+  , mpTask(nullptr)
 {
     setObjectName(name);
     SET_STYLE_SHEET();
@@ -435,7 +435,7 @@ void UBTGAdaptableText::insertFromMimeData(const QMimeData *source)
             plainText = source->text();
     if (source->hasUrls())
     {
-        foreach(QUrl url, source->urls())
+        for (const auto& QUrl url : source->urls())
         {
             plainText = url.toString();
         }
@@ -467,7 +467,7 @@ void UBTGAdaptableText::managePlaceholder(bool focus)
 void UBTGAdaptableText::setCursorToTheEnd()
 {
     QTextDocument* doc = document();
-    if(NULL != doc){
+    if(nullptr != doc){
         QTextBlock block = doc->lastBlock();
         QTextCursor cursor(doc);
         cursor.setPosition(block.position() + block.length() - 1);
@@ -478,7 +478,7 @@ void UBTGAdaptableText::setCursorToTheEnd()
 /***************************************************************************
  *                      class   UBTGDraggableWeb                           *
  ***************************************************************************/
-UBDraggableWeb::UBDraggableWeb(QString& relativePath, QWidget* parent): QWebView(parent)
+UBDraggableWeb::UBDraggableWeb(QString& relativePath, QWidget* parent): QWebEngineView(parent)
   , mDragStartPosition(QPoint(-1,-1))
   , mDragStarted(false)
 
@@ -494,13 +494,13 @@ void UBDraggableWeb::mousePressEvent(QMouseEvent* event)
 {
     mDragStartPosition = event->pos();
     mDragStarted = true;
-    QWebView::mousePressEvent(event);
+    QWebEngineView::mousePressEvent(event);
 }
 
 void UBDraggableWeb::mouseReleaseEvent(QMouseEvent* event)
 {
     mDragStarted = false;
-    QWebView::mouseReleaseEvent(event);
+    QWebEngineView::mouseReleaseEvent(event);
 }
 
 void UBDraggableWeb::mouseMoveEvent(QMouseEvent* event)
@@ -518,7 +518,7 @@ void UBDraggableWeb::mouseMoveEvent(QMouseEvent* event)
         mDragStarted = false;
     }
     else
-        QWebView::mouseMoveEvent(event);
+        QWebEngineView::mouseMoveEvent(event);
 
 }
 
@@ -527,14 +527,14 @@ void UBDraggableWeb::mouseMoveEvent(QMouseEvent* event)
  ***************************************************************************/
 UBTGMediaWidget::UBTGMediaWidget(QTreeWidgetItem* widget, QWidget* parent,const char* name): QStackedWidget(parent)
   , mpTreeWidgetItem(widget)
-  , mpDropMeWidget(NULL)
-  , mpWorkWidget(NULL)
-  , mpLayout(NULL)
-  , mpMediaLayout(NULL)
-  , mpTitle(NULL)
-  , mpMediaLabelWidget(NULL)
-  , mpMediaWidget(NULL)
-  , mpWebView(NULL)
+  , mpDropMeWidget(nullptr)
+  , mpWorkWidget(nullptr)
+  , mpLayout(nullptr)
+  , mpMediaLayout(nullptr)
+  , mpTitle(nullptr)
+  , mpMediaLabelWidget(nullptr)
+  , mpMediaWidget(nullptr)
+  , mpWebView(nullptr)
   , mMediaPath(QString(""))
   , mIsPresentationMode(false)
   , mIsInitializationMode(false)
@@ -553,14 +553,14 @@ UBTGMediaWidget::UBTGMediaWidget(QTreeWidgetItem* widget, QWidget* parent,const 
 
 UBTGMediaWidget::UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget, QWidget* parent,bool forceFlashMediaType,const char* name): QStackedWidget(parent)
   , mpTreeWidgetItem(widget)
-  , mpDropMeWidget(NULL)
-  , mpWorkWidget(NULL)
-  , mpLayout(NULL)
-  , mpMediaLayout(NULL)
-  , mpTitle(NULL)
-  , mpMediaLabelWidget(NULL)
-  , mpMediaWidget(NULL)
-  , mpWebView(NULL)
+  , mpDropMeWidget(nullptr)
+  , mpWorkWidget(nullptr)
+  , mpLayout(nullptr)
+  , mpMediaLayout(nullptr)
+  , mpTitle(nullptr)
+  , mpMediaLabelWidget(nullptr)
+  , mpMediaWidget(nullptr)
+  , mpWebView(nullptr)
   , mIsPresentationMode(true)
   , mMediaType("")
   , mIsInitializationMode(false)
@@ -780,13 +780,13 @@ void UBTGMediaWidget::createWorkWidget(bool forceFlashMediaType)
         }
         mpWebView = new UBDraggableWeb(mMediaPath);
         mpWebView->setAcceptDrops(false);
-        mpWebView->settings()->setAttribute(QWebSettings::JavaEnabled, true);
-        mpWebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-        mpWebView->settings()->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
-        mpWebView->settings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
-        mpWebView->settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
-        mpWebView->settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
-        mpWebView->settings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::JavaEnabled, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::LocalStorageDatabaseEnabled, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::OfflineWebApplicationCacheEnabled, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::OfflineStorageDatabaseEnabled, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
         QString indexPath = mMediaPath+"/index.htm";
         if(!QFile::exists(indexPath))
             indexPath += "l";
@@ -801,13 +801,13 @@ void UBTGMediaWidget::createWorkWidget(bool forceFlashMediaType)
         qDebug() << mMediaPath;
         mpWebView = new UBDraggableWeb(mMediaPath);
         mpWebView->setAcceptDrops(false);
-        mpWebView->settings()->setAttribute(QWebSettings::JavaEnabled, true);
-        mpWebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-        mpWebView->settings()->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
-        mpWebView->settings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
-        mpWebView->settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
-        mpWebView->settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
-        mpWebView->settings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::JavaEnabled, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::LocalStorageDatabaseEnabled, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::OfflineWebApplicationCacheEnabled, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::OfflineStorageDatabaseEnabled, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
+        mpWebView->settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
         QString indexPath = mMediaPath+"/index.htm";
         if(!QFile::exists(indexPath))
             indexPath += "l";
@@ -920,9 +920,9 @@ void UBTGMediaWidget::mousePressEvent(QMouseEvent *event)
  ***************************************************************************/
 UBTGUrlWidget::UBTGUrlWidget(QTreeWidgetItem *treeWidgetItem, QWidget *parent, const char *name ):
     QWidget(parent)
-  , mpLayout(NULL)
-  , mpTitle(NULL)
-  , mpUrl(NULL)
+  , mpLayout(nullptr)
+  , mpTitle(nullptr)
+  , mpUrl(nullptr)
 {
     setObjectName(name);
     SET_STYLE_SHEET();
@@ -1087,11 +1087,11 @@ QMimeData* UBTGDraggableTreeItem::mimeData(const QList<QTreeWidgetItem *> items)
  ***************************************************************************/
 UBTGFileWidget::UBTGFileWidget(QTreeWidgetItem *treeWidgetItem, QWidget *parent, const char *name)
     : QWidget(parent)
-    , mpLayout(NULL)
-    , mpHLayout(NULL)
-    , mpTitreFichier(NULL)
-    , mpNomFichier(NULL)
-    , mpBtnSelectFile(NULL)
+    , mpLayout(nullptr)
+    , mpHLayout(nullptr)
+    , mpTitreFichier(nullptr)
+    , mpNomFichier(nullptr)
+    , mpBtnSelectFile(nullptr)
     , mPath("")
 {
     setObjectName(name);
@@ -1154,7 +1154,7 @@ void UBTGFileWidget::OnClickBtnSelectFile()
 {
 
     // Ouvrir une dialog de selection de fichier :
-    QString filename = QFileDialog::getOpenFileName(UBApplication::mainWindow, tr("Select File"), QString(), "*.*", NULL);
+    QString filename = QFileDialog::getOpenFileName(UBApplication::mainWindow, tr("Select File"), QString(), "*.*", nullptr);
 
 #ifdef Q_OS_MACX
     filename = filename.normalized(QString::NormalizationForm_C); // Issue - ALTI/AOU - 20140526 : on MacOSX, file names are in a special UTF-8 "NFD" encoding. We must convert the file name to a standard UTF-8.

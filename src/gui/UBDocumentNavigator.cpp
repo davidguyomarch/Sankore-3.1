@@ -50,7 +50,7 @@
  * @param name as the object name
  */
 UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGraphicsView(parent)
-  , mScene(NULL)
+  , mScene(nullptr)
   , mNbColumns(1)
   , mThumbnailWidth(0)
   , mThumbnailMinWidth(100)
@@ -75,10 +75,10 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
  */
 UBDocumentNavigator::~UBDocumentNavigator()
 {
-    if(NULL != mScene)
+    if(nullptr != mScene)
     {
         delete mScene;
-        mScene = NULL;
+        mScene = nullptr;
     }
 }
 
@@ -88,11 +88,11 @@ UBDocumentNavigator::~UBDocumentNavigator()
 void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 {
     mThumbsWithLabels.clear();
-    foreach(QGraphicsItem* it, mScene->items())
+    for (const auto& QGraphicsItem* it : mScene->items())
     {
         mScene->removeItem(it);
         delete it;
-        it = NULL;
+        it = nullptr;
     }
 
     for(int i = 0; i < source->pageCount(); i++)
@@ -160,7 +160,7 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 void UBDocumentNavigator::onScrollToSelectedPage(int index)
 {
     int c  = 0;
-    foreach(UBWidgetTextThumbnailElement el, mThumbsWithLabels)
+    for (const auto& UBWidgetTextThumbnailElement el : mThumbsWithLabels)
     {
         if (c==index)
         {
@@ -187,13 +187,13 @@ void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
 
     // Get the old thumbnail
     QGraphicsItem* oldItem = mThumbsWithLabels.at(iPage).getThumbnail();
-    if(NULL != oldItem)
+    if(nullptr != oldItem)
     {
         mScene->removeItem(oldItem);
         mScene->addItem(newItem);
         mThumbsWithLabels[iPage].setThumbnail(newItem);
         delete oldItem;
-        oldItem = NULL;
+        oldItem = nullptr;
     }
 }
 
@@ -316,19 +316,19 @@ void UBDocumentNavigator::resizeEvent(QResizeEvent *event)
 void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
 {
     QGraphicsItem* pClickedItem = itemAt(event->pos());
-    if(NULL != pClickedItem)
+    if(nullptr != pClickedItem)
     {
         // First, select the clicked item. 
         QGraphicsItem* pCrntItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(pClickedItem);
-        if (pCrntItem == NULL){ // Issue 1026 - AOU - 20131021 : It can be either a UBSceneThumbnailNavigPixmap or a UBSceneThumbnailProxyWidget.
+        if (pCrntItem == nullptr){ // Issue 1026 - AOU - 20131021 : It can be either a UBSceneThumbnailNavigPixmap or a UBSceneThumbnailProxyWidget.
             pCrntItem = dynamic_cast<UBSceneThumbnailProxyWidget*>(pClickedItem);
         }
 
-        if(NULL == pCrntItem)
+        if(nullptr == pCrntItem)
         {
             // If we fall here we may have clicked on the label instead of the thumbnail
             UBThumbnailTextItem* pTextItem = dynamic_cast<UBThumbnailTextItem*>(pClickedItem);
-            if(NULL != pTextItem)
+            if(nullptr != pTextItem)
             {
                 for(int i = 0; i < mThumbsWithLabels.size(); i++)
                 {

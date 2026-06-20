@@ -91,7 +91,7 @@ protected:
 private slots:
     void onPlayStopClicked();
     void onPauseClicked();
-    void onStateChanged(Phonon::State newState, Phonon::State oldState);
+    void onStateChanged(QMediaPlayer::PlaybackState newState, QMediaPlayer::PlaybackState oldState);
     void onTotalTimeChanged(qint64 total);
     void onTick(qint64 currentTime);
     void onSliderChanged(int value);

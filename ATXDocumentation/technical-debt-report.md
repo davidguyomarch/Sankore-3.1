@@ -22,8 +22,6 @@ Open-Sankoré 2.5.1 carries **critical technical debt** that renders it effectiv
 
 ## Critical Issues (Prioritized)
 
-### High Severity — EOL/Deprecated Runtimes and Frameworks
-
 1. **Qt 4.x Framework (EOL since 2015)**
    - Qt 4 reached End-of-Life in 2015
    - No security patches or bug fixes available

@@ -23,7 +23,9 @@
 
 #include "UBResources.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
@@ -78,7 +80,7 @@ void UBResources::buildFontList()
 {
     QString customFontDirectory = UBSettings::settings()->applicationCustomFontDirectory();
     QStringList fontFiles = UBFileSystemUtils::allFiles(customFontDirectory);
-    foreach(QString fontFile, fontFiles){
+    for (const auto& QString fontFile : fontFiles){
         int fontId = QFontDatabase::addApplicationFont(fontFile);
         mCustomFontList << QFontDatabase::applicationFontFamilies(fontId);
     }

@@ -64,7 +64,9 @@
 
 #include "WBSearchLineEdit.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 
 WBClearButton::WBClearButton(QWidget *parent)

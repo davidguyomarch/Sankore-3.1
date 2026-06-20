@@ -23,7 +23,9 @@
 
 #include "UBDrawingPalette.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "UBDrawingPolygonPalette.h"
 #include "UBAlignObjectPalette.h"
@@ -180,7 +182,7 @@ void UBDrawingPalette::initPosition()
 
 void UBDrawingPalette::initSubPalettesPosition()
 {
-    foreach(UBActionPaletteButton* button, mSubPalettes.keys())
+    for (const auto& UBActionPaletteButton* button : mSubPalettes.keys())
     {
         UBAbstractSubPalette* subPalette = mSubPalettes.value(button);
 
@@ -199,7 +201,7 @@ void UBDrawingPalette::initSubPalettesPosition()
 
 void UBDrawingPalette::hideSubPalettes()
 {
-    foreach(UBAbstractSubPalette* subPalette, mSubPalettes.values())
+    for (const auto& UBAbstractSubPalette* subPalette : mSubPalettes.values())
     {
         subPalette->hide();
     }
@@ -211,7 +213,7 @@ void UBDrawingPalette::setVisible(bool checked)
 
     if ( ! checked)
     {
-        foreach(UBAbstractSubPalette* subPalette, mSubPalettes.values())
+        for (const auto& UBAbstractSubPalette* subPalette : mSubPalettes.values())
         {
             subPalette->hide();
         }
@@ -230,7 +232,7 @@ void UBDrawingPalette::mouseMoveEvent(QMouseEvent *event)
 
 void UBDrawingPalette::updateSubPalettesPosition(const QPoint& delta)
 {
-    foreach (UBAbstractSubPalette* subPalette, mSubPalettes.values()) {
+    for (const auto& UBAbstractSubPalette* subPalette : mSubPalettes.values()) {
         QPoint newPos = subPalette->pos() + delta;
         subPalette->move(newPos);
     }
@@ -241,7 +243,7 @@ void UBDrawingPalette::stackUnder(QWidget * w)
     UBActionPalette::stackUnder(w);
 
     // For all subpalettes :
-    foreach (UBAbstractSubPalette* subPalette, mSubPalettes.values()) {
+    for (const auto& UBAbstractSubPalette* subPalette : mSubPalettes.values()) {
         subPalette->stackUnder(w);
     }
 }
@@ -251,7 +253,7 @@ void UBDrawingPalette::raise()
     UBActionPalette::raise();
 
     // For all subpalettes :
-    foreach (UBAbstractSubPalette* subPalette, mSubPalettes.values()) {
+    for (const auto& UBAbstractSubPalette* subPalette : mSubPalettes.values()) {
         subPalette->raise();
     }
 }

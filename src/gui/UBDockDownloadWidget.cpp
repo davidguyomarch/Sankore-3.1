@@ -28,8 +28,8 @@
 
 
 UBDockDownloadWidget::UBDockDownloadWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent, name)
-  , mpLayout(NULL)
-  , mpDLWidget(NULL)
+  , mpLayout(nullptr)
+  , mpDLWidget(nullptr)
 {
     mName = "DownloadWidget";
     mVisibleState = false;
@@ -45,14 +45,14 @@ UBDockDownloadWidget::UBDockDownloadWidget(QWidget *parent, const char *name):UB
 
 UBDockDownloadWidget::~UBDockDownloadWidget()
 {
-    if(NULL != mpDLWidget)
+    if(nullptr != mpDLWidget)
     {
         delete mpDLWidget;
-        mpDLWidget = NULL;
+        mpDLWidget = nullptr;
     }
-    if(NULL != mpLayout)
+    if(nullptr != mpLayout)
     {
         delete mpLayout;
-        mpLayout = NULL;
+        mpLayout = nullptr;
     }
 }

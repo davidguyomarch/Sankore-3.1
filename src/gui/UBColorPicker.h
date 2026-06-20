@@ -24,7 +24,9 @@
 #ifndef UBCOLORPICKER_H_
 #define UBCOLORPICKER_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 class UBColorPicker : public QFrame
 {

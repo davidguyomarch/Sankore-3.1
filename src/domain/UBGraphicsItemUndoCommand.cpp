@@ -23,7 +23,9 @@
 
 #include "UBGraphicsItemUndoCommand.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "UBGraphicsScene.h"
 
@@ -147,8 +149,8 @@ void UBGraphicsItemUndoCommand::undo()
     }
 
     QMapIterator<UBGraphicsGroupContainerItem*, QUuid> curMapElement(mExcludedFromGroup);
-    UBGraphicsGroupContainerItem *nextGroup = NULL;
-    UBGraphicsGroupContainerItem *previousGroupItem = NULL;
+    UBGraphicsGroupContainerItem *nextGroup = nullptr;
+    UBGraphicsGroupContainerItem *previousGroupItem = nullptr;
     bool groupChanged = false;
 
     while (curMapElement.hasNext()) {
@@ -192,8 +194,8 @@ void UBGraphicsItemUndoCommand::redo()
         }
 
         QMapIterator<UBGraphicsGroupContainerItem*, QUuid> curMapElement(mExcludedFromGroup);
-        UBGraphicsGroupContainerItem *nextGroup = NULL;
-        UBGraphicsGroupContainerItem *previousGroupItem = NULL;
+        UBGraphicsGroupContainerItem *nextGroup = nullptr;
+        UBGraphicsGroupContainerItem *previousGroupItem = nullptr;
         bool groupChanged = false;
 
         while (curMapElement.hasNext()) {

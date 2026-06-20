@@ -23,7 +23,9 @@
 
 #include "UBSettings.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 
 #include "frameworks/UBPlatformUtils.h"
@@ -136,7 +138,7 @@ void UBSettings::destroy()
 {
     if (sSingleton)
         delete sSingleton;
-    sSingleton = NULL;
+    sSingleton = nullptr;
 }
 
 

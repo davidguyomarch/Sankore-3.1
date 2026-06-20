@@ -97,7 +97,7 @@ public:
 
     BTNImages *currBtnImages;
 
-    bool isEnabled(){return locales!= NULL;}
+    bool isEnabled(){return locales!= nullptr;}
     virtual QSize  sizeHint () const;
     virtual void adjustSizeAndPosition(bool pUp = true);
     QString getKeyButtonSize() const {QString res; res.sprintf("%dx%d", btnWidth, btnHeight); return res;}

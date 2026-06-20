@@ -23,7 +23,9 @@
 #ifndef UBGRAPHICSAUDIOITEMDELEGATE_H
 #define UBGRAPHICSAUDIOITEMDELEGATE_H
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QMediaPlayer>
 
 #include "core/UB.h"
@@ -64,7 +66,7 @@ protected:
 
 protected slots:
 
-    void mediaStateChanged ( Phonon::State newstate, Phonon::State oldstate );
+    void mediaStateChanged ( QMediaPlayer::PlaybackState newstate, QMediaPlayer::PlaybackState oldstate );
 
 
 };

@@ -68,7 +68,9 @@
 
 #include "core/UBSettings.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QWebEngineView>
 
 
@@ -240,8 +242,8 @@ QList<QNetworkCookie> UBCookieJar::cookiesForUrl(const QUrl &url) const
     if (!mLoaded)
         that->load();
 
-    QWebSettings *globalSettings = QWebSettings::globalSettings();
-    if (globalSettings->testAttribute(QWebSettings::PrivateBrowsingEnabled)) {
+    QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
+    if (globalSettings->testAttribute(QWebEngineSettings::PrivateBrowsingEnabled)) {
         QList<QNetworkCookie> noCookies;
         return noCookies;
     }
@@ -254,8 +256,8 @@ bool UBCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, con
     if (!mLoaded)
         load();
 
-    QWebSettings *globalSettings = QWebSettings::globalSettings();
-    if (globalSettings->testAttribute(QWebSettings::PrivateBrowsingEnabled))
+    QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
+    if (globalSettings->testAttribute(QWebEngineSettings::PrivateBrowsingEnabled))
         return false;
 
     QString host = url.host();
@@ -271,7 +273,7 @@ bool UBCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, con
         // pass url domain == cookie domain
         QDateTime soon = QDateTime::currentDateTime();
         soon = soon.addDays(90);
-        foreach(QNetworkCookie cookie, cookieList) {
+        for (const auto& QNetworkCookie cookie : cookieList) {
             QList<QNetworkCookie> lst;
             if (mKeepCookies == KeepUntilTimeLimit
                 && !cookie.isSessionCookie()

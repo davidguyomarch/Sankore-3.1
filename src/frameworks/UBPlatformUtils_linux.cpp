@@ -23,7 +23,9 @@
 
 #include "UBPlatformUtils.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include <unistd.h>
 #include <X11/Xlib.h>
@@ -429,7 +431,7 @@ void UBPlatformUtils::destroyKeyboardLayouts()
     for(int i=0; i<nKeyboardLayouts; i++)
 		delete keyboardLayouts[i];
 	delete [] keyboardLayouts;
-	keyboardLayouts = NULL;
+	keyboardLayouts = nullptr;
 }
 
 QString UBPlatformUtils::urlFromClipboard()

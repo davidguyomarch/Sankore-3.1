@@ -23,7 +23,9 @@
 
 #include "UBBoardView.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtXml>
 #include <QListView>
 
@@ -91,7 +93,7 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
 , mIsCreatingTextZone (false)
 , mIsCreatingSceneGrabZone (false)
 , mOkOnWidget(false)
-, suspendedMousePressEvent(NULL)
+, suspendedMousePressEvent(nullptr)
 , mLongPressInterval(1000)
 , mIsDragInProgress(false)
 , mMultipleSelectionIsEnabled(false)
@@ -110,7 +112,7 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
 UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent, bool isControl, bool isDesktop)
 : QGraphicsView (pParent)
 , mController (pController)
-, suspendedMousePressEvent(NULL)
+, suspendedMousePressEvent(nullptr)
 , mLongPressInterval(1000)
 , mIsDragInProgress(false)
 , mMultipleSelectionIsEnabled(false)
@@ -171,7 +173,7 @@ void UBBoardView::init ()
 
   unsetCursor();
 
-  movingItem = NULL;
+  movingItem = nullptr;
   mWidgetMoved = false;
 }
 
@@ -811,7 +813,7 @@ QGraphicsItem* UBBoardView::determineItemToMove(QGraphicsItem *item)
                 return item;
 
             if (item->isSelected())
-                return NULL;
+                return nullptr;
 
             return item->parentItem();
         }
@@ -870,7 +872,7 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
         if (suspendedMousePressEvent)
         {
             delete suspendedMousePressEvent;
-            suspendedMousePressEvent = NULL;
+            suspendedMousePressEvent = nullptr;
         }
 
         if (itemShouldReceiveSuspendedMousePressEvent(movingItem))
@@ -925,7 +927,7 @@ void UBBoardView::rubberItems()
     if (mUBRubberBand)
         mRubberedItems = items(mUBRubberBand->geometry());
 
-    foreach(QGraphicsItem *item, mRubberedItems)
+    for (const auto& QGraphicsItem *item : mRubberedItems)
     {
         if (item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type())
             mRubberedItems.removeOne(item);
@@ -936,7 +938,7 @@ void UBBoardView::moveRubberedItems(QPointF movingVector)
 {
     QRectF invalidateRect = scene()->itemsBoundingRect();
 
-    foreach (QGraphicsItem *item, mRubberedItems)
+    for (const auto& QGraphicsItem *item : mRubberedItems)
     {
 
         if (item->type() == UBGraphicsW3CWidgetItem::Type
@@ -981,7 +983,7 @@ bool UBBoardView::directTabletEvent(QEvent *event)
 
     if (geometry().contains(tEvent->pos()))
     {
-        if (NULL == widgetForTabletEvent(this->parentWidget(), tEvent->pos()))
+        if (nullptr == widgetForTabletEvent(this->parentWidget(), tEvent->pos()))
         {
             tabletEvent(tEvent);
             return true;
@@ -998,10 +1000,10 @@ QWidget *UBBoardView::widgetForTabletEvent(QWidget *w, const QPoint &pos)
     //UBBoardView *board = qobject_cast<UBBoardView *>(w);
     UBBoardView *board = UBApplication::boardController->controlView();
 
-    QWidget *childAtPos = NULL;
+    QWidget *childAtPos = nullptr;
 
     QList<QObject *> childs = w->children();
-    foreach(QObject *child, childs)
+    for (const auto& QObject *child : childs)
     {
         QWidget *childWidget = qobject_cast<QWidget *>(child);
         if (childWidget)
@@ -1013,7 +1015,7 @@ QWidget *UBBoardView::widgetForTabletEvent(QWidget *w, const QPoint &pos)
                 if (board && board->viewport() == lastChild)
                     continue;
 
-                if (NULL != lastChild)
+                if (nullptr != lastChild)
                     childAtPos = lastChild;
                 else
                     childAtPos = childWidget;
@@ -1021,7 +1023,7 @@ QWidget *UBBoardView::widgetForTabletEvent(QWidget *w, const QPoint &pos)
                 break;
             }
             else
-                childAtPos = NULL;
+                childAtPos = nullptr;
         }
     }
     return childAtPos;
@@ -1116,7 +1118,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             }
 
             if (scene()->backgroundObject() == movingItem)
-                movingItem = NULL;
+                movingItem = nullptr;
 
             connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
             if (!movingItem && !mController->cacheIsVisible())
@@ -1195,7 +1197,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
         }
         else
         {
-            if(UBDrawingController::drawingController()->mActiveRuler==NULL)
+            if(UBDrawingController::drawingController()->mActiveRuler==nullptr)
             {
                 viewport()->setCursor (QCursor (Qt::BlankCursor));
             }
@@ -1275,7 +1277,7 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
               QList<QGraphicsItem *> rubberItems = items(bandRect);
               if (currentTool == UBStylusTool::Selector)
               {
-                  foreach (QGraphicsItem *item, items())
+                  for (const auto& QGraphicsItem *item : items())
                   {
                       // Issue 1569 - CFA - 20131113 : le traitement spécifique aux polygones (fait partout ailleurs) n'était pas fait ici
                       if (item->type() == UBGraphicsItemType::PolygonItemType)
@@ -1362,13 +1364,13 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
       bool bReleaseIsNeed = true;
       if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()))))
       {
-          movingItem = NULL;
+          movingItem = nullptr;
           bReleaseIsNeed = false;
       }
       if (mWidgetMoved)
       {
           mWidgetMoved = false;
-          movingItem = NULL;
+          movingItem = nullptr;
       }
       else
       if (movingItem && (!isCppTool(movingItem) || UBGraphicsCurtainItem::Type == movingItem->type()))
@@ -1376,9 +1378,9 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           if (suspendedMousePressEvent)
           {
               QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
-              movingItem = NULL;
+              movingItem = nullptr;
               delete suspendedMousePressEvent;
-              suspendedMousePressEvent = NULL;
+              suspendedMousePressEvent = nullptr;
               bReleaseIsNeed = true;
           }
           else
@@ -1434,7 +1436,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
       if (mWidgetMoved)
       {
-          movingItem = NULL;
+          movingItem = nullptr;
           mWidgetMoved = false;
       }
       else
@@ -1442,9 +1444,9 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           if (suspendedMousePressEvent)
           {
               QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
-              movingItem = NULL;
+              movingItem = nullptr;
               delete suspendedMousePressEvent;
-              suspendedMousePressEvent = NULL;
+              suspendedMousePressEvent = nullptr;
           }
       }
       QGraphicsView::mouseReleaseEvent (event);
@@ -1524,7 +1526,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
   mMouseButtonIsPressed = false;
   mPendingStylusReleaseEvent = false;
   mTabletStylusIsPressed = false;
-  movingItem = NULL;
+  movingItem = nullptr;
 
   mLongPressTimer.stop();
 
@@ -1657,7 +1659,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
     //N/C - NNE - 20140303 : add test for the RTE widget
     bool isUBGraphicsWidget = onItem && onItem->type() == UBGraphicsWidgetItem::Type;
     UBGraphicsWidgetItem *item = 0;
-    UBGraphicsTextItem* textItem = NULL;
+    UBGraphicsTextItem* textItem = nullptr;
 
     if(onItem)
     {
@@ -1684,7 +1686,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
                 const UBFeaturesMimeData *internalMimeData = qobject_cast<const UBFeaturesMimeData*>(event->mimeData());
                 if (internalMimeData)
                 {
-                    foreach (QUrl url, urls)
+                    for (const auto& QUrl url : urls)
                         textItem->insertImage(url.toLocalFile());
                 }
                 return;
@@ -1711,7 +1713,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
     } else {
         if (!event->source()
                 || qobject_cast<UBThumbnailWidget *>(event->source())
-                || qobject_cast<QWebView*>(event->source())
+                || qobject_cast<QWebEngineView *>(event->source())
                 || qobject_cast<UBTGMediaWidget*>(event->source())
                 || qobject_cast<QListView *>(event->source())
                 || qobject_cast<UBTGDraggableTreeItem*>(event->source())) {
@@ -1919,7 +1921,7 @@ bool UBBoardView::hasSelectedParents(QGraphicsItem * item)
 {
     if (item->isSelected())
         return true;
-    if (item->parentItem()==NULL)
+    if (item->parentItem()==nullptr)
         return false;
     return hasSelectedParents(item->parentItem());
 }

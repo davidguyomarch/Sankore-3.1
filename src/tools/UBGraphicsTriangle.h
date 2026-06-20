@@ -24,7 +24,9 @@
 #ifndef UBGRAPHICSTRIANGLE_H_
 #define UBGRAPHICSTRIANGLE_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtSvg>
 #include <QGraphicsPolygonItem>
 

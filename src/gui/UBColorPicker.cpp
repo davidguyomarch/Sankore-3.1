@@ -23,7 +23,9 @@
 
 #include "UBColorPicker.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 
 UBColorPicker::UBColorPicker(QWidget* parent)

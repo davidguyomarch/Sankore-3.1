@@ -27,28 +27,28 @@
  * Returns an array of CFDictionaryRef types, each of which contains information about one of the processes.
  * The processes are ordered in front to back, i.e. in the same order they appear when typing command + tab, from left to right.
  * See the ProcessInformationCopyDictionary function documentation for the keys used in the dictionaries.
- * If something goes wrong, then this function returns NULL.
+ * If something goes wrong, then this function returns nullptr.
  */
 CFArrayRef CopyLaunchedApplicationsInFrontToBackOrder(void)
 {    
-    CFArrayRef (*_LSCopyApplicationArrayInFrontToBackOrder)(uint32_t sessionID) = NULL;
-    void       (*_LSASNExtractHighAndLowParts)(void const* asn, UInt32* psnHigh, UInt32* psnLow) = NULL;
-    CFTypeID   (*_LSASNGetTypeID)(void) = NULL;
+    CFArrayRef (*_LSCopyApplicationArrayInFrontToBackOrder)(uint32_t sessionID) = nullptr;
+    void       (*_LSASNExtractHighAndLowParts)(void const* asn, UInt32* psnHigh, UInt32* psnLow) = nullptr;
+    CFTypeID   (*_LSASNGetTypeID)(void) = nullptr;
     
     void *lsHandle = dlopen("/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/LaunchServices", RTLD_LAZY);
-    if (!lsHandle) { return NULL; }
+    if (!lsHandle) { return nullptr; }
     
     _LSCopyApplicationArrayInFrontToBackOrder = (CFArrayRef(*)(uint32_t))dlsym(lsHandle, "_LSCopyApplicationArrayInFrontToBackOrder");
     _LSASNExtractHighAndLowParts = (void(*)(void const*, UInt32*, UInt32*))dlsym(lsHandle, "_LSASNExtractHighAndLowParts");
     _LSASNGetTypeID = (CFTypeID(*)(void))dlsym(lsHandle, "_LSASNGetTypeID");
     
-    if (_LSCopyApplicationArrayInFrontToBackOrder == NULL || _LSASNExtractHighAndLowParts == NULL || _LSASNGetTypeID == NULL) { return NULL; }
+    if (_LSCopyApplicationArrayInFrontToBackOrder == nullptr || _LSASNExtractHighAndLowParts == nullptr || _LSASNGetTypeID == nullptr) { return nullptr; }
     
     CFMutableArrayRef orderedApplications = CFArrayCreateMutable(kCFAllocatorDefault, 64, &kCFTypeArrayCallBacks);
-    if (!orderedApplications) { return NULL; }
+    if (!orderedApplications) { return nullptr; }
     
     CFArrayRef apps = _LSCopyApplicationArrayInFrontToBackOrder(-1);
-    if (!apps) { CFRelease(orderedApplications); return NULL; }
+    if (!apps) { CFRelease(orderedApplications); return nullptr; }
     
     CFIndex count = CFArrayGetCount(apps);
     for (CFIndex i = 0; i < count; i++)
@@ -69,7 +69,7 @@ CFArrayRef CopyLaunchedApplicationsInFrontToBackOrder(void)
     }
     CFRelease(apps);
     
-    CFArrayRef result = CFArrayGetCount(orderedApplications) == 0 ? NULL : CFArrayCreateCopy(kCFAllocatorDefault, orderedApplications);
+    CFArrayRef result = CFArrayGetCount(orderedApplications) == 0 ? nullptr : CFArrayCreateCopy(kCFAllocatorDefault, orderedApplications);
     CFRelease(orderedApplications);
     return result;
 }

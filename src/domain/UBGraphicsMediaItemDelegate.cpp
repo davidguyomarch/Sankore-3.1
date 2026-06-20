@@ -21,7 +21,9 @@
 
 
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtSvg>
 
 #include "UBGraphicsMediaItem.h"
@@ -41,7 +43,7 @@
 UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, QMediaPlayer* pMedia, QObject * parent)
     : UBGraphicsItemDelegate(pDelegated, parent, true, false, true, true)
     , mMedia(pMedia)
-    , mToolBarShowTimer(NULL)
+    , mToolBarShowTimer(nullptr)
     , m_iToolBarShowingInterval(5000)
 {
     QPalette palette;
@@ -166,7 +168,7 @@ void UBGraphicsMediaItemDelegate::positionHandles()
 
     int toolBarMinimumWidth = 0;
     int mediaItemWidth = mToolBarItem->boundingRect().width();
-    foreach (DelegateButton* button, mToolBarButtons)
+    for (const auto& DelegateButton* button : mToolBarButtons)
     {
         mediaItemWidth -= button->boundingRect().width() + mToolBarItem->getElementsPadding();
         toolBarMinimumWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();

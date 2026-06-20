@@ -24,7 +24,9 @@
 #ifndef UBPREFERENCESCONTROLLER_H_
 #define UBPREFERENCESCONTROLLER_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 class UBColorPicker;
 class UBApplication;

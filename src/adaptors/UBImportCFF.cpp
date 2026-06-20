@@ -70,7 +70,7 @@ QString UBImportCFF::importFileFilter()
     QStringList formats = supportedExtentions();
     bool isFirst = true;
 
-    foreach(QString format, formats)
+    for (const auto& QString format : formats)
     {
             if(isFirst)
                     isFirst = false;
@@ -266,7 +266,7 @@ UBDocumentProxy* UBImportCFF::importFile(const QFile& pFile, const QString& pGro
         destDocument->setMetaData(UBSettings::documentVersion, UBSettings::currentFileVersion);
         destDocument->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
-        UBDocumentProxy* newDocument = NULL;
+        UBDocumentProxy* newDocument = nullptr;
         //try to import cff to document
         if (UBCFFSubsetAdaptor::ConvertCFFFileToUbz(contentFile, destDocument))
         {

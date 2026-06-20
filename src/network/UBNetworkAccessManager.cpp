@@ -23,7 +23,9 @@
 
 #include "UBNetworkAccessManager.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtNetwork>
 
 #include "core/UBApplication.h"

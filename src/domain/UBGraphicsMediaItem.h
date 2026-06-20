@@ -36,7 +36,7 @@
 class UBAudioPresentationWidget : public QWidget
 {
 public:
-    UBAudioPresentationWidget(QWidget *parent = NULL);
+    UBAudioPresentationWidget(QWidget *parent = nullptr);
 
     int borderSize() {return mBorderSize;}
     void setTitle(QString title = QString()){mTitle = title;}

@@ -25,10 +25,13 @@
 #define UBVIDEOPLAYER_H_
 
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QMediaPlayer>
-
-class UBVideoPlayerTransport;
+#include <QAudioOutput>
+#include <QVideoWidget>
+#include <QSlider>
 
 class UBVideoPlayer : public QWidget
 {
@@ -38,25 +41,31 @@ class UBVideoPlayer : public QWidget
         UBVideoPlayer(QWidget* pParent = 0);
         virtual ~UBVideoPlayer();
 
-        Phonon::VideoPlayer* videoPlayer()
+        QMediaPlayer* mediaPlayer()
         {
-            return mVideoPlayer;
+            return mMediaPlayer;
         }
 
         void loadMedia(QUrl url)
         {
-            mVideoPlayer->load(QUrl(url));
+            mMediaPlayer->setSource(url);
         }
 
     protected:
 
-        Phonon::VideoPlayer* mVideoPlayer;
+        QMediaPlayer* mMediaPlayer;
+        QAudioOutput* mAudioOutput;
+        QVideoWidget* mVideoWidget;
         QPushButton *mPlayPause;
+        QSlider *mSeekSlider;
 
     private slots:
 
-        void mediaStateChanged(Phonon::State newstate, Phonon::State oldstate);
+        void mediaStateChanged(QMediaPlayer::PlaybackState newState);
         void tooglePlayPause();
+        void durationChanged(qint64 duration);
+        void positionChanged(qint64 position);
+        void seekTo(int position);
 
 };
 

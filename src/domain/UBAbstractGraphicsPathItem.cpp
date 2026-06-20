@@ -6,9 +6,9 @@
 UBAbstractGraphicsPathItem::UBAbstractGraphicsPathItem(QGraphicsItem *parent):
     UBAbstractGraphicsItem(parent)
   , mStartArrowType(ArrowType_None)
-  , mStartArrowGraphicsItem(NULL)
+  , mStartArrowGraphicsItem(nullptr)
   , mEndArrowType(ArrowType_None)
-  , mEndArrowGraphicsItem(NULL)
+  , mEndArrowGraphicsItem(nullptr)
 {
 
 }
@@ -49,7 +49,7 @@ void UBAbstractGraphicsPathItem::setStartArrowType(UBAbstractGraphicsPathItem::A
     {
         mStartArrowType = arrowType;
         delete mStartArrowGraphicsItem; // Will be re-created
-        mStartArrowGraphicsItem = NULL;
+        mStartArrowGraphicsItem = nullptr;
     }
 }
 
@@ -59,7 +59,7 @@ void UBAbstractGraphicsPathItem::setEndArrowType(UBAbstractGraphicsPathItem::Arr
     {
         mEndArrowType = arrowType;
         delete mEndArrowGraphicsItem;   // Will be re-created
-        mEndArrowGraphicsItem = NULL;
+        mEndArrowGraphicsItem = nullptr;
     }
 }
 
@@ -89,7 +89,7 @@ void UBAbstractGraphicsPathItem::drawArrows()
     {
         if (nbElements > 1)
         {
-            if (mStartArrowGraphicsItem == NULL)
+            if (mStartArrowGraphicsItem == nullptr)
             {
                 QPainterPath pathArrow;
                 switch (mStartArrowType) {
@@ -133,7 +133,7 @@ void UBAbstractGraphicsPathItem::drawArrows()
         // Draw Arrow on extremity :
         if (nbElements > 1)
         {
-            if (mEndArrowGraphicsItem == NULL)
+            if (mEndArrowGraphicsItem == nullptr)
             {
                 QPainterPath pathArrow;
 

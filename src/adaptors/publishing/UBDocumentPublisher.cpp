@@ -213,7 +213,7 @@ void UBDocumentPublisher::updateGoogleMapApiKey()
 
     QString uniboardWebGoogleMapApiKey = UBSettings::settings()->uniboardWebGoogleMapApiKey->get().toString();
 
-    foreach(QFileInfo dirInfo, widgestDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot))
+    for (const auto& QFileInfo dirInfo : widgestDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot))
     {
         QString config = UBFileSystemUtils::readTextFile(dirInfo.absoluteFilePath() + "/config.xml").toLower();
 
@@ -221,7 +221,7 @@ void UBDocumentPublisher::updateGoogleMapApiKey()
         {
             QDir widgetDir(dirInfo.absoluteFilePath());
 
-            foreach(QFileInfo fileInfo, widgetDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot))
+            for (const auto& QFileInfo fileInfo : widgetDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot))
             {
                 QFile file(fileInfo.absoluteFilePath());
 
@@ -255,7 +255,7 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 
         QList<UBGraphicsW3CWidgetItem*> widgets;
 
-        foreach(QGraphicsItem* item, scene->items()){
+        for (const auto& QGraphicsItem* item : scene->items()){
             UBGraphicsW3CWidgetItem *widgetItem = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
 
             if(widgetItem){
@@ -281,7 +281,7 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 
             bool first = true;
 
-            foreach(UBGraphicsW3CWidgetItem* widget, widgets)
+            for (const auto& UBGraphicsW3CWidgetItem* widget : widgets)
             {
                 if (!first)
                     jsonFile.write(QString("    ,\n").toUtf8());
@@ -314,7 +314,7 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 
                 jsonFile.write(QString("      \"preferences\": {\n").toUtf8());
 
-                foreach(QString key, preferences.keys())
+                for (const auto& QString key : preferences.keys())
                 {
                     QString sep = ",";
                     if (key == preferences.keys().last())
@@ -332,7 +332,7 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 
                 QMap<QString, QString> datastoreEntries = widget->datastoreEntries();
 
-                foreach(QString entry, datastoreEntries.keys())
+                for (const auto& QString entry : datastoreEntries.keys())
                 {
                     QString sep = ",";
                     if (entry == datastoreEntries.keys().last())
@@ -418,7 +418,7 @@ void UBDocumentPublisher::generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *
                             lines << "    widget.openUrl = function(url) { window.open(url); }";
                             lines << "    widget.preferences = new Array()";
 
-                            foreach(QString pref, preferences.keys())
+                            for (const auto& QString pref : preferences.keys())
                             {
                                 lines << "      widget.preferences['" + pref + "'] = '" + preferences.value(pref) + "';";
                             }
@@ -453,7 +453,7 @@ void UBDocumentPublisher::generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *
 
                             lines << "    uniboard.datastore = {};";
                             lines << "    uniboard.datastore.document = new Array();";
-                            foreach(QString entry, datastoreEntries.keys())
+                            for (const auto& QString entry : datastoreEntries.keys())
                             {
                                 lines << "      uniboard.datastore.document['" + entry + "'] = '" + datastoreEntries.value(entry) + "';";
                             }
@@ -662,14 +662,14 @@ QString UBDocumentPublisher::getBase64Of(QString stringToEncode)
 
 // ---------------------------------------------------------
 UBProxyLoginDlg::UBProxyLoginDlg(QWidget *parent, const char *name):QDialog(parent)
-  , mpLayout(NULL)
-  , mpUserLayout(NULL)
-  , mpPasswordLayout(NULL)
-  , mpButtons(NULL)
-  , mpUserLabel(NULL)
-  , mpPasswordLabel(NULL)
-  , mpUsername(NULL)
-  , mpPassword(NULL)
+  , mpLayout(nullptr)
+  , mpUserLayout(nullptr)
+  , mpPasswordLayout(nullptr)
+  , mpButtons(nullptr)
+  , mpUserLabel(nullptr)
+  , mpPasswordLabel(nullptr)
+  , mpUsername(nullptr)
+  , mpPassword(nullptr)
 {
     setObjectName(name);
     setFixedSize(400, 150);
@@ -702,47 +702,47 @@ UBProxyLoginDlg::UBProxyLoginDlg(QWidget *parent, const char *name):QDialog(pare
 
 UBProxyLoginDlg::~UBProxyLoginDlg()
 {
-    if(NULL != mpLayout)
+    if(nullptr != mpLayout)
     {
         delete mpLayout;
-        mpLayout = NULL;
+        mpLayout = nullptr;
     }
-    if(NULL != mpButtons)
+    if(nullptr != mpButtons)
     {
         delete mpButtons;
-        mpButtons = NULL;
+        mpButtons = nullptr;
     }
-    if(NULL != mpUserLabel)
+    if(nullptr != mpUserLabel)
     {
         delete mpUserLabel;
-        mpUserLabel = NULL;
+        mpUserLabel = nullptr;
     }
-    if(NULL != mpPasswordLabel)
+    if(nullptr != mpPasswordLabel)
     {
         delete mpPasswordLabel;
-        mpPasswordLabel = NULL;
+        mpPasswordLabel = nullptr;
     }
-    if(NULL != mpUsername)
+    if(nullptr != mpUsername)
     {
         delete mpUsername;
-        mpUsername = NULL;
+        mpUsername = nullptr;
     }
-    if(NULL != mpPassword)
+    if(nullptr != mpPassword)
     {
         delete mpPassword;
-        mpPassword = NULL;
+        mpPassword = nullptr;
     }
 }
 
 // ---------------------------------------------------------
 UBPublicationDlg::UBPublicationDlg(QWidget *parent, const char *name):QDialog(parent)
-  , mpLayout(NULL)
-  , mpTitleLayout(NULL)
-  , mpTitleLabel(NULL)
-  , mpTitle(NULL)
-  , mpDescLabel(NULL)
-  , mpDescription(NULL)
-  , mpButtons(NULL)
+  , mpLayout(nullptr)
+  , mpTitleLayout(nullptr)
+  , mpTitleLabel(nullptr)
+  , mpTitle(nullptr)
+  , mpDescLabel(nullptr)
+  , mpDescription(nullptr)
+  , mpButtons(nullptr)
 {
     setObjectName(name);
     setWindowTitle(tr("Publish document on the web"));
@@ -779,40 +779,40 @@ UBPublicationDlg::UBPublicationDlg(QWidget *parent, const char *name):QDialog(pa
 
 UBPublicationDlg::~UBPublicationDlg()
 {
-    if(NULL != mpTitleLabel)
+    if(nullptr != mpTitleLabel)
     {
         delete mpTitleLabel;
-        mpTitleLabel = NULL;
+        mpTitleLabel = nullptr;
     }
-    if(NULL != mpTitle)
+    if(nullptr != mpTitle)
     {
         delete mpTitle;
-        mpTitle = NULL;
+        mpTitle = nullptr;
     }
-    if(NULL != mpDescLabel)
+    if(nullptr != mpDescLabel)
     {
         delete mpDescLabel;
-        mpDescLabel = NULL;
+        mpDescLabel = nullptr;
     }
-    if(NULL != mpDescription)
+    if(nullptr != mpDescription)
     {
         delete mpDescription;
-        mpDescription = NULL;
+        mpDescription = nullptr;
     }
-    if(NULL != mpButtons)
+    if(nullptr != mpButtons)
     {
         delete mpButtons;
-        mpButtons = NULL;
+        mpButtons = nullptr;
     }
-    if(NULL != mpTitleLayout)
+    if(nullptr != mpTitleLayout)
     {
         delete mpTitleLayout;
-        mpTitleLayout = NULL;
+        mpTitleLayout = nullptr;
     }
-    if(NULL != mpLayout)
+    if(nullptr != mpLayout)
     {
         delete mpLayout;
-        mpLayout = NULL;
+        mpLayout = nullptr;
     }
 }
 

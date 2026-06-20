@@ -23,7 +23,9 @@
 
 #include "UBGraphicsGroupContainerItem.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "UBGraphicsMediaItem.h"
 #include "UBGraphicsTextItem.h"
@@ -43,7 +45,7 @@
 
 UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent)
     : QGraphicsItem(parent)
-    , mCurrentItem(NULL)
+    , mCurrentItem(nullptr)
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
@@ -152,7 +154,7 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item,bool removeAct
     //we want the bounding rect of the visible children
     QRectF visibleChildrenBoundingRect;
 
-    foreach(QGraphicsItem* child, item->childItems()){
+    for (const auto& QGraphicsItem* child : item->childItems()){
         if(child->isVisible()){
             QPointF childB = child->boundingRect().topLeft();
             QRectF rect = QRectF(childB + child->pos(), child->boundingRect().size());
@@ -203,7 +205,7 @@ void UBGraphicsGroupContainerItem::deselectCurrentItem()
 
         }
         mCurrentItem->setSelected(false);
-        mCurrentItem = NULL;
+        mCurrentItem = nullptr;
     }
 }
 
@@ -281,7 +283,7 @@ void UBGraphicsGroupContainerItem::setUuid(const QUuid &pUuid)
 
 void UBGraphicsGroupContainerItem::destroy(bool canUndo) {
 
-    foreach (QGraphicsItem *item, childItems()) {
+    for (const auto& QGraphicsItem *item : childItems()) {
         pRemoveFromGroup(item);
         item->setFlag(QGraphicsItem::ItemIsSelectable, true);
         item->setFlag(QGraphicsItem::ItemIsFocusable, true);
@@ -292,7 +294,7 @@ void UBGraphicsGroupContainerItem::destroy(bool canUndo) {
 
 void UBGraphicsGroupContainerItem::clearSource()
 {
-    foreach(QGraphicsItem *child, childItems())
+    for (const auto& QGraphicsItem *child : childItems())
     {
         UBGraphicsItem *item = dynamic_cast<UBGraphicsItem *>(child);
         if (item)
@@ -335,7 +337,7 @@ QVariant UBGraphicsGroupContainerItem::itemChange(GraphicsItemChange change, con
 {
     QVariant newValue = Delegate()->itemChange(change, value);
 
-    foreach(QGraphicsItem *child, children())
+    for (const auto& QGraphicsItem *child : children())
     {
         UBGraphicsItem *item = dynamic_cast<UBGraphicsItem*>(child);
         if (item)
@@ -367,7 +369,7 @@ void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
             bool rotatableNow = true;
             bool lockedNow = false;
 
-            foreach (QGraphicsItem *item, childItems()) {
+            for (const auto& QGraphicsItem *item : childItems()) {
                 if (!UBGraphicsItem::isFlippable(item)) {
                     flippableNow = false;
                 }

@@ -52,7 +52,7 @@ XPDFRenderer::~XPDFRenderer()
 {
     if(mSplash){
         delete mSplash;
-        mSplash = NULL;
+        mSplash = nullptr;
     }
 
     if (mDocument)

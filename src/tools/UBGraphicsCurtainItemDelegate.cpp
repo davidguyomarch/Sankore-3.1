@@ -21,7 +21,9 @@
 
 
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtSvg>
 
 #include "domain/UBGraphicsScene.h"
@@ -78,7 +80,7 @@ QVariant UBGraphicsCurtainItemDelegate::itemChange(QGraphicsItem::GraphicsItemCh
     {
 //        mFrame->setZValue(mDelegated->zValue() + 1);
 
-//        foreach(DelegateButton* button, mButtons)
+//        for (const auto& DelegateButton* button : mButtons)
 //        {
 //            button->setZValue(mDelegated->zValue() + 2);
 //            button->setZValue(mDelegated->zValue() + 2);

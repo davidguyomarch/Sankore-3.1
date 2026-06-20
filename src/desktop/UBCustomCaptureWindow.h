@@ -23,7 +23,9 @@
 #ifndef UBCUSTOMCAPTUREWINDOW_H_
 #define UBCUSTOMCAPTUREWINDOW_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 /**
 * This class is used to do the custom capture of Uninotes
 **/

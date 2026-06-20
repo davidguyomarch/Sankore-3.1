@@ -23,7 +23,9 @@
 
 #include "UBPlatformUtils.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QProcess>
 #include <windows.h>
 #include <shellapi.h>
@@ -98,7 +100,7 @@ void UBPlatformUtils::runInstaller(const QString &installerFilePath)
     {
         qWarning() << "Running '" << installerFilePath << "' failed (error=" << process.error() << ")";
         QString verb = "runas";
-        ::ShellExecute(NULL, verb.utf16(), installerFilePath.utf16(), NULL, NULL, SW_HIDE);
+        ::ShellExecute(nullptr, verb.utf16(), installerFilePath.utf16(), nullptr, nullptr, SW_HIDE);
     }
 }
 
@@ -426,7 +428,7 @@ void UBPlatformUtils::destroyKeyboardLayouts()
 	for(int i=0; i<nKeyboardLayouts; i++)
 		delete keyboardLayouts[i];
 	delete [] keyboardLayouts;
-	keyboardLayouts = NULL;
+	keyboardLayouts = nullptr;
 }
 
 QString UBPlatformUtils::urlFromClipboard()

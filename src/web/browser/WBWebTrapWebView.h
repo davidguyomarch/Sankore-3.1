@@ -24,7 +24,9 @@
 #ifndef WBWEBTRAPWEBVIEW_H_
 #define WBWEBTRAPWEBVIEW_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>

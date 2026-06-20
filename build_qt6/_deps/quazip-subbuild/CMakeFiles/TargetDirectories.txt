@@ -1,0 +1,3 @@
+/workspace/build_qt6/_deps/quazip-subbuild/CMakeFiles/quazip-populate.dir
+/workspace/build_qt6/_deps/quazip-subbuild/CMakeFiles/edit_cache.dir
+/workspace/build_qt6/_deps/quazip-subbuild/CMakeFiles/rebuild_cache.dir

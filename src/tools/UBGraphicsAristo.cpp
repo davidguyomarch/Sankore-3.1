@@ -729,7 +729,7 @@ void UBGraphicsAristo::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     mRotateSvgItem->setVisible(false);
     mResizeSvgItem->setVisible(false);
     mCloseSvgItem->setVisible(false);
-    UBDrawingController::drawingController()->mActiveRuler = NULL;
+    UBDrawingController::drawingController()->mActiveRuler = nullptr;
     event->accept();
     update();
 }

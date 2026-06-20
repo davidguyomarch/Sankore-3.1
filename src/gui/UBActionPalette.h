@@ -24,7 +24,9 @@
 #ifndef UBACTIONPALETTE_H_
 #define UBACTIONPALETTE_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QPoint>
 #include <QButtonGroup>
 #include "UBFloatingPalette.h"

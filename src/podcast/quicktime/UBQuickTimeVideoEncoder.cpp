@@ -25,7 +25,9 @@
 
 #include <QuickTime/QuickTime.h>
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "frameworks/UBFileSystemUtils.h"
 
@@ -101,7 +103,7 @@ void UBQuickTimeVideoEncoder::newPixmap(const QImage& pImage, long timestamp)
     {
         if(mPendingImageFrames.length() > 0)
         {
-            foreach(ImageFrame frame, mPendingImageFrames)
+            for (const auto& ImageFrame frame : mPendingImageFrames)
             {
                     encodeFrame(frame.image, frame.timestamp);
             }

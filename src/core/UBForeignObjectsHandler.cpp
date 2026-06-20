@@ -21,7 +21,9 @@
 
 #include "UBForeignObjectsHandler.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtXml>
 #include "UBSettings.h"
 
@@ -78,7 +80,7 @@ static bool rm_r(const QString &rmPath)
         return true;
     } else if (fi.isDir()) {
         QFileInfoList fList = QDir(rmPath).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-        foreach (QFileInfo sub, fList) {
+        for (const auto& QFileInfo sub : fList) {
             rm_r(sub.absoluteFilePath());
         }
         if (!QDir().rmdir(rmPath)) {
@@ -126,7 +128,7 @@ static bool cp_rf(const QString &what, const QString &where)
         QDir().mkpath(where);
 
         QFileInfoList fList = QDir(what).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-        foreach (QFileInfo sub, fList) {
+        for (const auto& QFileInfo sub : fList) {
             if (!cp_rf(sub.absoluteFilePath(), where + "/" + sub.fileName()))
             return false;
         }
@@ -195,7 +197,7 @@ public:
 
         // Gathering information from svg files
         QFileInfoList svgInfos = QDir(mCurrentDir).entryInfoList(QStringList() << "*.svg", QDir::NoDotAndDotDot | QDir::Files);
-        foreach (QFileInfo svgInfo, svgInfos) {
+        for (const auto& QFileInfo svgInfo : svgInfos) {
             cureIdsFromSvgDom(createDomFromSvg(svgInfo.absoluteFilePath()));
         }
 
@@ -203,7 +205,7 @@ public:
         QVector<QString> deleteCandidates;
         findRedundandElements(deleteCandidates);
 
-        foreach (QString key, deleteCandidates) {
+        for (const auto& QString key : deleteCandidates) {
             QString delPath = mPresentIdsMap.value(key);
             if (delPath.isNull()) {
                 continue;
@@ -231,7 +233,7 @@ private:
     void cleanTrash()
     {
         QFileInfoList ifs = QDir(mCurrentDir).entryInfoList(trashFilter, QDir::NoDotAndDotDot | QDir::Files);
-        foreach (QFileInfo ifo, ifs) {
+        for (const auto& QFileInfo ifo : ifs) {
             rm_r(ifo.absoluteFilePath());
         }
     }
@@ -258,7 +260,7 @@ private:
     {
         QString absPrefix = mCurrentDir + "/";
         QStringList dirsList = scanDirs.split(",", QString::SkipEmptyParts);
-        foreach (QString dirName, dirsList) {
+        for (const auto& QString dirName : dirsList) {
             QString absPath = absPrefix + dirName;
             if (!QFile::exists(absPath)) {
                 continue;
@@ -271,7 +273,7 @@ private:
     void fitIdsFromDir(const QString &scanDir)
     {
         QFileInfoList fileList = QDir(scanDir).entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
-        foreach (QFileInfo nInfo, fileList) {
+        for (const auto& QFileInfo nInfo : fileList) {
             QString uid = strIdFrom(nInfo.fileName());
             if (uid.isNull()) {
                 continue;
@@ -611,7 +613,7 @@ UBForeighnObjectsHandler::~UBForeighnObjectsHandler()
 
 void UBForeighnObjectsHandler::cure(const QList<QUrl> &dirs)
 {
-    foreach (QUrl dir, dirs) {
+    for (const auto& QUrl dir : dirs) {
         cure(dir);
     }
 }

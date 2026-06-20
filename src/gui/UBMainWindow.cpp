@@ -21,7 +21,9 @@
 
 
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "UBMainWindow.h"
 #include "core/UBApplication.h"
@@ -38,7 +40,7 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     , mBoardWidget(0)
     , mWebWidget(0)
     , mDocumentsWidget(0)
-    , mpDownloadWidget(NULL)
+    , mpDownloadWidget(nullptr)
 {
     Ui::MainWindow::setupUi(this);
 
@@ -69,10 +71,10 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
 
 UBMainWindow::~UBMainWindow()
 {
-    if(NULL != mpDownloadWidget)
+    if(nullptr != mpDownloadWidget)
     {
         delete mpDownloadWidget;
-        mpDownloadWidget = NULL;
+        mpDownloadWidget = nullptr;
     }
 }
 
@@ -154,7 +156,7 @@ bool UBMainWindow::event(QEvent *event)
 {
     bool bRes = QMainWindow::event(event);
 
-    if (NULL != UBApplication::boardController)
+    if (nullptr != UBApplication::boardController)
     {
         UBBoardView *controlV = UBApplication::boardController->controlView();
         if (controlV && controlV->isVisible())
@@ -245,7 +247,7 @@ void UBMainWindow::information(QString windowTitle, QString text)
 
 void UBMainWindow::showDownloadWidget()
 {
-    if(NULL != mpDownloadWidget)
+    if(nullptr != mpDownloadWidget)
     {
         mpDownloadWidget->show();
     }
@@ -253,7 +255,7 @@ void UBMainWindow::showDownloadWidget()
 
 void UBMainWindow::hideDownloadWidget()
 {
-    if(NULL != mpDownloadWidget)
+    if(nullptr != mpDownloadWidget)
     {
         mpDownloadWidget->hide();
     }

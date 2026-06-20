@@ -25,7 +25,9 @@
 
 #include <QWebEngineView>
 #include <QDomDocument>
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "gui/UBMainWindow.h"
 
@@ -521,7 +523,7 @@ void UBWidgetUniboardAPI::returnStatus(const QString& method, const QString& sta
 void UBWidgetUniboardAPI::usedMethods(QStringList methods)
 {
     // TODO: Implement this method
-    foreach(QString method, methods)
+    for (const auto& QString method : methods)
     {
 
     }
@@ -775,7 +777,7 @@ bool UBWidgetUniboardAPI::removeFile(const QString &path)
     bool hasFoundWgtExtention = false;
 
     //find the path of the widget
-    foreach(QString fragment, url.split('/')){
+    for (const auto& QString fragment : url.split('/')){
         if(!hasFoundWgtExtention){
             wgtUrl += fragment + '/';
 
@@ -784,7 +786,7 @@ bool UBWidgetUniboardAPI::removeFile(const QString &path)
     }
 
     //then find the absolute path of the ressource
-    foreach(QString fragment, path.split('/')){
+    for (const auto& QString fragment : path.split('/')){
         if(fragment != ".." && fragment != "."){
             wgtUrl += fragment + '/';
         }

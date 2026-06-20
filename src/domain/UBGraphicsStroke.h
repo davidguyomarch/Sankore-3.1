@@ -24,7 +24,9 @@
 #ifndef UBGRAPHICSSTROKE_H_
 #define UBGRAPHICSSTROKE_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "core/UB.h"
 

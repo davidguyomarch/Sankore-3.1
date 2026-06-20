@@ -23,7 +23,9 @@
 #include <limits>
 #include <QGraphicsItem>
 #include <QPointF>
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
@@ -89,7 +91,7 @@ void UBFeaturesComputingThread::scanFS(const QUrl & currentPath
         QString testVirtualPath = currVirtualPath + "/" + fileName;
         UBFeature::Permissions testPermissions = pPermissions;
 
-        foreach (CategoryData curException, extData) {
+        for (const auto& CategoryData curException : extData) {
             QString exceptionVirtualPath = curException.categoryFeature().getFullVirtualPath();
             if (testVirtualPath.startsWith(exceptionVirtualPath)) {
                 qDebug() << "catched";
@@ -140,7 +142,7 @@ void UBFeaturesComputingThread::scanAll(QList<CategoryData> pScanningData
 
             CategoryData::pathType pType = static_cast<CategoryData::pathType>(n);
             QList<QUrl> curScanPaths = curData.pathData().values(pType);
-            foreach (QUrl curUrl, curScanPaths) {
+            for (const auto& QUrl curUrl : curScanPaths) {
 //                qDebug() << "location" << i << "is" << curUrl.toLocalFile();
                 scanFS(curUrl
                        , curData.categoryFeature().getFullVirtualPath()
@@ -700,7 +702,7 @@ void UBFeaturesController::loadHardcodedItemsToModel()
 
     QList <UBToolsManager::UBToolDescriptor> tools = UBToolsManager::manager()->allTools();
 
-    foreach (UBToolsManager::UBToolDescriptor tool, tools) {
+    for (const auto& UBToolsManager::UBToolDescriptor tool : tools) {
         featuresList->append(UBFeature(appData.categoryFeature().getFullVirtualPath() + "/" + tool.label, tool.icon.toImage(), tool.label, QUrl(tool.id), FEATURE_INTERNAL, UBFeature::NO_P));
         if (favoriteSet->find(QUrl(tool.id)) != favoriteSet->end()) {
             featuresList->append(UBFeature(favoriteData.categoryFeature().getFullVirtualPath() + "/" + tool.label, tool.icon.toImage(), tool.label, QUrl(tool.id), FEATURE_INTERNAL, UBFeature::NO_P));
@@ -750,7 +752,7 @@ QString UBFeaturesController::uniqNameForFeature(const UBFeature &feature, const
     QString resultName;
 
     qDebug() << "start";
-    foreach (UBFeature curFeature, *featuresList) {
+    for (const auto& UBFeature curFeature : *featuresList) {
 
         if (curFeature.getFullVirtualPath().startsWith(feature.getFullVirtualPath())) {
 
@@ -1330,7 +1332,7 @@ CategoryData UBFeaturesController::getDestinationCategoryForMimeType(const QStri
 QString UBFeaturesController::getFeaturePathByName(const QString &featureName) const
 {
     QString videoPickerWidgetPath;
-    foreach (UBFeature curFeature, *featuresList)
+    for (const auto& UBFeature curFeature : *featuresList)
     {
         if (curFeature.getName().contains(featureName))
             videoPickerWidgetPath = curFeature.getFullPath().toLocalFile();
@@ -1727,7 +1729,7 @@ void UBFeaturesController::restoreFeature(const QVector<UBFeature> features)
     QString textHasBeenRestored = tr("has been restored to");
     QString confirmationMessage = "";
 
-    foreach (UBFeature feature, features) {
+    for (const auto& UBFeature feature : features) {
         RegisteryEntry entry = mTrashRegistery.getEntry(feature.getName());
         QStringList path = entry.originalVirtualPath.split("/");
 

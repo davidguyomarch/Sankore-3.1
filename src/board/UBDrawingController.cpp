@@ -50,12 +50,12 @@ void UBDrawingController::destroy()
 {
     if(sDrawingController)
         delete sDrawingController;
-    sDrawingController = NULL;
+    sDrawingController = nullptr;
 }
 
 UBDrawingController::UBDrawingController(QObject * parent)
     : QObject(parent)
-    , mActiveRuler(NULL)
+    , mActiveRuler(nullptr)
     , mStylusTool((UBStylusTool::Enum)-1)
     , mLatestDrawingTool((UBStylusTool::Enum)-1)
 	, mIsDesktopMode(false)
@@ -113,7 +113,7 @@ void UBDrawingController::setStylusTool(int tool)
         }
         else
         {
-            foreach(QGraphicsItem *gi, UBApplication::boardController->activeScene()->selectedItems())
+            for (const auto& QGraphicsItem *gi : UBApplication::boardController->activeScene()->selectedItems())
             {
                 UBShapeFactory::desactivateEditionMode(gi);
             }
@@ -184,7 +184,7 @@ void UBDrawingController::setStylusTool(int tool)
 
 void UBDrawingController::onActiveSceneChanged()
 {
-    foreach (QGraphicsItem* gi, UBApplication::boardController->activeScene()->items())
+    for (const auto& QGraphicsItem* gi : UBApplication::boardController->activeScene()->items())
     {
         if (gi->type() == UBGraphicsItemType::GraphicsPathItemType)
         {
@@ -200,7 +200,7 @@ void UBDrawingController::onActiveSceneChanged()
 
 void UBDrawingController::deactivateCreationModeForGraphicsPathItems()
 {
-    foreach (QGraphicsItem* gi, UBApplication::boardController->activeScene()->items())
+    for (const auto& QGraphicsItem* gi : UBApplication::boardController->activeScene()->items())
     {
         if (gi->type() == UBGraphicsItemType::GraphicsPathItemType)
         {

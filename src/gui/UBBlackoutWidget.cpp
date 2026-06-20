@@ -21,7 +21,9 @@
 
 
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "UBBlackoutWidget.h"
 

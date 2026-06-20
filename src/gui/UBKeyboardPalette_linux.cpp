@@ -86,7 +86,7 @@ void x11SendKey(Display *display, int keyCode, int modifiers)
 void traceKeyCodes()
 {
     Display *display = XOpenDisplay(0);
-    if(display == NULL)
+    if(display == nullptr)
        return;
 
     int min_keycodes, max_keycodes, byte_per_code;
@@ -119,7 +119,7 @@ void UBKeyboardButton::sendUnicodeSymbol(KEYCODE keycode)
 {
     // Obtain the X11 display.
     Display *display = XOpenDisplay(0);
-    if(display == NULL)
+    if(display == nullptr)
        return;
 
     if (!keycode.empty())
@@ -144,7 +144,7 @@ void UBKeyboardButton::sendControlSymbol(int nSymbol)
 {
     // Obtain the X11 display.
     Display *display = XOpenDisplay(0);
-    if(display == NULL)
+    if(display == nullptr)
        return;
 
 
@@ -188,7 +188,7 @@ void UBKeyboardPalette::onActivated(bool activated)
         }
 
         Display *display = XOpenDisplay(0);
-        if(display == NULL)
+        if(display == nullptr)
            return;
 
         XDisplayKeycodes(display, &this->min_keycodes, &this->max_keycodes);
@@ -205,14 +205,14 @@ void UBKeyboardPalette::onActivated(bool activated)
     else
     {
         Display *display = XOpenDisplay(0);
-        if(display == NULL)
+        if(display == nullptr)
         {
             qDebug() << "Keybard not activated....";
             return;
         }
 
         KeySym* keySyms = (KeySym*)storage;
-        if (keySyms!=NULL)
+        if (keySyms!=nullptr)
         {
             qDebug() << "Default key table restored.....";
 
@@ -220,7 +220,7 @@ void UBKeyboardPalette::onActivated(bool activated)
                                    keySyms, max_keycodes - min_keycodes);
 
             XFree(keySyms);
-            storage = NULL;
+            storage = nullptr;
         }
 
         XCloseDisplay(display);
@@ -232,7 +232,7 @@ void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* locale)
     const int maxMapOffset = 3; //Suppose to have at least 2 keysym groups due to X11 xlib specification
 
     Display *display = XOpenDisplay(0);
-    if(display == NULL)
+    if(display == nullptr)
        return;
 
     int byte_per_code;

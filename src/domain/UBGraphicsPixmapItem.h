@@ -24,7 +24,9 @@
 #ifndef UBGRAPHICSPIXMAPITEM_H_
 #define UBGRAPHICSPIXMAPITEM_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "core/UB.h"
 

@@ -23,7 +23,9 @@
 
 #include "UBSpinningWheel.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 
 UBSpinningWheel::UBSpinningWheel(QWidget *parent)

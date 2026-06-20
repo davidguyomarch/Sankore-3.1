@@ -24,7 +24,9 @@
 #ifndef UBABSTRACTUNDOCOMMAND_H_
 #define UBABSTRACTUNDOCOMMAND_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 class UBAbstractUndoCommand : public QUndoCommand
 {

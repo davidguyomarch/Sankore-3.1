@@ -24,7 +24,9 @@
 #ifndef UBTHUMBNAILWIDGET_H_
 #define UBTHUMBNAILWIDGET_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtSvg>
 #include <QTime>
 #include <QGraphicsSceneHoverEvent>
@@ -419,7 +421,7 @@ protected:
 
 public:
 
-    UBWidgetTextThumbnailElement() : thumbnail(NULL), caption(NULL), border(0)
+    UBWidgetTextThumbnailElement() : thumbnail(nullptr), caption(nullptr), border(0)
     {
     }
 

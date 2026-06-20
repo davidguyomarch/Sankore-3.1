@@ -24,7 +24,9 @@
 #ifndef UBGRAPHICSRULER_H_
 #define UBGRAPHICSRULER_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtSvg>
 
 #include "core/UB.h"

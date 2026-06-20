@@ -21,7 +21,9 @@
 
 
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QDomDocument>
 #include <QXmlStreamReader>
 
@@ -610,7 +612,7 @@ void UBWebController::captureoEmbed()
 
 void UBWebController::lookForEmbedContent(QString* pHtml, QString tag, QString attribute, QList<QUrl> *pList)
 {
-    if(NULL != pHtml && NULL != pList){
+    if(nullptr != pHtml && nullptr != pList){
         QVector<QString> urlsFound;
         // Check for <embed> content
         QRegExp exp(QString("<%0(.*)").arg(tag));
@@ -643,7 +645,7 @@ void UBWebController::getEmbeddableContent()
     // Get the source code of the page
     if(mCurrentWebBrowser){
         QNetworkAccessManager* pNam = (*mCurrentWebBrowser)->currentTabWebView()->webPage()->networkAccessManager();
-        if(NULL != pNam){
+        if(nullptr != pNam){
             QString html = (*mCurrentWebBrowser)->currentTabWebView()->webPage()->mainFrame()->toHtml();
             mOEmbedParser.setNetworkAccessManager(pNam);
 
@@ -667,9 +669,9 @@ void UBWebController::captureEduMedia()
         {
             QWebElementCollection objects = webView->page()->currentFrame()->findAllElements("object");
 
-            foreach(QWebElement object, objects)
+            for (const auto& QWebElement object : objects)
             {
-                foreach(QWebElement param, object.findAll("param"))
+                for (const auto& QWebElement param : object.findAll("param"))
                 {
                     if(param.attribute("name") == "flashvars")
                     {
@@ -680,7 +682,7 @@ void UBWebController::captureEduMedia()
 
                         QStringList flashVars = value.split("&");
 
-                        foreach(QString flashVar, flashVars)
+                        for (const auto& QString flashVar : flashVars)
                         {
                             QStringList var = flashVar.split("=");
 
@@ -722,7 +724,7 @@ bool UBWebController::isOEmbedable(const QUrl& pUrl)
 {
     QString urlAsString = pUrl.toString();
 
-    foreach(QString provider, mOEmbedProviders)
+    for (const auto& QString provider : mOEmbedProviders)
     {
         if(urlAsString.contains(provider))
         {
@@ -752,7 +754,7 @@ bool UBWebController::isEduMedia(const QUrl& pUrl)
 
 void UBWebController::loadUrl(const QUrl& url)
 {
-    bool webBrowserAlreadyInstanciated = dynamic_cast<WBBrowserWindow*>(mStackedWidget->widget(WebBrowser)) != NULL;
+    bool webBrowserAlreadyInstanciated = dynamic_cast<WBBrowserWindow*>(mStackedWidget->widget(WebBrowser)) != nullptr;
     UBApplication::applicationController->showInternet();
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
     {
@@ -834,7 +836,7 @@ void UBWebController::onOEmbedParsed(QVector<sOEmbedContent> contents)
 {
     QList<QUrl> urls;
 
-    foreach(sOEmbedContent cnt, contents){
+    for (const auto& sOEmbedContent cnt : contents){
         urls << QUrl(cnt.url);
     }
 

@@ -41,13 +41,13 @@ UBPlatformUtils::~UBPlatformUtils()
 
 bool UBPlatformUtils::hasVirtualKeyboard()
 {
-	return keyboardLayouts!=NULL && nKeyboardLayouts!=0;
+	return keyboardLayouts!=nullptr && nKeyboardLayouts!=0;
 }
 
 
 UBKeyboardLocale::~UBKeyboardLocale()
 {
-	if (varSymbols!=NULL)
+	if (varSymbols!=nullptr)
 	{
 		for(int i=0; i<SYMBOL_KEYS_COUNT; i++)
 			delete varSymbols[i];

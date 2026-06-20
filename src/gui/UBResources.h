@@ -24,7 +24,9 @@
 #ifndef UBRESOURCES_H_
 #define UBRESOURCES_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 class UBResources : public QObject
 {

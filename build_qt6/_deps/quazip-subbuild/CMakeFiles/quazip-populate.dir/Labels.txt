@@ -1,0 +1,14 @@
+# Target labels
+ quazip-populate
+# Source files and their labels
+/workspace/build_qt6/_deps/quazip-subbuild/CMakeFiles/quazip-populate
+/workspace/build_qt6/_deps/quazip-subbuild/CMakeFiles/quazip-populate.rule
+/workspace/build_qt6/_deps/quazip-subbuild/CMakeFiles/quazip-populate-complete.rule
+/workspace/build_qt6/_deps/quazip-subbuild/quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-build.rule
+/workspace/build_qt6/_deps/quazip-subbuild/quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-configure.rule
+/workspace/build_qt6/_deps/quazip-subbuild/quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-download.rule
+/workspace/build_qt6/_deps/quazip-subbuild/quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-install.rule
+/workspace/build_qt6/_deps/quazip-subbuild/quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-mkdir.rule
+/workspace/build_qt6/_deps/quazip-subbuild/quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-patch.rule
+/workspace/build_qt6/_deps/quazip-subbuild/quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-test.rule
+/workspace/build_qt6/_deps/quazip-subbuild/quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-update.rule

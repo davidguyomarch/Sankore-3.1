@@ -54,15 +54,15 @@ UBItem::~UBItem()
 
 UBGraphicsItem::~UBGraphicsItem()
 {
-    if (mDelegate!=NULL){
+    if (mDelegate!=nullptr){
         delete mDelegate;
-        mDelegate = NULL;
+        mDelegate = nullptr;
     }
 }
 
 void UBGraphicsItem::setDelegate(UBGraphicsItemDelegate* delegate)
 {
-    Q_ASSERT(mDelegate==NULL);
+    Q_ASSERT(mDelegate==nullptr);
     mDelegate = delegate;
 }
 

@@ -14,7 +14,7 @@ UBDockResourcesWidget::UBDockResourcesWidget(QWidget *parent):
     layout->addWidget(mTeacherResourceWidget);
 
 
-    mLeftPalette = NULL;
+    mLeftPalette = nullptr;
 }
 
 bool UBDockResourcesWidget::hasUserDataInTeacherGuide()

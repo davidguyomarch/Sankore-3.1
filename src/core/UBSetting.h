@@ -24,7 +24,9 @@
 #ifndef UBSETTING_H_
 #define UBSETTING_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 class UBSettings;
 

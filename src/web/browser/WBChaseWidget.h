@@ -65,7 +65,9 @@
 #ifndef WBCHASEWIDGET_H
 #define WBCHASEWIDGET_H
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 
 class WBChaseWidget : public QWidget

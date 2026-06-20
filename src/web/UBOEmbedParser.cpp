@@ -226,7 +226,7 @@ void UBOEmbedParser::onParseContent(QString url)
 
     QNetworkRequest req;
     req.setUrl(qurl);
-    if(NULL != mpNam){
+    if(nullptr != mpNam){
         mpNam->get(req);
     }
 }

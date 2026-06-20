@@ -83,7 +83,7 @@ QFileInfoList UBImportDocumentSetAdaptor::importData(const QString &zipFile, con
 
     QDir tDir(tmpDir);
 
-    foreach(QFileInfo readDir, tDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden , QDir::Name)) {
+    for (const auto& QFileInfo readDir : tDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden , QDir::Name)) {
         QString newFileName = readDir.fileName();
         if (QFileInfo(destination + "/" + readDir.fileName()).exists()) {
             newFileName = QFileInfo(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath(tmpDir)).fileName();

@@ -23,7 +23,9 @@
 #include "UBDocumentController.h"
 
 #include <QtCore>
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBStringUtils.h"
@@ -277,7 +279,7 @@ QString UBDocumentTreeNode::dirPathInHierarchy()
 
 UBDocumentTreeNode::~UBDocumentTreeNode()
 {
-    foreach (UBDocumentTreeNode *curChildren, mChildren) {
+    for (const auto& UBDocumentTreeNode *curChildren : mChildren) {
         delete(curChildren);
         curChildren = 0;
     }
@@ -307,7 +309,7 @@ bool UBDocumentTreeNode::findNode(UBDocumentTreeNode *node)
 UBDocumentTreeNode *UBDocumentTreeNode::nextSibling()
 {
     UBDocumentTreeNode *parent = this->parentNode();
-    UBDocumentTreeNode *nextSibling = NULL;
+    UBDocumentTreeNode *nextSibling = nullptr;
 
     int myIndex = parent->children().indexOf(this);
     int indexOfNextSibling = myIndex + 1;
@@ -322,7 +324,7 @@ UBDocumentTreeNode *UBDocumentTreeNode::nextSibling()
 UBDocumentTreeNode *UBDocumentTreeNode::previousSibling()
 {
     UBDocumentTreeNode *parent = this->parentNode();
-    UBDocumentTreeNode *previousSibling = NULL;
+    UBDocumentTreeNode *previousSibling = nullptr;
 
     int myIndex = parent->children().indexOf(this);
     int indexOfPreviousSibling = myIndex - 1;
@@ -641,7 +643,7 @@ QMimeData *UBDocumentTreeModel::mimeData (const QModelIndexList &indexes) const
     QList <QModelIndex> indexList;
     QList<QUrl> urlList;
 
-    foreach (QModelIndex index, indexes) {
+    for (const auto& QModelIndex index : indexes) {
         if (index.isValid()) {
             indexList.append(index);
             urlList.append(QUrl());
@@ -674,7 +676,7 @@ bool UBDocumentTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction act
 
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-        foreach (UBMimeDataItem sourceItem, ubMime->items())
+        for (const auto& UBMimeDataItem sourceItem : ubMime->items())
         {
             UBDocumentProxy *fromProxy = sourceItem.documentProxy();
             int fromIndex = sourceItem.sceneIndex();
@@ -710,7 +712,7 @@ bool UBDocumentTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction act
 
     QList<QModelIndex> incomingIndexes = mimeData->indexes();
 
-    foreach (QModelIndex curIndex, incomingIndexes) {
+    for (const auto& QModelIndex curIndex : incomingIndexes) {
 #ifdef Q_OS_MACOS
         if (inModel(curIndex)) {
             return true;
@@ -777,7 +779,7 @@ QPersistentModelIndex UBDocumentTreeModel::persistentIndexForNode(UBDocumentTree
 
 UBDocumentTreeNode *UBDocumentTreeModel::findProxy(UBDocumentProxy *pSearch, UBDocumentTreeNode *pParent) const
 {
-    foreach (UBDocumentTreeNode *curNode, pParent->children())
+    for (const auto& UBDocumentTreeNode *curNode : pParent->children())
     {
         if (UBDocumentTreeNode::Catalog != curNode->nodeType())
         {
@@ -1003,7 +1005,7 @@ QStringList UBDocumentTreeModel::nodeNameList(const QModelIndex &pIndex) const
         return QStringList();
     }
 
-    foreach (UBDocumentTreeNode *curNode, catalog->children()) {
+    for (const auto& UBDocumentTreeNode *curNode : catalog->children()) {
         result << curNode->nodeName();
     }
 
@@ -1196,7 +1198,7 @@ void UBDocumentTreeModel::updateIndexNameBindings(UBDocumentTreeNode *nd)
     Q_ASSERT(nd);
 
     if (nd->nodeType() == UBDocumentTreeNode::Catalog) {
-        foreach (UBDocumentTreeNode *lnd, nd->children()) {
+        for (const auto& UBDocumentTreeNode *lnd : nd->children()) {
             updateIndexNameBindings(lnd);
         }
     } else if (nd->proxyData()) {
@@ -1429,7 +1431,7 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
         int total = ubMime->items().size();
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-        foreach (UBMimeDataItem sourceItem, ubMime->items())
+        for (const auto& UBMimeDataItem sourceItem : ubMime->items())
         {
             UBDocumentProxy *fromProxy = sourceItem.documentProxy();
             int fromIndex = sourceItem.sceneIndex();
@@ -1695,9 +1697,9 @@ void UBDocumentController::createNewDocument()
 
 void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurrentDocument, const bool onImport)
 {
-    if (proxy==NULL)
+    if (proxy==nullptr)
     {
-        setDocument(NULL);
+        setDocument(nullptr);
         return;
     }
 
@@ -1744,7 +1746,7 @@ QList<UBDocumentProxy*> UBDocumentController::selectedProxies()
 {
     QList<UBDocumentProxy*> result;
 
-    foreach (QModelIndex curIndex, mapIndexesToSource(mDocumentUI->documentTreeView->selectionModel()->selectedIndexes())) {
+    for (const auto& QModelIndex curIndex : mapIndexesToSource(mDocumentUI->documentTreeView->selectionModel()->selectedIndexes())) {
         result << UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->proxyForIndex(curIndex);
     }
 
@@ -1944,7 +1946,7 @@ void UBDocumentController::setupViews()
         connect(mAddFileToDocumentAction, SIGNAL(triggered(bool)), this, SLOT(addFileToDocument()));
         connect(mAddImagesAction, SIGNAL(triggered(bool)), this, SLOT(addImages()));
 
-        foreach (QWidget* menuWidget,  mMainWindow->actionDocumentAdd->associatedWidgets())
+        for (const auto& QWidget* menuWidget : mMainWindow->actionDocumentAdd->associatedWidgets())
         {
             QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -1976,7 +1978,7 @@ void UBDocumentController::setupViews()
             adaptor->setAssociatedAction(currentExportAction);
         }
 
-        foreach (QWidget* menuWidget,  mMainWindow->actionExport->associatedWidgets())
+        for (const auto& QWidget* menuWidget : mMainWindow->actionExport->associatedWidgets())
         {
             QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -2050,7 +2052,7 @@ void UBDocumentController::setupViews()
         mDocumentUI->thumbnailWidget->setBackgroundBrush(UBSettings::documentViewLightColor);
 
         #ifdef Q_OS_MACOSX
-            mMessageWindow = new UBMessageWindow(NULL);
+            mMessageWindow = new UBMessageWindow(nullptr);
         #else
             mMessageWindow = new UBMessageWindow(mDocumentUI->thumbnailWidget);
         #endif
@@ -2212,7 +2214,7 @@ void UBDocumentController::duplicateSelectedItem()
     {
         QList<QGraphicsItem*> selectedItems = mDocumentUI->thumbnailWidget->selectedItems();
         QList<int> selectedSceneIndexes;
-        foreach (QGraphicsItem *item, selectedItems)
+        for (const auto& QGraphicsItem *item : selectedItems)
         {
             UBSceneThumbnailPixmap *thumb = dynamic_cast<UBSceneThumbnailPixmap*>(item);
             if (thumb)
@@ -2804,7 +2806,7 @@ void UBDocumentController::addToDocument()
 
         QList<QPair<UBDocumentProxy*, int> > pageInfoList;
 
-        foreach (QGraphicsItem* item, selectedItems)
+        for (const auto& QGraphicsItem* item : selectedItems)
         {
             UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
 
@@ -2909,7 +2911,7 @@ void UBDocumentController::addImages()
 
         QString extensions;
 
-        foreach (QString ext, UBSettings::settings()->imageFileExtensions)
+        for (const auto& QString ext : UBSettings::settings()->imageFileExtensions)
         {
             extensions += " *.";
             extensions += ext;
@@ -3171,7 +3173,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
         QList<int> sceneIndexes;
         UBDocumentProxy* proxy = 0;
 
-        foreach (QGraphicsItem* item, itemsToDelete)
+        for (const auto& QGraphicsItem* item : itemsToDelete)
         {
             UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
 
@@ -3195,7 +3197,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
             UBMetadataDcSubsetAdaptor::persist(proxy);
 
             int minIndex = proxy->pageCount() - 1;
-            foreach (int i, sceneIndexes)
+            for (const auto& int i : sceneIndexes)
                  minIndex = qMin(i, minIndex);
 
             mDocumentUI->thumbnailWidget->selectItemAt(minIndex);

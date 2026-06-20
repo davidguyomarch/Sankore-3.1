@@ -137,7 +137,7 @@ void UBImportVirtualPrinter::cleanUp(const QFile& pFile, const QString& pPdfFile
         qWarning() << "Unable to remove file " << pPdfFileName;
     }
 
-    foreach(QString f, pEmfFilenames)
+    for (const auto& QString f : pEmfFilenames)
     {
         QFile::remove(f);
     }

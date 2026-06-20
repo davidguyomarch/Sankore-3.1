@@ -24,7 +24,9 @@
 #ifndef UBWINDOWCAPTUREDELEGATE_H_
 #define UBWINDOWCAPTUREDELEGATE_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 class UBWindowCaptureDelegate : public QObject
 {

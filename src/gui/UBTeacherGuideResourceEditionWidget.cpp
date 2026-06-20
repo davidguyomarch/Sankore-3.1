@@ -131,12 +131,12 @@ QVector<tIDataStorage*> UBTeacherGuideResourceEditionWidget::save(int pageIndex)
     QList<QTreeWidgetItem*> children;
 
     children << getChildrenList(mpAddAMediaItem);
-    foreach(QTreeWidgetItem* widgetItem, children) {
+    for (const auto& QTreeWidgetItem* widgetItem : children) {
         tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget( widgetItem, 0))->saveData();
         if (node) {
             tIDataStorage *data = new tIDataStorage(node->name, eElementType_UNIQUE);
 
-            foreach(QString currentKey, node->attributes.keys())
+            for (const auto& QString currentKey : node->attributes.keys())
                 data->attributes.insert(currentKey, node->attributes.value(currentKey));
 
             result << data;
@@ -146,12 +146,12 @@ QVector<tIDataStorage*> UBTeacherGuideResourceEditionWidget::save(int pageIndex)
     //For the links and files, we have to add the "student" attribute
     children = getChildrenList(mpAddALinkItem);
     children << getChildrenList(mpAddAFileItem); //Issue 1716 - ALTI/AOU - 20140128
-    foreach(QTreeWidgetItem* widgetItem, children) {
+    for (const auto& QTreeWidgetItem* widgetItem : children) {
         tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget( widgetItem, 0))->saveData();
         if (node) {
             tIDataStorage *data = new tIDataStorage(node->name, eElementType_UNIQUE);
 
-            foreach(QString currentKey, node->attributes.keys())
+            for (const auto& QString currentKey : node->attributes.keys())
                 data->attributes.insert(currentKey, node->attributes.value(currentKey));
 
             data->attributes.insert("student", "true");
@@ -187,7 +187,7 @@ QVector<tUBGEElementNode*> UBTeacherGuideResourceEditionWidget::getData()
     children << getChildrenList(mpAddALinkItem);
     children << getChildrenList(mpAddAFileItem); //Issue 1716 - ALTI/AOU - 20140128
 
-    foreach(QTreeWidgetItem* widgetItem, children) {
+    for (const auto& QTreeWidgetItem* widgetItem : children) {
         tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget( widgetItem, 0))->saveData();
         if (node)
             result << node;
@@ -212,7 +212,7 @@ void UBTeacherGuideResourceEditionWidget::cleanData()
     children << mpAddALinkItem->takeChildren();
     children << mpAddAFileItem->takeChildren(); //Issue 1716 - ALTI/AOU - 20140128
 
-    foreach(QTreeWidgetItem* item, children) {
+    for (const auto& QTreeWidgetItem* item : children) {
         delete item;
     }
 }

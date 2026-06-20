@@ -23,13 +23,10 @@
 
 #include "UBRubberBand.h"
 
-#include <QtGui>
-#include <QtGui/QPlastiqueStyle>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QStyleFactory>
-
-#ifdef Q_OS_MACOS
-#include <QtGui/QMacStyle>
-#endif
 
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
@@ -43,14 +40,12 @@ UBRubberBand::UBRubberBand(Shape s, QWidget * p)
     , mMouseIsPressed(false)
     , mLastPressedPoint(QPoint())
 {
-    customStyle = NULL;
+    customStyle = nullptr;
 
 #ifdef Q_OS_WIN
-    customStyle = new QWindowsXPStyle();
-#elif defined(Q_OS_MACOS)
-    customStyle = new QMacStyle();
+    customStyle = QStyleFactory::create("windowsvista");
 #elif defined(Q_OS_LINUX)
-    customStyle = QStyleFactory::create("oxygen");
+    customStyle = QStyleFactory::create("Fusion");
 #endif
 
     if (customStyle)

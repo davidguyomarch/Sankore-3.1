@@ -21,7 +21,9 @@
 
 
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include "UBMagnifer.h"
 
 #include "core/UBApplication.h"
@@ -88,31 +90,31 @@ UBMagnifier::~UBMagnifier()
     if(sClosePixmap)
     {
         delete sClosePixmap;
-        sClosePixmap = NULL;
+        sClosePixmap = nullptr;
     }
 
     if(sIncreasePixmap)
     {
         delete sIncreasePixmap;
-        sIncreasePixmap = NULL;
+        sIncreasePixmap = nullptr;
     }
 
     if(sDecreasePixmap)
     {
         delete sDecreasePixmap;
-        sDecreasePixmap = NULL;
+        sDecreasePixmap = nullptr;
     }
 
     if (sChangeModePixmap)
     {
         delete sChangeModePixmap;
-        sChangeModePixmap = NULL;
+        sChangeModePixmap = nullptr;
     }
 }
 
 void UBMagnifier::setSize(qreal percentFromScene)
 {
-    if(gView == NULL || mView == NULL) return;
+    if(gView == nullptr || mView == nullptr) return;
 
     // calculate object size
     params.sizePercentFromScene = percentFromScene;
@@ -143,7 +145,7 @@ void UBMagnifier::setSize(qreal percentFromScene)
 
 void UBMagnifier::createMask()
 {
-    if(gView == NULL || mView == NULL) return;
+    if(gView == nullptr || mView == nullptr) return;
 
     // calculate object size
     QSize sceneSize = mView->size();
@@ -355,7 +357,7 @@ void UBMagnifier::slot_refresh()
 
 void UBMagnifier::grabPoint()
 {
-    QMatrix transM = UBApplication::boardController->controlView()->matrix();
+    QTransform transM = UBApplication::boardController->controlView()->transform();
     QPointF itemPos = gView->mapFromGlobal(updPointGrab);
 
     qreal zWidth = width() / (params.zoom * transM.m11());
@@ -388,7 +390,7 @@ void UBMagnifier::grabPoint()
 
 void UBMagnifier::grabPoint(const QPoint &pGrab)
 {
-    QMatrix transM = UBApplication::boardController->controlView()->matrix();
+    QTransform transM = UBApplication::boardController->controlView()->transform();
     updPointGrab = pGrab;
     QPointF itemPos = gView->mapFromGlobal(pGrab);
 

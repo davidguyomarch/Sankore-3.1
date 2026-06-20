@@ -24,7 +24,9 @@
 #ifndef UBITEM_H
 #define UBITEM_H
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include "domain/UBGraphicsItemDelegate.h"
 #include "core/UB.h"
 
@@ -99,7 +101,7 @@ class UBItem
 class UBGraphicsItem
 {
 protected:
-    UBGraphicsItem() : mDelegate(NULL)
+    UBGraphicsItem() : mDelegate(nullptr)
     {
         // NOOP
     }

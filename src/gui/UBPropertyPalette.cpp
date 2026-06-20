@@ -59,14 +59,14 @@ UBPropertyPalette::~UBPropertyPalette()
 void UBPropertyPalette::onMouseRelease()
 {
 //    qDebug() << "UBPropertyPalette::onMouseRelease() called (" << mMousePos.x() << "," << mMousePos.y();
-//    QWidget* pW = NULL;
+//    QWidget* pW = nullptr;
 //    pW = childAt(mMousePos);
 
-//    if(NULL != pW)
+//    if(nullptr != pW)
 //    {
 //        // A widget has been found under the mouse!
 //        UBActionPaletteButton* pButton = dynamic_cast<UBActionPaletteButton*>(pW);
-//        if(NULL != pButton)
+//        if(nullptr != pButton)
 //        {
 //            pButton->click();
 //        }

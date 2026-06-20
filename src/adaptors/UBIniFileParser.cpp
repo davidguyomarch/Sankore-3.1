@@ -66,7 +66,7 @@ QString UBIniFileParser::readLine(const QString& pLine, const QString& pCatName)
 
 UBIniFileParser::~UBIniFileParser()
 {
-    foreach(QString key, mIniDico.keys())
+    for (const auto& QString key : mIniDico.keys())
     {
         delete mIniDico[key];
     }

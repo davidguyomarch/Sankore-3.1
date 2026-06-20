@@ -24,14 +24,16 @@
 #ifndef UB_MESSAGES_DIALOG_H_
 #define UB_MESSAGES_DIALOG_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 class UBMessagesDialog : public QWidget
 {
     Q_OBJECT
 
 public:
-    UBMessagesDialog(QString windowTitle, QWidget *parent = NULL);
+    UBMessagesDialog(QString windowTitle, QWidget *parent = nullptr);
     void setMessages(const QList<QString> messages);
 
     private slots:

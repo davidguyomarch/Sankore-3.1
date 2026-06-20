@@ -21,7 +21,9 @@
 
 
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QPainterPath>
 
 #include "UBFloatingPalette.h"
@@ -212,7 +214,7 @@ void UBFloatingPalette::adjustSizeAndPosition(bool pUp, bool resetPosition)
 
     QSize newPreferredSize = preferredSize();
 
-    foreach (UBFloatingPalette* palette, mAssociatedPalette)
+    for (const auto& UBFloatingPalette* palette : mAssociatedPalette)
     {
         QSize palettePreferredSize = palette->preferredSize();
         newPreferredSize.setWidth(newPreferredSize.expandedTo(palettePreferredSize).width());
@@ -229,7 +231,7 @@ void UBFloatingPalette::adjustSizeAndPosition(bool pUp, bool resetPosition)
     {
         resize(newPreferredSize);
         moveInsideParent(pos());
-        foreach(UBFloatingPalette* palette, mAssociatedPalette)
+        for (const auto& UBFloatingPalette* palette : mAssociatedPalette)
         {
             palette->move(pos().x(), palette->pos().y());
             palette->resize(newPreferredSize.width(), palette->size().height());
@@ -242,7 +244,7 @@ void UBFloatingPalette::adjustSizeAndPosition(bool pUp, bool resetPosition)
 
 void UBFloatingPalette::removeAllAssociatedPalette()
 {
-    foreach (UBFloatingPalette* palette, mAssociatedPalette)
+    for (const auto& UBFloatingPalette* palette : mAssociatedPalette)
     {
         palette->removeAssociatedPalette(this);
         removeAssociatedPalette(palette);

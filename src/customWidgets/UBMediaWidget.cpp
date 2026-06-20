@@ -33,20 +33,20 @@
   * @param name as the object name
   */
 UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name):UBActionableWidget(parent, name)
-  , mpMediaObject(NULL)
-  , mpVideoWidget(NULL)
-  , mpAudioOutput(NULL)
-  , mpLayout(NULL)
-  , mpSeekerLayout(NULL)
-  , mpPlayStopButton(NULL)
-  , mpPauseButton(NULL)
-  , mpSlider(NULL)
+  , mpMediaObject(nullptr)
+  , mpVideoWidget(nullptr)
+  , mpAudioOutput(nullptr)
+  , mpLayout(nullptr)
+  , mpSeekerLayout(nullptr)
+  , mpPlayStopButton(nullptr)
+  , mpPauseButton(nullptr)
+  , mpSlider(nullptr)
   , mAutoUpdate(false)
   , mGeneratingThumbnail(false)
   , mBorder(5)
-  , mpMediaContainer(NULL)
-  , mMediaLayout(NULL)
-  , mpCover(NULL)
+  , mpMediaContainer(nullptr)
+  , mMediaLayout(nullptr)
+  , mpCover(nullptr)
 {
     SET_STYLE_SHEET();
 
@@ -104,7 +104,7 @@ void UBMediaWidget::setFile(const QString &filePath)
     mFilePath = filePath;
     mpMediaObject = new QMediaPlayer(this);
     mpMediaObject->setTickInterval(TICK_INTERVAL);
-    connect(mpMediaObject, SIGNAL(stateChanged(Phonon::State,Phonon::State)), this, SLOT(onStateChanged(Phonon::State,Phonon::State)));
+    connect(mpMediaObject, SIGNAL(stateChanged(QMediaPlayer::PlaybackState,QMediaPlayer::PlaybackState)), this, SLOT(onStateChanged(QMediaPlayer::PlaybackState,QMediaPlayer::PlaybackState)));
     connect(mpMediaObject, SIGNAL(totalTimeChanged(qint64)), this, SLOT(onTotalTimeChanged(qint64)));
     connect(mpMediaObject, SIGNAL(tick(qint64)), this, SLOT(onTick(qint64)));
     mpMediaObject->setCurrentSource(QUrl(filePath));
@@ -130,7 +130,7 @@ void UBMediaWidget::showEvent(QShowEvent* event)
 			mMediaLayout->addStretch(1);
 			mMediaLayout->addWidget(mpVideoWidget);
 			mMediaLayout->addStretch(1);
-			Phonon::createPath(mpMediaObject, mpVideoWidget);
+			mpMediaObject->setAudioOutput(mpVideoWidget);
 			adaptSizeToVideo();
 			mpMediaObject->play();
 			mpMediaObject->stop();
@@ -141,7 +141,7 @@ void UBMediaWidget::showEvent(QShowEvent* event)
 
 void UBMediaWidget::hideEvent(QHideEvent* event)
 {
-    if(mpMediaObject->state() == Phonon::PlayingState)
+    if(mpMediaObject->state() == QMediaPlayer::PlayingState)
         mpMediaObject->stop();
     UBActionableWidget::hideEvent(event);
 }
@@ -163,11 +163,11 @@ void UBMediaWidget::createMediaPlayer()
             mMediaLayout->addStretch(1);
             mMediaLayout->addWidget(mpVideoWidget);
             mMediaLayout->addStretch(1);
-            Phonon::createPath(mpMediaObject, mpVideoWidget);
+            mpMediaObject->setAudioOutput(mpVideoWidget);
             adaptSizeToVideo();
         }
-        mpAudioOutput = new QAudioOutput(Phonon::VideoCategory, this);
-        Phonon::createPath(mpMediaObject, mpAudioOutput);
+        mpAudioOutput = new QAudioOutput(this);
+        mpMediaObject->setAudioOutput(mpAudioOutput);
     }else if(eMediaType_Audio == mType){
         mMediaLayout->setContentsMargins(10, 10, 10, 10);
         mpCover = new QLabel(mpMediaContainer);
@@ -177,8 +177,8 @@ void UBMediaWidget::createMediaPlayer()
         mMediaLayout->addStretch(1);
         mMediaLayout->addWidget(mpCover);
         mMediaLayout->addStretch(1);
-        mpAudioOutput = new QAudioOutput(Phonon::MusicCategory, this);
-        Phonon::createPath(mpMediaObject, mpAudioOutput);
+        mpAudioOutput = new QAudioOutput(this);
+        mpMediaObject->setAudioOutput(mpAudioOutput);
     }
     mpLayout->addWidget(mpMediaContainer, 1);
     mpLayout->addLayout(mpSeekerLayout, 0);
@@ -190,7 +190,7 @@ void UBMediaWidget::createMediaPlayer()
   */
 void UBMediaWidget::adaptSizeToVideo()
 {
-    if(NULL != mpMediaContainer){
+    if(nullptr != mpMediaContainer){
         int origW = mpMediaContainer->width();
         int origH = mpMediaContainer->height();
         int newW = width();
@@ -205,10 +205,10 @@ void UBMediaWidget::adaptSizeToVideo()
   * @param newState as the new state
   * @param oldState as the old state
   */
-void UBMediaWidget::onStateChanged(Phonon::State newState, Phonon::State oldState)
+void UBMediaWidget::onStateChanged(QMediaPlayer::PlaybackState newState, QMediaPlayer::PlaybackState oldState)
 {
     if(!mGeneratingThumbnail){
-        if(Phonon::LoadingState == oldState && Phonon::StoppedState == newState){
+        if(QMediaPlayer::StoppedState == oldState && QMediaPlayer::StoppedState == newState){
             if(eMediaType_Video == mType){
                 // We do that here to generate the thumbnail of the video
                 mGeneratingThumbnail = true;
@@ -216,14 +216,14 @@ void UBMediaWidget::onStateChanged(Phonon::State newState, Phonon::State oldStat
                 mpMediaObject->pause();
                 mGeneratingThumbnail = false;
             }
-        }else if(Phonon::PlayingState == oldState && Phonon::PausedState == newState){
+        }else if(QMediaPlayer::PlayingState == oldState && QMediaPlayer::PausedState == newState){
             mpPlayStopButton->setPixmap(QPixmap(":images/play.svg"));
             mpPauseButton->setEnabled(false);
-        }else if((Phonon::PausedState == oldState && Phonon::PlayingState == newState) ||
-                 (Phonon::StoppedState == oldState && Phonon::PlayingState == newState)){
+        }else if((QMediaPlayer::PausedState == oldState && QMediaPlayer::PlayingState == newState) ||
+                 (QMediaPlayer::StoppedState == oldState && QMediaPlayer::PlayingState == newState)){
             mpPlayStopButton->setPixmap(QPixmap(":images/stop.svg"));
             mpPauseButton->setEnabled(true);
-        }else if(Phonon::PlayingState == oldState && Phonon::StoppedState == newState){
+        }else if(QMediaPlayer::PlayingState == oldState && QMediaPlayer::StoppedState == newState){
             mpPlayStopButton->setPixmap(QPixmap(":images/play.svg"));
             mpPauseButton->setEnabled(false);
             mpSlider->setValue(0);
@@ -271,12 +271,12 @@ void UBMediaWidget::onSliderChanged(int value)
 void UBMediaWidget::onPlayStopClicked()
 {
     switch(mpMediaObject->state()){
-    case Phonon::PlayingState:
+    case QMediaPlayer::PlayingState:
         mpMediaObject->stop();
         break;
 
-    case Phonon::StoppedState:
-    case Phonon::PausedState:
+    case QMediaPlayer::StoppedState:
+    case QMediaPlayer::PausedState:
         mpMediaObject->play();
         break;
     default:
@@ -316,7 +316,7 @@ void UBMediaWidget::resizeEvent(QResizeEvent* ev)
   */
 void UBMediaWidget::setAudioCover(const QString &coverPath)
 {
-    if(NULL != mpCover){
+    if(nullptr != mpCover){
         mpCover->setPixmap(QPixmap(coverPath));
     }
 }

@@ -101,7 +101,7 @@ void UBThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsI
     mMimeType = pMimeType;
     mLabels = pLabels;
 
-    foreach(QGraphicsItem* it, mThumbnailsScene.items())
+    for (const auto& QGraphicsItem* it : mThumbnailsScene.items())
     {
         mThumbnailsScene.removeItem(it, true);
     }
@@ -112,7 +112,7 @@ void UBThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsI
 
     mLabelsItems.clear();
 
-    foreach (const QString label, pLabels)
+    for (const auto& const QString label : pLabels)
     {
         QFontMetrics fm(font());
         UBThumbnailTextItem *labelItem =
@@ -246,7 +246,7 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
     mMousePressPos = event->pos();
 
     UBSceneThumbnailPixmap* sceneItem = dynamic_cast<UBSceneThumbnailPixmap*>(itemAt(mMousePressPos));
-    if(sceneItem==NULL)
+    if(sceneItem==nullptr)
     {
         event->ignore();
         return;
@@ -381,7 +381,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
         // for horizontal moving
         QSet<QGraphicsItem*> incSelectedItemsX = scene()->items(incrementXSelection, Qt::IntersectsItemBoundingRect).toSet();
-        foreach (QGraphicsItem *lassoSelectedItem, incSelectedItemsX)
+        for (const auto& QGraphicsItem *lassoSelectedItem : incSelectedItemsX)
         {
             if (lassoSelectedItem)
             {
@@ -407,7 +407,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         // for vertical moving
 
         QSet<QGraphicsItem*> incSelectedItemsY = scene()->items(incrementYSelection, Qt::IntersectsItemBoundingRect).toSet();
-        foreach (QGraphicsItem *lassoSelectedItem, incSelectedItemsY)
+        for (const auto& QGraphicsItem *lassoSelectedItem : incSelectedItemsY)
         {
             if (lassoSelectedItem)
             {
@@ -432,12 +432,12 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
         toSet -= toUnset;
 
-        foreach (QGraphicsItem *item, toSet)
+        for (const auto& QGraphicsItem *item : toSet)
         {
             item->setSelected(true);
         }
 
-        foreach (QGraphicsItem *item, toUnset)
+        for (const auto& QGraphicsItem *item : toUnset)
         {
             item->setSelected(false);
         }
@@ -471,7 +471,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
             QList<QUrl> qlElements;
 
-            foreach (QGraphicsItem* item, selectedItems())
+            for (const auto& QGraphicsItem* item : selectedItems())
             {
                 if (mGraphicItems.contains(item))
                 {
@@ -685,7 +685,7 @@ void UBThumbnailWidget::selectItemAt(int pIndex, bool extend)
         itemToSelect = mGraphicItems.at(pIndex);
 
     if (!extend)
-    foreach (QGraphicsItem* item, items())
+    for (const auto& QGraphicsItem* item : items())
     {
         UBThumbnail *thumb = dynamic_cast<UBThumbnail*>(item);
         if (thumb && thumb->label())
@@ -720,7 +720,7 @@ void UBThumbnailWidget::selectItems(int startIndex, int count)
 
 void UBThumbnailWidget::selectAll()
 {
-    foreach (QGraphicsItem* item, mGraphicItems)
+    for (const auto& QGraphicsItem* item : mGraphicItems)
     {
         item->setSelected(true);
     }
@@ -781,7 +781,7 @@ void UBThumbnailWidget::deleteLasso()
 
 UBThumbnail::UBThumbnail()
     : mAddedToScene(false)
-    , mLabel(NULL)
+    , mLabel(nullptr)
 {
     mSelectionItem = new QGraphicsRectItem(0, 0, 0, 0);
     mSelectionItem->setPen(QPen(UBSettings::treeViewBackgroundColor, 8)); // couleur du cadre de selection de thumbnail.

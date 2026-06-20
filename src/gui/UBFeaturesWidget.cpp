@@ -45,7 +45,7 @@ static const QString mimeSankoreFeatureTypes = "Sankore/featureTypes";
 
 UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
     : UBDockPaletteWidget(parent)
-    , imageGatherer(NULL)
+    , imageGatherer(nullptr)
 {
     setObjectName(name);
     mName = "FeaturesWidget";
@@ -114,7 +114,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
 
 UBFeaturesWidget::~UBFeaturesWidget()
 {
-    if (NULL != imageGatherer)
+    if (nullptr != imageGatherer)
         delete imageGatherer;
 }
 
@@ -168,7 +168,7 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 
         } else if (feature.getType() == FEATURE_SEARCH) {
             //The search feature behavior is not standard. If features list clicked - show empty element
-            //else show existing saved features search QWebView
+            //else show existing saved features search QWebEngineView
             if (sender()->objectName() == objNameFeatureList) {
                 centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturesWebView);
             } else if (sender()->objectName() == objNamePathList) {
@@ -217,7 +217,7 @@ void UBFeaturesWidget::deleteElements( const UBFeaturesMimeData * mimeData )
 
     QList<UBFeature> featuresList = mimeData->features();
 
-    foreach(UBFeature curFeature, featuresList){
+    for (const auto& UBFeature curFeature : featuresList){
         if(curFeature.inTrash()){
             //issue 1474 - NNE - 20131120
             controller->removeFromTrashRegistery(curFeature);
@@ -240,7 +240,7 @@ void UBFeaturesWidget::deleteSelectedElements()
         featureasToMove.append(controller->getFeature(selected.at(i), objNameFeatureList));
     }
 
-    foreach (UBFeature feature, featureasToMove)
+    for (const auto& UBFeature feature : featureasToMove)
     {
         if (feature.isDeletable()) {
             if (feature.inTrash()) {
@@ -275,7 +275,7 @@ void UBFeaturesWidget::processViewSelectionChanged(const QItemSelection &selecte
     if (!selected.indexes().count()) {
         selectedDeletable = false;
     } else {
-        foreach (QModelIndex curIndex, selected.indexes()) {
+        for (const auto& QModelIndex curIndex : selected.indexes()) {
             UBFeature curFeature = curIndex.data(Qt::UserRole + 1).value<UBFeature>();
             if (!curFeature.isDeletable()) {
                 selectedDeletable = false;
@@ -293,7 +293,7 @@ void UBFeaturesWidget::addToFavorite( const UBFeaturesMimeData * mimeData )
         return;
 
     QList<QUrl> urls = mimeData->urls();
-    foreach ( QUrl url, urls ) {
+    for (const auto&  QUrl url : urls ) {
         controller->addToFavorite(url);
     }
 
@@ -307,7 +307,7 @@ void UBFeaturesWidget::removeFromFavorite( const UBFeaturesMimeData * mimeData )
 
     QList<QUrl> urls = mimeData->urls();
 
-    foreach( QUrl url, urls ) {
+    for (const auto&  QUrl url : urls ) {
         controller->removeFromFavorite(url);
     }
 }
@@ -419,7 +419,7 @@ void UBFeaturesWidget::removeElementsFromFavorite()
         items.append( feature.getFullPath() );
     }
 
-    foreach ( QUrl url, items )  {
+    for (const auto&  QUrl url : items )  {
         controller->removeFromFavorite(url, true);
     }
 
@@ -535,7 +535,7 @@ void UBFeaturesListView::dragMoveEvent( QDragMoveEvent *event )
             event->ignore();
             return;
         }
-        foreach (UBFeature curFeature, fMimeData->features()) {
+        for (const auto& UBFeature curFeature : fMimeData->features()) {
             if (curFeature == onFeature) {
                 event->ignore();
                 return;
@@ -615,7 +615,7 @@ void UBFeaturesListView::emitRestoreFeature()
     QModelIndexList selectedModel = this->selectionModel()->selectedIndexes();
     QVector<UBFeature> selectedFeatures;
 
-    foreach (QModelIndex m, selectedModel) {
+    for (const auto& QModelIndex m : selectedModel) {
         selectedFeatures.push_back(model()->data(m, Qt::UserRole + 1).value<UBFeature>());
     }
 
@@ -930,10 +930,10 @@ void UBFeaturesProgressInfo::sendFeature(UBFeature pFeature)
 
 
 UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(parent)
-    , mpView(NULL)
-    , mpWebSettings(NULL)
-    , mpLayout(NULL)
-    , mpSankoreAPI(NULL)
+    , mpView(nullptr)
+    , mpWebSettings(nullptr)
+    , mpLayout(nullptr)
+    , mpSankoreAPI(nullptr)
 {
     setObjectName(name);
 
@@ -942,19 +942,19 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     mpLayout = new QVBoxLayout();
     setLayout(mpLayout);
 
-    mpView = new QWebView(this);
+    mpView = new QWebEngineView(this);
     mpView->setObjectName("SearchEngineView");
     mpSankoreAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
     mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
     connect(mpView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
-    mpWebSettings = QWebSettings::globalSettings();
-    mpWebSettings->setAttribute(QWebSettings::JavaEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::PluginsEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
-    mpWebSettings->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+    mpWebSettings = QWebEngineSettings::globalSettings();
+    mpWebSettings->setAttribute(QWebEngineSettings::JavaEnabled, true);
+    mpWebSettings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+    mpWebSettings->setAttribute(QWebEngineSettings::LocalStorageDatabaseEnabled, true);
+    mpWebSettings->setAttribute(QWebEngineSettings::OfflineWebApplicationCacheEnabled, true);
+    mpWebSettings->setAttribute(QWebEngineSettings::OfflineStorageDatabaseEnabled, true);
+    mpWebSettings->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
+    mpWebSettings->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
 
     mpLayout->addWidget(mpView);
     mpLayout->setMargin(0);
@@ -964,20 +964,20 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
 
 UBFeaturesWebView::~UBFeaturesWebView()
 {
-    if( NULL != mpSankoreAPI )
+    if( nullptr != mpSankoreAPI )
     {
         delete mpSankoreAPI;
-        mpSankoreAPI = NULL;
+        mpSankoreAPI = nullptr;
     }
-    if( NULL != mpView )
+    if( nullptr != mpView )
     {
         delete mpView;
-        mpView = NULL;
+        mpView = nullptr;
     }
-    if( NULL != mpLayout )
+    if( nullptr != mpLayout )
     {
         delete mpLayout;
-        mpLayout = NULL;
+        mpLayout = nullptr;
     }
 }
 
@@ -1022,24 +1022,24 @@ void UBFeaturesWebView::showElement(const UBFeature &elem)
 
 void UBFeaturesWebView::onLoadFinished(bool ok)
 {
-    if(ok && NULL != mpSankoreAPI){
+    if(ok && nullptr != mpSankoreAPI){
         mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
     }
 }
 
 
 UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : QWidget(parent)
-    , mpLayout(NULL)
-    , mpButtonLayout(NULL)
-    , mpAddPageButton(NULL)
-    , mpAddToLibButton(NULL)
-    , mpSetAsBackgroundButton(NULL)
-    , mpSetAsDefaultBackgroundButton(NULL)
-    , mpObjInfoLabel(NULL)
-    , mpObjInfos(NULL)
-    , mpThumbnail(NULL)
-    , mpOrigPixmap(NULL)
-    , mpElement(NULL)
+    , mpLayout(nullptr)
+    , mpButtonLayout(nullptr)
+    , mpAddPageButton(nullptr)
+    , mpAddToLibButton(nullptr)
+    , mpSetAsBackgroundButton(nullptr)
+    , mpSetAsDefaultBackgroundButton(nullptr)
+    , mpObjInfoLabel(nullptr)
+    , mpObjInfos(nullptr)
+    , mpThumbnail(nullptr)
+    , mpOrigPixmap(nullptr)
+    , mpElement(nullptr)
 {
     setObjectName(name);
 
@@ -1105,52 +1105,52 @@ UBFeatureProperties::~UBFeatureProperties()
     if ( mpOrigPixmap )
     {
         delete mpOrigPixmap;
-        mpOrigPixmap = NULL;
+        mpOrigPixmap = nullptr;
     }
     if ( mpElement )
     {
         delete mpElement;
-        mpElement = NULL;
+        mpElement = nullptr;
     }
     if ( mpThumbnail )
     {
         delete mpThumbnail;
-        mpThumbnail = NULL;
+        mpThumbnail = nullptr;
     }
     if ( mpButtonLayout )
     {
         delete mpButtonLayout;
-        mpButtonLayout = NULL;
+        mpButtonLayout = nullptr;
     }
     if ( mpAddPageButton )
     {
         delete mpAddPageButton;
-        mpAddPageButton = NULL;
+        mpAddPageButton = nullptr;
     }
     if ( mpSetAsBackgroundButton )
     {
         delete mpSetAsBackgroundButton;
-        mpSetAsBackgroundButton = NULL;
+        mpSetAsBackgroundButton = nullptr;
     }
     if (mpSetAsDefaultBackgroundButton)
     {
         delete mpSetAsDefaultBackgroundButton;
-        mpSetAsDefaultBackgroundButton = NULL;
+        mpSetAsDefaultBackgroundButton = nullptr;
     }
     if ( mpAddToLibButton )
     {
         delete mpAddToLibButton;
-        mpAddToLibButton = NULL;
+        mpAddToLibButton = nullptr;
     }
     if ( mpObjInfoLabel )
     {
         delete mpObjInfoLabel;
-        mpObjInfoLabel = NULL;
+        mpObjInfoLabel = nullptr;
     }
     if ( mpObjInfos )
     {
         delete mpObjInfos;
-        mpObjInfos = NULL;
+        mpObjInfos = nullptr;
     }
 }
 
@@ -1191,7 +1191,7 @@ void UBFeatureProperties::setThumbnail(const QPixmap &pix)
 
 void UBFeatureProperties::adaptSize()
 {
-    if( NULL != mpOrigPixmap )
+    if( nullptr != mpOrigPixmap )
     {
         if( width() < THUMBNAIL_WIDTH + 40 )
         {
@@ -1209,12 +1209,12 @@ void UBFeatureProperties::showElement(const UBFeature &elem)
     if ( mpOrigPixmap )
     {
         delete mpOrigPixmap;
-        mpOrigPixmap = NULL;
+        mpOrigPixmap = nullptr;
     }
     if ( mpElement )
     {
         delete mpElement;
-        mpElement = NULL;
+        mpElement = nullptr;
     }
     mpElement = new UBFeature(elem);
     mpOrigPixmap = new QPixmap(QPixmap::fromImage(elem.getThumbnail()));
@@ -1247,7 +1247,7 @@ void UBFeatureProperties::showElement(const UBFeature &elem)
 
 void UBFeatureProperties::populateMetadata()
 {
-    if(NULL != mpObjInfos){
+    if(nullptr != mpObjInfos){
         mpObjInfos->clear();
         QMap<QString, QString> metas = mpElement->getMetadata();
         QList<QString> lKeys = metas.keys();
@@ -1397,7 +1397,7 @@ QMimeData* UBFeaturesModel::mimeData(const QModelIndexList &indexes) const
     QList <UBFeature> featuresList;
     QByteArray typeData;
 
-    foreach (QModelIndex index, indexes) {
+    for (const auto& QModelIndex index : indexes) {
 
         if (index.isValid()) {
             UBFeature element = data(index, Qt::UserRole + 1).value<UBFeature>();
@@ -1456,7 +1456,7 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
         }
     } else if (mimeData->hasUrls()) {
         QList<QUrl> urlList = mimeData->urls();
-        foreach (QUrl curUrl, urlList) {
+        for (const auto& QUrl curUrl : urlList) {
             qDebug() << "URl catched is " << curUrl.toLocalFile();
             curController->moveExternalData(curUrl, parentFeature);
         }
@@ -1796,6 +1796,6 @@ UBFeaturesPathItemDelegate::~UBFeaturesPathItemDelegate()
     if ( arrowPixmap )
     {
         delete arrowPixmap;
-        arrowPixmap = NULL;
+        arrowPixmap = nullptr;
     }
 }

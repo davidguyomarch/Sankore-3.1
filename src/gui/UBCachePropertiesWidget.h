@@ -38,7 +38,7 @@
 class UBCachePreviewWidget : public QWidget
 {
 public:
-    UBCachePreviewWidget(QWidget *parent = NULL);
+    UBCachePreviewWidget(QWidget *parent = nullptr);
     
     void setHoleSize(QSize size);
     void setShape(eMaskShape shape);

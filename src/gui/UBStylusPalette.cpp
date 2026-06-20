@@ -23,7 +23,9 @@
 
 #include "UBStylusPalette.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "UBMainWindow.h"
 
@@ -91,7 +93,7 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
 
     initPosition();
 
-    foreach(const UBActionPaletteButton* button, mButtons)
+    for (const auto& const UBActionPaletteButton* button : mButtons)
     {
         connect(button, SIGNAL(doubleClicked()), this, SLOT(stylusToolDoubleClicked()));
     }
@@ -103,7 +105,7 @@ void UBStylusPalette::initPosition()
     if(!UBSettings::settings()->appToolBarOrientationVertical->get().toBool())
     {
         QWidget* pParentW = parentWidget();
-        if(NULL != pParentW)
+        if(nullptr != pParentW)
         {
             mCustomPosition = true;
             QPoint pos;

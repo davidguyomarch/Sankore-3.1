@@ -37,7 +37,7 @@
  */
 UBDownloadThread::UBDownloadThread(QObject *parent, const char *name):QThread(parent)
     , mbRun(false)
-    ,mpReply(NULL)
+    ,mpReply(nullptr)
 {
     setObjectName(name);
 }
@@ -47,10 +47,10 @@ UBDownloadThread::UBDownloadThread(QObject *parent, const char *name):QThread(pa
  */
 UBDownloadThread::~UBDownloadThread()
 {
-    if(NULL != mpReply)
+    if(nullptr != mpReply)
     {
         delete mpReply;
-        mpReply = NULL;
+        mpReply = nullptr;
     }
 }
 
@@ -79,10 +79,10 @@ void UBDownloadThread::run()
 
     disconnect(mpReply, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(onDownloadProgress(qint64,qint64)));
     disconnect(mpReply, SIGNAL(finished()), this, SLOT(onDownloadFinished()));
-    if(NULL != mpReply)
+    if(nullptr != mpReply)
     {
         delete mpReply;
-        mpReply = NULL;
+        mpReply = nullptr;
     }
 }
 

@@ -24,7 +24,9 @@
 #ifndef UBPageSizeUndoCommand_H_
 #define UBPageSizeUndoCommand_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include "UBAbstractUndoCommand.h"
 
 class UBGraphicsScene;

@@ -23,7 +23,9 @@
 
 #include "UBAbstractGraphicsProxyWidget.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "UBGraphicsScene.h"
 #include "UBGraphicsItemDelegate.h"

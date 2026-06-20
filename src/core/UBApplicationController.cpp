@@ -123,7 +123,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
 
 UBApplicationController::~UBApplicationController()
 {
-    foreach(UBBoardView* view, mPreviousViews)
+    for (const auto& UBBoardView* view : mPreviousViews)
     {
         delete view;
     }
@@ -246,7 +246,7 @@ void UBApplicationController::adjustPreviousViews(int pActiveSceneIndex, UBDocum
 {
     int viewIndex = pActiveSceneIndex;
 
-    foreach(UBBoardView* previousView, mPreviousViews)
+    for (const auto& UBBoardView* previousView : mPreviousViews)
     {
         if (viewIndex > 0)
         {
@@ -779,7 +779,7 @@ QStringList UBApplicationController::widgetInlineJavaScripts()
     {
         QStringList files = scriptDir.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
 
-        foreach(QString file, files)
+        for (const auto& QString file : files)
         {
             QFile scriptFile(scriptDirPath + "/" + file);
             if (file.endsWith(".js") && scriptFile.open(QIODevice::ReadOnly))

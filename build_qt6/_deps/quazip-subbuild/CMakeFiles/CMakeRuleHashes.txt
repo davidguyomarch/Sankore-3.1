@@ -1,0 +1,11 @@
+# Hashes of file build rules.
+59d4266115813f5908d012b69f074764 CMakeFiles/quazip-populate
+8dd23679c86025a1ffe5360f2ed3cdfd CMakeFiles/quazip-populate-complete
+73409bf3694888dbeb842f15b715348d quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-build
+c2715dbf36423a71c769f5e5eef976f6 quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-configure
+3a12cbc675a187e4f385b4797c2a38b0 quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-download
+d7bfa7d9ea42c145b078cf281b906b1d quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-install
+ee187fba56d82399435bfbc16f408ed0 quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-mkdir
+dc0f4fb431e6032eeae78a6f5235495c quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-patch
+74aa3451efa4ca82b6e52db913ad90ae quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-test
+34b67d57edba5359222cc35f8c1cd6e3 quazip-populate-prefix/src/quazip-populate-stamp/quazip-populate-update

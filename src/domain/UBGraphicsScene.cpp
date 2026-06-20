@@ -23,7 +23,9 @@
 
 #include "UBGraphicsScene.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QWebEngineView>
 #include <QtSvg>
 #include <QGraphicsView>
@@ -151,7 +153,7 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
     //select only items wiht the same z-level as item's one and push it to sortedItems QMultiMap
     QMultiMap<qreal, QGraphicsItem*> sortedItems;
     if (mScene->items().count()) {
-        foreach (QGraphicsItem *tmpItem, mScene->items()) {
+        for (const auto& QGraphicsItem *tmpItem : mScene->items()) {
             if (typeForData(tmpItem) == curItemLayerType) {
 
                 sortedItems.insert(tmpItem->data(UBGraphicsItemData::ItemOwnZValue).toReal(), tmpItem);
@@ -296,7 +298,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , magniferControlViewWidget(0)
     , magniferDisplayViewWidget(0)
     , mZLayerController(new UBZLayerController(this))
-    , mpLastPolygon(NULL)
+    , mpLastPolygon(nullptr)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
 #ifdef __ppc__
@@ -327,12 +329,12 @@ UBGraphicsScene::~UBGraphicsScene()
 {
     if (mCurrentStroke && mCurrentStroke->polygons().empty()){
         delete mCurrentStroke;
-        mCurrentStroke = NULL;
+        mCurrentStroke = nullptr;
     }
 
     if (mZLayerController)
         delete mZLayerController;
-        mZLayerController = NULL;
+        mZLayerController = nullptr;
 }
 
 void UBGraphicsScene::selectionChangedProcessing()
@@ -417,7 +419,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             // delete current stroke, if not assigned to any polygon
             if (mCurrentStroke && mCurrentStroke->polygons().empty()){
                 delete mCurrentStroke;
-                mCurrentStroke = NULL;
+                mCurrentStroke = nullptr;
             }
 
             // ---------------------------------------------------------------
@@ -474,7 +476,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
 
     if (mCurrentStroke && mCurrentStroke->polygons().empty()){
         delete mCurrentStroke;
-        mCurrentStroke = NULL;
+        mCurrentStroke = nullptr;
     }
 
     return accepted;
@@ -515,13 +517,13 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             if (currentTool == UBStylusTool::Line || dc->mActiveRuler)
             {
                 if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker)
-                if(NULL != mpLastPolygon && NULL != mCurrentStroke && mAddedItems.size() > 0){
+                if(nullptr != mpLastPolygon && nullptr != mCurrentStroke && mAddedItems.size() > 0){
                     UBCoreGraphicsScene::removeItemFromDeletion(mpLastPolygon);
                     mAddedItems.remove(mpLastPolygon);
                     mCurrentStroke->remove(mpLastPolygon);
                     if (mCurrentStroke->polygons().empty()){
                         delete mCurrentStroke;
-                        mCurrentStroke = NULL;
+                        mCurrentStroke = nullptr;
                     }
                     removeItem(mpLastPolygon);
                     mPreviousPolygonItems.removeAll(mpLastPolygon);
@@ -606,7 +608,7 @@ bool UBGraphicsScene::inputDeviceRelease()
                 pStrokes->addToGroup(mArcPolygonItem);
 
                 // Add the center cross
-                foreach(QGraphicsItem* item, mAddedItems){
+                for (const auto& QGraphicsItem* item : mAddedItems){
                     mAddedItems.remove(item);
                     removeItem(item);
                     UBCoreGraphicsScene::removeItemFromDeletion(item);
@@ -628,7 +630,7 @@ bool UBGraphicsScene::inputDeviceRelease()
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
                 // Remove the strokes that were just drawn here and replace them by a stroke item
-                foreach(UBGraphicsPolygonItem* poly, mCurrentStroke->polygons()){
+                for (const auto& UBGraphicsPolygonItem* poly : mCurrentStroke->polygons()){
                     mPreviousPolygonItems.removeAll(poly);
                     removeItem(poly);
                     UBCoreGraphicsScene::removeItemFromDeletion(poly);
@@ -672,7 +674,7 @@ bool UBGraphicsScene::inputDeviceRelease()
         delete mCurrentStroke;
     }
 
-    mCurrentStroke = NULL;
+    mCurrentStroke = nullptr;
 
     return accepted;
 }
@@ -720,7 +722,7 @@ void UBGraphicsScene::DisposeMagnifierQWidgets()
         magniferControlViewWidget->hide();
         magniferControlViewWidget->setParent(0);
         delete magniferControlViewWidget;
-        magniferControlViewWidget = NULL;
+        magniferControlViewWidget = nullptr;
     }
 
     if(magniferDisplayViewWidget)
@@ -728,7 +730,7 @@ void UBGraphicsScene::DisposeMagnifierQWidgets()
         magniferDisplayViewWidget->hide();
         magniferDisplayViewWidget->setParent(0);
         delete magniferDisplayViewWidget;
-        magniferDisplayViewWidget = NULL;
+        magniferDisplayViewWidget = nullptr;
     }
 
     // some time have crash here on access to app (when call from destructor when close sankore app)
@@ -826,7 +828,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
     for(int i=0; i<collidItems.size(); i++)
     {
         UBGraphicsPolygonItem *pi = qgraphicsitem_cast<UBGraphicsPolygonItem*>(collidItems[i]);
-        if(pi == NULL)
+        if(pi == nullptr)
             continue;
 
         QPainterPath itemPainterPath;
@@ -963,7 +965,7 @@ void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
 
     if (needRepaint)
     {
-        foreach(QGraphicsView* view, views())
+        for (const auto& QGraphicsView* view : views())
         {
             view->resetCachedContent();
         }
@@ -983,14 +985,14 @@ void UBGraphicsScene::setDrawingMode(bool bModeDesktop)
 void UBGraphicsScene::recolorAllItems()
 {
     QMap<QGraphicsView*, QGraphicsView::ViewportUpdateMode> previousUpdateModes;
-    foreach(QGraphicsView* view, views())
+    for (const auto& QGraphicsView* view : views())
     {
         previousUpdateModes.insert(view, view->viewportUpdateMode());
         view->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);
     }
 
     bool currentIslight = isLightBackground();
-    foreach (QGraphicsItem *item, items()) {
+    for (const auto& QGraphicsItem *item : items()) {
         if (item->type() == UBGraphicsStrokesGroup::Type) {
             UBGraphicsStrokesGroup *curGroup = static_cast<UBGraphicsStrokesGroup*>(item);
 //            QColor compareColor =  curGroup->color(currentIslight ? UBGraphicsStrokesGroup::colorOnDarkBackground
@@ -1008,7 +1010,7 @@ void UBGraphicsScene::recolorAllItems()
         }
     }
 
-    foreach(QGraphicsView* view, views())
+    for (const auto& QGraphicsView* view : views())
     {
         view->setViewportUpdateMode(previousUpdateModes.value(view));
     }
@@ -1176,7 +1178,7 @@ void UBGraphicsScene::clearContent(clearCase pCase)
     case clearAnnotations :
         // Issue 1569 - CFA - 20131023 : undo "erase multi-selection"
         UBApplication::undoStack->beginMacro("remove items");
-        foreach(QGraphicsItem* item, items()) {
+        for (const auto& QGraphicsItem* item : items()) {
 
             bool isGroup = item->type() == UBGraphicsGroupContainerItem::Type;
             bool isStrokesGroup = item->type() == UBGraphicsStrokesGroup::Type;
@@ -1293,7 +1295,7 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
     qDebug() << pMediaFileUrl.toLocalFile();
     if (!QFile::exists(pMediaFileUrl.toLocalFile()))
     if (!QFile::exists(pMediaFileUrl.toString()))
-        return NULL;
+        return nullptr;
 
     UBGraphicsMediaItem* mediaItem = new UBGraphicsMediaItem(pMediaFileUrl);
     if(mediaItem){
@@ -1424,7 +1426,7 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, con
 
     UBGraphicsW3CWidgetItem *widget = 0;
 
-    foreach(QString widgetPath, widgetPaths)
+    for (const auto& QString widgetPath : widgetPaths)
     {
         if (widgetPath.contains("Sel video"))
         {
@@ -1447,14 +1449,14 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
     UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
 
     addItem(groupItem);
-    foreach (QGraphicsItem *item, items) {
+    for (const auto& QGraphicsItem *item : items) {
         if (item->type() == UBGraphicsGroupContainerItem::Type) {
             QList<QGraphicsItem*> childItems = item->childItems();
             UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
             if (currentGroup) {
                 currentGroup->destroy();
             }
-            foreach (QGraphicsItem *chItem, childItems) {
+            for (const auto& QGraphicsItem *chItem : childItems) {
                 groupItem->addToGroup(chItem);
                 mFastAccessItems.removeAll(chItem);
             }
@@ -1717,7 +1719,7 @@ void UBGraphicsScene::removeShapeToUndoStack(QGraphicsItem* item)
 
 void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 {
-    foreach(QGraphicsItem* item, items) {
+    for (const auto& QGraphicsItem* item : items) {
         UBCoreGraphicsScene::addItem(item);
         UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(item));
     }
@@ -1745,17 +1747,17 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
 {
-    foreach(QGraphicsItem* item, items) {
+    for (const auto& QGraphicsItem* item : items) {
         UBCoreGraphicsScene::removeItem(item);
     }
 
-    foreach(QGraphicsItem* item, items)
+    for (const auto& QGraphicsItem* item : items)
         mFastAccessItems.removeAll(item);
 }
 
 void UBGraphicsScene::deselectAllItems()
 {
-    foreach(QGraphicsItem *gi, selectedItems ())
+    for (const auto& QGraphicsItem *gi : selectedItems ())
     {
         gi->setSelected(false);
 
@@ -1776,7 +1778,7 @@ void UBGraphicsScene::deselectAllItems()
 //issue 1554 - NNE - 20131010
 void UBGraphicsScene::deselectAllItemsExcept(QGraphicsItem* gti)
 {
-    foreach(QGraphicsItem *gi, selectedItems ())
+    for (const auto& QGraphicsItem *gi : selectedItems ())
     {
         if(gi != gti){
             gi->setSelected(false);
@@ -1859,7 +1861,7 @@ QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
     QRectF normalizedRect(nominalSize().width() / -2, nominalSize().height() / -2,
         nominalSize().width(), nominalSize().height());
 
-    foreach(QGraphicsItem* gi, mFastAccessItems)
+    for (const auto& QGraphicsItem* gi : mFastAccessItems)
     {
         if(gi && gi->isVisible() && !mTools.contains(gi))
         {
@@ -1898,7 +1900,7 @@ QGraphicsItem *UBGraphicsScene::itemForUuid(QUuid uuid)
     QString ui = uuid.toString();
 
     //simple search before implementing container for fast access
-    foreach (QGraphicsItem *item, items()) {
+    for (const auto& QGraphicsItem *item : items()) {
         if (UBGraphicsScene::getPersonalUuid(item) == uuid && !uuid.isNull()) {
             result = item;
         }
@@ -2355,7 +2357,7 @@ void UBGraphicsScene::drawItems (QPainter * painter, int numItems,
         {
             if (!mTools.contains(rootItem(items[i])))
             {
-                bool isPdfItem =  qgraphicsitem_cast<UBGraphicsPDFItem*> (items[i]) != NULL;
+                bool isPdfItem =  qgraphicsitem_cast<UBGraphicsPDFItem*> (items[i]) != nullptr;
                 if(!isPdfItem || mRenderingContext == NonScreen)
                 {
                     itemsFiltered[count] = items[i];
@@ -2471,7 +2473,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
             // Issue 1569 - CFA - 20131023 : undo erase multi-selection
             UBApplication::undoStack->beginMacro("remove items");
 
-            foreach(QGraphicsItem* item, si)
+            for (const auto& QGraphicsItem* item : si)
             {
 
                 switch (item->type())
@@ -2577,7 +2579,7 @@ void UBGraphicsScene::setToolCursor(int tool)
 
     if (mCurrentStroke && mCurrentStroke->polygons().empty()){
         delete mCurrentStroke;
-        mCurrentStroke = NULL;
+        mCurrentStroke = nullptr;
     }
 
 }

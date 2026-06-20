@@ -23,7 +23,9 @@
 
 #ifndef UBUNINOTESWINDOW_H_
 #define UBUNINOTESWINDOW_H_
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QShowEvent>
 #include <QHideEvent>
 

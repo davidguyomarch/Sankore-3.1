@@ -77,30 +77,30 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mContainer(container)
     , mBoardControler(pBoardController)
     , mStylusPalette(0)
-    , mDrawingPalette(NULL)
+    , mDrawingPalette(nullptr)
     , mZoomPalette(0)
     , mTipPalette(0)
     , mLinkPalette(0)
-    , mLeftPalette(NULL)
-    , mRightPalette(NULL)
+    , mLeftPalette(nullptr)
+    , mRightPalette(nullptr)
     , mBackgroundsPalette(0)
     , mToolsPalette(0)
     , mAddItemPalette(0)
-    , mErasePalette(NULL)
-    , mPagePalette(NULL)
-    , mImageBackgroundPalette(NULL)
-    , mEllipseActionPaletteButton(NULL)
+    , mErasePalette(nullptr)
+    , mPagePalette(nullptr)
+    , mImageBackgroundPalette(nullptr)
+    , mEllipseActionPaletteButton(nullptr)
     , mPendingPageButtonPressed(false)
     , mPendingZoomButtonPressed(false)
     , mPendingPanButtonPressed(false)
     , mPendingEraseButtonPressed(false)
-    , mpPageNavigWidget(NULL)
-    , mpCachePropWidget(NULL)
-    , mpDownloadWidget(NULL)
-    , mpTeacherGuideWidget(NULL)
+    , mpPageNavigWidget(nullptr)
+    , mpCachePropWidget(nullptr)
+    , mpDownloadWidget(nullptr)
+    , mpTeacherGuideWidget(nullptr)
     , mDownloadInProgress(false)
 {
-    mTeacherResources = NULL;
+    mTeacherResources = nullptr;
     setupPalettes();
     connectPalettes();
 }
@@ -201,7 +201,7 @@ void UBBoardPaletteManager::slot_changeMainMode(UBApplicationController::MainMod
 
         case UBApplicationController::Tutorial:
             {
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != nullptr)
                     mKeyboardPalette->hide();
             }
             break;
@@ -216,7 +216,7 @@ void UBBoardPaletteManager::slot_changeMainMode(UBApplicationController::MainMod
 
         default:
             {
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != nullptr)
                     mKeyboardPalette->hide();
             }
             break;
@@ -447,7 +447,7 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionDrawing, SIGNAL(toggled(bool)), this, SLOT(toggleDrawingPalette(bool)));
     connect(UBApplication::mainWindow->actionStylus, SIGNAL(toggled(bool)), this, SLOT(toggleStylusPalette(bool)));
 
-    foreach(QWidget *widget, UBApplication::mainWindow->actionZoomIn->associatedWidgets())
+    for (const auto& QWidget *widget : UBApplication::mainWindow->actionZoomIn->associatedWidgets())
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -457,7 +457,7 @@ void UBBoardPaletteManager::connectPalettes()
         }
     }
 
-    foreach(QWidget *widget, UBApplication::mainWindow->actionZoomOut->associatedWidgets())
+    for (const auto& QWidget *widget : UBApplication::mainWindow->actionZoomOut->associatedWidgets())
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -467,7 +467,7 @@ void UBBoardPaletteManager::connectPalettes()
         }
     }
 
-    foreach(QWidget *widget, UBApplication::mainWindow->actionHand->associatedWidgets())
+    for (const auto& QWidget *widget : UBApplication::mainWindow->actionHand->associatedWidgets())
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -503,7 +503,7 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionFillImageBackground,SIGNAL(triggered()),mImageBackgroundPalette,SLOT(close()));
     connect(UBApplication::mainWindow->actionMosaicImageBackground,SIGNAL(triggered()),mImageBackgroundPalette,SLOT(close()));
 
-    foreach(QWidget *widget, UBApplication::mainWindow->actionErase->associatedWidgets())
+    for (const auto& QWidget *widget : UBApplication::mainWindow->actionErase->associatedWidgets())
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -518,7 +518,7 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionImportPage, SIGNAL(triggered()), mPagePalette, SLOT(close()));
     connect(mPagePalette, SIGNAL(closed()), this, SLOT(pagePaletteClosed()));
 
-    foreach(QWidget *widget, UBApplication::mainWindow->actionPages->associatedWidgets())
+    for (const auto& QWidget *widget : UBApplication::mainWindow->actionPages->associatedWidgets())
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -773,7 +773,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mRightPalette->stackUnder(mDrawingPalette);
                 mLeftPalette->stackUnder(mDrawingPalette);
 
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != nullptr)
                 {
 
                     if(mKeyboardPalette->m_isVisible)
@@ -808,7 +808,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mStylusPalette->raise();
                 mDrawingPalette->raise();
 
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != nullptr)
                 {
 
                     if(mKeyboardPalette->m_isVisible)
@@ -868,7 +868,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mRightPalette->assignParent(UBApplication::webController->GetCurrentWebBrowser());
                 mRightPalette->setVisible(rightPaletteVisible);
 
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != nullptr)
                 {
                     if(mKeyboardPalette->m_isVisible)
                     {
@@ -889,7 +889,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mRightPalette->setVisible(rightPaletteVisible);
                 mLeftPalette->assignParent(UBApplication::documentController->controlView());
                 mRightPalette->assignParent(UBApplication::documentController->controlView());
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != nullptr)
                 {
 
                     if(mKeyboardPalette->m_isVisible)
@@ -912,7 +912,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mRightPalette->setVisible(rightPaletteVisible);
                 mLeftPalette->assignParent(0);
                 mRightPalette->assignParent(0);
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != nullptr)
                 {
 
                     if(mKeyboardPalette->m_isVisible)
@@ -957,7 +957,7 @@ void UBBoardPaletteManager::addItemToCurrentPage()
     {
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
-        UBGraphicsPixmapItem* item = UBApplication::boardController->activeScene()->addPixmap(mPixmap, NULL, mPos, mScaleFactor);
+        UBGraphicsPixmapItem* item = UBApplication::boardController->activeScene()->addPixmap(mPixmap, nullptr, mPos, mScaleFactor);
 
         item->setSourceUrl(mItemUrl);
         item->setSelected(true);       
@@ -1055,10 +1055,10 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
     bool bVisible = mStylusPalette->isVisible();
 
     // Clean the old palette
-    if(NULL != mStylusPalette)
+    if(nullptr != mStylusPalette)
     {
         delete mStylusPalette;
-        mStylusPalette = NULL;
+        mStylusPalette = nullptr;
     }
 
     // Create the new palette

@@ -23,7 +23,9 @@
 
 #include "WBWebTrapWebView.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>
@@ -441,7 +443,7 @@ void WBWebTrapWebView::viewLoadFinished ( bool ok )
 UBWebTrapMouseEventMask::UBWebTrapMouseEventMask(WBWebTrapWebView* pWebView)
     : QWidget(pWebView)
     , mTrappedWebView(pWebView)
-    , mTrapController(NULL)
+    , mTrapController(nullptr)
 {
 
 }

@@ -26,7 +26,9 @@
 #include <AudioToolbox/AudioToolbox.h>
 
 #include "UBAudioQueueRecorder.h"
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 
 QQueue<UBQuickTimeFile::VideoFrame> UBQuickTimeFile::frameQueue;
@@ -156,7 +158,7 @@ bool UBQuickTimeFile::createCompressionSession()
     }
 
     OSStatus err = noErr;
-    ICMEncodedFrameOutputRecord encodedFrameOutputRecord = {NULL, NULL, NULL};
+    ICMEncodedFrameOutputRecord encodedFrameOutputRecord = {nullptr, nullptr, nullptr};
     ICMCompressionSessionOptionsRef sessionOptions = 0;
 
     err = ICMCompressionSessionOptionsCreate(0, &sessionOptions);

@@ -21,7 +21,9 @@
 
 
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtSvg>
 
 #include "core/UBApplication.h"
@@ -239,7 +241,7 @@ void UBGraphicsTextItemDelegate::customize(QFontDialog &fontDialog)
     if (listViews.count() > 0)
     {
         fontNameListView = listViews.at(0);
-        foreach (QListView* listView, listViews)
+        for (const auto& QListView* listView : listViews)
         {
             if (listView->pos().x() < fontNameListView->pos().x())
                 fontNameListView = listView;
@@ -264,7 +266,7 @@ void UBGraphicsTextItemDelegate::customize(QFontDialog &fontDialog)
 
             QStringList customFontList =  UBResources::resources()->customFontList();
             int index = 0;
-            foreach (QString dialogFontName, dialogFontNames){
+            for (const auto& QString dialogFontName : dialogFontNames){
                 if (safeWebFontNames.contains(dialogFontName, Qt::CaseInsensitive) || customFontList.contains(dialogFontName, Qt::CaseSensitive))
                     index++;
                 else

@@ -23,7 +23,9 @@
 
 #include "UBGraphicsGroupContainerItemDelegate.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "UBGraphicsScene.h"
 
@@ -120,7 +122,7 @@ void UBGraphicsGroupContainerItemDelegate::onRemoveActionClicked()
     if(mAction){
         mAction->actionRemoved();
         delete mAction;
-        mAction = NULL;
+        mAction = nullptr;
     }
     mMenu->removeAction(mRemoveAnAction);
     mMenu->addAction(mShowPanelToAddAnAction);

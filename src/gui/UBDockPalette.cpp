@@ -51,8 +51,8 @@ UBDockPalette::UBDockPalette(eUBDockPaletteType paletteType, QWidget *parent, co
 , mCollapseWidth(150)
 , mLastWidth(-1)
 , mHTab(0)
-, mpStackWidget(NULL)
-, mpLayout(NULL)
+, mpStackWidget(nullptr)
+, mpLayout(nullptr)
 , mCurrentTab(0)
 , mPaletteType(paletteType)
 , mTabPalette(new UBTabDockPalette(this, parent))
@@ -100,15 +100,15 @@ UBDockPalette::UBDockPalette(eUBDockPaletteType paletteType, QWidget *parent, co
  */
 UBDockPalette::~UBDockPalette()
 {
-    if(NULL != mpStackWidget)
+    if(nullptr != mpStackWidget)
     {
         delete mpStackWidget;
-        mpStackWidget = NULL;
+        mpStackWidget = nullptr;
     }
-    if(NULL != mpLayout)
+    if(nullptr != mpLayout)
     {
         delete mpLayout;
-        mpLayout = NULL;
+        mpLayout = nullptr;
     }
 }
 
@@ -310,7 +310,7 @@ void UBDockPalette::showTabWidget(int tabIndex)
     mCurrentTab = tabIndex;
 
     // Update the current tab index
-    if(NULL != (dynamic_cast<UBDockPaletteWidget*>(mpStackWidget->widget(tabIndex)))){
+    if(nullptr != (dynamic_cast<UBDockPaletteWidget*>(mpStackWidget->widget(tabIndex)))){
         mCrntTabWidget = dynamic_cast<UBDockPaletteWidget*>(mpStackWidget->widget(tabIndex))->name();
     }
 
@@ -485,7 +485,7 @@ void UBDockPalette::onAllDownloadsFinished()
 {
     for(int i=0; i<mTabWidgets.size(); i++){
         UBDockPaletteWidget* pW = mTabWidgets.at(i);
-        if(NULL != pW && mCrntTabWidget == pW->name()){
+        if(nullptr != pW && mCrntTabWidget == pW->name()){
             mpStackWidget->setCurrentWidget(pW);
         }
     }
@@ -555,7 +555,7 @@ bool UBDockPalette::switchMode(eUBDockPaletteWidgetMode mode)
     for(int i = 0; i < mRegisteredWidgets.size(); i++)
     {
         UBDockPaletteWidget* pNextWidget = mRegisteredWidgets.at(i);
-        if( pNextWidget != NULL )
+        if( pNextWidget != nullptr )
         {
             //issue 1682 - NNE - 20140113
             removeTab(pNextWidget);

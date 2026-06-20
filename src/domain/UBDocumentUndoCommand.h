@@ -24,7 +24,9 @@
 #ifndef UBDOCUMENTUNDOCOMMAND_H_
 #define UBDOCUMENTUNDOCOMMAND_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include "UBAbstractUndoCommand.h"
 
 class UBDocumentProxy;

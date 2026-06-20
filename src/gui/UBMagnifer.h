@@ -24,7 +24,9 @@
 #ifndef UBMAGNIFIER_H
 #define UBMAGNIFIER_H
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 class UBMagnifierParams
 {

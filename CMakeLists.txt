@@ -10,7 +10,12 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 # Find Qt 6
-find_package(Qt6 COMPONENTS Core Gui Widgets Svg Network WebEngineWidgets Multimedia Xml REQUIRED)
+find_package(Qt6 COMPONENTS Core Gui Widgets Svg Network Multimedia Xml REQUIRED)
+find_package(Qt6 COMPONENTS WebEngineWidgets QUIET)
+if(NOT Qt6WebEngineWidgets_FOUND)
+    message(WARNING "Qt6WebEngineWidgets not found - web engine features will be disabled")
+    add_definitions(-DNO_WEBENGINE)
+endif()
 
 # Platform-specific configuration
 if(APPLE)
@@ -19,7 +24,7 @@ if(APPLE)
     enable_language(OBJCXX)
 endif()
 
-if(WIN32)
+if(WIN32)π
     set(CMAKE_VS_PLATFORM_TOOLSET "v143" CACHE STRING "Visual Studio platform toolset")
     add_definitions(-D_WIN32_WINNT=0x0A00)  # Windows 10
 endif()
@@ -94,11 +99,13 @@ target_link_libraries(OpenSankore PRIVATE
     Qt6::Widgets
     Qt6::Svg
     Qt6::Network
-    Qt6::WebEngineWidgets
     Qt6::Multimedia
     Qt6::Xml
     QuaZip::QuaZip
 )
+if(Qt6WebEngineWidgets_FOUND)
+    target_link_libraries(OpenSankore PRIVATE Qt6::WebEngineWidgets)
+endif()
 
 if(APPLE)
     target_link_libraries(OpenSankore PRIVATE

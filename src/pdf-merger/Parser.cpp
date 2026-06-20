@@ -54,7 +54,7 @@ Document * Parser::parseDocument(const char * fileName)
    {
       _clearParser();
       delete _document;
-      _document = NULL;
+      _document = nullptr;
       throw;
    }
    return _document;

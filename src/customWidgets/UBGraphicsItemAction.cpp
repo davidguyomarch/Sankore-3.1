@@ -72,15 +72,15 @@ UBGraphicsItemPlayAudioAction::UBGraphicsItemPlayAudioAction(QString audioFile, 
         mFullPath = mAudioPath;
     }
 
-    mAudioOutput = new QAudioOutput(Phonon::MusicCategory, this);
+    mAudioOutput = new QAudioOutput(this);
     mMediaObject = new QMediaPlayer(this);
-    Phonon::createPath(mMediaObject, mAudioOutput);
+    mMediaObject->setAudioOutput(mAudioOutput);
     mMediaObject->setCurrentSource(QUrl(mAudioPath));
 }
 
 
 UBGraphicsItemPlayAudioAction::UBGraphicsItemPlayAudioAction() :
-    UBGraphicsItemAction(eLinkToAudio,NULL)
+    UBGraphicsItemAction(eLinkToAudio,nullptr)
   , mMediaObject(0)
   , mIsLoading(true)
 {
@@ -92,9 +92,9 @@ void UBGraphicsItemPlayAudioAction::setPath(QString audioPath)
     Q_ASSERT(audioPath.length() > 0);
     mAudioPath = audioPath;
     mFullPath = mAudioPath;
-    mAudioOutput = new QAudioOutput(Phonon::MusicCategory, this);
+    mAudioOutput = new QAudioOutput(this);
     mMediaObject = new QMediaPlayer(this);
-    Phonon::createPath(mMediaObject, mAudioOutput);
+    mMediaObject->setAudioOutput(mAudioOutput);
     mMediaObject->setCurrentSource(QUrl(mAudioPath));
 }
 
@@ -105,20 +105,20 @@ QString UBGraphicsItemPlayAudioAction::fullPath()
 
 UBGraphicsItemPlayAudioAction::~UBGraphicsItemPlayAudioAction()
 {
-    if(!mMediaObject && mMediaObject->state() == Phonon::PlayingState)
+    if(!mMediaObject && mMediaObject->state() == QMediaPlayer::PlayingState)
         mMediaObject->stop();
 }
 
 void UBGraphicsItemPlayAudioAction::onSourceHide()
 {
-    if(mMediaObject && mMediaObject->state() == Phonon::PlayingState){
+    if(mMediaObject && mMediaObject->state() == QMediaPlayer::PlayingState){
         mMediaObject->stop();
     }
 }
 
 void UBGraphicsItemPlayAudioAction::play()
 {
-    if(mMediaObject->state() == Phonon::PlayingState){
+    if(mMediaObject->state() == QMediaPlayer::PlayingState){
         mMediaObject->stop();
     }
     mMediaObject->seek(0);

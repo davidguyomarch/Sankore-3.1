@@ -68,7 +68,7 @@ int UBWindowCaptureDelegate::execute()
     if (!mCancel)
     {
         BringWindowToTop(mCurrentWindow);
-        RedrawWindow(mCurrentWindow, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
+        RedrawWindow(mCurrentWindow, nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
         QWaitCondition sleep;
         QMutex mutex;
         mutex.lock();
@@ -79,7 +79,7 @@ int UBWindowCaptureDelegate::execute()
     }
     else
     {
-        RedrawWindow(NULL, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
+        RedrawWindow(nullptr, nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
         return QDialog::Rejected;
     }
 }
@@ -96,7 +96,7 @@ void UBWindowCaptureDelegate::processPos(QPoint pPoint)
 
     if (mCurrentWindow != newWindow && newWindow != desktop)
     {
-        RedrawWindow(NULL, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
+        RedrawWindow(nullptr, nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
         mCurrentWindow = newWindow;
     }
 }
@@ -111,7 +111,7 @@ void UBWindowCaptureDelegate::drawSelectionRect()
         HPEN hOldPen;
         HBRUSH hOldBrush;
 
-        hDC = GetDC(NULL);
+        hDC = GetDC(nullptr);
 
         hOldPen = (HPEN)SelectObject(hDC, CreatePen(PS_SOLID, 5, RGB(255, 0, 0)));
         hOldBrush = (HBRUSH)SelectObject(hDC, GetStockObject(NULL_BRUSH));
@@ -121,7 +121,7 @@ void UBWindowCaptureDelegate::drawSelectionRect()
         SelectObject(hDC, hOldBrush);
         DeleteObject(SelectObject(hDC, hOldPen));
 
-        ReleaseDC(NULL, hDC);
+        ReleaseDC(nullptr, hDC);
     }
 }
 

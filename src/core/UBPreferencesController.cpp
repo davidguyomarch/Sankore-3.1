@@ -293,7 +293,7 @@ void UBPreferencesController::init()
     mPreferencesUI->languageComboBox->addItems(list);
     if(currentIsoLanguage.length()){
         QString language;
-        foreach(QString eachKey, mIsoCodeAndLanguage.keys())
+        for (const auto& QString eachKey : mIsoCodeAndLanguage.keys())
             if(mIsoCodeAndLanguage[eachKey] == currentIsoLanguage){
                 language = eachKey;
                 break;

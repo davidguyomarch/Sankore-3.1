@@ -24,7 +24,9 @@
 #ifndef UBGRAPHICSVIDEOITEMDELEGATE_H_
 #define UBGRAPHICSVIDEOITEMDELEGATE_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QMediaPlayer>
 
 #include "core/UB.h"
@@ -82,7 +84,7 @@ class UBGraphicsVideoItemDelegate : public UBGraphicsItemDelegate
     Q_OBJECT
 
     public:
-        UBGraphicsVideoItemDelegate(UBGraphicsVideoItem* pDelegated, Phonon::MediaObject* pMedia, QObject * parent = 0);
+        UBGraphicsVideoItemDelegate(UBGraphicsVideoItem* pDelegated, QMediaPlayer* pMedia, QObject * parent = 0);
         virtual ~UBGraphicsVideoItemDelegate();
 
         virtual void positionHandles();
@@ -98,7 +100,7 @@ class UBGraphicsVideoItemDelegate : public UBGraphicsItemDelegate
 
         void togglePlayPause();
 
-        void mediaStateChanged ( Phonon::State newstate, Phonon::State oldstate );
+        void mediaStateChanged ( QMediaPlayer::PlaybackState newstate, QMediaPlayer::PlaybackState oldstate );
 
         void updatePlayPauseState();
 
@@ -117,7 +119,7 @@ class UBGraphicsVideoItemDelegate : public UBGraphicsItemDelegate
         DelegateButton* mMuteButton;
         DelegateVideoControl *mVideoControl;
 
-        Phonon::MediaObject* mMedia;
+        QMediaPlayer* mMedia;
 };
 
 

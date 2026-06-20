@@ -65,7 +65,9 @@
 #ifndef WBEDITTABLEVIEW_H
 #define WBEDITTABLEVIEW_H
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 class WBEditTableView : public QTableView
 {

@@ -262,7 +262,7 @@ bool FilterPredictor::decode(std::string &content)
       return false;
    }
 
-   const char *curRow  = NULL;
+   const char *curRow  = nullptr;
    std::string prev(_bytesPerPixel+_rowLen,'\0');  //"previous" line
    int curPredictor  = 1;
 

@@ -24,7 +24,9 @@
 #ifndef UBGRAPHICSITEMUNDOCOMMAND_H_
 #define UBGRAPHICSITEMUNDOCOMMAND_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include "UBAbstractUndoCommand.h"
 #include "UBGraphicsGroupContainerItem.h"
 

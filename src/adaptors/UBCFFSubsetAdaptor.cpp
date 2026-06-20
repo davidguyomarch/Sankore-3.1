@@ -140,7 +140,7 @@ bool UBCFFSubsetAdaptor::ConvertCFFFileToUbz(QString &cffSourceFile, UBDocumentP
 }
 UBCFFSubsetAdaptor::UBCFFSubsetReader::UBCFFSubsetReader(UBDocumentProxy *proxy, QFile *content)
     : mProxy(proxy)
-    , mGSectionContainer(NULL)
+    , mGSectionContainer(nullptr)
 {
     int errorLine, errorColumn;
     QString errorStr;
@@ -195,7 +195,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseGSection(const QDomElement &ele
     {
         delete mGSectionContainer;
     }
-    mGSectionContainer = NULL;
+    mGSectionContainer = nullptr;
 
     return true;
 }
@@ -346,7 +346,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     if (!svgPoints.isNull()) {
         QStringList ts = svgPoints.split(QLatin1Char(' '), QString::SkipEmptyParts);
 
-        foreach(const QString sPoint, ts) {
+        for (const auto& const QString sPoint : ts) {
             QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
@@ -462,7 +462,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
         QStringList ts = svgPoints.split(QLatin1Char(' '),
                                                     QString::SkipEmptyParts);
 
-        foreach(const QString sPoint, ts) {
+        for (const auto& const QString sPoint : ts) {
             QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
@@ -875,7 +875,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
         }
     }
 
-   UBGraphicsPixmapItem *pixItem = mCurrentScene->addPixmap(pix, NULL);
+   UBGraphicsPixmapItem *pixItem = mCurrentScene->addPixmap(pix, nullptr);
 
    QString uuid = QUuid::createUuid().toString();
    mRefToUuidMap.insert(element.attribute(aId), uuid);
@@ -1199,11 +1199,11 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
 
 
 
-    foreach (QString key, strokesGroupsContainer.keys().toSet())
+    for (const auto& QString key : strokesGroupsContainer.keys().toSet())
     {
         UBGraphicsStrokesGroup* pStrokesGroup = new UBGraphicsStrokesGroup();
         UBGraphicsStroke *currentStroke = new UBGraphicsStroke();
-        foreach(UBGraphicsPolygonItem* poly, strokesGroupsContainer.values(key))
+        for (const auto& UBGraphicsPolygonItem* poly : strokesGroupsContainer.values(key))
         {
             if (poly)
             {
@@ -1229,7 +1229,7 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
         }
     }
 
-    foreach(QGraphicsItem* item, groupContainer)
+    for (const auto& QGraphicsItem* item : groupContainer)
         group->addToGroup(item);
 
     if (group->childItems().count())
@@ -1418,7 +1418,7 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
     qreal angle = 0.0;
     QTransform tr;
 
-    foreach(QString trStr, trString.split(" ", QString::SkipEmptyParts))
+    for (const auto& QString trStr : trString.split(" ", QString::SkipEmptyParts))
     {
         //check pattern for strings like 'rotate(10)'
         QRegExp regexp("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");

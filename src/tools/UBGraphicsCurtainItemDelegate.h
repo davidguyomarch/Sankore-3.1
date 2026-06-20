@@ -24,7 +24,9 @@
 #ifndef UBGRAPHICSCURTAINITEMDELEGATE_H_
 #define UBGRAPHICSCURTAINITEMDELEGATE_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include <QtSvg>
 

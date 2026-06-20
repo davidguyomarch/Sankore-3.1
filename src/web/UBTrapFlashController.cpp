@@ -54,7 +54,7 @@ UBTrapWebPageContentController::UBTrapWebPageContentController(QWidget* parent)
     : QObject(parent)
     , mParentWidget(parent)
     , mCurrentWebFrame(0)
-    , mTrapWebContentDialog(NULL)
+    , mTrapWebContentDialog(nullptr)
 {
     // NOOP
 }

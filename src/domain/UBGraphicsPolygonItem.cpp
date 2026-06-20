@@ -33,7 +33,7 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (QGraphicsItem * parent)
     , mOriginalWidth(-1)
     , mIsNominalLine(false)
     , mStroke(0)
-    , mpGroup(NULL)
+    , mpGroup(nullptr)
 {
     // NOOP
     initialize();
@@ -45,7 +45,7 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QPolygonF & polygon, QGraphi
     , mOriginalWidth(-1)
     , mIsNominalLine(false)
     , mStroke(0)
-    , mpGroup(NULL)
+    , mpGroup(nullptr)
 {
     // NOOP
     initialize();
@@ -58,7 +58,7 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QLineF& pLine, qreal pWidth)
     , mOriginalWidth(pWidth)
     , mIsNominalLine(true)
     , mStroke(0)
-    , mpGroup(NULL)
+    , mpGroup(nullptr)
 {
     // NOOP
     initialize();
@@ -78,12 +78,12 @@ void UBGraphicsPolygonItem::setUuid(const QUuid &pUuid)
 
 void UBGraphicsPolygonItem::clearStroke()
 {
-	if (mStroke!=NULL)
+	if (mStroke!=nullptr)
 	{
         mStroke->remove(this);
         if (mStroke->polygons().empty())
             delete mStroke;
-        mStroke = NULL;
+        mStroke = nullptr;
 	}
 }
 

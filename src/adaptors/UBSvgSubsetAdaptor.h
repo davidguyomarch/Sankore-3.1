@@ -24,7 +24,9 @@
 #ifndef UBSVGSUBSETADAPTOR_H_
 #define UBSVGSUBSETADAPTOR_H_
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtXml>
 
 #include "frameworks/UBGeometryUtils.h"
@@ -108,8 +110,8 @@ class UBSvgSubsetAdaptor
 
         static const QString sFormerUniboardDocumentNamespaceUri;
 
-        static QString toSvgTransform(const QMatrix& matrix);
-        static QMatrix fromSvgTransform(const QString& transform);
+        static QString toSvgTransform(const QTransform& matrix);
+        static QTransform fromSvgTransform(const QString& transform);
 
         static QMap<QString,IDataStorage*> additionalElementToStore;
 

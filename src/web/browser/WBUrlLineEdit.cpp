@@ -69,7 +69,9 @@
 
 #include "globals/UBGlobals.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 
 WBExLineEdit::WBExLineEdit(QWidget *parent)

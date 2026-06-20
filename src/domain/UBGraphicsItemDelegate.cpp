@@ -21,7 +21,9 @@
 
 
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QtSvg>
 #include <QDrag>
 
@@ -167,9 +169,9 @@ DelegateSpacer::DelegateSpacer(QGraphicsItem * parent, Qt::WindowFrameSection se
 UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent, bool respectRatio, bool canRotate, bool useToolBar, bool showGoContentButton)
     : QObject(parent)
     , mDelegated(pDelegated)
-    , mDeleteButton(NULL)
-    , mDuplicateButton(NULL)
-    , mMenuButton(NULL)
+    , mDeleteButton(nullptr)
+    , mDuplicateButton(nullptr)
+    , mMenuButton(nullptr)
     , mMenu(0)
     , mLockAction(0)
     , mShowOnDisplayAction(0)
@@ -178,14 +180,14 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mFrame(0)
     , mFrameWidth(UBSettings::settings()->objectFrameWidth)
     , mAntiScaleRatio(1.0)
-    , mToolBarItem(NULL)
+    , mToolBarItem(nullptr)
     , mAction(0)
     , mCanRotate(canRotate)
     , mCanDuplicate(true)
     , mRespectRatio(respectRatio)
     , mCanTrigAnAction(false)
     , mCanReturnInCreationMode(false)
-    , mMimeData(NULL)
+    , mMimeData(nullptr)
     , mFlippable(false)
     , mToolBarUsed(useToolBar)
     , mShowGoContentButton(showGoContentButton)
@@ -229,7 +231,7 @@ void UBGraphicsItemDelegate::init()
 
     buildButtons();
 
-    foreach(DelegateButton* button, mButtons)
+    for (const auto& DelegateButton* button : mButtons)
     {
         if (button->getSection() != Qt::TitleBarArea)
         {
@@ -373,7 +375,7 @@ bool UBGraphicsItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (delegated()->scene()
             && delegated()->scene()->selectedItems().count()
             && event->modifiers() != Qt::ControlModifier) {
-        foreach (QGraphicsItem *item, delegated()->scene()->selectedItems()) {
+        for (const auto& QGraphicsItem *item : delegated()->scene()->selectedItems()) {
             if (item != delegated()) {
                 item->setSelected(false);
             }
@@ -427,7 +429,7 @@ void UBGraphicsItemDelegate::positionHandles()
             mToolBarItem->show();
         }
     } else {
-        foreach(DelegateButton* button, mButtons)
+        for (const auto& DelegateButton* button : mButtons)
             button->hide();
 
         mFrame->hide();
@@ -474,7 +476,7 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
         mFrame->positionHandles();
         updateButtons(true);
 
-        foreach(DelegateButton* button, mButtons) {
+        for (const auto& DelegateButton* button : mButtons) {
             scene->removeItem(button);
         }
         scene->removeItem(mFrame);
@@ -554,7 +556,7 @@ void UBGraphicsItemDelegate::lock(bool locked)
 void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem)
 {
     pItem->setData(UBGraphicsItemData::ItemLayerType, pShow);
-    foreach (QGraphicsItem *insideItem, pItem->childItems()) {
+    for (const auto& QGraphicsItem *insideItem : pItem->childItems()) {
         showHideRecurs(pShow, insideItem);
     }
 }
@@ -743,7 +745,7 @@ void UBGraphicsItemDelegate::onRemoveActionClicked()
     if(mAction){
         mAction->actionRemoved();
         delete mAction;
-        mAction = NULL;
+        mAction = nullptr;
     }
     if(mRemoveAnAction && mMenu){
         mMenu->removeAction(mRemoveAnAction);
@@ -898,7 +900,7 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
 
 void UBGraphicsItemDelegate::setButtonsVisible(bool visible)
 {
-    foreach(DelegateButton* pButton, mButtons){
+    for (const auto& DelegateButton* pButton : mButtons){
         pButton->setVisible(visible);
     }
 }
@@ -944,7 +946,7 @@ UBGraphicsToolBarItem::UBGraphicsToolBarItem(QGraphicsItem * parent) :
 void UBGraphicsToolBarItem::positionHandles()
 {
     int itemXOffset = 0;
-    foreach (QGraphicsItem* item, mItemsOnToolBar)
+    for (const auto& QGraphicsItem* item : mItemsOnToolBar)
     {
         if(item == DelegateButton::Spacer){
             itemXOffset += 10;
@@ -1098,7 +1100,7 @@ const char* MediaTimer::getSegments(char ch)               // gets list of segme
      if (ch == ' ')
         return segments[11];
 
-     return NULL;
+     return nullptr;
 }
 
 void MediaTimer::drawSegment(const QPoint &pos, char segmentNo, QPainter &p,

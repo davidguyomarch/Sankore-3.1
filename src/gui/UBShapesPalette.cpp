@@ -23,7 +23,9 @@
 
 #include "UBShapesPalette.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "UBMainWindow.h"
 
@@ -64,7 +66,7 @@ UBShapesPalette::UBShapesPalette(Qt::Orientation orient, QWidget *parent )
 
     adjustSizeAndPosition();
 
-    foreach(const UBActionPaletteButton* button, mButtons)
+    for (const auto& const UBActionPaletteButton* button : mButtons)
     {
         connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
     }
@@ -87,7 +89,7 @@ void UBShapesPalette::buttonClicked()
             triggerAction(action);
 
             // Change the Action shown in the DrawingPalette :
-            foreach (QAction* a, actionPaletteButtonParent()->actions()) {
+            for (const auto& QAction* a : actionPaletteButtonParent()->actions()) {
                 actionPaletteButtonParent()->removeAction(a); // Remove all older actions, in order to let only one action associated to the button.
             }
             actionPaletteButtonParent()->setDefaultAction(action); // Associate the new Action to the Button.

@@ -65,7 +65,9 @@
 #ifndef WBURLLINEEDIT_H
 #define WBURLLINEEDIT_H
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "WBWebView.h"
 

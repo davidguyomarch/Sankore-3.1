@@ -64,7 +64,9 @@
 
 #include "WBBrowserWindow.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>
@@ -148,12 +150,12 @@ WBBrowserWindow::~WBBrowserWindow()
 {
     if(mTabWidget){
         delete mTabWidget;
-        mTabWidget = NULL;
+        mTabWidget = nullptr;
     }
 
     if(mSearchToolBar){
         delete mSearchToolBar;
-        mSearchToolBar = NULL;
+        mSearchToolBar = nullptr;
     }
 }
 
@@ -210,7 +212,7 @@ void WBBrowserWindow::setupToolBar()
     connect(mHistoryBackMenu, SIGNAL(aboutToShow()),this, SLOT(aboutToShowBackMenu()));
     connect(mHistoryBackMenu, SIGNAL(triggered(QAction *)), this, SLOT(openActionUrl(QAction *)));
 
-    foreach (QWidget* menuWidget,  mUniboardMainWindow->actionWebBack->associatedWidgets())
+    for (const auto& QWidget* menuWidget : mUniboardMainWindow->actionWebBack->associatedWidgets())
     {
         QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -225,7 +227,7 @@ void WBBrowserWindow::setupToolBar()
     connect(mHistoryForwardMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowForwardMenu()));
     connect(mHistoryForwardMenu, SIGNAL(triggered(QAction *)), this, SLOT(openActionUrl(QAction *)));
     
-    foreach (QWidget* menuWidget,  mUniboardMainWindow->actionWebForward->associatedWidgets())
+    for (const auto& QWidget* menuWidget : mUniboardMainWindow->actionWebForward->associatedWidgets())
     {
         QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -265,20 +267,20 @@ void WBBrowserWindow::setupToolBarForTutorial()
     mTabWidget->addWebAction(mUniboardMainWindow->actionWebBack, QWebEnginePage::Back);
     mTabWidget->addWebAction(mUniboardMainWindow->actionWebForward, QWebEnginePage::Forward);
 
-    foreach (QWidget* menuWidget,  mUniboardMainWindow->actionWebBack->associatedWidgets())
+    for (const auto& QWidget* menuWidget : mUniboardMainWindow->actionWebBack->associatedWidgets())
     {
         QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
         if (tb && tb->menu())
-            tb->setMenu(NULL);
+            tb->setMenu(nullptr);
     }
 
-    foreach (QWidget* menuWidget,  mUniboardMainWindow->actionWebForward->associatedWidgets())
+    for (const auto& QWidget* menuWidget : mUniboardMainWindow->actionWebForward->associatedWidgets())
     {
         QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
         if (tb && tb->menu())
-            tb->setMenu(NULL);
+            tb->setMenu(nullptr);
     }
 
     mWebToolBar->show();

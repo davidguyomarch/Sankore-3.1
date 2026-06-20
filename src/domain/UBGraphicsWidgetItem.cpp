@@ -77,13 +77,13 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     setData(UBGraphicsItemData::ItemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
     QGraphicsWebView::setPage(new UBWebPage(this));
-    QGraphicsWebView::settings()->setAttribute(QWebSettings::JavaEnabled, true);
-    QGraphicsWebView::settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-    QGraphicsWebView::settings()->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
-    QGraphicsWebView::settings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
-    QGraphicsWebView::settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
-    QGraphicsWebView::settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
-    QGraphicsWebView::settings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::JavaEnabled, true);
+    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::LocalStorageDatabaseEnabled, true);
+    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::OfflineWebApplicationCacheEnabled, true);
+    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::OfflineStorageDatabaseEnabled, true);
+    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
+    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
 
     page()->setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
 
@@ -133,7 +133,7 @@ void UBGraphicsWidgetItem::initialize()
     QPalette palette = page()->palette();
     palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
     page()->setPalette(palette);
-    page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+    page()->setLinkDelegationPolicy(QWebEnginePage::DelegateAllLinks);
 
     connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     connect(page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SLOT(geometryChangeRequested(const QRect&)));
@@ -634,7 +634,7 @@ void UBGraphicsWidgetItem::injectInlineJavaScript()
         sInlineJavaScriptLoaded = true;
     }
 
-    foreach(QString script, sInlineJavaScripts)
+    for (const auto& QString script : sInlineJavaScripts)
         page()->mainFrame()->evaluateJavaScript(script);
 }
 
@@ -808,12 +808,12 @@ void UBGraphicsAppleWidgetItem::copyItemParameters(UBItem *copy) const
     UBGraphicsAppleWidgetItem *cp = dynamic_cast<UBGraphicsAppleWidgetItem*>(copy);
     if (cp)
     {
-        foreach(QString key, mPreferences.keys())
+        for (const auto& QString key : mPreferences.keys())
         {
             cp->setPreference(key, mPreferences.value(key));
         }
 
-        foreach(QString key, mDatastore.keys())
+        for (const auto& QString key : mDatastore.keys())
         {
             cp->setDatastoreEntry(key, mDatastore.value(key));
         }
@@ -1286,7 +1286,7 @@ void UBGraphicsW3CWidgetItem::loadNPAPIWrappersTemplates()
 
         qDebug() << etcDir.entryList().count();
 
-        foreach(QString fileName, etcDir.entryList()) {
+        for (const auto& QString fileName : etcDir.entryList()) {
             if (fileName.startsWith("npapi-wrapper") && (fileName.endsWith(".htm") || fileName.endsWith(".html"))) {
 
                 QString htmlContent = UBFileSystemUtils::readTextFile(etcPath + fileName);
@@ -1355,12 +1355,12 @@ void UBGraphicsW3CWidgetItem::copyItemParameters(UBItem *copy) const
 
         cp->resize(this->size());
 
-        foreach(QString key, UBGraphicsWidgetItem::preferences().keys())
+        for (const auto& QString key : UBGraphicsWidgetItem::preferences().keys())
         {
             cp->setPreference(key, UBGraphicsWidgetItem::preferences().value(key));
         }
 
-        foreach(QString key, mDatastore.keys())
+        for (const auto& QString key : mDatastore.keys())
         {
             cp->setDatastoreEntry(key, mDatastore.value(key));
         }
@@ -1385,7 +1385,7 @@ void UBGraphicsW3CWidgetItem::keyPressEvent(QKeyEvent *event)
         //so we need to make a copy and set it.
         QMimeData *mimeCopy = new QMimeData();
 
-        foreach(QString format, mimeData->formats()){
+        for (const auto& QString format : mimeData->formats()){
             QByteArray data = mimeData->data(format);
             mimeCopy->setData(format, data);
         }

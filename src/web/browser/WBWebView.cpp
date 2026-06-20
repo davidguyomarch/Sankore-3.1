@@ -75,7 +75,9 @@
 #include "network/UBNetworkAccessManager.h"
 #include "network/UBCookieJar.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>
@@ -236,7 +238,7 @@ void WBWebPage::handleUnsupportedContent(QNetworkReply *reply)
             return;
         }
         QList<QWebEnginePage *> children = frame->childFrames();
-        foreach(QWebEnginePage *frame, children)
+        for (const auto& QWebEnginePage *frame : children)
             frames.append(frame);
     }
 

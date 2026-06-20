@@ -23,7 +23,9 @@
 
 #include "UBDocumentToolsPalette.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "frameworks/UBPlatformUtils.h"
 

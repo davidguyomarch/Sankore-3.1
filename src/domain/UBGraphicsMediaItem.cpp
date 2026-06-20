@@ -67,12 +67,12 @@ bool UBGraphicsMediaItem::sIsMutedByDefault = false;
 
 UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent)
         : UBAbstractGraphicsProxyWidget(parent)
-        , mVideoWidget(NULL)
-        , mAudioWidget(NULL)
+        , mVideoWidget(nullptr)
+        , mAudioWidget(nullptr)
         , mMuted(sIsMutedByDefault)
         , mMutedByUserAction(sIsMutedByDefault)
         , mMediaFileUrl(pMediaFileUrl)
-        , mLinkedImage(NULL)
+        , mLinkedImage(nullptr)
         , mInitialPos(0)
 {
     update();
@@ -87,10 +87,10 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     {
         mMediaType = mediaType_Video;
 
-        mAudioOutput = new QAudioOutput(Phonon::VideoCategory, this);
+        mAudioOutput = new QAudioOutput(this);
         mMediaObject->setTickInterval(50);
         mVideoWidget = new QVideoWidget(); // owned and destructed by the scene ...
-        Phonon::createPath(mMediaObject, mVideoWidget);
+        mMediaObject->setAudioOutput(mVideoWidget);
 
         if(mVideoWidget->sizeHint() == QSize(1,1)){
             mVideoWidget->resize(320,240);
@@ -104,7 +104,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     if (mediaPath.toLower().contains("audios"))
     {
         mMediaType = mediaType_Audio;
-        mAudioOutput = new QAudioOutput(Phonon::MusicCategory, this);
+        mAudioOutput = new QAudioOutput(this);
 
         mMediaObject->setTickInterval(1000);
         mAudioWidget = new UBAudioPresentationWidget();
@@ -121,7 +121,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         haveLinkedImage = false;
     }
 
-    Phonon::createPath(mMediaObject, mAudioOutput);
+    mMediaObject->setAudioOutput(mAudioOutput);
 
     mSource = QUrl(pMediaFileUrl);
     mMediaObject->setCurrentSource(mSource);

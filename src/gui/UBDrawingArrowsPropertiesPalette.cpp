@@ -7,8 +7,8 @@
 
 UBDrawingArrowsPropertiesPalette::UBDrawingArrowsPropertiesPalette(Qt::Orientation orient, QWidget *parent)
     :UBAbstractSubPalette(orient, parent)
-    ,mButtonGroupStartArrowStyle(NULL)
-    ,mButtonGroupEndArrowStyle(NULL)
+    ,mButtonGroupStartArrowStyle(nullptr)
+    ,mButtonGroupEndArrowStyle(nullptr)
 {
     hide();
 
@@ -78,10 +78,10 @@ UBDrawingArrowsPropertiesPalette::UBDrawingArrowsPropertiesPalette(Qt::Orientati
 UBDrawingArrowsPropertiesPalette::~UBDrawingArrowsPropertiesPalette()
 {
     delete mButtonGroupStartArrowStyle;
-    mButtonGroupStartArrowStyle = NULL;
+    mButtonGroupStartArrowStyle = nullptr;
 
     delete mButtonGroupEndArrowStyle;
-    mButtonGroupEndArrowStyle = NULL;
+    mButtonGroupEndArrowStyle = nullptr;
 }
 
 void UBDrawingArrowsPropertiesPalette::onBtnStartArrowStyleNone()

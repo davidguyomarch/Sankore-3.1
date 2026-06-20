@@ -23,7 +23,9 @@
 
 #include "UBApplication.h"
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QWebEngineView>
 #include <QtXml>
 #include <QFontDatabase>
@@ -109,9 +111,9 @@ static OSStatus ub_appleEventProcessor(const AppleEvent *ae, AppleEvent *event, 
 
 
 UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSingleApplication(id, argc, argv)
-  , mPreferencesController(NULL)
-  , mApplicationTranslator(NULL)
-  , mQtGuiTranslator(NULL)
+  , mPreferencesController(nullptr)
+  , mApplicationTranslator(nullptr)
+  , mQtGuiTranslator(nullptr)
 {
     staticMemoryCleaner = new QObject(0); // deleted in UBApplication destructor
 
@@ -193,13 +195,13 @@ UBApplication::~UBApplication()
 
     UBToolsManager::destroy();
 
-    if(mApplicationTranslator != NULL){
+    if(mApplicationTranslator != nullptr){
         delete mApplicationTranslator;
-        mApplicationTranslator = NULL;
+        mApplicationTranslator = nullptr;
     }
-    if(mQtGuiTranslator!=NULL){
+    if(mQtGuiTranslator!=nullptr){
         delete mQtGuiTranslator;
-        mQtGuiTranslator = NULL;
+        mQtGuiTranslator = nullptr;
     }
 
     delete staticMemoryCleaner;
@@ -284,17 +286,17 @@ int UBApplication::exec(const QString& pFileToImport)
     if (!webDbDir.exists(webDbPath))
         webDbDir.mkpath(webDbPath);
 
-    QWebSettings::setIconDatabasePath(webDbPath);
-    QWebSettings::setOfflineStoragePath (webDbPath);
+    QWebEngineSettings::setIconDatabasePath(webDbPath);
+    QWebEngineSettings::setOfflineStoragePath (webDbPath);
 
-    QWebSettings *gs = QWebSettings::globalSettings();
-    gs->setAttribute(QWebSettings::JavaEnabled, true);
-    gs->setAttribute(QWebSettings::PluginsEnabled, true);
-    gs->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
-    gs->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
-    gs->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
-    gs->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
-    gs->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+    QWebEngineSettings *gs = QWebEngineSettings::globalSettings();
+    gs->setAttribute(QWebEngineSettings::JavaEnabled, true);
+    gs->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+    gs->setAttribute(QWebEngineSettings::LocalStorageDatabaseEnabled, true);
+    gs->setAttribute(QWebEngineSettings::OfflineWebApplicationCacheEnabled, true);
+    gs->setAttribute(QWebEngineSettings::OfflineStorageDatabaseEnabled, true);
+    gs->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
+    gs->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
 
 
     mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint); // deleted by application destructor
@@ -514,7 +516,7 @@ void UBApplication::setDisabled(bool disable)
 
 void UBApplication::decorateActionMenu(QAction* action)
 {
-    foreach(QWidget* menuWidget,  action->associatedWidgets())
+    for (const auto& QWidget* menuWidget : action->associatedWidgets())
     {
         QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -576,7 +578,7 @@ void UBApplication::updateProtoActionsState()
         mainWindow->actionMultiScreen->setVisible(true);
     }
 
-    foreach(QMenu* protoMenu, mProtoMenus)
+    for (const auto& QMenu* protoMenu : mProtoMenus)
         protoMenu->setVisible(true);
 
 }
@@ -664,11 +666,11 @@ void UBApplication::cleanup()
     if (mUniboardSankoreTransition) delete mUniboardSankoreTransition;
 
 
-    applicationController = NULL;
-    boardController = NULL;
-    webController = NULL;
-    documentController = NULL;
-    mUniboardSankoreTransition = NULL;
+    applicationController = nullptr;
+    boardController = nullptr;
+    webController = nullptr;
+    documentController = nullptr;
+    mUniboardSankoreTransition = nullptr;
 }
 
 void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,

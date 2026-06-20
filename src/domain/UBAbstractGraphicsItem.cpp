@@ -249,7 +249,7 @@ bool UBAbstractGraphicsItem::hasStrokeProperty() const
 
 bool UBAbstractGraphicsItem::hasGradient() const
 {
-    return brush().gradient() != NULL;
+    return brush().gradient() != nullptr;
 }
 
 void UBAbstractGraphicsItem::copyItemParameters(UBItem *copy) const

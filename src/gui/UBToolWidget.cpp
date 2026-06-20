@@ -21,7 +21,9 @@
 
 
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include "UBToolWidget.h"
 #include "api/UBWidgetUniboardAPI.h"
 #include "api/UBW3CWidgetAPI.h"
@@ -96,7 +98,7 @@ void UBToolWidget::initialize()
     }
 
 
-    mWebView = new QWebView(this);
+    mWebView = new QWebEngineView(this);
 
     QPalette palette = mWebView->page()->palette();
     palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
@@ -113,12 +115,12 @@ void UBToolWidget::initialize()
 
     setFixedSize(mToolWidget->boundingRect().width() + mContentMargin * 2, mToolWidget->boundingRect().height() + mContentMargin * 2);
 
-    connect(mWebView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
+    connect(mWebView->page(), SIGNAL(loadFinished(bool)), this, SLOT(javaScriptWindowObjectCleared()));
     mWebView->load(mToolWidget->mainHtml());
 
 
     mWebView->setAcceptDrops(false);
-    mWebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    mWebView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     mWebView->setAttribute(Qt::WA_OpaquePaintEvent, false);
 
 
@@ -212,13 +214,12 @@ void UBToolWidget::javaScriptWindowObjectCleared()
 {
     UBWidgetUniboardAPI *uniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene(), mToolWidget);
 
-    mWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", uniboardAPI);
+    mWebView->page()->runJavaScript(QString("window.sankore = {};"));
 
     UBGraphicsW3CWidgetItem *graphicsW3cWidgetItem = dynamic_cast<UBGraphicsW3CWidgetItem*>(mToolWidget);
     if (graphicsW3cWidgetItem)
     {
-        UBW3CWidgetAPI* widgetAPI = new UBW3CWidgetAPI(graphicsW3cWidgetItem);
-        mWebView->page()->mainFrame()->addToJavaScriptWindowObject("widget", widgetAPI);
+        mWebView->page()->runJavaScript(QString("window.widget = {};"));
     }
 }
 
@@ -246,7 +247,7 @@ QPoint UBToolWidget::naturalCenter() const
 
 void UBToolWidget::remove()
 {
-    mToolWidget = NULL;
+    mToolWidget = nullptr;
     hide();
     deleteLater();
 }

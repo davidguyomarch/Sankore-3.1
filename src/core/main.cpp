@@ -21,8 +21,9 @@
 
 
 
-#include <QtGui>
-#include <QTextCodec>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
@@ -41,21 +42,18 @@
 #endif
 */
 
-void ub_message_output(QtMsgType type, const char *msg) {
-    // We must temporarily remove the handler to avoid the infinite recursion of
-    // ub_message_output -> qt_message_output -> ub_message_output -> qt_message_output ...
-    QtMsgHandler previousHandler = qInstallMsgHandler(0);
+void ub_message_output(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
+    Q_UNUSED(context);
 
 #if defined(QT_NO_DEBUG)
     // Suppress qDebug output in release builds
     if (type != QtDebugMsg)
     {
-        qt_message_output(type, msg);
+        fprintf(stderr, "%s\n", qPrintable(msg));
     }
-
 #else
     // Default output in debug builds
-    qt_message_output(type, msg);
+    fprintf(stderr, "%s\n", qPrintable(msg));
 #endif
 
     if (UBApplication::app() && UBApplication::app()->isVerbose()) {
@@ -72,8 +70,6 @@ void ub_message_output(QtMsgType type, const char *msg) {
             logFile.close();
         }
     }
-
-    qInstallMsgHandler(previousHandler);
 }
 
 int main(int argc, char *argv[]) 
@@ -89,24 +85,9 @@ int main(int argc, char *argv[])
 
     Q_INIT_RESOURCE(sankore);
 
-    qInstallMsgHandler(ub_message_output);
-
-#if defined(Q_OS_LINUX)
-    qDebug() << "Setting GraphicsSystem to raster";
-    QApplication::setGraphicsSystem("raster");
-#endif
+    qInstallMessageHandler(ub_message_output);
 
     UBApplication app("Sankore", argc, argv);
-
-    //BUGFIX:
-    //when importing a sankore file that contains a non standard character
-    //the codecForLocale or the codecForCString is used to convert the file path
-    //into a const char*. This is why in french windows setup the codec name shouldn't be
-    //set to UTF-8. For example, setting UTF-8, will convert "Haïti" into "HaÂ-ti.
-
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-    //QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
     QStringList args = app.arguments();
 
@@ -139,7 +120,7 @@ int main(int argc, char *argv[])
 
     app.initialize(false);
 
-    QObject::connect(&app, SIGNAL(messageReceived(const QString&)), &app, SLOT(handleOpenMessage(const QString&)));
+    QObject::connect(&app, &QtSingleApplication::messageReceived, &app, &UBApplication::handleOpenMessage);
 
     qDebug() << "file name argument" << fileToOpen;
     int result = app.exec(fileToOpen);

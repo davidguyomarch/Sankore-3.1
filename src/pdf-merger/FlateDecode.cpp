@@ -36,7 +36,7 @@ using namespace merge_lib;
    std::cout<<msg<<" ZLIB error:"<<err<<std::endl; \
    }\
 
-FlateDecode::FlateDecode():_predict(NULL)
+FlateDecode::FlateDecode():_predict(nullptr)
 {
 }
 
@@ -78,7 +78,7 @@ bool FlateDecode::encode(std::string &decoded)
    stream.opaque = (voidpf)0;
 
    size_t out_len = 0;
-   unsigned char *out_p = NULL;
+   unsigned char *out_p = nullptr;
 
    stream.next_out = out_p;
    stream.avail_out = (uInt)out_len;
@@ -162,7 +162,7 @@ bool FlateDecode::decode(std::string & encoded)
    {
       return false;
    }
-   unsigned char *out_p = NULL;
+   unsigned char *out_p = nullptr;
    int out_len = 0;
 
    stream.next_out = out_p;

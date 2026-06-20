@@ -65,7 +65,9 @@
 #ifndef WBBROWSERMAINWINDOW_H
 #define WBBROWSERMAINWINDOW_H
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>

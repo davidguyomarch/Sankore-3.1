@@ -65,7 +65,9 @@
 #ifndef WBMODELMENU_H
 #define WBMODELMENU_H
 
-#include <QtGui>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 // A QMenu that is dynamically populated from a QAbstractItemModel
 class WBModelMenu : public QMenu

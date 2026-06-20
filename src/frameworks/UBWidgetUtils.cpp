@@ -26,7 +26,7 @@
 
 int UBWidgetUtils::getTreeWidgetItemVisualHeight(QTreeWidget * tree, QTreeWidgetItem * item)
 {
-    if (tree == NULL || item == NULL) return 0;
+    if (tree == nullptr || item == nullptr) return 0;
 
     int itemTotalHeight = tree->visualItemRect(item).height();
     if (item->isExpanded())
