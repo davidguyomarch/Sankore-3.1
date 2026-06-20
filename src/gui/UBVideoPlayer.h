@@ -27,6 +27,7 @@
 
 #include <QWidget>
 #include <QApplication>
+#include <QPushButton>
 #include <QPainter>
 #include <QMediaPlayer>
 #include <QAudioOutput>
