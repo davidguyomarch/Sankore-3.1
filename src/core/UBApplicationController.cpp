@@ -481,7 +481,7 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 
     if (mMirror)
     {
-        QRect rect = qApp->desktop()->screenGeometry(desktopWidgetIndex);
+        QRect rect = QGuiApplication::screens().at(desktopWidgetIndex)->geometry();
         mMirror->setSourceRect(rect);
     }
 

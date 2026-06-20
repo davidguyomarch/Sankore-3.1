@@ -236,7 +236,7 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
 int UBDocumentManager::addFilesToDocument(UBDocumentProxy* document, QStringList fileNames)
 {
     int nImportedDocuments = 0;
-    for (const auto& const QString& fileName : fileNames)
+    for (const QString& fileName : fileNames)
     {
         UBApplication::showMessage(tr("Importing file %1").arg(fileName));
 
