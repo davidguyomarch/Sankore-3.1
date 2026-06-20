@@ -25,6 +25,7 @@
 #define UBPERSISTENCEMANAGER_H_
 
 #include <QtCore>
+#include <QDialog>
 
 #include "UBSceneCache.h"
 

@@ -22,6 +22,7 @@
 
 
 #include "UBIniFileParser.h"
+#include <QFile>
 
 
 UBIniFileParser::UBIniFileParser(const QString& pFileName)

@@ -22,6 +22,8 @@
 
 
 #include "UBImportPDF.h"
+#include <QScreen>
+#include <QGuiApplication>
 
 #include "document/UBDocumentProxy.h"
 
@@ -36,8 +38,8 @@
 UBImportPDF::UBImportPDF(QObject *parent)
     : UBPageBasedImportAdaptor(parent)
 {
-    QDesktopWidget* desktop = UBApplication::desktop();
-	this->dpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+    QScreen* screen = QGuiApplication::primaryScreen();
+	this->dpi = (screen->physicalDotsPerInchX() + screen->physicalDotsPerInchY()) / 2;
 }
 
 
