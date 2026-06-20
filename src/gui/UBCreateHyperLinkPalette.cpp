@@ -25,7 +25,7 @@ UBCreateHyperLinkPalette::UBCreateHyperLinkPalette(QWidget *parent) :
     mVLayout->addItem(mTextLayout);
     mVLayout->addWidget(mValidateButton);
 
-    mVLayout{ int m = mClosePixmap.width(; ->setContentsMargins(m,m,m,m); });
+    { int m = mClosePixmap.width(); mVLayout->setContentsMargins(m,m,m,m); }
 
     setGeometry(QRect(QPoint(), mVLayout->sizeHint()));
 

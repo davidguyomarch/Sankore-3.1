@@ -22,6 +22,8 @@
 
 
 #include "UBNetworkAccessManager.h"
+#include <QElapsedTimer>
+#include <QMessageBox>
 
 #include <QWidget>
 #include <QApplication>
@@ -92,7 +94,7 @@ QNetworkReply* UBNetworkAccessManager::createRequest(Operation op, const QNetwor
 
 QNetworkReply *UBNetworkAccessManager::get(const QNetworkRequest &request)
 {
-    QTime loadStartTime;
+    QElapsedTimer loadStartTime;
     loadStartTime.start();
     QNetworkReply *networkReply = QNetworkAccessManager::get(request);
     return networkReply;
@@ -112,7 +114,7 @@ void UBNetworkAccessManager::authenticationRequired(QNetworkReply *reply, QAuthe
     passwordDialog.iconLabel->setPixmap(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxQuestion, 0, mainWindow).pixmap(32, 32));
 
     QString introMessage = tr("<qt>Enter username and password for \"%1\" at %2</qt>");
-    introMessage = introMessage.arg(Qt::escape(reply->url().toString())).arg(Qt::escape(reply->url().toString()));
+    introMessage = introMessage.arg(reply->url(.toHtmlEscaped().toString())).arg(reply->url(.toHtmlEscaped().toString()));
     passwordDialog.introLabel->setText(introMessage);
     passwordDialog.introLabel->setWordWrap(true);
 
@@ -156,7 +158,7 @@ void UBNetworkAccessManager::proxyAuthenticationRequired(const QNetworkProxy &pr
 void UBNetworkAccessManager::sslErrors(QNetworkReply *reply, const QList<QSslError> &error)
 {
     // check if SSL certificate has been trusted already
-    QString replyHost = reply->url().host() + ":" + reply->url().port();
+    QString replyHost = reply->url().host() + ":" + QString::number(reply->url().port());
     if(!sslTrustedHostList.contains(replyHost))
     {
         QWidget *mainWindow = QApplication::activeWindow();
