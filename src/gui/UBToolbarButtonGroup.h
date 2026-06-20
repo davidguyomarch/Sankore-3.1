@@ -28,6 +28,8 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QToolButton>
+#include <QToolBar>
 
 class UBToolbarButtonGroup : public QWidget
 {

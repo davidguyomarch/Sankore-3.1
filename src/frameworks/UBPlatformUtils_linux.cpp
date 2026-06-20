@@ -132,14 +132,14 @@ void UBPlatformUtils::setDesktopMode(bool desktop)
     Q_UNUSED(desktop);
 }
 
-#define KEYBTDECL(s1, s2, clSwitch, code) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(s1, code, 0), KEYCODE(s2, code, 1))
+#define KEYBTDECL(s1, s2, clSwitch, code) KEYBT(QChar(char16_t(s1)), QChar(char16_t(s2)), clSwitch, 0, 0, KEYCODE(s1, code, 0), KEYCODE(s2, code, 1))
 
-#define KEYBTDECLEX1(s1, s2, clSwitch, code, cs1, cs2) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1))
-#define KEYBTDECLEX2(s1, s2, clSwitch, code, cs1, cs2) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(cs1, code, 2), KEYCODE(cs2, code, 3))
+#define KEYBTDECLEX1(s1, s2, clSwitch, code, cs1, cs2) KEYBT(QChar(char16_t(s1)), QChar(char16_t(s2)), clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1))
+#define KEYBTDECLEX2(s1, s2, clSwitch, code, cs1, cs2) KEYBT(QChar(char16_t(s1)), QChar(char16_t(s2)), clSwitch, 0, 0, KEYCODE(cs1, code, 2), KEYCODE(cs2, code, 3))
 
-#define KEYBTDECLEX6(s1, s2, clSwitch, code, cs1, cs2, cs3, cs4, cs5, cs6) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1), KEYCODE(cs3, code, 2), KEYCODE(cs4, code, 3), KEYCODE(cs5, code, 4), KEYCODE(cs6, code, 5))
+#define KEYBTDECLEX6(s1, s2, clSwitch, code, cs1, cs2, cs3, cs4, cs5, cs6) KEYBT(QChar(char16_t(s1)), QChar(char16_t(s2)), clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1), KEYCODE(cs3, code, 2), KEYCODE(cs4, code, 3), KEYCODE(cs5, code, 4), KEYCODE(cs6, code, 5))
 
-#define KEYBTDECLEX8(s1, s2, clSwitch, code, cs1, cs2, cs3, cs4, cs5, cs6, cs7, cs8) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1), KEYCODE(cs3, code, 2), KEYCODE(cs4, code, 3), KEYCODE(cs5, code, 4), KEYCODE(cs6, code, 5), KEYCODE(cs7, code, 6), KEYCODE(cs8, code, 7))
+#define KEYBTDECLEX8(s1, s2, clSwitch, code, cs1, cs2, cs3, cs4, cs5, cs6, cs7, cs8) KEYBT(QChar(char16_t(s1)), QChar(char16_t(s2)), clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1), KEYCODE(cs3, code, 2), KEYCODE(cs4, code, 3), KEYCODE(cs5, code, 4), KEYCODE(cs6, code, 5), KEYCODE(cs7, code, 6), KEYCODE(cs8, code, 7))
 
 
 KEYBT ENGLISH_LOCALE[] = {

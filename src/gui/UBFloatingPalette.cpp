@@ -22,6 +22,7 @@
 
 
 #include <QWidget>
+#include <QMouseEvent>
 #include <QApplication>
 #include <QPainter>
 #include <QPainterPath>
@@ -214,7 +215,7 @@ void UBFloatingPalette::adjustSizeAndPosition(bool pUp, bool resetPosition)
 
     QSize newPreferredSize = preferredSize();
 
-    for (const auto& UBFloatingPalette* palette : mAssociatedPalette)
+    for (UBFloatingPalette* palette : mAssociatedPalette)
     {
         QSize palettePreferredSize = palette->preferredSize();
         newPreferredSize.setWidth(newPreferredSize.expandedTo(palettePreferredSize).width());
@@ -231,7 +232,7 @@ void UBFloatingPalette::adjustSizeAndPosition(bool pUp, bool resetPosition)
     {
         resize(newPreferredSize);
         moveInsideParent(pos());
-        for (const auto& UBFloatingPalette* palette : mAssociatedPalette)
+        for (UBFloatingPalette* palette : mAssociatedPalette)
         {
             palette->move(pos().x(), palette->pos().y());
             palette->resize(newPreferredSize.width(), palette->size().height());
@@ -244,7 +245,7 @@ void UBFloatingPalette::adjustSizeAndPosition(bool pUp, bool resetPosition)
 
 void UBFloatingPalette::removeAllAssociatedPalette()
 {
-    for (const auto& UBFloatingPalette* palette : mAssociatedPalette)
+    for (UBFloatingPalette* palette : mAssociatedPalette)
     {
         palette->removeAssociatedPalette(this);
         removeAssociatedPalette(palette);
