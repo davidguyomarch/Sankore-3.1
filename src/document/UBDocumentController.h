@@ -29,6 +29,8 @@
 #include <QPainter>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
+#include <QTreeView>
+#include <QStyledItemDelegate>
 #include "document/UBDocumentContainer.h"
 #include "core/UBApplicationController.h"
 #include "core/UBApplication.h"
@@ -59,7 +61,7 @@ class UBDocumentReplaceDialog : public QDialog
     Q_OBJECT
 
 public:
-    UBDocumentReplaceDialog(const QString &pIncommingName, const QStringList &pFileList, QWidget *parent = 0, Qt::WindowFlags pFlags = 0);
+    UBDocumentReplaceDialog(const QString &pIncommingName, const QStringList &pFileList, QWidget *parent = 0, Qt::WindowFlags pFlags = Qt::WindowFlags());
     void setRegexp(const QRegularExpression pRegExp);
     bool validString(const QString &pStr);
     void setFileNameAndList(const QString &fileName, const QStringList &pLst);

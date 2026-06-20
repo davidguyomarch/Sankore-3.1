@@ -25,6 +25,10 @@
 
 #include <QtCore>
 #include <QtSvg>
+#include <QPrinter>
+#include <QPageSize>
+#include <QScreen>
+#include <QGuiApplication>
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
@@ -83,8 +87,8 @@ void UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
 	pdfPrinter.setFullPage(true);
 
     //need to calculate screen resolution
-	QDesktopWidget* desktop = UBApplication::desktop();
-	int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+	QScreen* screen = QGuiApplication::primaryScreen();
+	int dpiCommon = (screen->physicalDotsPerInchX() + screen->physicalDotsPerInchY()) / 2;
 	float scaleFactor = 72.0f / dpiCommon;
 	
     QPainter pdfPainter;
@@ -108,7 +112,7 @@ void UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
         scene->setRenderingContext(UBGraphicsScene::NonScreen);
 
 		//setting page size to appropriate value
-		pdfPrinter.setPaperSize(QSizeF(pageSize.width()*scaleFactor, pageSize.height()*scaleFactor), QPrinter::Point);
+		pdfPrinter.setPageSize(QPageSize(QSizeF(pageSize.width()*scaleFactor, pageSize.height()*scaleFactor), QPageSize::Point));
 		if(painterNeedsBegin) painterNeedsBegin = !pdfPainter.begin(&pdfPrinter);
         //render to PDF
 		scene->render(&pdfPainter, QRectF(), scene->normalizedSceneRect());

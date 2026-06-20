@@ -185,29 +185,29 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
             if (xml.isStartElement())
             {
 
-                if (xml.name() == "title")
+                if (xml.name() == QLatin1String("title"))
                 {
                     metadata.insert(UBSettings::documentName, xml.readElementText());
                 }
-                else if (xml.name() == "type")
+                else if (xml.name() == QLatin1String("type"))
                 {
                     metadata.insert(UBSettings::documentGroupName, xml.readElementText());
                 }
-                else if (xml.name() == "date")
+                else if (xml.name() == QLatin1String("date"))
                 {
                     date = xml.readElementText();
                 }
-                else if (xml.name() == "identifier") // introduced in UB 4.2
+                else if (xml.name() == QLatin1String("identifier")) // introduced in UB 4.2
                 {
                         metadata.insert(UBSettings::documentIdentifer, xml.readElementText());
                 }
-                else if (xml.name() == "version" // introduced in UB 4.2
+                else if (xml.name() == QLatin1String("version") // introduced in UB 4.2
                         && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
                         docVersion = xml.readElementText();
                         metadata.insert(UBSettings::documentVersion, docVersion);
                 }
-                else if (xml.name() == "size" // introduced in UB 4.2
+                else if (xml.name() == QLatin1String("size") // introduced in UB 4.2
                         && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
                     QString size = xml.readElementText();
@@ -238,7 +238,7 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
                     sizeFound = true;
 
                 }
-                else if (xml.name() == "updated-at" // introduced in UB 4.4
+                else if (xml.name() == QLatin1String("updated-at") // introduced in UB 4.4
                         && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
                     metadata.insert(UBSettings::documentUpdatedAt, xml.readElementText());

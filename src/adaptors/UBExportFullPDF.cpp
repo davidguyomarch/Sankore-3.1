@@ -25,6 +25,10 @@
 
 #include <QtCore>
 #include <QtSvg>
+#include <QPrinter>
+#include <QPageSize>
+#include <QScreen>
+#include <QGuiApplication>
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
@@ -54,8 +58,8 @@ UBExportFullPDF::UBExportFullPDF(QObject *parent)
     : UBExportAdaptor(parent)
 {
     //need to calculate screen resolution
-	QDesktopWidget* desktop = UBApplication::desktop();
-	int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+	QScreen* screen = QGuiApplication::primaryScreen();
+	int dpiCommon = (screen->physicalDotsPerInchX() + screen->physicalDotsPerInchY()) / 2;
 	mScaleFactor = 72.0f / dpiCommon;
 }
 
@@ -101,7 +105,7 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
 
         if (pdfItem) mHasPDFBackgrounds = true;
         
-		pdfPrinter.setPaperSize(QSizeF(pageSize.width()*mScaleFactor, pageSize.height()*mScaleFactor), QPrinter::Point);
+		pdfPrinter.setPageSize(QPageSize(QSizeF(pageSize.width()*mScaleFactor, pageSize.height()*mScaleFactor), QPageSize::Point));
 
         if (!pdfPainter) pdfPainter = new QPainter(&pdfPrinter);
 

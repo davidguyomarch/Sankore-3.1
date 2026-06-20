@@ -30,9 +30,11 @@ QT += svg
 QT += svgwidgets
 QT += network
 QT += multimedia
+QT += multimediawidgets
 QT += xml
 QT += qml
 QT += widgets
+QT += printsupport
 
 INCLUDEPATH += src
 
