@@ -1263,7 +1263,7 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphi
         UBApplication::undoStack->push(uc);
     }
 
-    pixmapItem->scale(pScaleFactor, pScaleFactor);
+    pixmapItem->setTransform(QTransform::fromScale(pScaleFactor, pScaleFactor), true);
 
     if (pUseAnimation)
     {
@@ -1392,7 +1392,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
     qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
 
-    graphicsWidget->scale(ssf, ssf);
+    graphicsWidget->setTransform(QTransform::fromScale(ssf, ssf), true);
 
     graphicsWidget->setPos(QPointF(pPos.x() - graphicsWidget->boundingRect().width() / 2,
         pPos.y() - graphicsWidget->boundingRect().height() / 2));
@@ -1520,7 +1520,7 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
     svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
     qreal sscale = 1 / UBApplication::boardController->systemScaleFactor();
-    svgItem->scale(sscale, sscale);
+    svgItem->setTransform(QTransform::fromScale(sscale, sscale), true);
 
     QPointF half(svgItem->boundingRect().width() / 2, svgItem->boundingRect().height() / 2);
     svgItem->setPos(pPos - half);
@@ -1941,7 +1941,7 @@ QGraphicsItem* UBGraphicsScene::scaleToFitDocumentSize(QGraphicsItem* item, bool
     {
         qreal ratio = qMin(maxWidth / size.width(), maxHeight / size.height());
 
-        item->scale(ratio, ratio);
+        item->setTransform(QTransform::fromScale(ratio, ratio), true);
 
         if(center)
         {
@@ -1961,7 +1961,7 @@ QGraphicsItem* UBGraphicsScene::scaleToFitDocumentSize(QGraphicsItem* item, bool
     {
         qreal ratio = qMax(maxWidth / size.width(), maxHeight / size.height());
 
-        item->scale(ratio, ratio);
+        item->setTransform(QTransform::fromScale(ratio, ratio), true);
 
         if(center)
         {
@@ -1987,7 +1987,7 @@ QGraphicsItem* UBGraphicsScene::scaleToFitDocumentSize(QGraphicsItem* item, bool
         {
             qreal ratio = qMin(maxWidth / size.width(), maxHeight / size.height());
 
-            item->scale(ratio, ratio);           
+            item->setTransform(QTransform::fromScale(ratio, ratio), true);           
         }
         if (center)
             item->setPos(item->sceneBoundingRect().width() / -2.0, item->sceneBoundingRect().height() / -2.0);

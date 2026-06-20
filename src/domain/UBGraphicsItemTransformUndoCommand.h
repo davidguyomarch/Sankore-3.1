@@ -27,6 +27,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QGraphicsItem>
 
 #include "UBResizableGraphicsItem.h"
 #include "UBAbstractUndoCommand.h"

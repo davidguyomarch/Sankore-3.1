@@ -522,7 +522,7 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
             break;
         case (Qt::ForegroundRole) :
             if (isConstant(index)) {
-                return Qt::darkGray;
+                return QVariant::fromValue(QColor(Qt::darkGray));
             }
             break;
         }
