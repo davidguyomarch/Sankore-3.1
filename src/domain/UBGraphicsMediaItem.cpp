@@ -88,7 +88,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         mMediaType = mediaType_Video;
 
         mAudioOutput = new QAudioOutput(this);
-        mMediaObject->setTickInterval(50);
+        mMediaObject
         mVideoWidget = new QVideoWidget(); // owned and destructed by the scene ...
         mMediaObject->setAudioOutput(mVideoWidget);
 
@@ -106,7 +106,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         mMediaType = mediaType_Audio;
         mAudioOutput = new QAudioOutput(this);
 
-        mMediaObject->setTickInterval(1000);
+        mMediaObject
         mAudioWidget = new UBAudioPresentationWidget();
         int borderSize = 0;
         UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
@@ -124,7 +124,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     mMediaObject->setAudioOutput(mAudioOutput);
 
     mSource = QUrl(pMediaFileUrl);
-    mMediaObject->setCurrentSource(mSource);
+    mMediaObject->setSource(QUrl::fromLocalFile(mSource));
 
     // we should create delegate after media objects because delegate uses his properties at creation.
     setDelegate(new UBGraphicsMediaItemDelegate(this, mMediaObject));
@@ -187,7 +187,7 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
             }
 
             if (absoluteMediaFilename.length() > 0)
-                mMediaObject->setCurrentSource(QUrl(absoluteMediaFilename));
+                mMediaObject->setSource(QUrl::fromLocalFile(QUrl(absoluteMediaFilename)));
 
         }
     }
@@ -361,7 +361,7 @@ void UBGraphicsMediaItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             QPointF eventPos = mapFromScene( event->scenePos());
 
             QPointF translation = eventPos - mouseMovePos;
-            translate(translation.x(), translation.y());
+            moveBy(translation.x(), translation.y());
         }
 
         mMouseMovePos = event->scenePos();

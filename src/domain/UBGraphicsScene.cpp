@@ -167,7 +167,7 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
         return item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
     }
 
-    QMapIterator<qreal, QGraphicsItem*>iCurElement(sortedItems);
+    QMultiMapIterator<qreal, QGraphicsItem*>iCurElement(sortedItems);
 
     if (dest == up) {
         if (iCurElement.findNext(item)) {
@@ -1971,7 +1971,7 @@ QGraphicsItem* UBGraphicsScene::scaleToFitDocumentSize(QGraphicsItem* item, bool
     }
     else if (disposition == Extend)
     {
-        item->scale(maxWidth / size.width(),maxHeight / size.height());
+        item->setTransform(QTransform::fromScale(maxWidth / size.width(), maxHeight / size.height()), true);
 
         if(center)
         {

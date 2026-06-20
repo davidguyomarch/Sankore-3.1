@@ -78,7 +78,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
 
     QGraphicsWebView::setPage(new UBWebPage(this));
     QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::OfflineWebApplicationCacheEnabled, true);
+    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
     QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
 
     // Network access managed by QWebEngineProfile
@@ -1392,7 +1392,7 @@ void UBGraphicsW3CWidgetItem::keyPressEvent(QKeyEvent *event)
 
         //don't put the raw html of the widget
         //call the javascript function to get the "real" content
-        QVariant htmlFromTinyMCE = mainFrame()->evaluateJavaScript("tinyMCE.activeEditor.getContent();");
+        QVariant htmlFromTinyMCE = mainFrame()->evaluateJavaScriptSync("tinyMCE.activeEditor.getContent();");
 
         mimeCopy->setHtml(htmlFromTinyMCE.toString());
 

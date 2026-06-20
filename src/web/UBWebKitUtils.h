@@ -57,7 +57,7 @@ class UBWebKitUtils
         static QString widgetNameFromUrl(QString pObjectUrl);
         static QList<UBWebKitUtils::HtmlObject> objectsInFrameByTag(QWebEnginePage* frame, QString tagName);
         static QStringList validUrl(QUrl& baseUrl,QStringList& list);
-        static QStringList getUrls(QUrl& baseUrl,QWebElement& element);
+        static QStringList getUrls(QUrl& baseUrl,QObject* element /* QWebElement removed in Qt6 */);
         static QStringList getArgumentsValues(QString& string);
 
 };

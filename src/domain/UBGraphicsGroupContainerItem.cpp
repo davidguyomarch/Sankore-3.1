@@ -25,6 +25,8 @@
 
 #include <QWidget>
 #include <QApplication>
+#include <QGraphicsTransform>
+#include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 
 #include "UBGraphicsMediaItem.h"
@@ -337,7 +339,7 @@ QVariant UBGraphicsGroupContainerItem::itemChange(GraphicsItemChange change, con
 {
     QVariant newValue = Delegate()->itemChange(change, value);
 
-    for (QGraphicsItem *child : children())
+    for (QGraphicsItem *child : childItems())
     {
         UBGraphicsItem *item = dynamic_cast<UBGraphicsItem*>(child);
         if (item)

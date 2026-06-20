@@ -510,7 +510,7 @@ void UBGraphicsTextItem::setTextWidth(qreal width)
 
     if (toPlainText().isEmpty())
     {
-        qreal minWidth = fm.width(mTypeTextHereLabel);
+        qreal minWidth = fm.horizontalAdvance(mTypeTextHereLabel);
         newWidth = qMax(minWidth, newWidth);
     }
 
