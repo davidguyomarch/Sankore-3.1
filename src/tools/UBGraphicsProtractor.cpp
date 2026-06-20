@@ -1,6 +1,8 @@
 /*
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneHoverEvent>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneHoverEvent>
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
@@ -198,9 +200,10 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     case Resize :
         prepareGeometryChange();
-        translate(rect().center().x(), rect().center().y());
-    setTransform(QTransform::fromScale(scaleFactor, scaleFactor), true);
-        translate(-rect().center().x(), -rect().center().y());
+        QTransform t; t.translate(rect().center().x(), rect().center().y()); t.scale(scaleFactor, scaleFactor); t.translate(-rect().center().x(), -rect().center().y()); setTransform(t, true);
+
+
+
         mScaleFactor *= scaleFactor;
         break;
 
