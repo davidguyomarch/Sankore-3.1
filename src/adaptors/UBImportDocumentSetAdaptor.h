@@ -26,6 +26,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QFileInfo>
 #include "UBImportAdaptor.h"
 
 class UBDocumentProxy;

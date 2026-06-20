@@ -35,6 +35,18 @@ class UBGraphicsScene;
 class UBGraphicsWidgetItem;
 class UBRubberBand;
 #include <QGraphicsView>
+#include <QScrollBar>
+#include <QHBoxLayout>
+#include <QMimeData>
+#include <QFileDialog>
+#include <QTimer>
+#include <QGesture>
+#include <QGestureEvent>
+#include <QSwipeGesture>
+#include <QRandomGenerator>
+#include <QScreen>
+#include <QGuiApplication>
+#include "gui/UBRubberBand.h"
 
 class UBBoardView : public QGraphicsView
 {
@@ -149,7 +161,7 @@ class UBBoardView : public QGraphicsView
         bool mMarkerPressureSensitive;
         bool mUseHighResTabletEvent;
 
-        QRubberBand *mRubberBand;
+        UBRubberBand *mRubberBand;
         bool mIsCreatingTextZone;
         bool mIsCreatingSceneGrabZone;
 

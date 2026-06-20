@@ -318,7 +318,6 @@ class UBBoardController : public UBDocumentContainer
         UBBoardView *mDisplayView;
         QWidget *mControlContainer;
         UBDocumentNavigator *mDocumentNavigator;
-        QHBoxLayout *mControlLayout;
         qreal mZoomFactor;
         bool mIsClosing;
         QColor mPenColorOnDarkBackground;

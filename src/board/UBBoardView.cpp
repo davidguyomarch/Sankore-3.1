@@ -367,7 +367,7 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)dc->stylusTool ();
 
     if (event->type () == QEvent::TabletPress || event->type () == QEvent::TabletEnterProximity) {
-        if (event->pointerType () == QTabletEvent::Eraser) {
+        if (event->pointerType () == QPointingDevice::PointerType::Eraser) {
             dc->setStylusTool (UBStylusTool::Eraser);
             mUsingTabletEraser = true;
         }
@@ -844,13 +844,13 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
         QGraphicsView::mousePressEvent (event);
 
         // Issue 1313 - CFA - 20131022 : In some cases, mousePressEvent alters graphics items position
-        QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()), transform()));
+        QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->position().toPoint()), transform()));
         //use QGraphicsView::transorm() to use not deprecated QGraphicsScene::itemAt() method
 
         if (item && (item->type() == QGraphicsProxyWidget::Type) && item->parentObject() && item->parentObject()->type() != QGraphicsProxyWidget::Type)
         {
             //Clean up children
-            QList<QGraphicsItem*> children = item->children();
+            QList<QGraphicsItem*> children = item->childItems();
 
             for( QList<QGraphicsItem*>::iterator it = children.begin(); it != children.end(); ++it )
                 if ((*it)->pos().x() < 0 || (*it)->pos().y() < 0)
@@ -1002,7 +1002,7 @@ QWidget *UBBoardView::widgetForTabletEvent(QWidget *w, const QPoint &pos)
 
     QWidget *childAtPos = nullptr;
 
-    QList<QObject *> childs = w->children();
+    QList<QObject *> childs = w->childItems();
     for (const auto& QObject *child : childs)
     {
         QWidget *childWidget = qobject_cast<QWidget *>(child);
@@ -1073,7 +1073,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
     mMouseDownPos = event->pos ();
 
-    movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
+    movingItem = scene()->itemAt(this->mapToScene(event->position().toPoint()));
 
     if (!movingItem)
         emit clickOnBoard();
@@ -1362,7 +1362,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           graphicsItem->Delegate()->commitUndoStep();
 
       bool bReleaseIsNeed = true;
-      if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()))))
+      if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->position().toPoint()))))
       {
           movingItem = nullptr;
           bReleaseIsNeed = false;
@@ -1484,7 +1484,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
        UBFeature f = c->getFeatureByPath("/root/Applications/Texte Enrichi.wgt" );
        UBApplication::boardController->downloadURL(f.getFullPath(), QString(), mapToScene (event->pos ()) );
 
-       QGraphicsItem* widget = scene()->itemAt(this->mapToScene(event->posF().toPoint()), transform());
+       QGraphicsItem* widget = scene()->itemAt(this->mapToScene(event->position().toPoint()), transform());
 
        if (widget)
            widget->setFocus();
@@ -1557,7 +1557,7 @@ void
 UBBoardView::mouseDoubleClickEvent (QMouseEvent *event)
 {
     //Issue retours 2.4RC1 - CFA - 20140218 : handle W3CWidgetItems doubleClick
-    QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()), transform()));
+    QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->position().toPoint()), transform()));
 
     if (item && (item->type() == UBGraphicsW3CWidgetItem::Type))
         QGraphicsView::mouseDoubleClickEvent(event);
@@ -1589,10 +1589,10 @@ UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
         QGraphicsItem * selItem = selItemsList[0];
 
         // get items list under mouse cursor
-        QPointF scenePos = mapToScene(wheelEvent->pos());
+        QPointF scenePos = mapToScene(wheelEvent->position().toPoint());
         QList<QGraphicsItem *> itemsList = scene()->items(scenePos);
 
-        QBool isSlectedAndMouseHower = itemsList.contains(selItem);
+        bool isSlectedAndMouseHower = itemsList.contains(selItem);
         if(isSlectedAndMouseHower)
         {
             QGraphicsView::wheelEvent(wheelEvent);

@@ -376,7 +376,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     qreal x1 = polygon.boundingRect().topLeft().x();
     qreal y1 = polygon.boundingRect().topLeft().y();
     //bounding rect dimensions
-    qreal width = polygon.boundingRect().horizontalAdvance();
+    qreal width = polygon.boundingRect().width();
     qreal height = polygon.boundingRect().height();
 
     QString strokeColorText = element.attribute(aStroke);
@@ -419,7 +419,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     }
     else // single CFF
     {
-        QSvgGenerator *generator = createSvgGenerator(width + pen.horizontalAdvance(), height + pen.horizontalAdvance());
+        QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
         QPainter painter;
 
         painter.begin(generator); //drawing to svg tmp file
@@ -493,7 +493,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
     qreal y1 = polygon.boundingRect().topLeft().y();
 
     //bounding rect dimensions
-    qreal width = polygon.boundingRect().horizontalAdvance();
+    qreal width = polygon.boundingRect().width();
     qreal height = polygon.boundingRect().height();
 
     QString strokeColorText = element.attribute(aStroke);
@@ -538,7 +538,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
     }
     else // simple CFF
     {
-        QSvgGenerator *generator = createSvgGenerator(width + pen.horizontalAdvance(), height + pen.horizontalAdvance());
+        QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
         QPainter painter;
 
         painter.begin(generator); //drawing to svg tmp file
@@ -749,11 +749,11 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTSpan(const QDomElement &parent
 
             QDomCharacterData textData = curNode.toCharacterData();
             QString text = textData.data().trimmed();
-//            width = painter.fontMetrics().horizontalAdvance(text);
+//            width = painter.fontMetrics().width(text);
             //get bounding rect to obtain desired text height
             lastDrawnTextBoundingRect = painter.boundingRect(QRectF(curX, curY, width, height - curY), textAlign|Qt::TextWordWrap, text);
             painter.drawText(curX, curY, width, lastDrawnTextBoundingRect.height(), textAlign|Qt::TextWordWrap, text);
-            curX += lastDrawnTextBoundingRect.x() + lastDrawnTextBoundingRect.horizontalAdvance();
+            curX += lastDrawnTextBoundingRect.x() + lastDrawnTextBoundingRect.width();
         } else if (curNode.nodeType() == QDomNode::ElementNode
                    && curNode.toElement().tagName() == tBreak) {
 
@@ -927,7 +927,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgFlash(const QDomElement &ele
     }
 
     QString flashUrl = UBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(flashPath, tmpFlashDir, "application/x-shockwave-flash"
-                                                            ,QSize(mCurrentSceneRect.horizontalAdvance(), mCurrentSceneRect.height()));
+                                                            ,QSize(mCurrentSceneRect.width(), mCurrentSceneRect.height()));
     UBGraphicsWidgetItem *flashItem = mCurrentScene->addW3CWidget(QUrl::fromLocalFile(flashUrl));
     flashItem->setSourceUrl(urlPath);
 
@@ -997,7 +997,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
     if (!textTransform.isNull()) {
         transform = transformFromString(textTransform, audioItem);
     }
-    repositionSvgItem(audioItem, audioItem->boundingRect().horizontalAdvance(), audioItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
+    repositionSvgItem(audioItem, audioItem->boundingRect().width(), audioItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, audioItem);
 
     if (mGSectionContainer)
@@ -1052,7 +1052,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
     if (!textTransform.isNull()) {
         transform = transformFromString(textTransform, videoItem);
     }
-    repositionSvgItem(videoItem, videoItem->boundingRect().horizontalAdvance(), videoItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
+    repositionSvgItem(videoItem, videoItem->boundingRect().width(), videoItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, videoItem);
 
     if (mGSectionContainer)
@@ -1314,7 +1314,7 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
 
     QRectF itemBounds = item->boundingRect();
 
-    qreal xScale = width  / itemBounds.horizontalAdvance();
+    qreal xScale = width  / itemBounds.width();
     qreal yScale = height / itemBounds.height();
 
     qreal fullScaleX = mVBTransFactor * xScale;
@@ -1345,7 +1345,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::createNewScene()
         mShiftVector = -mViewBox.center();
     }
     mCurrentSceneRect = mViewBox;
-    mVBTransFactor = qMin(mCurrentScene->normalizedSceneRect().horizontalAdvance()  / mViewPort.horizontalAdvance(),
+    mVBTransFactor = qMin(mCurrentScene->normalizedSceneRect().width()  / mViewPort.width(),
                           mCurrentScene->normalizedSceneRect().height() / mViewPort.height());
     return true;
 }
@@ -1475,7 +1475,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::getViewBoxDimenstions(const QString&
             mViewBox = QRectF(capturedTexts.at(0).toDouble(), capturedTexts.at(1).toDouble(), capturedTexts.at(2).toDouble(), capturedTexts.at(3).toDouble());
             mViewPort = mViewBox;
             mViewPort.translate(- mViewPort.center());
-            mViewBoxCenter.setX(mViewBox.horizontalAdvance() / 2);
+            mViewBoxCenter.setX(mViewBox.width() / 2);
             mViewBoxCenter.setY(mViewBox.height() / 2);
 
             return true;

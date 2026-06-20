@@ -586,7 +586,7 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
             QString str = "test string";
 
             QMimeData mimeData;
-            mimeData.setData(tMimeText, str.toAscii());
+            mimeData.setData(tMimeText, str.toLatin1());
 
             sDownloadFileDesc desc;
             desc.dest = sDownloadFileDesc::graphicsWidget;
@@ -632,12 +632,10 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
     // Ev-5.1 - CFA - 20140109 : correction drop RTE
     UBFeaturesController* c = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
     if (c->getFeatureByFullPath(mGraphicsWidget->sourceUrl().toLocalFile()).getType() != FEATURE_RTE)
-        dropMimeData->setData(tMimeText, mimeText.toAscii());
+        dropMimeData->setData(tMimeText, mimeText.toLatin1());
 
-    if (mGraphicsWidget->page() && mGraphicsWidget->page()->mainFrame()) {
-        mGraphicsWidget
-            ->page()
-            ->mainFrame()
+    if (mGraphicsWidget->page() && mGraphicsWidget->mainFrame()) {
+        mGraphicsWidget->mainFrame()
             ->evaluateJavaScript("if(widget && widget.ondrop) { widget.ondrop('" + destFileName + "', '" + contentType + "');}");
     }
 
@@ -671,7 +669,7 @@ void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, sDownloadFileDesc de
         }
     }
 
-    QString destFileName = objDir + QUuid::createUuid() + "." + extention;
+    QString destFileName = objDir + QUuid::createUuid().toString() + "." + extention;
     QFile destFile(destFileName);
 
     if (!destFile.open(QIODevice::WriteOnly)) {
@@ -689,7 +687,7 @@ void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, sDownloadFileDesc de
 
     QMimeData dropMimeData;
     QString mimeText = createMimeText(true, contentType, destFileName);
-    dropMimeData.setData(tMimeText, mimeText.toAscii());
+    dropMimeData.setData(tMimeText, mimeText.toLatin1());
 
     destFile.close();
 

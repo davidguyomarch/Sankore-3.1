@@ -48,7 +48,7 @@ class WBWebTrapWebView : public QWebEngineView
         }
 
         void highliteElementAtPos(const QPoint& pos);
-        void trapContentFromHitTest(const QWebHitTestResult& hitTest);
+        void trapContentFromHitTest(const QVariant& hitTest);
         void trapElementAtPos(const QPoint& pos);
 
     signals:

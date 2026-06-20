@@ -633,8 +633,8 @@ void UBDocumentPublisher::sendUbw(QString username, QString password)
             data+="Content-Type: application/octet-stream"+mCrlf+mCrlf;
             datatoSend=data.toLatin1(); // convert data string to byte array for request
             datatoSend += ba;
-            datatoSend += mCrlf;
-            datatoSend += QString("--%0--%1").arg(boundary).arg(mCrlf);
+            datatoSend += mCrlf.toUtf8();
+            datatoSend += QString("--%0--%1").arg(boundary).arg(mCrlf).toUtf8();
 
             QNetworkRequest request(QUrl(QString(DOCPUBLICATION_URL).toLatin1().constData()));
 

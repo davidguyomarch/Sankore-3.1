@@ -29,6 +29,10 @@
 #include <QWebEngineView>
 #include <QDir>
 #include <QRegularExpression>
+#include <QRandomGenerator>
+#include <QScreen>
+#include <QGuiApplication>
+#include <QScrollBar>
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBPlatformUtils.h"
@@ -107,7 +111,7 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mControlView(0)
     , mDisplayView(0)
     , mControlContainer(0)
-    , mControlLayout(0)
+    , //mControlLayout(0)
     , mZoomFactor(1.0)
     , mIsClosing(false)
     , mSystemScaleFactor(1.0)
@@ -128,7 +132,7 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     mMarkerColorOnDarkBackground = UBSettings::settings()->markerColors(true).at(markerColorIndex);
     mMarkerColorOnLightBackground = UBSettings::settings()->markerColors(false).at(markerColorIndex);
 
-    QDesktopWidget* desktop = UBApplication::desktop();
+    QScreen* desktop = QGuiApplication::primaryScreen();
     int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
     int sPixelsPerMillimeter = qRound(dpiCommon / UBGeometryUtils::inchSize);
     UBSettings::settings()->crossSize = 10*sPixelsPerMillimeter;
@@ -189,8 +193,8 @@ void UBBoardController::setupViews()
 {
     mControlContainer = new QWidget(mMainWindow->centralWidget());
 
-    mControlLayout = new QHBoxLayout(mControlContainer);
-    mControlLayout->setContentsMargins(0, 0, 0, 0);
+    //mControlLayout = new QHBoxLayout(mControlContainer);
+    //mControlLayout->setContentsMargins(0, 0, 0, 0);
 
     mControlView = new UBBoardView(this, mControlContainer, true, false);
     mControlView->setInteractive(true);
@@ -200,7 +204,7 @@ void UBBoardController::setupViews()
 
     mControlView->setTransformationAnchor(QGraphicsView::NoAnchor);
 
-    mControlLayout->addWidget(mControlView);
+    //mControlLayout->addWidget(mControlView);
     mControlContainer->setObjectName("ubBoardControlContainer");
     mMainWindow->addBoardWidget(mControlContainer);
 
@@ -244,7 +248,7 @@ void UBBoardController::setBoxing(QRect displayRect)
 {
     if (displayRect.isNull())
     {
-        mControlLayout->setContentsMargins(0, 0, 0, 0);
+        //mControlLayout->setContentsMargins(0, 0, 0, 0);
         return;
     }
 
@@ -260,18 +264,18 @@ void UBBoardController::setBoxing(QRect displayRect)
     {
         // Pillarboxing
         int boxWidth = (controlWidth - (displayWidth * (controlHeight / displayHeight))) / 2;
-        mControlLayout->setContentsMargins(boxWidth, 0, boxWidth, 0);
+        //mControlLayout->setContentsMargins(boxWidth, 0, boxWidth, 0);
     }
     else if (displayRatio > controlRatio)
     {
         // Letterboxing
         int boxHeight = (controlHeight - (displayHeight * (controlWidth / displayWidth))) / 2;
-        mControlLayout->setContentsMargins(0, boxHeight, 0, boxHeight);
+        //mControlLayout->setContentsMargins(0, boxHeight, 0, boxHeight);
     }
     else
     {
         // No boxing
-        mControlLayout->setContentsMargins(0, 0, 0, 0);
+        //mControlLayout->setContentsMargins(0, 0, 0, 0);
     }
 }
 
@@ -1853,7 +1857,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
     else if(UBMimeType::Bookmark){
         QFile file(sourceUrl.toLocalFile());
         file.open(QIODevice::ReadOnly);
-        addLinkToPage(QString::fromAscii(file.readAll()),QSize(640,480),pPos);
+        addLinkToPage(QString::fromLatin1(file.readAll()),QSize(640,480),pPos);
         file.close();
     }
     else
@@ -2743,8 +2747,8 @@ void UBBoardController::paste()
 {
     QClipboard *clipboard = QApplication::clipboard();
     //avoiding the to paste two objects exaclty at the same position
-    qreal xPosition = ((qreal)qrand()/(qreal)RAND_MAX) * 400;
-    qreal yPosition = ((qreal)qrand()/(qreal)RAND_MAX) * 200;
+    qreal xPosition = ((qreal)QRandomGenerator::global()->generate()/(qreal)RAND_MAX) * 400;
+    qreal yPosition = ((qreal)QRandomGenerator::global()->generate()/(qreal)RAND_MAX) * 200;
     QPointF pos(xPosition -200 , yPosition - 100);
     processMimeData(clipboard->mimeData(), pos, eItemActionType_Paste);
 
@@ -2817,7 +2821,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
             internalData = true;
         }
 
-        for (const auto& const QUrl url : urls){
+        for (const QUrl& url : urls){
             QPointF pos(pPos + QPointF(index * 15, index * 15));
 
             downloadURL(url, QString(), pos, QSize(), false,  internalData);

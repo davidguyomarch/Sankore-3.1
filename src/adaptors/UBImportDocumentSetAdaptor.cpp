@@ -90,7 +90,7 @@ QFileInfoList UBImportDocumentSetAdaptor::importData(const QString &zipFile, con
         }
         QString newFilePath = destination + "/" + newFileName;
         if (UBFileSystemUtils::copy(readDir.absoluteFilePath(), newFilePath)) {
-            result.append(newFilePath);
+            result.append(QFileInfo(newFilePath));
         }
     }
 

@@ -45,7 +45,7 @@ class UBWebPage : public QWebEnginePage
 
     private:
         QString mCachedUserAgentString;
-        QWebPluginFactory *mPluginFactory;
+        void *mPluginFactory;
 
 };
 
