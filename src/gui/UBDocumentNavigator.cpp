@@ -111,7 +111,7 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
         {
             UBGraphicsScene * pBoardActiveScene = UBApplication::boardController->activeScene();
             QGraphicsView * viewBoardScene = new QGraphicsView(pBoardActiveScene);
-            viewBoardScene->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing | QPainter::HighQualityAntialiasing);
+            viewBoardScene->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing | QPainter::Antialiasing);
             viewBoardScene->setInteractive(false); // This View must be read-only.
 
             // Create view, with same size as others pixmap Thumbnails :
@@ -160,7 +160,7 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 void UBDocumentNavigator::onScrollToSelectedPage(int index)
 {
     int c  = 0;
-    for (const auto& UBWidgetTextThumbnailElement el : mThumbsWithLabels)
+    for (const UBWidgetTextThumbnailElement& el : mThumbsWithLabels)
     {
         if (c==index)
         {
@@ -232,11 +232,11 @@ void UBDocumentNavigator::refreshScene()
 
                 QRectF itemsBoundingRect = s->itemsBoundingRect();
 
-                QRectF visibleRect = nominalSceneRect.unite(itemsBoundingRect);
+                QRectF visibleRect = nominalSceneRect.united(itemsBoundingRect);
                 viewBoardScene->fitInView(visibleRect, Qt::KeepAspectRatio);
                 viewBoardScene->setSceneRect(visibleRect);
 
-                viewBoardScene->setRenderHints(QPainter::HighQualityAntialiasing);
+                viewBoardScene->setRenderHints(QPainter::Antialiasing);
             }
         }
     }
