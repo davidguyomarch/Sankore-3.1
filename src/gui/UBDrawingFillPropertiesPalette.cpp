@@ -1,5 +1,4 @@
 /*
-#include <QColorDialog>
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
@@ -22,6 +21,7 @@
 
 
 #include "UBDrawingFillPropertiesPalette.h"
+#include <QColorDialog>
 
 #include "core/UBApplication.h"
 #include "UBMainWindow.h"
