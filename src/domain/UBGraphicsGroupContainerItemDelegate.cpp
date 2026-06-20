@@ -22,6 +22,7 @@
 
 
 #include "UBGraphicsGroupContainerItemDelegate.h"
+#include <QMenu>
 
 #include <QWidget>
 #include <QApplication>

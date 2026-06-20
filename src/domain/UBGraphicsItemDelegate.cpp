@@ -693,7 +693,7 @@ void UBGraphicsItemDelegate::flipHorizontally()
 
     qreal dy = 2.f*mDelegated->boundingRect().bottomLeft().y();
 
-    mDelegated->translate(0, -dy);
+    mDelegated->moveBy(0, -dy);
 }
 
 void UBGraphicsItemDelegate::flipVertically()
@@ -702,7 +702,7 @@ void UBGraphicsItemDelegate::flipVertically()
 
     qreal dx = 2.f*mDelegated->boundingRect().bottomRight().x();
 
-    mDelegated->translate(-dx, 0);
+    mDelegated->moveBy(-dx, 0);
 }
 //N/C - NNE - 20140505 : END
 

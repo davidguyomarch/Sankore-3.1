@@ -22,6 +22,7 @@
 
 
 #include <QWidget>
+#include <QMenu>
 #include <QApplication>
 #include <QPainter>
 #include <QtSvg>

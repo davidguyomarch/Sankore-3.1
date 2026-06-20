@@ -22,6 +22,8 @@
 
 
 #include "UBGraphicsDelegateFrame.h"
+#include <QGraphicsSceneMouseEvent>
+#include <QMenu>
 
 #include <QWidget>
 #include <QApplication>
@@ -275,7 +277,7 @@ void UBGraphicsDelegateFrame::setCursorFromAngle(QString angle)
         painter.end();
 
         pixCursor.setMask(bmpMask);
-        controlViewport->setCursor(pixCursor);
+        controlViewport->setCursor(QCursor(pixCursor));
     }
 }
 
@@ -660,7 +662,7 @@ QList<UBGraphicsDelegateFrame *> UBGraphicsDelegateFrame::getLinkedFrames()
 void UBGraphicsDelegateFrame::prepareFramesToMove(QList<UBGraphicsDelegateFrame *> framesToMove)
 {
     mLinkedFrames = framesToMove;
-    for (const auto& UBGraphicsDelegateFrame *frame : mLinkedFrames)
+    for (UBGraphicsDelegateFrame *frame : mLinkedFrames)
     {
         frame->prepareLinkedFrameToMove();
     }
@@ -698,7 +700,7 @@ void UBGraphicsDelegateFrame::moveLinkedItems(QLineF movingVector, bool bLinked)
     }
     else
     {
-        for (const auto& UBGraphicsDelegateFrame* frame : mLinkedFrames)
+        for (UBGraphicsDelegateFrame* frame : mLinkedFrames)
         {
            frame->moveLinkedItems(movingVector, true);
         }
@@ -834,8 +836,8 @@ void UBGraphicsDelegateFrame::positionHandles()
     }
 
     resetTransform();
-    translate(center.x(), center.y());
-    rotate(-angle);
+    setTransform(QTransform().translate(center.x(), center.y()), true);
+    setRotation(rotation() + -angle);
     translate(-center.x(), -center.y());
 
     mBottomRightResizeGripSvgItem->setParentItem(this);

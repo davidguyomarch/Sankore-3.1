@@ -49,7 +49,6 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
     QPalette palette;
     palette.setBrush ( QPalette::Light, Qt::darkGray );
 
-    mMedia->setTickInterval(50);
     connect(mMedia, SIGNAL(stateChanged (QMediaPlayer::PlaybackState, QMediaPlayer::PlaybackState)), this, SLOT(mediaStateChanged (QMediaPlayer::PlaybackState, QMediaPlayer::PlaybackState)));
     connect(mMedia, SIGNAL(finished()), this, SLOT(updatePlayPauseState()));
     connect(mMedia, SIGNAL(tick(qint64)), this, SLOT(updateTicker(qint64)));
@@ -227,10 +226,10 @@ void UBGraphicsMediaItemDelegate::togglePlayPause()
     if (delegated() && delegated()->mediaObject()) {
 
         QMediaPlayer* media = delegated()->mediaObject();
-        if (media->state() == QMediaPlayer::StoppedState) {
+        if (media->playbackState() == QMediaPlayer::StoppedState) {
             media->play();
-        } else if (media->state() == QMediaPlayer::PlayingState) {
-            if (media->remainingTime() <= 0) {
+        } else if (media->playbackState() == QMediaPlayer::PlayingState) {
+            if (media->duration() - media->position() <= 0) {
                 media->stop();
                 media->play();
             } else {
@@ -238,15 +237,15 @@ void UBGraphicsMediaItemDelegate::togglePlayPause()
                 if(delegated()->scene())
                         delegated()->scene()->setModified(true);
             }
-        } else if (media->state() == QMediaPlayer::PausedState) {
-            if (media->remainingTime() <= 0) {
+        } else if (media->playbackState() == QMediaPlayer::PausedState) {
+            if (media->duration() - media->position() <= 0) {
                 media->stop();
             }
             media->play();
-        } else  if ( media->state() == QMediaPlayer::StoppedState ) {
-            delegated()->mediaObject()->setCurrentSource(delegated()->mediaFileUrl());
+        } else  if ( media->playbackState() == QMediaPlayer::StoppedState ) {
+            delegated()->mediaObject()->setSource(delegated()->mediaFileUrl());
             media->play();
-        } else if (media->state() == QMediaPlayer::StoppedState){
+        } else if (media->playbackState() == QMediaPlayer::StoppedState){
             qDebug() << "Error appeared." << media->errorString();
         }
     }
@@ -259,7 +258,7 @@ void UBGraphicsMediaItemDelegate::mediaStateChanged ( QMediaPlayer::PlaybackStat
 
     if (oldstate == QMediaPlayer::StoppedState)
     {
-        mMediaControl->totalTimeChanged(delegated()->mediaObject()->totalTime());
+        mMediaControl->totalTimeChanged(delegated()->mediaObject()->duration());
     }
     updatePlayPauseState();
 }
@@ -269,7 +268,7 @@ void UBGraphicsMediaItemDelegate::updatePlayPauseState()
 {
     QMediaPlayer* media = delegated()->mediaObject();
 
-    if (media->state() == QMediaPlayer::PlayingState)
+    if (media->playbackState() == QMediaPlayer::PlayingState)
         mPlayPauseButton->setFileName(":/images/pause.svg");
     else
         mPlayPauseButton->setFileName(":/images/play.svg");
@@ -279,7 +278,7 @@ void UBGraphicsMediaItemDelegate::updatePlayPauseState()
 void UBGraphicsMediaItemDelegate::updateTicker(qint64 time)
 {
     QMediaPlayer* media = delegated()->mediaObject();
-    mMediaControl->totalTimeChanged(media->totalTime());
+    mMediaControl->totalTimeChanged(media->duration());
     mMediaControl->updateTicker(time);
 }
 
