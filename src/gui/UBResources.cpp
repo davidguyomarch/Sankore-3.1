@@ -22,6 +22,7 @@
 
 
 #include "UBResources.h"
+#include <QFontDatabase>
 
 #include <QWidget>
 #include <QApplication>

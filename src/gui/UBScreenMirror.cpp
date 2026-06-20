@@ -22,6 +22,8 @@
 
 
 #include "UBScreenMirror.h"
+#include <QScreen>
+#include <QGuiApplication>
 
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
@@ -86,7 +88,7 @@ void UBScreenMirror::grabPixmap()
 
         mRect.setTopLeft(topLeft);
         mRect.setBottomRight(bottomRight);
-        mLastPixmap = QPixmap::grabWidget(mSourceWidget);
+        mLastPixmap = mSourceWidget->grab();
     }
     else{
         // WHY HERE?

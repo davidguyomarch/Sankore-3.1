@@ -380,7 +380,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         QSet<QGraphicsItem*> toSet;
 
         // for horizontal moving
-        QSet<QGraphicsItem*> incSelectedItemsX = scene()->items(incrementXSelection, Qt::IntersectsItemBoundingRect);
+        auto itemsX = scene()->items(incrementXSelection, Qt::IntersectsItemBoundingRect); QSet<QGraphicsItem*> incSelectedItemsX(itemsX.begin(), itemsX.end());
         for (QGraphicsItem *lassoSelectedItem : incSelectedItemsX)
         {
             if (lassoSelectedItem)
@@ -406,7 +406,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
         // for vertical moving
 
-        QSet<QGraphicsItem*> incSelectedItemsY = scene()->items(incrementYSelection, Qt::IntersectsItemBoundingRect);
+        auto itemsY = scene()->items(incrementYSelection, Qt::IntersectsItemBoundingRect); QSet<QGraphicsItem*> incSelectedItemsY(itemsY.begin(), itemsY.end());
         for (QGraphicsItem *lassoSelectedItem : incSelectedItemsY)
         {
             if (lassoSelectedItem)

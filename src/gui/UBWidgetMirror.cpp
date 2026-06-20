@@ -26,7 +26,7 @@
 
 
 UBWidgetMirror::UBWidgetMirror(QWidget* sourceWidget, QWidget* parent)
-    : QWidget(parent, 0)
+    : QWidget(parent, Qt::WindowFlags())
     , mSourceWidget(sourceWidget)
 {
     mSourceWidget->installEventFilter(this);
