@@ -398,7 +398,7 @@ void UBDownloadManager::startFileDownload(sDownloadFileDesc desc)
 
         //the desc.srcUrl is encoded. So we have to decode it before.
         QUrl url;
-        url.setEncodedUrl(desc.srcUrl.toUtf8());
+        url = QUrl::fromEncoded(desc.srcUrl.toUtf8());
         // We send here the request and store its reply in order to be able to cancel it if needed
         mDownloads[desc.id] = dynamic_cast<QObject *>(http->get(url, desc.pos, desc.size, desc.isBackground));
     }

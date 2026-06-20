@@ -227,7 +227,7 @@ void UBDisplayManager::positionScreens()
         if (mPreviousDisplayWidgets.size() > psi)
         {
             QWidget* previous = mPreviousDisplayWidgets.at(psi);
-            previous->setGeometry(QGuiApplication::primaryScreen()->screenGeometry(mPreviousScreenIndexes.at(psi)));
+            previous->setGeometry(QGuiApplication::screens().at(mPreviousScreenIndexes.at(psi))->geometry());
             previous->showFullScreen();
         }
     }
