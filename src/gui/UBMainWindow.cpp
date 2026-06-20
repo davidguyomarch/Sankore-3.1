@@ -22,6 +22,7 @@
 
 
 #include <QWidget>
+#include <QKeyEvent>
 #include <QApplication>
 #include <QPainter>
 

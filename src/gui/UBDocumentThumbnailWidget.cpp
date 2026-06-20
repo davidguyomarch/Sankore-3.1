@@ -169,7 +169,7 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
     }
     if (!mClosestDropItem)
     {
-        for (const auto& UBSceneThumbnailPixmap *item : pixmapItems)
+        for (UBSceneThumbnailPixmap *item : pixmapItems)
         {
             qreal scale = item->transform().m11();
             QPointF itemCenter(

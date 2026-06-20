@@ -27,6 +27,10 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QGraphicsScene>
+#include <QKeyEvent>
+#include <QStackedLayout>
+#include <QToolTip>
 #include <core/UBApplicationController.h>
 
 class UBGraphicsWidgetItem;

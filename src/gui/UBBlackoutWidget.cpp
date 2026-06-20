@@ -22,6 +22,8 @@
 
 
 #include <QWidget>
+#include <QScreen>
+#include <QGuiApplication>
 #include <QApplication>
 #include <QPainter>
 
