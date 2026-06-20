@@ -22,9 +22,6 @@
 
 
 /****************************************************************************
-#include <QWebEngineSettings>
-#include <algorithm>
-#include <QMessageBox>
 **
 ** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
 ** Contact: Qt Software Information (qt-info@nokia.com)
@@ -73,6 +70,9 @@
 
 #include <QWidget>
 #include <QApplication>
+#include <QWebEngineSettings>
+#include <QWebEngineProfile>
+#include <algorithm>
 #include <QPainter>
 #include <QWebEngineView>
 
@@ -245,8 +245,8 @@ QList<QNetworkCookie> UBCookieJar::cookiesForUrl(const QUrl &url) const
     if (!mLoaded)
         that->load();
 
-    QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
-    if (globalSettings->testAttribute(QWebEngineSettings::PrivateBrowsingEnabled)) {
+    QWebEngineSettings *globalSettings = QWebEngineProfile::defaultProfile()->settings();
+    if (globalSettings->testAttribute(QWebEngineSettings::LocalStorageEnabled)) {
         QList<QNetworkCookie> noCookies;
         return noCookies;
     }
@@ -259,8 +259,8 @@ bool UBCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, con
     if (!mLoaded)
         load();
 
-    QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
-    if (globalSettings->testAttribute(QWebEngineSettings::PrivateBrowsingEnabled))
+    QWebEngineSettings *globalSettings = QWebEngineProfile::defaultProfile()->settings();
+    if (globalSettings->testAttribute(QWebEngineSettings::LocalStorageEnabled))
         return false;
 
     QString host = url.host();
@@ -276,7 +276,7 @@ bool UBCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, con
         // pass url domain == cookie domain
         QDateTime soon = QDateTime::currentDateTime();
         soon = soon.addDays(90);
-        for (const QNetworkCookie& cookie : cookieList) {
+        for (QNetworkCookie cookie : cookieList) {
             QList<QNetworkCookie> lst;
             if (mKeepCookies == KeepUntilTimeLimit
                 && !cookie.isSessionCookie()

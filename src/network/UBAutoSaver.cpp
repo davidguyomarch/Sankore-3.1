@@ -116,7 +116,7 @@ void UBAutoSaver::saveIfNeccessary()
         return;
 
     mTimer.stop();
-    mFirstChange = QTime();
+    mFirstChange = QElapsedTimer();
 
     if (!QMetaObject::invokeMethod(parent(), "save", Qt::DirectConnection))
     {
