@@ -1,6 +1,8 @@
 #include "UBDragableThumbnail.h"
 
 #include <QPainter>
+#include <QMimeData>
+#include <QDrag>
 
 UBDraggableThumbnail::UBDraggableThumbnail(QWidget* parent, const QPixmap& pixmap) :
     QFrame(parent)
@@ -22,8 +24,6 @@ UBDraggableThumbnail::UBDraggableThumbnail(QWidget* parent, const QPixmap& pixma
 }
 
 void UBDraggableThumbnail::setThumbnail(const QPixmap& pixmap)
-#include <QMimeData>
-#include <QDrag>
 {
     mThumbnail->setAttribute(Qt::WA_DeleteOnClose);
     setPixmap(pixmap);
