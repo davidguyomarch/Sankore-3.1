@@ -69,12 +69,12 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
                 TopRight
         };
 
-        static UBGraphicsTriangleOrientation orientationFromStr(QStringRef& str)
+        static UBGraphicsTriangleOrientation orientationFromStr(QStringView str)
         {
-            if (str == "BottomLeft") return BottomLeft;
-            if (str == "BottomRight") return BottomRight;
-            if (str == "TopLeft") return TopLeft;
-            if (str == "TopRight") return TopRight;
+            if (str == QLatin1String("BottomLeft")) return BottomLeft;
+            if (str == QLatin1String("BottomRight")) return BottomRight;
+            if (str == QLatin1String("TopLeft")) return TopLeft;
+            if (str == QLatin1String("TopRight")) return TopRight;
             return sDefaultOrientation;
         }
         static QString orientationToStr(UBGraphicsTriangleOrientation orientation)

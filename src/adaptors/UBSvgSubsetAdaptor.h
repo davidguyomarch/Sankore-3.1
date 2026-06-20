@@ -28,6 +28,7 @@
 #include <QApplication>
 #include <QPainter>
 #include <QtXml>
+#include <QGraphicsItem>
 
 #include "frameworks/UBGeometryUtils.h"
 

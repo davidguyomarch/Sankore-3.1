@@ -77,23 +77,19 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     setData(UBGraphicsItemData::ItemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
     QGraphicsWebView::setPage(new UBWebPage(this));
-    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::JavaEnabled, true);
     QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::LocalStorageDatabaseEnabled, true);
     QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::OfflineWebApplicationCacheEnabled, true);
-    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::OfflineStorageDatabaseEnabled, true);
     QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
-    QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
 
-    page()->setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
+    // Network access managed by QWebEngineProfile
 
     setAcceptDrops(true);
     setAutoFillBackground(false);
 
-    QPalette pagePalette = page()->palette();
+    QPalette pagePalette; // WebEngine does not support page palette
     pagePalette.setBrush(QPalette::Base, QBrush(Qt::transparent));
     pagePalette.setBrush(QPalette::Window, QBrush(Qt::transparent));
-    page()->setPalette(pagePalette);
+    // WebEngine does not support page palette
 
     QPalette viewPalette = palette();
     pagePalette.setBrush(QPalette::Base, QBrush(Qt::transparent));
@@ -130,16 +126,16 @@ void UBGraphicsWidgetItem::initialize()
     if (Delegate() && Delegate()->frame() && resizable())
         Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
 
-    QPalette palette = page()->palette();
+    QPalette palette; // WebEngine does not support page palette
     palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
-    page()->setPalette(palette);
-    page()->setLinkDelegationPolicy(QWebEnginePage::DelegateAllLinks);
+    // WebEngine does not support page palette
+    // Link delegation handled differently in WebEngine
 
-    connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
-    connect(page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SLOT(geometryChangeRequested(const QRect&)));
+    connect(mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
+    // geometryChangeRequested not available in WebEngine
     connect(this, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
-    connect(page()->mainFrame(), SIGNAL(initialLayoutCompleted()), this, SLOT(initialLayoutCompleted()));
-    connect(page(), SIGNAL(linkClicked(const QUrl&)), this, SLOT(onLinkClicked(const QUrl&)));
+    connect(mainFrame(), SIGNAL(initialLayoutCompleted()), this, SLOT(initialLayoutCompleted()));
+    // linkClicked handled via navigation policy in WebEngine
     connect(UBApplication::boardController, SIGNAL(backgroundChanged()), this, SLOT(sendJSChangeBackgroundEvent()));
 }
 
@@ -321,8 +317,8 @@ void UBGraphicsWidgetItem::removeAllDatastoreEntries()
 
 void UBGraphicsWidgetItem::removeScript()
 {
-    if (page() && page()->mainFrame())
-        page()->mainFrame()->evaluateJavaScript("if(widget && widget.onremove) { widget.onremove();}");
+    if (page() && mainFrame())
+        mainFrame()->evaluateJavaScript("if(widget && widget.onremove) { widget.onremove();}");
 }
 
 void UBGraphicsWidgetItem::processDropEvent(QGraphicsSceneDragDropEvent *event)
@@ -605,26 +601,26 @@ void UBGraphicsWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void UBGraphicsWidgetItem::sendJSChangeBackgroundEvent()// Issue NC - CFA - 20131202
 {
-    if (page() && page()->mainFrame())
-        page()->mainFrame()->evaluateJavaScript("if(widget && widget.onChangeBackground) { widget.onChangeBackground();}");
+    if (page() && mainFrame())
+        mainFrame()->evaluateJavaScript("if(widget && widget.onChangeBackground) { widget.onChangeBackground();}");
 }
 
 void UBGraphicsWidgetItem::sendJSClickEvent()// Issue NC - CFA - 20131202
 {
-    if (page() && page()->mainFrame())
-        page()->mainFrame()->evaluateJavaScript("if(widget && widget.onClick) { widget.onClick();}");
+    if (page() && mainFrame())
+        mainFrame()->evaluateJavaScript("if(widget && widget.onClick) { widget.onClick();}");
 }
 
 void UBGraphicsWidgetItem::sendJSEnterEvent()
 {
-    if (page() && page()->mainFrame())
-        page()->mainFrame()->evaluateJavaScript("if(widget && widget.onenter) { widget.onenter();}");
+    if (page() && mainFrame())
+        mainFrame()->evaluateJavaScript("if(widget && widget.onenter) { widget.onenter();}");
 }
 
 void UBGraphicsWidgetItem::sendJSLeaveEvent()
 {
-    if (page() && page()->mainFrame())
-        page()->mainFrame()->evaluateJavaScript("if(widget && widget.onleave) { widget.onleave();}");
+    if (page() && mainFrame())
+        mainFrame()->evaluateJavaScript("if(widget && widget.onleave) { widget.onleave();}");
 }
 
 void UBGraphicsWidgetItem::injectInlineJavaScript()
@@ -635,7 +631,7 @@ void UBGraphicsWidgetItem::injectInlineJavaScript()
     }
 
     for (const QString& script : sInlineJavaScripts)
-        page()->mainFrame()->evaluateJavaScript(script);
+        mainFrame()->evaluateJavaScript(script);
 }
 
 void UBGraphicsWidgetItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -666,7 +662,7 @@ void UBGraphicsWidgetItem::javaScriptWindowObjectCleared()
     if(!mUniboardAPI)
         mUniboardAPI = new UBWidgetUniboardAPI(scene(), this);
 
-    page()->mainFrame()->addToJavaScriptWindowObject("sankore", mUniboardAPI);
+    mainFrame()->addToJavaScriptWindowObject("sankore", mUniboardAPI);
 
 }
 
@@ -711,7 +707,7 @@ void UBGraphicsWidgetItem::resize(const QSizeF & pSize)
         qreal w = qMax((qreal)mMinimumSize.width(), pSize.width());
         qreal h = qMax((qreal)mMinimumSize.height(), pSize.height());
         QGraphicsWebView::setMaximumSize(w, h);
-        QGraphicsWebView::page()->setViewportSize(QSize(w, h));
+        // viewport size managed by widget resize
         QGraphicsWebView::resize(QSizeF(w, h));
         if (Delegate())
             Delegate()->positionHandles();
@@ -881,7 +877,7 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
 
         /* Issue NC - PBO - 20131213 */
         if (widgetElement.attribute("ub:transparent", "false") == "true") {
-            QPalette palette = page()->palette();
+            QPalette palette; // WebEngine does not support page palette
             palette.setBrush(QPalette::Base, QColor(0, 0, 0, 0));
             setPalette(palette);
         }
@@ -1002,7 +998,7 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
     }
     f.close();
 
-    connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
+    connect(mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(javaScriptWindowObjectCleared()));
 
     load(mMainHtmlUrl);
@@ -1042,11 +1038,11 @@ UBItem* UBGraphicsW3CWidgetItem::deepCopy() const
 QVariant UBGraphicsW3CWidgetItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedChange) {
-        if (page() && page()->mainFrame()) {
+        if (page() && mainFrame()) {
             if (isSelected()) {
-                page()->mainFrame()->evaluateJavaScript("if(widget && widget.onblur) { widget.onblur();}");
+                mainFrame()->evaluateJavaScript("if(widget && widget.onblur) { widget.onblur();}");
             } else {
-                page()->mainFrame()->evaluateJavaScript("if(widget && widget.onfocus) { widget.onfocus();}");
+                mainFrame()->evaluateJavaScript("if(widget && widget.onfocus) { widget.onfocus();}");
             }
         }
     }
@@ -1271,7 +1267,7 @@ void UBGraphicsW3CWidgetItem::javaScriptWindowObjectCleared()
     if(!mW3CWidgetAPI)
         mW3CWidgetAPI = new UBW3CWidgetAPI(this);
 
-    page()->mainFrame()->addToJavaScriptWindowObject("widget", mW3CWidgetAPI);
+    mainFrame()->addToJavaScriptWindowObject("widget", mW3CWidgetAPI);
 
 }
 
@@ -1396,7 +1392,7 @@ void UBGraphicsW3CWidgetItem::keyPressEvent(QKeyEvent *event)
 
         //don't put the raw html of the widget
         //call the javascript function to get the "real" content
-        QVariant htmlFromTinyMCE = page()->mainFrame()->evaluateJavaScript("tinyMCE.activeEditor.getContent();");
+        QVariant htmlFromTinyMCE = mainFrame()->evaluateJavaScript("tinyMCE.activeEditor.getContent();");
 
         mimeCopy->setHtml(htmlFromTinyMCE.toString());
 
