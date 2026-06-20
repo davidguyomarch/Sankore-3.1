@@ -1,4 +1,6 @@
 /*
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneHoverEvent>
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
@@ -84,12 +86,12 @@ void UBGraphicsTriangle::updateResizeCursor()
     qreal angle = topLine.angle();
     QTransform tr1;
     tr1.rotate(- angle);
-    mResizeCursor1  = QCursor(pix.transformed(tr1, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
+    mResizeCursor1  = QCursor(pix.transformed(tr1, Qt::SmoothTransformation), pix.horizontalAdvance() / 2,  pix.height() / 2);
 
     angle = leftLine.angle();
     QTransform tr2;
     tr2.rotate(- angle);
-    mResizeCursor2  = QCursor(pix.transformed(tr2, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
+    mResizeCursor2  = QCursor(pix.transformed(tr2, Qt::SmoothTransformation), pix.horizontalAdvance() / 2,  pix.height() / 2);
 }
 
 
@@ -171,9 +173,9 @@ void UBGraphicsTriangle::calculatePoints(const QRectF& r)
         break;
     }
 
-    C = sqrt(rect().width() * rect().width() + rect().height() * rect().height());
-    qreal L = (C * d + rect().width() * d)/ rect().height();
-    qreal K = (C * d + rect().height() * d)/ rect().width();
+    C = sqrt(rect().horizontalAdvance() * rect().horizontalAdvance() + rect().height() * rect().height());
+    qreal L = (C * d + rect().horizontalAdvance() * d)/ rect().height();
+    qreal K = (C * d + rect().height() * d)/ rect().horizontalAdvance();
 
     switch(mOrientation)
     {
@@ -199,7 +201,7 @@ void UBGraphicsTriangle::calculatePoints(const QRectF& r)
             break;
     }
     W1 = rect().height() * d / C;
-    H1 = rect().width() * d / C;
+    H1 = rect().horizontalAdvance() * d / C;
 
     switch(mOrientation)
     {
@@ -313,7 +315,7 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
     painter->setFont(font());
     QFontMetricsF fontMetrics(painter->font());    
 
-    for (int millimeters = 0; millimeters < (rect().width() - sLeftEdgeMargin - sRoundingRadius) / sPixelsPerMillimeter; millimeters++)
+    for (int millimeters = 0; millimeters < (rect().horizontalAdvance() - sLeftEdgeMargin - sRoundingRadius) / sPixelsPerMillimeter; millimeters++)
     {        
         int graduationX = rotationCenter().x() + kx * sPixelsPerMillimeter * millimeters; //position de la graduation sur l'équerre
 
@@ -347,7 +349,7 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
                 break;
         }
 
-        qreal AB = rect().width();
+        qreal AB = rect().horizontalAdvance();
         qreal BC = rect().height();
         qreal DE =  AD * BC / AB, espaceDisponible = DE; //inutile mais améliore la verbosité et facilitera la relecture
 
@@ -359,7 +361,7 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
         if (0 == millimeters % UBGeometryUtils::millimetersPerCentimeter)
         {
             QString text = QString("%1").arg((int)(millimeters / UBGeometryUtils::millimetersPerCentimeter));
-            qreal textWidth = fontMetrics.width(text);
+            qreal textWidth = fontMetrics.horizontalAdvance(text);
             qreal textHeight = fontMetrics.tightBoundingRect(text).height();
 
             espaceNecessaire = graduationHeight + textHeight + textWidth + SEPARATOR ;
@@ -415,24 +417,24 @@ QRectF    UBGraphicsTriangle::closeButtonRect() const
     switch(mOrientation)
     {
         case BottomLeft:
-            return QRectF(B2.x() - mCloseSvgItem->boundingRect().width() - 5, 
+            return QRectF(B2.x() - mCloseSvgItem->boundingRect().horizontalAdvance() - 5, 
               B2.y() - mCloseSvgItem->boundingRect().height() - 5, 
-              mCloseSvgItem->boundingRect().width(),
+              mCloseSvgItem->boundingRect().horizontalAdvance(),
               mCloseSvgItem->boundingRect().height());
         case TopLeft:
-            return QRectF(B2.x() - mCloseSvgItem->boundingRect().width() - 5, 
+            return QRectF(B2.x() - mCloseSvgItem->boundingRect().horizontalAdvance() - 5, 
               B2.y() + 5, 
-              mCloseSvgItem->boundingRect().width(),
+              mCloseSvgItem->boundingRect().horizontalAdvance(),
               mCloseSvgItem->boundingRect().height());
         case TopRight:
             return QRectF(B2.x() + 5, 
               B2.y() + 5, 
-              mCloseSvgItem->boundingRect().width(),
+              mCloseSvgItem->boundingRect().horizontalAdvance(),
               mCloseSvgItem->boundingRect().height());
         case BottomRight:
             return QRectF(B2.x() + 5, 
               B2.y() - mCloseSvgItem->boundingRect().height() - 5, 
-              mCloseSvgItem->boundingRect().width(),
+              mCloseSvgItem->boundingRect().horizontalAdvance(),
               mCloseSvgItem->boundingRect().height());
     }
     return QRectF(0,0,0,0);
@@ -461,7 +463,7 @@ QPolygonF UBGraphicsTriangle::resize1Polygon() const
             break;
     }
     QPointF P1(C1.x() + x1 * sArrowLength, C1.y());
-    QPointF P2(C1.x() + x1 * sArrowLength * rect().width()/C, C1.y() + y1 * sArrowLength * rect().height() / C);
+    QPointF P2(C1.x() + x1 * sArrowLength * rect().horizontalAdvance()/C, C1.y() + y1 * sArrowLength * rect().height() / C);
     QPolygonF p;
     p << C1 << P1 << P2;    
     return p;
@@ -490,7 +492,7 @@ QPolygonF UBGraphicsTriangle::resize2Polygon() const
             break;
     }
     QPointF P1(A1.x(), A1.y() + y1 * sArrowLength);
-    QPointF P2(A1.x() + x1 * sArrowLength * rect().width()/C, 
+    QPointF P2(A1.x() + x1 * sArrowLength * rect().horizontalAdvance()/C, 
         A1.y() + y1 * sArrowLength * rect().height() / C);
     QPolygonF p;
     p << A1 << P1 << P2;    
@@ -503,24 +505,24 @@ QRectF    UBGraphicsTriangle::hFlipRect() const
     switch(mOrientation)
     {
         case BottomLeft:
-            return QRectF(B2.x() - mHFlipSvgItem->boundingRect().width() - 5, 
+            return QRectF(B2.x() - mHFlipSvgItem->boundingRect().horizontalAdvance() - 5, 
               B2.y() - mHFlipSvgItem->boundingRect().height() - 5 - dy, 
-              mHFlipSvgItem->boundingRect().width(),
+              mHFlipSvgItem->boundingRect().horizontalAdvance(),
               mHFlipSvgItem->boundingRect().height());
         case TopLeft:
-            return QRectF(B2.x() - mHFlipSvgItem->boundingRect().width() - 5, 
+            return QRectF(B2.x() - mHFlipSvgItem->boundingRect().horizontalAdvance() - 5, 
               B2.y() + 5 + dy, 
-              mHFlipSvgItem->boundingRect().width(),
+              mHFlipSvgItem->boundingRect().horizontalAdvance(),
               mHFlipSvgItem->boundingRect().height());
         case TopRight:
             return QRectF(B2.x() + 5, 
               B2.y() + 5 + dy, 
-              mHFlipSvgItem->boundingRect().width(),
+              mHFlipSvgItem->boundingRect().horizontalAdvance(),
               mHFlipSvgItem->boundingRect().height());
         case BottomRight:
             return QRectF(B2.x() + 5, 
               B2.y() - mHFlipSvgItem->boundingRect().height() - 5 - dy, 
-              mHFlipSvgItem->boundingRect().width(),
+              mHFlipSvgItem->boundingRect().horizontalAdvance(),
               mHFlipSvgItem->boundingRect().height());
     }
     return QRectF(0,0,0,0);
@@ -532,24 +534,24 @@ QRectF    UBGraphicsTriangle::vFlipRect() const
     switch(mOrientation)
     {
         case BottomLeft:
-            return QRectF(B2.x() - mVFlipSvgItem->boundingRect().width() - 5, 
+            return QRectF(B2.x() - mVFlipSvgItem->boundingRect().horizontalAdvance() - 5, 
               B2.y() - mVFlipSvgItem->boundingRect().height() - 5 - dy, 
-              mVFlipSvgItem->boundingRect().width(),
+              mVFlipSvgItem->boundingRect().horizontalAdvance(),
               mVFlipSvgItem->boundingRect().height());
         case TopLeft:
-            return QRectF(B2.x() - mVFlipSvgItem->boundingRect().width() - 5, 
+            return QRectF(B2.x() - mVFlipSvgItem->boundingRect().horizontalAdvance() - 5, 
               B2.y() + 5 + dy, 
-              mVFlipSvgItem->boundingRect().width(),
+              mVFlipSvgItem->boundingRect().horizontalAdvance(),
               mVFlipSvgItem->boundingRect().height());
         case TopRight:
             return QRectF(B2.x() + 5, 
               B2.y() + 5 + dy, 
-              mVFlipSvgItem->boundingRect().width(),
+              mVFlipSvgItem->boundingRect().horizontalAdvance(),
               mVFlipSvgItem->boundingRect().height());
         case BottomRight:
             return QRectF(B2.x() + 5, 
               B2.y() - mVFlipSvgItem->boundingRect().height() - 5 - dy, 
-              mVFlipSvgItem->boundingRect().width(),
+              mVFlipSvgItem->boundingRect().horizontalAdvance(),
               mVFlipSvgItem->boundingRect().height());
     }
     return QRectF(0,0,0,0);
@@ -567,10 +569,10 @@ QRectF    UBGraphicsTriangle::rotateRect() const
             p += QPointF(20, -5 - mRotateSvgItem->boundingRect().height());
             break;
         case TopRight:
-            p += QPointF(-20 - mRotateSvgItem->boundingRect().width(), -5 - mRotateSvgItem->boundingRect().height());
+            p += QPointF(-20 - mRotateSvgItem->boundingRect().horizontalAdvance(), -5 - mRotateSvgItem->boundingRect().height());
             break;
         case BottomRight:
-            p += QPointF(-20 - mRotateSvgItem->boundingRect().width(), 5);
+            p += QPointF(-20 - mRotateSvgItem->boundingRect().horizontalAdvance(), 5);
             break;
     }
     return QRectF(p, QSizeF(mRotateSvgItem->boundingRect().size()));
@@ -642,20 +644,20 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             if (mOrientation == TopLeft || mOrientation == BottomLeft)
             {
                 int deltaX = currPos.x() - lastPos.x();
-                if (lastRect.width() + deltaX < sMinWidth)
-                    deltaX = sMinWidth - lastRect.width();
+                if (lastRect.horizontalAdvance() + deltaX < sMinWidth)
+                    deltaX = sMinWidth - lastRect.horizontalAdvance();
 
                 setRect(QRectF(lastRect.left(), lastRect.top(),
-                    lastRect.width() + deltaX, lastRect.height()), mOrientation);
+                    lastRect.horizontalAdvance() + deltaX, lastRect.height()), mOrientation);
             }
             else
             {
                 int deltaX = lastPos.x() - currPos.x();
-                if (lastRect.width() + deltaX < sMinWidth)
-                    deltaX = sMinWidth - lastRect.width();
+                if (lastRect.horizontalAdvance() + deltaX < sMinWidth)
+                    deltaX = sMinWidth - lastRect.horizontalAdvance();
 
                 setRect(QRectF(lastRect.left() - deltaX, lastRect.top(),
-                    lastRect.width() + deltaX, lastRect.height()), mOrientation);
+                    lastRect.horizontalAdvance() + deltaX, lastRect.height()), mOrientation);
             }
         }
 
@@ -670,7 +672,7 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                     deltaY = sMinHeight - lastRect.height();
 
                 setRect(QRectF(lastRect.left(), lastRect.top() - deltaY,
-                        lastRect.width(), lastRect.height() + deltaY), mOrientation);
+                        lastRect.horizontalAdvance(), lastRect.height() + deltaY), mOrientation);
             }
             else
             {
@@ -679,7 +681,7 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                     deltaY = sMinHeight - lastRect.height();
 
                 setRect(QRectF(lastRect.left(), lastRect.top(),
-                        lastRect.width(), lastRect.height() + deltaY), mOrientation);
+                        lastRect.horizontalAdvance(), lastRect.height() + deltaY), mOrientation);
             }
 
         }
@@ -860,8 +862,8 @@ void UBGraphicsTriangle::StartLine(const QPointF &scenePos, qreal width)
 
     if (itemPos.x() < rect().x() + sLeftEdgeMargin)
             itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-            itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
+    if (itemPos.x() > rect().x() + rect().horizontalAdvance() - sLeftEdgeMargin)
+            itemPos.setX(rect().x() + rect().horizontalAdvance() - sLeftEdgeMargin);
 
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
@@ -884,8 +886,8 @@ void UBGraphicsTriangle::DrawLine(const QPointF &scenePos, qreal width)
 
     if (itemPos.x() < rect().x() + sLeftEdgeMargin)
             itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-            itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
+    if (itemPos.x() > rect().x() + rect().horizontalAdvance() - sLeftEdgeMargin)
+            itemPos.setX(rect().x() + rect().horizontalAdvance() - sLeftEdgeMargin);
 
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);

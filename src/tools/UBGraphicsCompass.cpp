@@ -1,4 +1,6 @@
 /*
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneHoverEvent>
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
@@ -67,7 +69,7 @@ UBGraphicsCompass::UBGraphicsCompass()
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
-    setAcceptsHoverEvents(true);
+    setAcceptHoverEvents(true);
 
     mCloseSvgItem = new QGraphicsSvgItem(":/images/closeTool.svg", this);
     mCloseSvgItem->setVisible(false);
@@ -127,12 +129,12 @@ void UBGraphicsCompass::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 
     mCloseSvgItem->setTransform(antiScaleTransform);
     mCloseSvgItem->setPos(
-        closeButtonRect().center().x() - mCloseSvgItem->boundingRect().width() * mAntiScaleRatio / 2,
+        closeButtonRect().center().x() - mCloseSvgItem->boundingRect().horizontalAdvance() * mAntiScaleRatio / 2,
         closeButtonRect().center().y() - mCloseSvgItem->boundingRect().height() * mAntiScaleRatio / 2);
 
     mResizeSvgItem->setTransform(antiScaleTransform);
     mResizeSvgItem->setPos(
-        resizeButtonRect().center().x() - mResizeSvgItem->boundingRect().width() * mAntiScaleRatio / 2,
+        resizeButtonRect().center().x() - mResizeSvgItem->boundingRect().horizontalAdvance() * mAntiScaleRatio / 2,
         resizeButtonRect().center().y() - mResizeSvgItem->boundingRect().height() * mAntiScaleRatio / 2);
 
     painter->setPen(drawColor());
@@ -173,7 +175,7 @@ void UBGraphicsCompass::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     painter->fillPath(pencilBaseShape(), middleFillColor());
     painter->drawPath(pencilBaseShape());
 
-    if (mResizing || mRotating || mDrawing || (mShowButtons && rect().width() > sDisplayRadiusOnPencilArmMinLength))
+    if (mResizing || mRotating || mDrawing || (mShowButtons && rect().horizontalAdvance() > sDisplayRadiusOnPencilArmMinLength))
         paintRadiusDisplay(painter);
 }
 
@@ -244,9 +246,9 @@ void UBGraphicsCompass::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if (mResizing)
         {
             QPointF delta = event->pos() - event->lastPos();
-            if (rect().width() + delta.x() < sMinRadius)
-                delta.setX(sMinRadius - rect().width());
-            setRect(QRectF(rect().topLeft(), QSizeF(rect().width() + delta.x(), rect().height())));
+            if (rect().horizontalAdvance() + delta.x() < sMinRadius)
+                delta.setX(sMinRadius - rect().horizontalAdvance());
+            setRect(QRectF(rect().topLeft(), QSizeF(rect().horizontalAdvance() + delta.x(), rect().height())));
         }
         else
         {
@@ -402,9 +404,9 @@ void UBGraphicsCompass::paintAngleDisplay(QPainter *painter)
     painter->rotate(angle);
         painter->drawText(
         QRectF(
-            - fm.width(angleText) / 2,
+            - fm.horizontalAdvance(angleText) / 2,
             - fm.height() / 2,
-            fm.width(angleText),
+            fm.horizontalAdvance(angleText),
             fm.height()),
         Qt::AlignTop,
         angleText);
@@ -413,11 +415,11 @@ void UBGraphicsCompass::paintAngleDisplay(QPainter *painter)
 
 void UBGraphicsCompass::paintRadiusDisplay(QPainter *painter)
 {
-    qreal radiusInCentimeters = rect().width() / (mPixelsPerMillimeter * 10);
-    QString format = rect().width() >= sDisplayRadiusUnitMinLength ? " %1 " : "%1";
+    qreal radiusInCentimeters = rect().horizontalAdvance() / (mPixelsPerMillimeter * 10);
+    QString format = rect().horizontalAdvance() >= sDisplayRadiusUnitMinLength ? " %1 " : "%1";
     QString radiusText = QString(format).arg(radiusInCentimeters, 0, 'f', 1);
 
-    bool onPencilArm = rect().width() > sDisplayRadiusOnPencilArmMinLength;
+    bool onPencilArm = rect().horizontalAdvance() > sDisplayRadiusOnPencilArmMinLength;
 
     painter->save();
     painter->setFont(font());
@@ -425,7 +427,7 @@ void UBGraphicsCompass::paintRadiusDisplay(QPainter *painter)
     QPointF textCenter;
 
     if (onPencilArm)
-        textCenter = QPointF(rect().right() - sPencilBaseLength - sPencilLength - fm.width(radiusText) / 2 - 24 - 8, rect().center().y());
+        textCenter = QPointF(rect().right() - sPencilBaseLength - sPencilLength - fm.horizontalAdvance(radiusText) / 2 - 24 - 8, rect().center().y());
     else
         textCenter = QPointF((rect().left() + sNeedleLength + sNeedleBaseLength + hingeRect().left()) / 2, rect().center().y());
 
@@ -439,9 +441,9 @@ void UBGraphicsCompass::paintRadiusDisplay(QPainter *painter)
         painter->rotate(180);
     painter->drawText(
         QRectF(
-            - fm.width(radiusText) / 2,
+            - fm.horizontalAdvance(radiusText) / 2,
             - rect().height() / 2,
-            fm.width(radiusText),
+            fm.horizontalAdvance(radiusText),
             rect().height()),
         Qt::AlignVCenter,
         radiusText);
@@ -475,7 +477,7 @@ QCursor UBGraphicsCompass::drawCursor() const
 
 QRectF UBGraphicsCompass::hingeRect() const
 {
-    QRectF rotationRect(rect().width() / 2 - rect().height() / 2, 0, rect().height(), rect().height());
+    QRectF rotationRect(rect().horizontalAdvance() / 2 - rect().height() / 2, 0, rect().height(), rect().height());
     rotationRect.translate(rect().topLeft());
     return rotationRect;
 }
@@ -485,7 +487,7 @@ QRectF UBGraphicsCompass::closeButtonRect() const
     QPixmap closePixmap(":/images/closeTool.svg");
 
     QSizeF closeRectSize(
-        closePixmap.width() * mAntiScaleRatio,
+        closePixmap.horizontalAdvance() * mAntiScaleRatio,
         closePixmap.height() * mAntiScaleRatio);
 
     QPointF closeRectTopLeft(
@@ -503,11 +505,11 @@ QRectF UBGraphicsCompass::resizeButtonRect() const
     QPixmap resizePixmap(":/images/resizeCompass.svg");
 
     QSizeF resizeRectSize(
-        resizePixmap.width() * mAntiScaleRatio,
+        resizePixmap.horizontalAdvance() * mAntiScaleRatio,
         resizePixmap.height() * mAntiScaleRatio);
 
     QPointF resizeRectTopLeft(
-        rect().width() - sPencilLength - sPencilBaseLength - resizeRectSize.width() - 4,
+        rect().horizontalAdvance() - sPencilLength - sPencilBaseLength - resizeRectSize.horizontalAdvance() - 4,
         (rect().height() - resizeRectSize.height()) / 2);
 
     QRectF resizeRect(resizeRectTopLeft, resizeRectSize);
@@ -553,7 +555,7 @@ void UBGraphicsCompass::updateResizeCursor()
 
     QTransform tr;
     tr.rotate(- angle);
-    mResizeCursor = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
+    mResizeCursor = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.horizontalAdvance() / 2,  pix.height() / 2);
 }
 
 void UBGraphicsCompass::updateDrawCursor()
@@ -563,7 +565,7 @@ void UBGraphicsCompass::updateDrawCursor()
 
     QTransform tr;
     tr.rotate(- angle);
-    mDrawCursor = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
+    mDrawCursor = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.horizontalAdvance() / 2,  pix.height() / 2);
 }
 
 void UBGraphicsCompass::paintCenterCross()
