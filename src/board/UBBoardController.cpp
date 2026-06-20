@@ -2766,7 +2766,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
             int previousActiveSceneIndex = activeSceneIndex();
             int previousPageCount = selectedDocument()->pageCount();
 
-            for (const auto& UBMimeDataItem sourceItem : mimeData->items())
+            for (const UBMimeDataItem& sourceItem : mimeData->items())
                 addScene(sourceItem.documentProxy(), sourceItem.sceneIndex(), true);
 
             if (selectedDocument()->pageCount() < previousPageCount + mimeData->items().count())

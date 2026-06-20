@@ -91,7 +91,7 @@ void UBFeaturesComputingThread::scanFS(const QUrl & currentPath
         QString testVirtualPath = currVirtualPath + "/" + fileName;
         UBFeature::Permissions testPermissions = pPermissions;
 
-        for (const auto& CategoryData curException : extData) {
+        for (const CategoryData& curException : extData) {
             QString exceptionVirtualPath = curException.categoryFeature().getFullVirtualPath();
             if (testVirtualPath.startsWith(exceptionVirtualPath)) {
                 qDebug() << "catched";
@@ -182,7 +182,7 @@ int UBFeaturesComputingThread::featuresCountAll(QList<CategoryData> pScanningDat
     int noItems = 0;
     for (int i = 0; i < pScanningData.count(); i++) {
         CategoryData curCategoryData = pScanningData.at(i);
-        QMapIterator<CategoryData::pathType, QUrl> pathIterator(curCategoryData.pathData());
+        QMultiMapIterator<CategoryData::pathType, QUrl> pathIterator(curCategoryData.pathData());
         while (pathIterator.hasNext()) {
             pathIterator.next();
             noItems += featuresCount(pathIterator.value());
@@ -1375,7 +1375,7 @@ void UBFeaturesController::addDownloadedFile(const QUrl &sourceUrl, const QByteA
         if(url.indexOf("?") != -1){
             url = url.left(url.indexOf("?"));
             fileName = pTitle.isEmpty() ? QFileInfo( url ).fileName() : pTitle;
-            filePath = QDir::tempPath() + "/" + QUuid::createUuid();
+            filePath = QDir::tempPath() + "/" + QUuid::createUuid().toString();
         }
         else{
             fileName = pTitle.isEmpty() ? QFileInfo( url ).fileName() : pTitle;

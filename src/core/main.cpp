@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    app.initialize(false);
+    // app.initialize(false); -- initialization handled in exec()
 
     QObject::connect(&app, &QtSingleApplication::messageReceived, &app, &UBApplication::handleOpenMessage);
 

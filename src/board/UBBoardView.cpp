@@ -1845,12 +1845,12 @@ void UBBoardView::virtualKeyboardActivated(bool b)
 
 bool UBBoardView::isAbsurdPoint(QPoint point)
 {
-    QDesktopWidget *desktop = qApp->desktop ();
+    QScreen *screen = QGuiApplication::primaryScreen();
     bool isValidPoint = false;
 
-    for (int i = 0; i < desktop->numScreens (); i++)
+    for (int i = 0; i < QGuiApplication::screens().count(); i++)
     {
-      QRect screenRect = desktop->screenGeometry (i);
+      QRect screenRect = QGuiApplication::screens().at(i)->geometry();
       isValidPoint = isValidPoint || screenRect.contains (mapToGlobal(point));
     }
 
