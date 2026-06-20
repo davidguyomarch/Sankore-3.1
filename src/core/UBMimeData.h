@@ -27,6 +27,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QMimeData>
 
 class UBDocumentProxy;
 class UBItem;

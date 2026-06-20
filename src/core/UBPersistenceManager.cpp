@@ -141,14 +141,14 @@ void UBPersistenceManager::createDocumentProxiesStructure(bool interactive)
             if (xmlDom.setContent(domString, &errorStr, &errorLine, &errorColumn)) {
                 loadFolderTreeFromXml("", xmlDom.firstChildElement());
             } else {
-                qDebug() << "Error reading content of " << mFoldersXmlStorageName << endl
+                qDebug() << "Error reading content of " << mFoldersXmlStorageName << Qt::endl
                          << "Error:" << inFile.errorString()
                          << "Line:" << errorLine
                          << "Column:" << errorColumn;
             }
             inFile.close();
         } else {
-            qDebug() << "Error reading" << mFoldersXmlStorageName << endl
+            qDebug() << "Error reading" << mFoldersXmlStorageName << Qt::endl
                      << "Error:" << inFile.errorString();
         }
     }
@@ -296,7 +296,7 @@ void UBPersistenceManager::closing()
 
         outFile.close();
     } else {
-        qDebug() << "failed to open document" <<  mFoldersXmlStorageName << "for writing" << endl
+        qDebug() << "failed to open document" <<  mFoldersXmlStorageName << "for writing" << Qt::endl
                  << "Error string:" << outFile.errorString();
     }
 }
@@ -618,7 +618,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
 
     QList<int> compactedIndexes;
 
-    for (const auto& int index : indexes)
+    for (int index : indexes)
     {
         if (!compactedIndexes.contains(index))
             compactedIndexes.append(index);
@@ -633,7 +633,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
     if (compactedIndexes.size() == 0)
         return;
 
-    for (const auto& int index : compactedIndexes)
+    for (int index : compactedIndexes)
     {
         emit documentSceneWillBeDeleted(proxy, index);
     }
@@ -647,7 +647,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
     trashDocProxy->setMetaData(UBSettings::documentDefaultBackgroundImageDisposition, proxy->metaData(UBSettings::documentDefaultBackgroundImageDisposition));
     // Fin Issue 1684 - ALTI/AOU - 20131210
 
-    for (const auto& int index : compactedIndexes)
+    for (int index : compactedIndexes)
     {
         UBGraphicsScene *scene = loadDocumentScene(proxy, index);
         if (scene)
@@ -674,7 +674,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
         renamePage(trashDocProxy, i , i - 1);
     }
 
-    for (const auto& int index : compactedIndexes)
+    for (int index : compactedIndexes)
     {
         QString svgFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", index);
 
@@ -1123,7 +1123,7 @@ QString UBPersistenceManager::addObjectToTeacherGuideDirectory(UBDocumentProxy* 
 {
     QString path = UBFileSystemUtils::removeLocalFilePrefix(pPath);
     QFileInfo fi(path);
-    QString uuid = QUuid::createUuid();
+    QString uuid = QUuid::createUuid().toString();
 
     if (!fi.exists() || !pDocumentProxy)
         return "";
@@ -1155,7 +1155,7 @@ QString UBPersistenceManager::addWidgetToTeacherGuideDirectory(UBDocumentProxy* 
     if(lastIndex != -1)
         extension = path.right(path.length() - lastIndex);
 
-    QString uuid = QUuid::createUuid();
+    QString uuid = QUuid::createUuid().toString();
 
     if (!fi.exists() || !pDocumentProxy)
         return "";

@@ -22,6 +22,8 @@
 
 
 #include "UBDisplayManager.h"
+#include <QGuiApplication>
+#include <QScreen>
 
 #include "frameworks/UBPlatformUtils.h"
 
@@ -41,16 +43,16 @@ UBDisplayManager::UBDisplayManager(QObject *parent)
     , mDisplayScreenIndex(-1)
     , mControlWidget(0)
     , mDisplayWidget(0)
-    , mDesktopWidget(0)
+    , QGuiApplication::primaryScreen()Widget(0)
 {
-    mDesktop = qApp->desktop();
+    
 
     mUseMultiScreen = true;
 
     initScreenIndexes();
 
-    connect(mDesktop, SIGNAL(resized(int)), this, SLOT(adjustScreens(int)));
-    connect(mDesktop, SIGNAL(workAreaResized(int)), this, SLOT(adjustScreens(int)));
+    connect(QGuiApplication::primaryScreen(), SIGNAL(resized(int)), this, SLOT(adjustScreens(int)));
+    connect(QGuiApplication::primaryScreen(), SIGNAL(workAreaResized(int)), this, SLOT(adjustScreens(int)));
 }
 
 
@@ -62,7 +64,7 @@ void UBDisplayManager::initScreenIndexes()
 
     if (screenCount > 0)
     {
-        mControlScreenIndex = mDesktop->primaryScreen();
+        mControlScreenIndex = QGuiApplication::primaryScreen()->primaryScreen();
         if (UBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
         {
            mControlScreenIndex = mControlScreenIndex^1;
@@ -110,7 +112,7 @@ int UBDisplayManager::numScreens()
 {
     if (mUseMultiScreen)
     {
-        return mDesktop->numScreens();
+        return QGuiApplication::screens().count();
     }
     else
     {
@@ -134,7 +136,7 @@ void UBDisplayManager::setControlWidget(QWidget* pControlWidget)
 void UBDisplayManager::setDesktopWidget(QWidget* pControlWidget )
 {
     if(pControlWidget && (pControlWidget != mControlWidget))
-        mDesktopWidget = pControlWidget;
+        QGuiApplication::primaryScreen()Widget = pControlWidget;
 }
 
 void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
@@ -148,7 +150,7 @@ void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
             pDisplayWidget->setWindowFlags(mDisplayWidget->windowFlags());
         }
         mDisplayWidget = pDisplayWidget;
-        mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
+        mDisplayWidget->setGeometry(QGuiApplication::screens().at(mDisplayScreenIndex)->geometry());
         if (UBSettings::settings()->appUseMultiscreen->get().toBool())
             mDisplayWidget->showFullScreen();
     }
@@ -163,12 +165,12 @@ void UBDisplayManager::setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousV
 
 QRect UBDisplayManager::controlGeometry()
 {
-    return mDesktop->screenGeometry(mControlScreenIndex);
+    return QGuiApplication::screens().at(mControlScreenIndex)->geometry();
 }
 
 QRect UBDisplayManager::displayGeometry()
 {
-    return mDesktop->screenGeometry(mDisplayScreenIndex);
+    return QGuiApplication::screens().at(mDisplayScreenIndex)->geometry();
 }
 
 void UBDisplayManager::reinitScreens(bool swap)
@@ -192,22 +194,22 @@ void UBDisplayManager::adjustScreens(int screen)
 void UBDisplayManager::positionScreens()
 {
 
-    if(mDesktopWidget && mControlScreenIndex > -1)
+    if(QGuiApplication::primaryScreen()Widget && mControlScreenIndex > -1)
     {
-        mDesktopWidget->hide();
-        mDesktopWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
+        QGuiApplication::primaryScreen()Widget->hide();
+        QGuiApplication::primaryScreen()Widget->setGeometry(QGuiApplication::screens().at(mControlScreenIndex)->geometry());
     }
     if (mControlWidget && mControlScreenIndex > -1)
     {
         mControlWidget->hide();
-        mControlWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
+        mControlWidget->setGeometry(QGuiApplication::screens().at(mControlScreenIndex)->geometry());
         mControlWidget->showFullScreen();
     }
 
     if (mDisplayWidget && mDisplayScreenIndex > -1)
     {
         mDisplayWidget->hide();
-        mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
+        mDisplayWidget->setGeometry(QGuiApplication::screens().at(mDisplayScreenIndex)->geometry());
         mDisplayWidget->showFullScreen();
     }
     else if(mDisplayWidget)
@@ -225,7 +227,7 @@ void UBDisplayManager::positionScreens()
         if (mPreviousDisplayWidgets.size() > psi)
         {
             QWidget* previous = mPreviousDisplayWidgets.at(psi);
-            previous->setGeometry(mDesktop->screenGeometry(mPreviousScreenIndexes.at(psi)));
+            previous->setGeometry(QGuiApplication::primaryScreen()->screenGeometry(mPreviousScreenIndexes.at(psi)));
             previous->showFullScreen();
         }
     }
@@ -263,7 +265,7 @@ void UBDisplayManager::blackout()
         blackoutUi->iconButton->setVisible(screenIndex == mControlScreenIndex);
         blackoutUi->labelClickToReturn->setVisible(screenIndex == mControlScreenIndex);
 
-        blackoutWidget->setGeometry(mDesktop->screenGeometry(screenIndex));
+        blackoutWidget->setGeometry(QGuiApplication::screens().at(screenIndex)->geometry());
 
         mBlackoutWidgets << blackoutWidget;
     }

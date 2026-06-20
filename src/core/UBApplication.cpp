@@ -29,6 +29,8 @@
 #include <QWebEngineView>
 #include <QWebEngineProfile>
 #include <QDesktopServices>
+#include <QMenu>
+#include <QActionGroup>
 #include <QtXml>
 #include <QFontDatabase>
 

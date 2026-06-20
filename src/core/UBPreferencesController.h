@@ -27,6 +27,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QDialog>
 
 class UBColorPicker;
 class UBApplication;
@@ -48,7 +49,7 @@ class UBPreferencesDialog : public QDialog
     Q_OBJECT;
 
 public:
-    UBPreferencesDialog(UBPreferencesController* prefController, QWidget* parent = 0,Qt::WindowFlags f = 0 );
+    UBPreferencesDialog(UBPreferencesController* prefController, QWidget* parent = 0,Qt::WindowFlags f = Qt::WindowFlags() );
     ~UBPreferencesDialog();
 
 protected:

@@ -71,12 +71,12 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     , mPenProperties(0)
     , mMarkerProperties(0)
 {
-    mDesktop = qApp->desktop();
+    
     mPreferencesWindow = new UBPreferencesDialog(this,parent, Qt::Dialog);
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in
     mPreferencesUI->setupUi(mPreferencesWindow);
     adjustScreens(1);
-    connect(mDesktop, SIGNAL(screenCountChanged(int)), this, SLOT(adjustScreens(int)));
+        // screenCountChanged: use QGuiApplication::screens() in Qt6
 
     connect(mPreferencesUI->languageComboBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(onLanguageChanged(QString)));
 
@@ -622,7 +622,7 @@ UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor
     for (int i = 1 ; i < UBSettings::settings()->colorPaletteSize ; i++)
     {
         UBColorPicker *picker = new UBColorPicker(lightBackgroundFrame);
-        picker->setObjectName(QString::fromUtf8("penLightBackgroundColor") + i);
+        picker->setObjectName(QString::fromUtf8("penLightBackgroundColor") + QString::number(i));
         picker->setMinimumSize(QSize(32, 32));
         picker->setFrameShape(QFrame::StyledPanel);
         picker->setFrameShadow(QFrame::Raised);
@@ -649,7 +649,7 @@ UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor
     for (int i = 1 ; i < UBSettings::settings()->colorPaletteSize ; i++)
     {
         UBColorPicker *picker = new UBColorPicker(darkBackgroundFrame);
-        picker->setObjectName(QString::fromUtf8("penDarkBackgroundColor") + i);
+        picker->setObjectName(QString::fromUtf8("penDarkBackgroundColor") + QString::number(i));
         picker->setMinimumSize(QSize(32, 32));
         picker->setFrameShape(QFrame::StyledPanel);
         picker->setFrameShadow(QFrame::Raised);

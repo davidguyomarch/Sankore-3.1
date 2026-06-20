@@ -60,7 +60,7 @@ void UBSceneCache::insert (UBDocumentProxy* proxy, int pageIndex, UBGraphicsScen
 {
     QList<UBSceneCacheID> existingKeys = QHash<UBSceneCacheID, UBGraphicsScene*>::keys(scene);
 
-    for (const auto& UBSceneCacheID key : existingKeys)
+    for (const UBSceneCacheID& key : existingKeys)
     {
         mCachedSceneCount -= QHash<UBSceneCacheID, UBGraphicsScene*>::remove(key);
     }
@@ -286,7 +286,7 @@ void UBSceneCache::compactCache()
 
 void UBSceneCache::dumpCacheContent()
 {
-    for (const auto& UBSceneCacheID key : keys())
+    for (const UBSceneCacheID& key : keys())
     {
         UBGraphicsScene *scene = 0;
 
