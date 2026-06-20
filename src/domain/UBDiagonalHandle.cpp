@@ -1,4 +1,5 @@
 #include "UBDiagonalHandle.h"
+#include <QGraphicsSceneMouseEvent>
 
 #include "UBEditable.h"
 

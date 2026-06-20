@@ -1,4 +1,5 @@
 #include "UBFreeHandle.h"
+#include <QGraphicsSceneMouseEvent>
 #include "UBEditable.h"
 
 UBFreeHandle::UBFreeHandle()
