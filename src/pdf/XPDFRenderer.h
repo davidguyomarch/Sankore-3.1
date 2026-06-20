@@ -25,7 +25,7 @@
 #define XPDFRENDERER_H
 #include <QImage>
 #include "PDFRenderer.h"
-#include <splash/SplashBitmap.h>
+// #include <splash/SplashBitmap.h> // XPDF library not available in this build
 
 #include "globals/UBGlobals.h"
 

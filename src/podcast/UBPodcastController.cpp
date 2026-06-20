@@ -176,7 +176,7 @@ void UBPodcastController::setSourceWidget(QWidget* pWidget)
 {
     if (mSourceWidget != pWidget)
     {
-        if (mSourceWidget == qApp->desktop())
+        if (mSourceWidget == nullptr /* QDesktopWidget removed */)
         {
             killTimer(mScreenGrabingTimerEventID);
             mScreenGrabingTimerEventID = 0;
@@ -195,8 +195,8 @@ void UBPodcastController::setSourceWidget(QWidget* pWidget)
         {
             QSizeF sourceWidgetSize(mSourceWidget->size());
 
-            if (mSourceWidget == qApp->desktop())
-                sourceWidgetSize = qApp->desktop()->availableGeometry(UBApplication::applicationController->displayManager()->controleScreenIndex()).size();
+            if (mSourceWidget == nullptr /* QDesktopWidget removed */)
+                sourceWidgetSize = QGuiApplication::primaryScreen()->availableGeometry()->controleScreenIndex()).size();
 
             QSizeF videoFrameSize(mVideoFrameSizeAtStart);
 
@@ -234,7 +234,7 @@ void UBPodcastController::setSourceWidget(QWidget* pWidget)
 
                 startNextChapter();
 
-                if(mSourceWidget == qApp->desktop())
+                if(mSourceWidget == nullptr /* QDesktopWidget removed */)
                 {
                     mScreenGrabingTimerEventID  = startTimer(1000 / mVideoFramesPerSecondAtStart);
                 }
@@ -580,7 +580,7 @@ void UBPodcastController::sceneChanged(const QList<QRectF> & region)
         QRectF viewportRect = bv->mapToScene(QRect(0, 0, bv->width(), bv->height())).boundingRect();
         for (const QRectF& rect : region)
         {
-            QRectF maxRect = rect.intersect(viewportRect);
+            QRectF maxRect = rect.intersected(viewportRect);
             mSceneRepaintRectQueue.enqueue(maxRect);
         }
 
@@ -676,7 +676,7 @@ void UBPodcastController::applicationDesktopMode(bool displayed)
 
     if (displayed)
     {
-        setSourceWidget(qApp->desktop());
+        setSourceWidget(nullptr /* QDesktopWidget removed */);
     }
     else
     {
@@ -757,9 +757,9 @@ void UBPodcastController::timerEvent(QTimerEvent *event)
 {
     if (mRecordingState == Recording
             && event->timerId() == mScreenGrabingTimerEventID
-            && mSourceWidget == qApp->desktop())
+            && mSourceWidget == nullptr /* QDesktopWidget removed */)
     {
-        QPixmap desktop = QPixmap::grabWindow(qApp->desktop()->screen(UBApplication::applicationController->displayManager()->controleScreenIndex())->winId());
+        QPixmap desktop = QGuiApplication::primaryScreen()->grabWindow(0);
 
         {
             QPainter p(&mLatestCapture);
