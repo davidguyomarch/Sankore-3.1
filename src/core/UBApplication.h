@@ -28,6 +28,8 @@
 #include <QApplication>
 #include <QPainter>
 #include <QProxyStyle>
+#include <QUndoStack>
+#include <QToolBar>
 
 #include "qtsingleapplication.h"
 

@@ -7,7 +7,7 @@ class UBGraphicsProxyWidget : public QGraphicsProxyWidget
 {
     Q_OBJECT
 public:
-    explicit UBGraphicsProxyWidget(QGraphicsItem *parent = 0, Qt::WindowFlags wFlags = 0);
+    explicit UBGraphicsProxyWidget(QGraphicsItem *parent = 0, Qt::WindowFlags wFlags = Qt::WindowFlags());
     ~UBGraphicsProxyWidget();
 
 };

@@ -39,7 +39,7 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
     Q_OBJECT
     public:
 
-        UBMainWindow(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+        UBMainWindow(QWidget *parent = 0, Qt::WindowFlags flags = Qt::WindowFlags());
         virtual ~UBMainWindow();
 
         void addBoardWidget(QWidget *pWidget);

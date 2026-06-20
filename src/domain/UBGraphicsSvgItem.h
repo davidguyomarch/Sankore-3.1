@@ -28,6 +28,7 @@
 #include <QApplication>
 #include <QPainter>
 #include <QtSvg>
+#include <QGraphicsSvgItem>
 
 #include "UBItem.h"
 

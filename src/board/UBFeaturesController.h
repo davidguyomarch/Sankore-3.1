@@ -41,6 +41,7 @@
 #include <QThread>
 #include <QMutex>
 #include <QWaitCondition>
+#include <QListView>
 #include "frameworks/UBTrashRegistery.h"
 
 class UBFeaturesModel;

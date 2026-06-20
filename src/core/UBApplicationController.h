@@ -27,7 +27,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
-#include <QFtp>
+#include <QNetworkAccessManager>
 
 class UBBoardView;
 class UBDocumentProxy;

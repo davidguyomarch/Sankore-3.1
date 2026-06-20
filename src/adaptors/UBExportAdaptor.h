@@ -27,6 +27,8 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QAction>
+#include <QFileDialog>
 
 class UBDocumentProxy;
 

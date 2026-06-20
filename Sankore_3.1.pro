@@ -25,13 +25,14 @@ VERSION_RC = $$replace(VERSION_RC, "b", "176") # 0xB0
 VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
 
 # TODO: QT += webenginewidgets (separate migration)
+QT += webenginewidgets
 QT += svg
+QT += svgwidgets
 QT += network
 QT += multimedia
 QT += xml
 QT += qml
 QT += widgets
-QT += core5compat
 
 INCLUDEPATH += src
 
