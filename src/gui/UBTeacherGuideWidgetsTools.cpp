@@ -22,6 +22,7 @@
 
 
 #include <QTreeWidget>
+#include <QFileDialog>
 #include <QVBoxLayout>
 #include <QComboBox>
 #include <QColor>
@@ -713,7 +714,7 @@ void UBTGMediaWidget::removeSource()
 void UBTGMediaWidget::hideEvent(QHideEvent* event)
 {
     if(mpWebView)
-        mpWebView->page()->mainFrame()->setContent(UBGraphicsW3CWidgetItem::freezedWidgetPage().toLatin1());
+        mpWebView->mainFrame()->setContent(UBGraphicsW3CWidgetItem::freezedWidgetPage().toLatin1());
     QWidget::hideEvent(event);
 }
 

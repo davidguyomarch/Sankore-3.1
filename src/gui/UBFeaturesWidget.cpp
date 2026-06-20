@@ -946,7 +946,7 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     mpView = new QWebEngineView(this);
     mpView->setObjectName("SearchEngineView");
     mpSankoreAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
-    mpView->page()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+    mpView->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
     connect(mpView->page(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     mpWebSettings = QWebEngineProfile::defaultProfile()->settings();
     // JavaEnabled removed in Qt6
@@ -984,7 +984,7 @@ UBFeaturesWebView::~UBFeaturesWebView()
 
 void UBFeaturesWebView::javaScriptWindowObjectCleared()
 {
-    mpView->page()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+    mpView->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
 }
 
 void UBFeaturesWebView::showElement(const UBFeature &elem)
@@ -1024,7 +1024,7 @@ void UBFeaturesWebView::showElement(const UBFeature &elem)
 void UBFeaturesWebView::onLoadFinished(bool ok)
 {
     if(ok && nullptr != mpSankoreAPI){
-        mpView->page()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+        mpView->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
     }
 }
 

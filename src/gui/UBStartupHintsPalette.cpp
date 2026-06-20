@@ -48,8 +48,8 @@ UBStartupHintsPalette::UBStartupHintsPalette(QWidget *parent) :
         QString url = UBSettings::settings()->applicationStartupHintsDirectory() + "/index.html";
         mpWebView = new QWebEngineView(this);
         mpSankoreAPI = new UBWidgetUniboardAPI(0);
-        mpWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
-        connect(mpWebView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
+        mpWebView->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+        connect(mpWebView->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
         mpWebView->setUrl(QUrl::fromLocalFile(url));
         mpWebView->setAcceptDrops(false);
         mLayout->addWidget(mpWebView);
@@ -118,5 +118,5 @@ int UBStartupHintsPalette::border()
 
 void UBStartupHintsPalette::javaScriptWindowObjectCleared()
 {
-    mpWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+    mpWebView->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
 }
