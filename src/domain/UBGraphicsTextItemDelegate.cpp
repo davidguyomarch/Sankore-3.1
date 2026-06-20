@@ -25,6 +25,10 @@
 #include <QApplication>
 #include <QPainter>
 #include <QtSvg>
+#include <QColorDialog>
+#include <QComboBox>
+#include <QListView>
+#include <QMenu>
 
 #include "core/UBApplication.h"
 #include "UBGraphicsGroupContainerItem.h"
@@ -241,7 +245,7 @@ void UBGraphicsTextItemDelegate::customize(QFontDialog &fontDialog)
     if (listViews.count() > 0)
     {
         fontNameListView = listViews.at(0);
-        for (const auto& QListView* listView : listViews)
+        for (QListView* listView : listViews)
         {
             if (listView->pos().x() < fontNameListView->pos().x())
                 fontNameListView = listView;

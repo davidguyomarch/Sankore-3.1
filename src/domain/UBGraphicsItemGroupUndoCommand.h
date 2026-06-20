@@ -25,6 +25,7 @@
 #define UBGRAPHICSITEMGROUPUNDOCOMMAND_H
 
 #include <QList>
+#include <QGraphicsItem>
 #include "UBAbstractUndoCommand.h"
 
 class UBGraphicsScene;

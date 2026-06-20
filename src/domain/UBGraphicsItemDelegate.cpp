@@ -26,6 +26,9 @@
 #include <QPainter>
 #include <QtSvg>
 #include <QDrag>
+#include <QMenu>
+#include <QColorDialog>
+#include <QComboBox>
 
 #include "UBGraphicsItemDelegate.h"
 #include "UBGraphicsMediaItemDelegate.h"
@@ -1547,7 +1550,7 @@ void DelegateMediaControl::seekToMousePos(QPointF mousePos)
         && mDelegate->mediaObject() && mDelegate->mediaObject()->isSeekable())
     {
         qint64 tickPos = (mTotalTimeInMs/length)* (mouseX - minX);
-        mDelegate->mediaObject()->seek(tickPos);
+        mDelegate->mediaObject()->setPosition(tickPos);
 
         //OSX is a bit lazy
         updateTicker(tickPos);
