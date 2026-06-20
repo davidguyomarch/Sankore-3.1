@@ -264,9 +264,9 @@ bool UBCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, con
         return false;
 
     QString host = url.host();
-    bool eBlock = std::binary_search(mExceptionsBlock.begin(), mExceptionsBlock.end(), host) != mExceptionsBlock.end();
-    bool eAllow = std::binary_search(mExceptionsAllow.begin(), mExceptionsAllow.end(), host) != mExceptionsAllow.end();
-    bool eAllowSession = std::binary_search(mExceptionsAllowForSession.begin(), mExceptionsAllowForSession.end(), host) != mExceptionsAllowForSession.end();
+    bool eBlock = std::binary_search(mExceptionsBlock.begin(), mExceptionsBlock.end(), host);
+    bool eAllow = std::binary_search(mExceptionsAllow.begin(), mExceptionsAllow.end(), host);
+    bool eAllowSession = std::binary_search(mExceptionsAllowForSession.begin(), mExceptionsAllowForSession.end(), host);
 
     bool addedCookies = false;
     // pass exceptions

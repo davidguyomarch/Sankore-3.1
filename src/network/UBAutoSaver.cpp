@@ -85,7 +85,7 @@ UBAutoSaver::~UBAutoSaver()
 
 void UBAutoSaver::changeOccurred()
 {
-    if (mFirstChange.isNull())
+    if (!mFirstChange.isValid())
         mFirstChange.start();
 
     if (mFirstChange.elapsed() > MAXWAIT)
