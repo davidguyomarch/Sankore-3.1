@@ -22,6 +22,7 @@
 
 
 #include "UBWidgetMirror.h"
+#include <QMouseEvent>
 
 
 UBWidgetMirror::UBWidgetMirror(QWidget* sourceWidget, QWidget* parent)

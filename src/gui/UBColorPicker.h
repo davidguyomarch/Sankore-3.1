@@ -27,6 +27,9 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QFrame>
+#include <QPaintEvent>
+#include <QMouseEvent>
 
 class UBColorPicker : public QFrame
 {

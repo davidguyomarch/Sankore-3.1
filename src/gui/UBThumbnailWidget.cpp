@@ -272,7 +272,7 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
         option.initFrom(&rubberBand);
 
         mPrevLassoRect = QRect();
-        mLassoRectItem = new QGraphicsRectItem(0, scene());
+        mLassoRectItem = new QGraphicsRectItem();
 
 #ifdef Q_OS_MACOS
         // The following code must stay in synch with <Qt installation folder>\src\gui\styles\qmacstyle_mac.mm
@@ -298,7 +298,7 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
 
         if (Qt::ControlModifier & event->modifiers() || Qt::ShiftModifier & event->modifiers())
         {
-           // mSelectedThumbnailItems = selectedItems();
+           // { auto items = selectedItems(); mSelectedThumbnailItems = QSet<QGraphicsItem*>(items.begin(), items.end()); };
             return;
         }
 
@@ -318,7 +318,7 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
                 int index2 = mGraphicItems.indexOf(underlyingItem);
                 if (-1 == index2)
                 {
-                    mSelectedThumbnailItems = selectedItems();
+                    { auto items = selectedItems(); mSelectedThumbnailItems = QSet<QGraphicsItem*>(items.begin(), items.end()); };
                     return;
                 }
                 mSelectionSpan = index2 - index1;
