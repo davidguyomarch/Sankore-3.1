@@ -714,7 +714,7 @@ void UBTGMediaWidget::removeSource()
 void UBTGMediaWidget::hideEvent(QHideEvent* event)
 {
     if(mpWebView)
-        mpWebView->mainFrame()->setContent(UBGraphicsW3CWidgetItem::freezedWidgetPage().toLatin1());
+        // TODO: mainFrame() not available on QWebEngineView - use page()->setContent(UBGraphicsW3CWidgetItem::freezedWidgetPage().toLatin1());
     QWidget::hideEvent(event);
 }
 
@@ -797,7 +797,7 @@ void UBTGMediaWidget::createWorkWidget(bool forceFlashMediaType)
         mMediaType = "flash";
         if(!(mIsPresentationMode || mIsInitializationMode)){
             QDir baseW3CDirectory(UBPersistenceManager::persistenceManager()->teacherGuideAbsoluteObjectPath(proxyDocument));
-            mMediaPath = UBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(mMediaPath,baseW3CDirectory,mimeType,QSize(100,100),QUuid::createUuid());
+            mMediaPath = UBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(mMediaPath,baseW3CDirectory,mimeType,QSize(100,100),QUuid::createUuid().toString());
         }
         qDebug() << mMediaPath;
         mpWebView = new UBDraggableWeb(mMediaPath);
