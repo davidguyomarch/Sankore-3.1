@@ -780,11 +780,11 @@ void UBTGMediaWidget::createWorkWidget(bool forceFlashMediaType)
         }
         mpWebView = new UBDraggableWeb(mMediaPath);
         mpWebView->setAcceptDrops(false);
-        mpWebView->settings()->setAttribute(QWebEngineSettings::JavaEnabled, true);
+    // JavaEnabled removed in Qt6
         mpWebView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-        mpWebView->settings()->setAttribute(QWebEngineSettings::LocalStorageDatabaseEnabled, true);
-        mpWebView->settings()->setAttribute(QWebEngineSettings::OfflineWebApplicationCacheEnabled, true);
-        mpWebView->settings()->setAttribute(QWebEngineSettings::OfflineStorageDatabaseEnabled, true);
+    // LocalStorageDatabaseEnabled removed in Qt6
+    // OfflineWebApplicationCacheEnabled removed in Qt6
+    // OfflineStorageDatabaseEnabled removed in Qt6
         mpWebView->settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
         mpWebView->settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
         QString indexPath = mMediaPath+"/index.htm";
@@ -801,11 +801,11 @@ void UBTGMediaWidget::createWorkWidget(bool forceFlashMediaType)
         qDebug() << mMediaPath;
         mpWebView = new UBDraggableWeb(mMediaPath);
         mpWebView->setAcceptDrops(false);
-        mpWebView->settings()->setAttribute(QWebEngineSettings::JavaEnabled, true);
+    // JavaEnabled removed in Qt6
         mpWebView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-        mpWebView->settings()->setAttribute(QWebEngineSettings::LocalStorageDatabaseEnabled, true);
-        mpWebView->settings()->setAttribute(QWebEngineSettings::OfflineWebApplicationCacheEnabled, true);
-        mpWebView->settings()->setAttribute(QWebEngineSettings::OfflineStorageDatabaseEnabled, true);
+    // LocalStorageDatabaseEnabled removed in Qt6
+    // OfflineWebApplicationCacheEnabled removed in Qt6
+    // OfflineStorageDatabaseEnabled removed in Qt6
         mpWebView->settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
         mpWebView->settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
         QString indexPath = mMediaPath+"/index.htm";

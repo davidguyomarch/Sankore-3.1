@@ -1187,9 +1187,9 @@ void UBTeacherGuidePageZeroWidget::onActiveSceneChanged()
     UBDocumentProxy* documentProxy = UBApplication::boardController->selectedDocument();
     if (documentProxy && UBApplication::boardController->currentPage() == 0) {
         QDateTime creationDate = documentProxy->documentDate();
-        mpCreationLabel->setText( tr("Created the:\n") + creationDate.toString(QLocale::ShortFormat));
+        mpCreationLabel->setText( tr("Created the:\n") + creationDate.toString(Qt::ISODate));
         QDateTime updatedDate = documentProxy->lastUpdate();
-        mpLastModifiedLabel->setText( tr("Updated the:\n") + updatedDate.toString(QLocale::ShortFormat));
+        mpLastModifiedLabel->setText( tr("Updated the:\n") + updatedDate.toString(Qt::ISODate));
         loadData();
         updateSceneTitle();
     }

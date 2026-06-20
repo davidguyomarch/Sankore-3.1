@@ -22,6 +22,10 @@
 
 
 #include "UBMessagesDialog.h"
+#include <QPushButton>
+#include <QTextEdit>
+#include <QVBoxLayout>
+#include <QFileDialog>
 
 UBMessagesDialog::UBMessagesDialog(QString windowTitle, QWidget *parent)
 : QWidget(parent)
