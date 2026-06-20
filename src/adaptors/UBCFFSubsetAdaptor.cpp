@@ -22,6 +22,9 @@
 
 
 #include <QRegularExpression>
+#include <QScreen>
+#include <QGuiApplication>
+#include <QSet>
 #include <QSvgGenerator>
 #include <QSvgRenderer>
 #include <QPixmap>
@@ -373,7 +376,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     qreal x1 = polygon.boundingRect().topLeft().x();
     qreal y1 = polygon.boundingRect().topLeft().y();
     //bounding rect dimensions
-    qreal width = polygon.boundingRect().width();
+    qreal width = polygon.boundingRect().horizontalAdvance();
     qreal height = polygon.boundingRect().height();
 
     QString strokeColorText = element.attribute(aStroke);
@@ -411,12 +414,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
         mCurrentScene->addItem(graphicsPolygon);
 
         graphicsPolygon->setUuid(itemUuid);
-        mRefToUuidMap.insert(element.attribute(aId), itemUuid);
+        mRefToUuidMap.insert(element.attribute(aId), itemUuid.toString());
 
     }
     else // single CFF
     {
-        QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
+        QSvgGenerator *generator = createSvgGenerator(width + pen.horizontalAdvance(), height + pen.horizontalAdvance());
         QPainter painter;
 
         painter.begin(generator); //drawing to svg tmp file
@@ -433,8 +436,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
         QTransform transform;
         QString textTransform = element.attribute(aTransform);
         
-        QUuid uuid = QUuid::createUuid().toString();
-        mRefToUuidMap.insert(element.attribute(aId), uuid);
+        QUuid uuid = QUuid::createUuid();
+        mRefToUuidMap.insert(element.attribute(aId), uuid.toString());
         svgItem->setUuid(uuid);
 
         svgItem->resetTransform();
@@ -490,7 +493,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
     qreal y1 = polygon.boundingRect().topLeft().y();
 
     //bounding rect dimensions
-    qreal width = polygon.boundingRect().width();
+    qreal width = polygon.boundingRect().horizontalAdvance();
     qreal height = polygon.boundingRect().height();
 
     QString strokeColorText = element.attribute(aStroke);
@@ -530,12 +533,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
         mCurrentScene->addItem(graphicsPolygon);
 
         graphicsPolygon->setUuid(itemUuid);
-        mRefToUuidMap.insert(element.attribute(aId), itemUuid);
+        mRefToUuidMap.insert(element.attribute(aId), itemUuid.toString());
 
     }
     else // simple CFF
     {
-        QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
+        QSvgGenerator *generator = createSvgGenerator(width + pen.horizontalAdvance(), height + pen.horizontalAdvance());
         QPainter painter;
 
         painter.begin(generator); //drawing to svg tmp file
@@ -583,7 +586,7 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTextAttributes(const QDomElemen
     //consider inch has 72 liens
     //since svg font size is given in pixels, divide it by pixels per line
     QString fontSz = element.attribute(aFontSize);
-    if (!fontSz.isNull()) fontSize = fontSz.toDouble() * 72 / QApplication::desktop()->physicalDpiY();
+    if (!fontSz.isNull()) fontSize = fontSz.toDouble() * 72 / QGuiApplication::primaryScreen()->physicalDotsPerInchY();
 
     QString fontColorText = element.attribute(aFill);
     if (!fontColorText.isNull()) fontColor = colorFromString(fontColorText);
@@ -667,7 +670,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
 
 
     qreal fontSize = 12;
-    QColor fontColor(qApp->palette().foreground().color());
+    QColor fontColor(qApp->palette().windowText().color());
     QString fontFamily = "Arial";
     QString fontStretch = "normal";
     bool italic = false;
@@ -678,7 +681,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
 
     QFont startFont(fontFamily, fontSize, fontWeight, italic);
     height = QFontMetrics(startFont).height();
-    width = QFontMetrics(startFont).width(element.text()) + 5;
+    width = QFontMetrics(startFont).horizontalAdvance(element.text()) + 5;
 
     QSvgGenerator *generator = createSvgGenerator(width, height);
     QPainter painter;
@@ -746,11 +749,11 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTSpan(const QDomElement &parent
 
             QDomCharacterData textData = curNode.toCharacterData();
             QString text = textData.data().trimmed();
-//            width = painter.fontMetrics().width(text);
+//            width = painter.fontMetrics().horizontalAdvance(text);
             //get bounding rect to obtain desired text height
             lastDrawnTextBoundingRect = painter.boundingRect(QRectF(curX, curY, width, height - curY), textAlign|Qt::TextWordWrap, text);
             painter.drawText(curX, curY, width, lastDrawnTextBoundingRect.height(), textAlign|Qt::TextWordWrap, text);
-            curX += lastDrawnTextBoundingRect.x() + lastDrawnTextBoundingRect.width();
+            curX += lastDrawnTextBoundingRect.x() + lastDrawnTextBoundingRect.horizontalAdvance();
         } else if (curNode.nodeType() == QDomNode::ElementNode
                    && curNode.toElement().tagName() == tBreak) {
 
@@ -803,7 +806,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
     QTextCharFormat textFormat;
      // default values
     textFormat.setFontPointSize(12);
-    textFormat.setForeground(qApp->palette().foreground().color());
+    textFormat.setForeground(qApp->palette().windowText().color());
     textFormat.setFontFamily("Arial");
     textFormat.setFontItalic(false);
     textFormat.setFontWeight(QFont::Normal);
@@ -924,7 +927,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgFlash(const QDomElement &ele
     }
 
     QString flashUrl = UBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(flashPath, tmpFlashDir, "application/x-shockwave-flash"
-                                                            ,QSize(mCurrentSceneRect.width(), mCurrentSceneRect.height()));
+                                                            ,QSize(mCurrentSceneRect.horizontalAdvance(), mCurrentSceneRect.height()));
     UBGraphicsWidgetItem *flashItem = mCurrentScene->addW3CWidget(QUrl::fromLocalFile(flashUrl));
     flashItem->setSourceUrl(urlPath);
 
@@ -994,7 +997,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
     if (!textTransform.isNull()) {
         transform = transformFromString(textTransform, audioItem);
     }
-    repositionSvgItem(audioItem, audioItem->boundingRect().width(), audioItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
+    repositionSvgItem(audioItem, audioItem->boundingRect().horizontalAdvance(), audioItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, audioItem);
 
     if (mGSectionContainer)
@@ -1049,7 +1052,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
     if (!textTransform.isNull()) {
         transform = transformFromString(textTransform, videoItem);
     }
-    repositionSvgItem(videoItem, videoItem->boundingRect().width(), videoItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
+    repositionSvgItem(videoItem, videoItem->boundingRect().horizontalAdvance(), videoItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, videoItem);
 
     if (mGSectionContainer)
@@ -1199,7 +1202,7 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
 
 
 
-    for (const QString& key : strokesGroupsContainer.keys().toSet())
+    for (const QString& key : QSet<QString>(strokesGroupsContainer.keys().begin(), strokesGroupsContainer.keys().end()))
     {
         UBGraphicsStrokesGroup* pStrokesGroup = new UBGraphicsStrokesGroup();
         UBGraphicsStroke *currentStroke = new UBGraphicsStroke();
@@ -1311,7 +1314,7 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
 
     QRectF itemBounds = item->boundingRect();
 
-    qreal xScale = width  / itemBounds.width();
+    qreal xScale = width  / itemBounds.horizontalAdvance();
     qreal yScale = height / itemBounds.height();
 
     qreal fullScaleX = mVBTransFactor * xScale;
@@ -1342,7 +1345,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::createNewScene()
         mShiftVector = -mViewBox.center();
     }
     mCurrentSceneRect = mViewBox;
-    mVBTransFactor = qMin(mCurrentScene->normalizedSceneRect().width()  / mViewPort.width(),
+    mVBTransFactor = qMin(mCurrentScene->normalizedSceneRect().horizontalAdvance()  / mViewPort.horizontalAdvance(),
                           mCurrentScene->normalizedSceneRect().height() / mViewPort.height());
     return true;
 }
@@ -1429,7 +1432,7 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
             if (item)
             {    
                 item->setTransformOriginPoint(QPointF(0, 0));
-                item->rotate(angle);
+                item->setRotation(angle);
             }
             continue;
         };
@@ -1444,7 +1447,7 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
             if (item)
             {                
                 item->setTransformOriginPoint(QPointF(dxr, dyr)-item->pos());
-                item->rotate(angle);
+                item->setRotation(angle);
             }
             continue;
         }
@@ -1472,7 +1475,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::getViewBoxDimenstions(const QString&
             mViewBox = QRectF(capturedTexts.at(0).toDouble(), capturedTexts.at(1).toDouble(), capturedTexts.at(2).toDouble(), capturedTexts.at(3).toDouble());
             mViewPort = mViewBox;
             mViewPort.translate(- mViewPort.center());
-            mViewBoxCenter.setX(mViewBox.width() / 2);
+            mViewBoxCenter.setX(mViewBox.horizontalAdvance() / 2);
             mViewBoxCenter.setY(mViewBox.height() / 2);
 
             return true;
@@ -1489,7 +1492,7 @@ QSvgGenerator* UBCFFSubsetAdaptor::UBCFFSubsetReader::createSvgGenerator(qreal w
     QSvgGenerator* generator = new QSvgGenerator();
 //    qWarning() << QString("Making generator with file %1, size (%2, %3) and viewbox (%4 %5 %6 %7)").arg(mTempFilePath)
 //        .arg(width).arg(height).arg(0.0).arg(0.0).arg(width).arg(width);
-    generator->setResolution(QApplication::desktop()->physicalDpiY());
+    generator->setResolution(QGuiApplication::primaryScreen()->physicalDotsPerInchY());
     generator->setFileName(mTempFilePath);
     generator->setSize(QSize(width, height));
     generator->setViewBox(QRectF(0, 0, width, height));
