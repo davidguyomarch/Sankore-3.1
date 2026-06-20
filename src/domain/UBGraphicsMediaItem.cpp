@@ -90,7 +90,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
         mAudioOutput = new QAudioOutput(this);
         mVideoWidget = new QVideoWidget(); // owned and destructed by the scene ...
-        mMediaObject->setAudioOutput(mVideoWidget);
+        mMediaObject->setVideoOutput(mVideoWidget);
 
         if(mVideoWidget->sizeHint() == QSize(1,1)){
             mVideoWidget->resize(320,240);
@@ -237,7 +237,7 @@ void UBGraphicsMediaItem::hasMediaChanged(bool hasMedia)
     if(hasMedia && mMediaObject->isSeekable())
     {
     Q_UNUSED(hasMedia);
-    mMediaObject->seek(mInitialPos);
+    mMediaObject->setPosition(mInitialPos);
         UBGraphicsMediaItemDelegate *med = dynamic_cast<UBGraphicsMediaItemDelegate *>(Delegate());
         if (med)
             med->updateTicker(initialPos());
