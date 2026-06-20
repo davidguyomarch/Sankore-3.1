@@ -80,7 +80,7 @@ void UBResources::buildFontList()
 {
     QString customFontDirectory = UBSettings::settings()->applicationCustomFontDirectory();
     QStringList fontFiles = UBFileSystemUtils::allFiles(customFontDirectory);
-    for (const auto& QString fontFile : fontFiles){
+    for (const QString& fontFile : fontFiles){
         int fontId = QFontDatabase::addApplicationFont(fontFile);
         mCustomFontList << QFontDatabase::applicationFontFamilies(fontId);
     }

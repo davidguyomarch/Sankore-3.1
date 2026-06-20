@@ -634,7 +634,7 @@ void UBGraphicsWidgetItem::injectInlineJavaScript()
         sInlineJavaScriptLoaded = true;
     }
 
-    for (const auto& QString script : sInlineJavaScripts)
+    for (const QString& script : sInlineJavaScripts)
         page()->mainFrame()->evaluateJavaScript(script);
 }
 
@@ -808,12 +808,12 @@ void UBGraphicsAppleWidgetItem::copyItemParameters(UBItem *copy) const
     UBGraphicsAppleWidgetItem *cp = dynamic_cast<UBGraphicsAppleWidgetItem*>(copy);
     if (cp)
     {
-        for (const auto& QString key : mPreferences.keys())
+        for (const QString& key : mPreferences.keys())
         {
             cp->setPreference(key, mPreferences.value(key));
         }
 
-        for (const auto& QString key : mDatastore.keys())
+        for (const QString& key : mDatastore.keys())
         {
             cp->setDatastoreEntry(key, mDatastore.value(key));
         }
@@ -1286,7 +1286,7 @@ void UBGraphicsW3CWidgetItem::loadNPAPIWrappersTemplates()
 
         qDebug() << etcDir.entryList().count();
 
-        for (const auto& QString fileName : etcDir.entryList()) {
+        for (const QString& fileName : etcDir.entryList()) {
             if (fileName.startsWith("npapi-wrapper") && (fileName.endsWith(".htm") || fileName.endsWith(".html"))) {
 
                 QString htmlContent = UBFileSystemUtils::readTextFile(etcPath + fileName);
@@ -1355,12 +1355,12 @@ void UBGraphicsW3CWidgetItem::copyItemParameters(UBItem *copy) const
 
         cp->resize(this->size());
 
-        for (const auto& QString key : UBGraphicsWidgetItem::preferences().keys())
+        for (const QString& key : UBGraphicsWidgetItem::preferences().keys())
         {
             cp->setPreference(key, UBGraphicsWidgetItem::preferences().value(key));
         }
 
-        for (const auto& QString key : mDatastore.keys())
+        for (const QString& key : mDatastore.keys())
         {
             cp->setDatastoreEntry(key, mDatastore.value(key));
         }
@@ -1385,7 +1385,7 @@ void UBGraphicsW3CWidgetItem::keyPressEvent(QKeyEvent *event)
         //so we need to make a copy and set it.
         QMimeData *mimeCopy = new QMimeData();
 
-        for (const auto& QString format : mimeData->formats()){
+        for (const QString& format : mimeData->formats()){
             QByteArray data = mimeData->data(format);
             mimeCopy->setData(format, data);
         }

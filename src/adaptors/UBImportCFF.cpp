@@ -70,7 +70,7 @@ QString UBImportCFF::importFileFilter()
     QStringList formats = supportedExtentions();
     bool isFirst = true;
 
-    for (const auto& QString format : formats)
+    for (const QString& format : formats)
     {
             if(isFirst)
                     isFirst = false;

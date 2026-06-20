@@ -669,9 +669,9 @@ void UBWebController::captureEduMedia()
         {
             QWebElementCollection objects = webView->page()->currentFrame()->findAllElements("object");
 
-            for (const auto& QWebElement object : objects)
+            for (const QWebElement& object : objects)
             {
-                for (const auto& QWebElement param : object.findAll("param"))
+                for (const QWebElement& param : object.findAll("param"))
                 {
                     if(param.attribute("name") == "flashvars")
                     {
@@ -682,7 +682,7 @@ void UBWebController::captureEduMedia()
 
                         QStringList flashVars = value.split("&");
 
-                        for (const auto& QString flashVar : flashVars)
+                        for (const QString& flashVar : flashVars)
                         {
                             QStringList var = flashVar.split("=");
 
@@ -724,7 +724,7 @@ bool UBWebController::isOEmbedable(const QUrl& pUrl)
 {
     QString urlAsString = pUrl.toString();
 
-    for (const auto& QString provider : mOEmbedProviders)
+    for (const QString& provider : mOEmbedProviders)
     {
         if(urlAsString.contains(provider))
         {
@@ -836,7 +836,7 @@ void UBWebController::onOEmbedParsed(QVector<sOEmbedContent> contents)
 {
     QList<QUrl> urls;
 
-    for (const auto& sOEmbedContent cnt : contents){
+    for (const sOEmbedContent& cnt : contents){
         urls << QUrl(cnt.url);
     }
 

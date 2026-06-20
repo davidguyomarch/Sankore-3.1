@@ -62,7 +62,7 @@ QList<UBWebKitUtils::HtmlObject> UBWebKitUtils::objectsInFrameByTag(QWebEnginePa
 
             if(tagName == "embed" || tagName == "object" || tagName.contains("frame")){
                 QStringList urlsToCheck = getUrls(baseUrl,element);
-                for (const auto& QString url : urlsToCheck){
+                for (const QString& url : urlsToCheck){
                     QString name = widgetNameFromUrl(url);
                     QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(url);
                     if(!name.isEmpty() && !mimeType.isEmpty()){
@@ -152,7 +152,7 @@ QStringList UBWebKitUtils::getArgumentsValues(QString& string)
 {
     QStringList result;
     QStringList arguments = string.split("?");
-    for (const auto& QString eachValue : arguments){
+    for (const QString& eachValue : arguments){
         QStringList keyValueString = eachValue.split("=");
         if(keyValueString.count() == 2)
             result << keyValueString.at(1);
@@ -164,7 +164,7 @@ QStringList UBWebKitUtils::getArgumentsValues(QString& string)
 QStringList UBWebKitUtils::validUrl(QUrl& baseUrl,QStringList& list)
 {
     QStringList result;
-    for (const auto& QString eachString : list){
+    for (const QString& eachString : list){
         QUrl url(eachString);
         if(url.isValid() && !url.isRelative())
             result << eachString;

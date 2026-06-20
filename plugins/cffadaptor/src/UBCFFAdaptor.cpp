@@ -797,7 +797,7 @@ QString UBCFFAdaptor::UBToCFFConverter::getSrcContentFolderName(QString href)
 QString UBCFFAdaptor::UBToCFFConverter::getFileNameFromPath(const QString sPath)
 {
     QString sRet;
-    QStringList sl = sPath.split("/",QString::SkipEmptyParts);
+    QStringList sl = sPath.split("/",Qt::SkipEmptyParts);
 
     if (0 < sl.count())
     {
@@ -820,7 +820,7 @@ QString UBCFFAdaptor::UBToCFFConverter::getFileNameFromPath(const QString sPath)
 
 QString UBCFFAdaptor::UBToCFFConverter::getExtentionFromFileName(const QString &filename)
 {
-    QStringList sl = filename.split("/",QString::SkipEmptyParts);
+    QStringList sl = filename.split("/",Qt::SkipEmptyParts);
 
     if (0 < sl.count())
     {
@@ -867,7 +867,7 @@ QString UBCFFAdaptor::UBToCFFConverter::getElementTypeFromUBZ(const QDomElement 
             if (element.hasAttribute(aUBZHref))
                 sPath = element.attribute(aUBZHref);
 
-            QStringList tsl = sPath.split(".", QString::SkipEmptyParts);
+            QStringList tsl = sPath.split(".", Qt::SkipEmptyParts);
             if (0 < tsl.count())
             {
                 QString elementType = tsl.at(tsl.count()-1);
@@ -903,7 +903,7 @@ bool UBCFFAdaptor::UBToCFFConverter::itIsSupportedFormat(const QString &format) 
 {
     bool bRet;
 
-    QStringList tsl = format.split(".", QString::SkipEmptyParts);
+    QStringList tsl = format.split(".", Qt::SkipEmptyParts);
     if (0 < tsl.count())
         bRet = cffSupportedFileFormats.contains(tsl.at(tsl.count()-1).toLower());       
     else
@@ -1010,7 +1010,7 @@ QTransform UBCFFAdaptor::UBToCFFConverter::getTransformFromUBZ(const QDomElement
     ubzTransform.remove("(");
     ubzTransform.remove(")");
 
-    transformParameters = ubzTransform.split(",", QString::SkipEmptyParts);
+    transformParameters = ubzTransform.split(",", Qt::SkipEmptyParts);
 
     if (6 <= transformParameters.count())
     {
@@ -1229,12 +1229,12 @@ void UBCFFAdaptor::UBToCFFConverter::setCFFTextFromHTMLTextNode(const QDomElemen
                         for (int i = 0; i < attrCount; i++)
                         {
                             // html attributes like: style="font-size:40pt; color:"red";".
-                            QStringList cffAttributes = spanNode.attributes().item(i).nodeValue().split(";", QString::SkipEmptyParts);
+                            QStringList cffAttributes = spanNode.attributes().item(i).nodeValue().split(";", Qt::SkipEmptyParts);
                             {
                                 for (int i = 0; i < cffAttributes.count(); i++)
                                 {                       
                                     QString attr = cffAttributes.at(i).trimmed();
-                                    QStringList AttrVal = attr.split(":", QString::SkipEmptyParts);
+                                    QStringList AttrVal = attr.split(":", Qt::SkipEmptyParts);
                                     if(1 < AttrVal.count())
                                     {    
                                         QString sAttr = ubzAttrNameToCFFAttrName(AttrVal.at(0));
@@ -1816,10 +1816,10 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZText(const QDomElement &element, QM
             commonParams.remove(" ");
             commonParams.remove("'");
 
-            QStringList commonAttributes = commonParams.split(";", QString::SkipEmptyParts);
+            QStringList commonAttributes = commonParams.split(";", Qt::SkipEmptyParts);
             for (int i = 0; i < commonAttributes.count(); i++)
             {
-                QStringList AttrVal = commonAttributes.at(i).split(":", QString::SkipEmptyParts);
+                QStringList AttrVal = commonAttributes.at(i).split(":", Qt::SkipEmptyParts);
                 if (1 < AttrVal.count())
                 {                
                     QString sAttr = ubzAttrNameToCFFAttrName(AttrVal.at(0));

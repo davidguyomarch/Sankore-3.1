@@ -101,7 +101,7 @@ void UBThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsI
     mMimeType = pMimeType;
     mLabels = pLabels;
 
-    for (const auto& QGraphicsItem* it : mThumbnailsScene.items())
+    for (QGraphicsItem* it : mThumbnailsScene.items())
     {
         mThumbnailsScene.removeItem(it, true);
     }
@@ -471,7 +471,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
             QList<QUrl> qlElements;
 
-            for (const auto& QGraphicsItem* item : selectedItems())
+            for (QGraphicsItem* item : selectedItems())
             {
                 if (mGraphicItems.contains(item))
                 {
@@ -685,7 +685,7 @@ void UBThumbnailWidget::selectItemAt(int pIndex, bool extend)
         itemToSelect = mGraphicItems.at(pIndex);
 
     if (!extend)
-    for (const auto& QGraphicsItem* item : items())
+    for (QGraphicsItem* item : items())
     {
         UBThumbnail *thumb = dynamic_cast<UBThumbnail*>(item);
         if (thumb && thumb->label())
@@ -720,7 +720,7 @@ void UBThumbnailWidget::selectItems(int startIndex, int count)
 
 void UBThumbnailWidget::selectAll()
 {
-    for (const auto& QGraphicsItem* item : mGraphicItems)
+    for (QGraphicsItem* item : mGraphicItems)
     {
         item->setSelected(true);
     }

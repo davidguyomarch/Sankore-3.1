@@ -47,7 +47,7 @@ UBFavoriteToolPalette::UBFavoriteToolPalette(QWidget* parent)
 
     QStringList favoritesToolUris = UBSettings::settings()->favoritesNativeToolUris->get().toStringList();
 
-    for (const auto& QString uri : favoritesToolUris)
+    for (const QString& uri : favoritesToolUris)
     {
         UBToolsManager::UBToolDescriptor desc = UBToolsManager::manager()->toolByID(uri);
 
@@ -66,12 +66,12 @@ UBFavoriteToolPalette::UBFavoriteToolPalette(QWidget* parent)
     QStringList favoritesSubDirs =  favoritesDir.entryList(QStringList(), QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks, QDir::Name);
     QStringList appPathes;
 
-    for (const auto& QString subDirName : favoritesSubDirs)
+    for (const QString& subDirName : favoritesSubDirs)
     {
         appPathes << favoritesDir.path() + "/" + subDirName;
     }
 
-    for (const auto& QString widgetPath : appPathes)
+    for (const QString& widgetPath : appPathes)
     {
         QAction *action = new QAction(UBGraphicsWidgetItem::widgetName(QUrl::fromLocalFile(widgetPath)), this);
         action->setData(QUrl::fromLocalFile(widgetPath));
@@ -86,7 +86,7 @@ UBFavoriteToolPalette::UBFavoriteToolPalette(QWidget* parent)
     {
         QStringList toolsIDs = UBToolsManager::manager()->allToolIDs();
 
-        for (const auto& QString id : favoritesToolUris)
+        for (const QString& id : favoritesToolUris)
             toolsIDs.removeAll(id);
 
         while(toolsIDs.size() > 0 && toolsActions.size() < 4)
@@ -107,7 +107,7 @@ UBFavoriteToolPalette::UBFavoriteToolPalette(QWidget* parent)
 
     int i = 0;
 
-    for (const auto& QAction* action : toolsActions)
+    for (QAction* action : toolsActions)
     {
         UBActionPaletteButton* button = createPaletteButton(action, container);
         gridLayout->addWidget(button, i / 4, i % 4);

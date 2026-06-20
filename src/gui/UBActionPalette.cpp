@@ -80,7 +80,7 @@ void UBActionPalette::setActions(QList<QAction*> actions)
 {
     mMapActionToButton.clear();
 
-    for (const auto& QAction* action : actions)
+    for (QAction* action : actions)
     {
         addAction(action);
     }

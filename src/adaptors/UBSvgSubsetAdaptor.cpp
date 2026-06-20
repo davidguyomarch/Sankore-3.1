@@ -25,6 +25,8 @@
 
 #include <QtCore>
 #include <QtXml>
+#include <QScreen>
+#include <QGuiApplication>
 
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
@@ -313,7 +315,7 @@ QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 
             if (xml.isStartElement())
             {
-                if (xml.name() == "svg")
+                if (xml.name() == QLatin1String("svg"))
                 {
                     QStringRef svgSceneUuid = xml.attributes().value(UBSettings::uniboardDocumentNamespaceUri, "uuid");
                     if (svgSceneUuid.isNull())
@@ -396,7 +398,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             QUuid uuidFromSvg = getUuidFromSvg();
 
 
-            if (mXmlReader.name() == "svg")
+            if (mXmlReader.name() == QLatin1String("svg"))
             {
                 if (!mScene)
                 {
@@ -447,7 +449,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                 if (!svgViewBox.isNull())
                 {
-                    QStringList ts = svgViewBox.toString().split(QLatin1Char(' '), QString::SkipEmptyParts);
+                    QStringList ts = svgViewBox.toString().split(QLatin1Char(' '), Qt::SkipEmptyParts);
 
                     QRectF sceneRect;
                     if (ts.size() >= 4)
@@ -470,7 +472,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 if (!pageDpi.isNull())
                     UBSettings::settings()->pageDpi->set(pageDpi.toString());
                 else
-                    UBSettings::settings()->pageDpi->set(UBApplication::desktop()->physicalDpiX());
+                    UBSettings::settings()->pageDpi->set(QGuiApplication::primaryScreen()->physicalDotsPerInchX());
 
                 bool darkBackground = false;
                 bool crossedBackground = false;
@@ -490,7 +492,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 QStringRef pageNominalSize = mXmlReader.attributes().value(mNamespaceUri, "nominal-size");
                 if (!pageNominalSize.isNull())
                 {
-                    QStringList ts = pageNominalSize.toString().split(QLatin1Char('x'), QString::SkipEmptyParts);
+                    QStringList ts = pageNominalSize.toString().split(QLatin1Char('x'), Qt::SkipEmptyParts);
 
                     QSize sceneSize;
                     if (ts.size() >= 2)
@@ -507,7 +509,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                 }
             }
-            else if (mXmlReader.name() == "g")
+            else if (mXmlReader.name() == QLatin1String("g"))
             {
                 strokesGroup = new UBGraphicsStrokesGroup();
                 graphicsItemFromSvg(strokesGroup);
@@ -534,17 +536,17 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     mGroupLightBackgroundColor.setNamedColor(ubFillOnLightBackground.toString());
                 }
             }
-            else if (mXmlReader.name() == "polygon" || mXmlReader.name() == "line")
+            else if (mXmlReader.name() == QLatin1String("polygon") || mXmlReader.name() == QLatin1String("line"))
             {
                 UBGraphicsPolygonItem* polygonItem = 0;
 
                 QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
 
-                if (mXmlReader.name() == "polygon")
+                if (mXmlReader.name() == QLatin1String("polygon"))
                 {
                     polygonItem = polygonItemFromPolygonSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
                 }
-                else if (mXmlReader.name() == "line")
+                else if (mXmlReader.name() == QLatin1String("line"))
                 {
                     polygonItem = polygonItemFromLineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
                 }
@@ -597,7 +599,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     group->addToGroup(polygonItem);
                 }
             }
-            else if (mXmlReader.name() == "polyline")
+            else if (mXmlReader.name() == QLatin1String("polyline"))
             {
                 QStringRef s = mXmlReader.attributes().value(UBSettings::uniboardDocumentNamespaceUri, "shapePath"); // EV-7 - ALTI/AOU - 20140102
                 if (!s.isNull())
@@ -662,7 +664,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     }
                 }
             }
-            else if (mXmlReader.name() == "image")
+            else if (mXmlReader.name() == QLatin1String("image"))
             {
                 QStringRef imageHref = mXmlReader.attributes().value(nsXLink, "href");
 
@@ -745,7 +747,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     }
                 }
             }
-            else if (mXmlReader.name() == "audio")
+            else if (mXmlReader.name() == QLatin1String("audio"))
             {
                 UBGraphicsMediaItem* audioItem = audioItemFromSvg();
 
@@ -769,7 +771,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     audioItem->mediaObject()->pause();
                 }
             }
-            else if (mXmlReader.name() == "video")
+            else if (mXmlReader.name() == QLatin1String("video"))
             {
                 UBGraphicsMediaItem* videoItem = videoItemFromSvg();
 
@@ -793,7 +795,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     videoItem->mediaObject()->pause();
                 }
             }
-            else if (mXmlReader.name() == "text")//This is for backward compatibility with proto text field prior to version 4.3
+            else if (mXmlReader.name() == QLatin1String("text"))//This is for backward compatibility with proto text field prior to version 4.3
             {
                 UBGraphicsTextItem* textItem = textItemFromSvg();
 
@@ -813,7 +815,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     textItem->show();
                 }
             }
-            else if (mXmlReader.name() == "curtain")
+            else if (mXmlReader.name() == QLatin1String("curtain"))
             {
                 UBGraphicsCurtainItem* mask = curtainItemFromSvg();
 
@@ -829,7 +831,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         mask->setUuid(uuidFromSvg);
                 }
             }
-            else if (mXmlReader.name() == "ruler")
+            else if (mXmlReader.name() == QLatin1String("ruler"))
             {
 
                 QString ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value").toString();
@@ -846,7 +848,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 }
 
             }
-            else if (mXmlReader.name() == "compass")
+            else if (mXmlReader.name() == QLatin1String("compass"))
             {
                 UBGraphicsCompass *compass = compassFromSvg();
 
@@ -859,7 +861,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         UBGraphicsItem::assignZValue(compass, zFromSvg);
                 }
             }
-            else if (mXmlReader.name() == "protractor")
+            else if (mXmlReader.name() == QLatin1String("protractor"))
             {
                 UBGraphicsProtractor *protractor = protractorFromSvg();
 
@@ -872,7 +874,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         UBGraphicsItem::assignZValue(protractor, zFromSvg);
                 }
             }
-            else if (mXmlReader.name() == "triangle")
+            else if (mXmlReader.name() == QLatin1String("triangle"))
             {
                 UBGraphicsTriangle *triangle = triangleFromSvg();
 
@@ -885,7 +887,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         UBGraphicsItem::assignZValue(triangle, zFromSvg);
                 }
             }
-            else if (mXmlReader.name() == "cache")
+            else if (mXmlReader.name() == QLatin1String("cache"))
             {
                 UBGraphicsCache* cache = cacheFromSvg();
                 if(cache)
@@ -898,12 +900,12 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         UBGraphicsItem::assignZValue(cache, zFromSvg);
                 }
             }
-            else if (mXmlReader.name() == "linearGradient")
+            else if (mXmlReader.name() == QLatin1String("linearGradient"))
             {
                 currentGradient = linearGradiantFromSvg();
                 isGradient = true;
             }
-            else if (mXmlReader.name() == "ellipse") // EV-7 - ALTI/AOU - 20131231
+            else if (mXmlReader.name() == QLatin1String("ellipse")) // EV-7 - ALTI/AOU - 20131231
             {
                 QStringRef isShapeRect = mXmlReader.attributes().value(UBSettings::uniboardDocumentNamespaceUri, "shapeEllipse");
 
@@ -937,7 +939,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         item->setUuid(uuidFromSvg);
                 }
             }
-            else if (mXmlReader.name() == "rect") // EV-7 - ALTI/CFA - 20131231
+            else if (mXmlReader.name() == QLatin1String("rect")) // EV-7 - ALTI/CFA - 20131231
             {
                 QStringRef isShapeRect = mXmlReader.attributes().value(UBSettings::uniboardDocumentNamespaceUri, "shapeRect");
 
@@ -971,7 +973,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         item->setUuid(uuidFromSvg);
                 }
             }
-            else if (mXmlReader.name() == "foreignObject")
+            else if (mXmlReader.name() == QLatin1String("foreignObject"))
             {
                 QString href = mXmlReader.attributes().value(nsXLink, "href").toString();
                 QString src = mXmlReader.attributes().value(mNamespaceUri, "src").toString();
@@ -986,8 +988,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     UBGraphicsPDFItem* pdfItem = pdfItemFromPDF();
                     if (pdfItem)
                     {
-                        QDesktopWidget* desktop = UBApplication::desktop();
-                        qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+                        QScreen* desktop = QGuiApplication::primaryScreen();
+                        qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDotsPerInchY()) / 2;
                         qreal pdfScale = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
                         pdfItem->setScale(pdfScale);
                         pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -1063,8 +1065,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     if (textDelegate)
                     {
-                        QDesktopWidget* desktop = UBApplication::desktop();
-                        qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+                        QScreen* desktop = QGuiApplication::primaryScreen();
+                        qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDotsPerInchY()) / 2;
                         qreal textSizeMultiplier = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
                         textDelegate->scaleTextSize(textSizeMultiplier);
                     }
@@ -1090,14 +1092,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     qWarning() << "Ignoring unknown foreignObject:" << href;
                 }
             }
-            else if (currentWidget && (mXmlReader.name() == "preference"))
+            else if (currentWidget && (mXmlReader.name() == QLatin1String("preference")))
             {
                 QString key = mXmlReader.attributes().value("key").toString();
                 QString value = mXmlReader.attributes().value("value").toString();
 
                 currentWidget->setPreference(key, value);
             }
-            else if (currentWidget && (mXmlReader.name() == "datastoreEntry"))
+            else if (currentWidget && (mXmlReader.name() == QLatin1String("datastoreEntry")))
             {
                 QString key = mXmlReader.attributes().value("key").toString();
                 QString value = mXmlReader.attributes().value("value").toString();
@@ -1114,7 +1116,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
         }
         else if (mXmlReader.isEndElement())
         {
-            if (mXmlReader.name() == "g")
+            if (mXmlReader.name() == QLatin1String("g"))
             {
                 mGroupHasInfo = false;
                 mGroupDarkBackgroundColor = Qt::cyan;
@@ -1186,7 +1188,7 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup(U
             mXmlReader.readNext();
     }
 
-    for (const auto& QGraphicsItem* item : groupContainer)
+    for (QGraphicsItem* item : groupContainer)
         group->addToGroup(item,false);
 
     if(action && !isAnActionForStroke){
@@ -1299,8 +1301,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "dark-background", mScene->isDarkBackground() ? xmlTrue : xmlFalse);
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "crossed-background", mScene->isCrossedBackground() ? xmlTrue : xmlFalse);
 
-    QDesktopWidget* desktop = UBApplication::desktop();
-    mXmlWriter.writeAttribute("pageDpi", QString("%1").arg((desktop->physicalDpiX() + desktop->physicalDpiY()) / 2));
+    QScreen* desktop = QGuiApplication::primaryScreen();
+    mXmlWriter.writeAttribute("pageDpi", QString("%1").arg((desktop->physicalDpiX() + desktop->physicalDotsPerInchY()) / 2));
 
 
     mXmlWriter.writeStartElement("rect");
@@ -1360,7 +1362,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             bool isFirstItem = true;
             if(strokesGroupItem && strokesGroupItem->isVisible()){
                 // Add the polygons
-                for (const auto& QGraphicsItem* item : strokesGroupItem->childItems()){
+                for (QGraphicsItem* item : strokesGroupItem->childItems()){
                     UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
                     if(nullptr != poly){
                         polygonItemToSvgPolygon(poly, true, isFirstItem ? strokesGroupItem->Delegate()->action(): 0);
@@ -1482,7 +1484,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             }
 
             // Is the item an app?
-            UBGraphicsAppleWidgetItem *appleWidgetItem = qgraphicsitem_cast<UBGraphicsAppleWidgetItem*> (item);
+            UBGraphicsAppleWidgetItem *appleWidgetItem = dynamic_cast<UBGraphicsAppleWidgetItem*> (item);
             if (appleWidgetItem && appleWidgetItem->isVisible())
             {
                 graphicsAppleWidgetToSvg(appleWidgetItem);
@@ -1490,7 +1492,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             }
 
             // Is the item a W3C?
-            UBGraphicsW3CWidgetItem *w3cWidgetItem = qgraphicsitem_cast<UBGraphicsW3CWidgetItem*> (item);
+            UBGraphicsW3CWidgetItem *w3cWidgetItem = dynamic_cast<UBGraphicsW3CWidgetItem*> (item);
             if (w3cWidgetItem && w3cWidgetItem->isVisible())
             {
                 graphicsW3CWidgetToSvg(w3cWidgetItem);
@@ -1665,14 +1667,14 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         for (const auto& tIDataStorage* eachItem : dataStorageItems){
             if(eachItem->type == eElementType_START){
                 mXmlWriter.writeStartElement(eachItem->name);
-                for (const auto& QString key : eachItem->attributes.keys())
+                for (const QString& key : eachItem->attributes.keys())
                     mXmlWriter.writeAttribute(key,eachItem->attributes.value(key));
             }
             else if (eachItem->type == eElementType_END)
                 mXmlWriter.writeEndElement();
             else if (eachItem->type == eElementType_UNIQUE){
                 mXmlWriter.writeStartElement(eachItem->name);
-                for (const auto& QString key : eachItem->attributes.keys())
+                for (const QString& key : eachItem->attributes.keys())
                     mXmlWriter.writeAttribute(key,eachItem->attributes.value(key));
                 mXmlWriter.writeEndElement();
             }
@@ -1764,7 +1766,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
 
         curParent->appendChild(curGroupElement);
 
-        for (const auto& QGraphicsItem *item : groupItem->childItems()) {
+        for (QGraphicsItem *item : groupItem->childItems()) {
             QUuid tmpUuid = UBGraphicsScene::getPersonalUuid(item);
             if (!tmpUuid.isNull()) {
                 if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count()) {
@@ -1963,11 +1965,11 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
     if (!svgPoints.isNull())
     {
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
-                         QString::SkipEmptyParts);
+                         Qt::SkipEmptyParts);
 
         for (const auto& const QString sPoint : ts)
         {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
 
             if (sCoord.size() == 2)
             {
@@ -2258,13 +2260,13 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
     if (!svgPoints.isNull())
     {
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
-                         QString::SkipEmptyParts);
+                         Qt::SkipEmptyParts);
 
         QList<QPointF> points;
 
         for (const auto& const QString sPoint : ts)
         {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
 
             if (sCoord.size() == 2)
             {
@@ -2915,7 +2917,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
     //persists widget state
     QMap<QString, QString> preferences = item->preferences();
 
-    for (const auto& QString key : preferences.keys())
+    for (const QString& key : preferences.keys())
     {
         QString value = preferences.value(key);
 
@@ -2930,7 +2932,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
     //persists datasore state
     QMap<QString, QString> datastore = item->datastoreEntries();
 
-    for (const auto& QString key : datastore.keys())
+    for (const QString& key : datastore.keys())
     {
         QString value = datastore.value(key);
 
@@ -3101,7 +3103,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
 
     QString text;
 
-    while (!(mXmlReader.isEndElement() && (mXmlReader.name() == "font" || mXmlReader.name() == "foreignObject")))
+    while (!(mXmlReader.isEndElement() && (mXmlReader.name() == QLatin1String("font") || mXmlReader.name() == QLatin1String("foreignObject"))))
     {
         if (mXmlReader.hasError())
         {
@@ -3114,7 +3116,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
         {
             //for new documents from version 4.5.0
             if (mFileVersion >= 40500) {
-                if (mXmlReader.name() == "itemTextContent") {
+                if (mXmlReader.name() == QLatin1String("itemTextContent")) {
                     text = mXmlReader.readElementText();
 
                     textItem->setHtml(text);
@@ -3149,7 +3151,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
 
             //tracking for backward capability with older versions
             }
-            else if (mXmlReader.name() == "font")  {
+            else if (mXmlReader.name() == QLatin1String("font"))  {
                 mIsOldVersionFileWithText = true;
                 QFont font = textItem->font();
 
@@ -3160,7 +3162,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                 }
                 QStringRef fontStyle = mXmlReader.attributes().value("style");
                 if (!fontStyle.isNull()) {
-                    for (const auto& QString styleToken : fontStyle.toString().split(";")) {
+                    for (const QString& styleToken : fontStyle.toString().split(";")) {
                         styleToken = styleToken.trimmed();
                         if (styleToken.startsWith(sFontSizePrefix) && styleToken.endsWith(sPixelUnit)) {
                             int fontSize = styleToken.mid(
@@ -3196,7 +3198,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                     textItem->setDefaultTextColor(textColor);
                 }
 
-                while (!(mXmlReader.isEndElement() && mXmlReader.name() == "font")) {
+                while (!(mXmlReader.isEndElement() && mXmlReader.name() == QLatin1String("font"))) {
                     if (mXmlReader.hasError()) {
                         break;
                     }
@@ -3205,7 +3207,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                         text += mXmlReader.text().toString();
                     }
 
-                    if (mXmlReader.isStartElement() && mXmlReader.name() == "br") {
+                    if (mXmlReader.isStartElement() && mXmlReader.name() == QLatin1String("br")) {
                         text += "\n";
                     }
                 }
@@ -3873,11 +3875,11 @@ UBAbstractGraphicsPathItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::shapePathFrom
     if (pathItem && !svgPoints.isNull())
     {
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
-                         QString::SkipEmptyParts);
+                         Qt::SkipEmptyParts);
 
         for (const auto& const QString sPoint : ts)
         {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
 
             if (sCoord.size() == 2)
             {
@@ -3941,11 +3943,11 @@ UBEditableGraphicsRegularShapeItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::shape
     if (!svgPoints.isNull())
     {
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
-                         QString::SkipEmptyParts);
+                         Qt::SkipEmptyParts);
 
         for (const auto& const QString sPoint : ts)
         {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
 
             if (sCoord.size() == 2)
             {
@@ -4179,7 +4181,7 @@ void UBSvgSubsetAdaptor::convertPDFObjectsToImages(UBDocumentProxy* proxy)
         {
             bool foundPDFItem = false;
 
-            for (const auto& QGraphicsItem* item : scene->items())
+            for (QGraphicsItem* item : scene->items())
             {
                 UBGraphicsPDFItem *pdfItem = dynamic_cast<UBGraphicsPDFItem*>(item);
 
@@ -4214,7 +4216,7 @@ void UBSvgSubsetAdaptor::convertSvgImagesToImages(UBDocumentProxy* proxy)
         {
             bool foundSvgItem = false;
 
-            for (const auto& QGraphicsItem* item : scene->items())
+            for (QGraphicsItem* item : scene->items())
             {
                 UBGraphicsSvgItem *svgItem = dynamic_cast<UBGraphicsSvgItem*>(item);
 

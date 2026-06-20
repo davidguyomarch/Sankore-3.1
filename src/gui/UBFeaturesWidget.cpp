@@ -1456,7 +1456,7 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
         }
     } else if (mimeData->hasUrls()) {
         QList<QUrl> urlList = mimeData->urls();
-        for (const auto& QUrl curUrl : urlList) {
+        for (const QUrl& curUrl : urlList) {
             qDebug() << "URl catched is " << curUrl.toLocalFile();
             curController->moveExternalData(curUrl, parentFeature);
         }

@@ -27,6 +27,8 @@
 #include <QApplication>
 #include <QPainter>
 #include <QtXml>
+#include <QScreen>
+#include <QGuiApplication>
 
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
@@ -309,10 +311,9 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
 
     if (!sizeFound)
     {
-        QDesktopWidget* dw = qApp->desktop();
-        int controlScreenIndex = dw->primaryScreen();
+        QScreen* primaryScreen = QGuiApplication::primaryScreen();
 
-        QSize docSize = dw->screenGeometry(controlScreenIndex).size();
+        QSize docSize = primaryScreen->geometry().size();
         docSize.setHeight(docSize.height() - 70); // 70 = toolbar height
 
         qWarning() << "Document size not found, using default view size" << docSize;

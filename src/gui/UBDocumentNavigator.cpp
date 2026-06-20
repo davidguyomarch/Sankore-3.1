@@ -88,7 +88,7 @@ UBDocumentNavigator::~UBDocumentNavigator()
 void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 {
     mThumbsWithLabels.clear();
-    for (const auto& QGraphicsItem* it : mScene->items())
+    for (QGraphicsItem* it : mScene->items())
     {
         mScene->removeItem(it);
         delete it;

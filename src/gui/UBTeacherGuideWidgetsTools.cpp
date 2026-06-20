@@ -435,7 +435,7 @@ void UBTGAdaptableText::insertFromMimeData(const QMimeData *source)
             plainText = source->text();
     if (source->hasUrls())
     {
-        for (const auto& QUrl url : source->urls())
+        for (const QUrl& url : source->urls())
         {
             plainText = url.toString();
         }

@@ -231,7 +231,7 @@ bool UBFileSystemUtils::isPathMatch(QString path, QString source)
 
 void UBFileSystemUtils::deleteAllTempDirCreatedDuringSession()
 {
-    for (const auto& QString dirPath : sTempDirToCleanUp)
+    for (const QString& dirPath : sTempDirToCleanUp)
     {
         qWarning() << "will delete" << dirPath;
 
@@ -262,7 +262,7 @@ QStringList UBFileSystemUtils::allFiles(const QString& pDirPath, bool isRecursiv
 
     QDir dir(pDirPath);
 
-    for (const auto& QFileInfo dirContent, dir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot  : QDir::Name))
+    for (const QFileInfo& dirContent, dir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot  : QDir::Name))
     {
         if (isRecursive && dirContent.isDir())
         {
@@ -294,7 +294,7 @@ bool UBFileSystemUtils::deleteFilesContaining(const QString& pDirPath, const QSt
     QDir dir(pDirPath);
 
     if (dir.exists())
-        for (const auto& QString dirContent, dir.entryList(QDir::Files | QDir::NoDotAndDotDot  : QDir::Name))
+        for (const QString& dirContent, dir.entryList(QDir::Files | QDir::NoDotAndDotDot  : QDir::Name))
             if (dirContent.contains(pFileName))
                 QFile::remove(pDirPath + "/" + dirContent);
 
@@ -689,7 +689,7 @@ QString UBFileSystemUtils::getFirstExistingFileFromList(const QString& path, con
         fullpath += "/";
     }
 
-    for (const auto& QString filename : files)
+    for (const QString& filename : files)
     {
         QFile file;
 
@@ -715,7 +715,7 @@ bool UBFileSystemUtils::compressDirInZip(const QDir& pDir, const QString& pDestP
     filters << "*.svg";
     QFileInfoList pageFiles = pDir.entryInfoList(filters);
 
-    for (const auto& QFileInfo file : files)
+    for (const QFileInfo& file : files)
     {
         if (file.isDir())
         {

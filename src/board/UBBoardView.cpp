@@ -1686,7 +1686,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
                 const UBFeaturesMimeData *internalMimeData = qobject_cast<const UBFeaturesMimeData*>(event->mimeData());
                 if (internalMimeData)
                 {
-                    for (const auto& QUrl url : urls)
+                    for (const QUrl& url : urls)
                         textItem->insertImage(url.toLocalFile());
                 }
                 return;

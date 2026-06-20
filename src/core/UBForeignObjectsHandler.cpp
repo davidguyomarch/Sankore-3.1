@@ -81,7 +81,7 @@ static bool rm_r(const QString &rmPath)
         return true;
     } else if (fi.isDir()) {
         QFileInfoList fList = QDir(rmPath).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-        for (const auto& QFileInfo sub : fList) {
+        for (const QFileInfo& sub : fList) {
             rm_r(sub.absoluteFilePath());
         }
         if (!QDir().rmdir(rmPath)) {
@@ -129,7 +129,7 @@ static bool cp_rf(const QString &what, const QString &where)
         QDir().mkpath(where);
 
         QFileInfoList fList = QDir(what).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-        for (const auto& QFileInfo sub : fList) {
+        for (const QFileInfo& sub : fList) {
             if (!cp_rf(sub.absoluteFilePath(), where + "/" + sub.fileName()))
             return false;
         }
@@ -198,7 +198,7 @@ public:
 
         // Gathering information from svg files
         QFileInfoList svgInfos = QDir(mCurrentDir).entryInfoList(QStringList() << "*.svg", QDir::NoDotAndDotDot | QDir::Files);
-        for (const auto& QFileInfo svgInfo : svgInfos) {
+        for (const QFileInfo& svgInfo : svgInfos) {
             cureIdsFromSvgDom(createDomFromSvg(svgInfo.absoluteFilePath()));
         }
 
@@ -206,7 +206,7 @@ public:
         QVector<QString> deleteCandidates;
         findRedundandElements(deleteCandidates);
 
-        for (const auto& QString key : deleteCandidates) {
+        for (const QString& key : deleteCandidates) {
             QString delPath = mPresentIdsMap.value(key);
             if (delPath.isNull()) {
                 continue;
@@ -234,7 +234,7 @@ private:
     void cleanTrash()
     {
         QFileInfoList ifs = QDir(mCurrentDir).entryInfoList(trashFilter, QDir::NoDotAndDotDot | QDir::Files);
-        for (const auto& QFileInfo ifo : ifs) {
+        for (const QFileInfo& ifo : ifs) {
             rm_r(ifo.absoluteFilePath());
         }
     }
@@ -260,8 +260,8 @@ private:
     void fitIdsFromFileSystem()
     {
         QString absPrefix = mCurrentDir + "/";
-        QStringList dirsList = scanDirs.split(",", QString::SkipEmptyParts);
-        for (const auto& QString dirName : dirsList) {
+        QStringList dirsList = scanDirs.split(",", Qt::SkipEmptyParts);
+        for (const QString& dirName : dirsList) {
             QString absPath = absPrefix + dirName;
             if (!QFile::exists(absPath)) {
                 continue;
@@ -274,7 +274,7 @@ private:
     void fitIdsFromDir(const QString &scanDir)
     {
         QFileInfoList fileList = QDir(scanDir).entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
-        for (const auto& QFileInfo nInfo : fileList) {
+        for (const QFileInfo& nInfo : fileList) {
             QString uid = strIdFrom(nInfo.fileName());
             if (uid.isNull()) {
                 continue;
@@ -614,7 +614,7 @@ UBForeighnObjectsHandler::~UBForeighnObjectsHandler()
 
 void UBForeighnObjectsHandler::cure(const QList<QUrl> &dirs)
 {
-    for (const auto& QUrl dir : dirs) {
+    for (const QUrl& dir : dirs) {
         cure(dir);
     }
 }

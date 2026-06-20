@@ -523,7 +523,7 @@ void UBWidgetUniboardAPI::returnStatus(const QString& method, const QString& sta
 void UBWidgetUniboardAPI::usedMethods(QStringList methods)
 {
     // TODO: Implement this method
-    for (const auto& QString method : methods)
+    for (const QString& method : methods)
     {
 
     }
@@ -777,7 +777,7 @@ bool UBWidgetUniboardAPI::removeFile(const QString &path)
     bool hasFoundWgtExtention = false;
 
     //find the path of the widget
-    for (const auto& QString fragment : url.split('/')){
+    for (const QString& fragment : url.split('/')){
         if(!hasFoundWgtExtention){
             wgtUrl += fragment + '/';
 
@@ -786,7 +786,7 @@ bool UBWidgetUniboardAPI::removeFile(const QString &path)
     }
 
     //then find the absolute path of the ressource
-    for (const auto& QString fragment : path.split('/')){
+    for (const QString& fragment : path.split('/')){
         if(fragment != ".." && fragment != "."){
             wgtUrl += fragment + '/';
         }

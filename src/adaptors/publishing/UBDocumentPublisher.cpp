@@ -213,7 +213,7 @@ void UBDocumentPublisher::updateGoogleMapApiKey()
 
     QString uniboardWebGoogleMapApiKey = UBSettings::settings()->uniboardWebGoogleMapApiKey->get().toString();
 
-    for (const auto& QFileInfo dirInfo : widgestDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot))
+    for (const QFileInfo& dirInfo : widgestDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot))
     {
         QString config = UBFileSystemUtils::readTextFile(dirInfo.absoluteFilePath() + "/config.xml").toLower();
 
@@ -221,7 +221,7 @@ void UBDocumentPublisher::updateGoogleMapApiKey()
         {
             QDir widgetDir(dirInfo.absoluteFilePath());
 
-            for (const auto& QFileInfo fileInfo : widgetDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot))
+            for (const QFileInfo& fileInfo : widgetDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot))
             {
                 QFile file(fileInfo.absoluteFilePath());
 
@@ -255,7 +255,7 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 
         QList<UBGraphicsW3CWidgetItem*> widgets;
 
-        for (const auto& QGraphicsItem* item : scene->items()){
+        for (QGraphicsItem* item : scene->items()){
             UBGraphicsW3CWidgetItem *widgetItem = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
 
             if(widgetItem){
@@ -314,7 +314,7 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 
                 jsonFile.write(QString("      \"preferences\": {\n").toUtf8());
 
-                for (const auto& QString key : preferences.keys())
+                for (const QString& key : preferences.keys())
                 {
                     QString sep = ",";
                     if (key == preferences.keys().last())
@@ -332,7 +332,7 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 
                 QMap<QString, QString> datastoreEntries = widget->datastoreEntries();
 
-                for (const auto& QString entry : datastoreEntries.keys())
+                for (const QString& entry : datastoreEntries.keys())
                 {
                     QString sep = ",";
                     if (entry == datastoreEntries.keys().last())
@@ -418,7 +418,7 @@ void UBDocumentPublisher::generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *
                             lines << "    widget.openUrl = function(url) { window.open(url); }";
                             lines << "    widget.preferences = new Array()";
 
-                            for (const auto& QString pref : preferences.keys())
+                            for (const QString& pref : preferences.keys())
                             {
                                 lines << "      widget.preferences['" + pref + "'] = '" + preferences.value(pref) + "';";
                             }
@@ -453,7 +453,7 @@ void UBDocumentPublisher::generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *
 
                             lines << "    uniboard.datastore = {};";
                             lines << "    uniboard.datastore.document = new Array();";
-                            for (const auto& QString entry : datastoreEntries.keys())
+                            for (const QString& entry : datastoreEntries.keys())
                             {
                                 lines << "      uniboard.datastore.document['" + entry + "'] = '" + datastoreEntries.value(entry) + "';";
                             }

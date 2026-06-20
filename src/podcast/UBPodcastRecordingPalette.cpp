@@ -52,7 +52,7 @@ UBPodcastRecordingPalette::UBPodcastRecordingPalette(QWidget *parent)
 
     addAction(UBApplication::mainWindow->actionPodcastConfig);
 
-    for (const auto& QWidget* menuWidget : UBApplication::mainWindow->actionPodcastConfig->associatedWidgets())
+    for (QWidget* menuWidget : UBApplication::mainWindow->actionPodcastConfig->associatedWidgets())
     {
         QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -64,14 +64,14 @@ UBPodcastRecordingPalette::UBPodcastRecordingPalette(QWidget *parent)
             tb->setPopupMode(QToolButton::InstantPopup);
             QMenu* menu = new QMenu(this);
 
-            for (const auto& QAction* audioInputAction : UBPodcastController::instance()->audioRecordingDevicesActions())
+            for (QAction* audioInputAction : UBPodcastController::instance()->audioRecordingDevicesActions())
             {
                 menu->addAction(audioInputAction);
             }
 
             menu->addSeparator();
 
-            for (const auto& QAction* videoSizeAction : UBPodcastController::instance()->videoSizeActions())
+            for (QAction* videoSizeAction : UBPodcastController::instance()->videoSizeActions())
             {
                 menu->addAction(videoSizeAction);
             }
@@ -80,7 +80,7 @@ UBPodcastRecordingPalette::UBPodcastRecordingPalette(QWidget *parent)
 
             QList<QAction*> podcastPublication = UBPodcastController::instance()->podcastPublicationActions();
 
-            for (const auto& QAction* publicationAction : podcastPublication)
+            for (QAction* publicationAction : podcastPublication)
             {
                 menu->addAction(publicationAction);
             }

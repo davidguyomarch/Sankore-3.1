@@ -128,7 +128,7 @@ void UBYouTubePublisher::postClientLoginResponse(bool success, const QByteArray&
     {
         QStringList lines = auth.split("\n");
 
-        for (const auto& QString line : lines)
+        for (const QString& line : lines)
         {
             if(line.startsWith("Auth="))
             {
@@ -286,7 +286,7 @@ QString UBYouTubePublisher::youtubeMetadata()
 
     metadata += QString("    <media:description type=\"plain\">%1</media:description>\n").arg(workingDescription);
 
-    for (const auto& QString cat : mCategories)
+    for (const QString& cat : mCategories)
     {
         metadata += QString("    <media:category scheme=\"http://gdata.youtube.com/schemas/2007/categories.cat\">%1</media:category>\n").arg(cat);
     }
@@ -324,7 +324,7 @@ UBYouTubePublishingDialog::UBYouTubePublishingDialog(const QString& videoFilePat
 
     category->clear();
     int index = 0;
-    for (const auto& QString cat : cats.keys())
+    for (const QString& cat : cats.keys())
     {
         category->addItem(cats.value(cat), cat);
         if(cat == "Education")

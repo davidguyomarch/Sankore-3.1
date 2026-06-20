@@ -266,7 +266,7 @@ void UBGraphicsTextItemDelegate::customize(QFontDialog &fontDialog)
 
             QStringList customFontList =  UBResources::resources()->customFontList();
             int index = 0;
-            for (const auto& QString dialogFontName : dialogFontNames){
+            for (const QString& dialogFontName : dialogFontNames){
                 if (safeWebFontNames.contains(dialogFontName, Qt::CaseInsensitive) || customFontList.contains(dialogFontName, Qt::CaseSensitive))
                     index++;
                 else

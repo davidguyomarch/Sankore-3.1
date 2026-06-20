@@ -53,7 +53,7 @@ UBGraphicsCache::UBGraphicsCache(UBGraphicsScene *scene) : QGraphicsRectItem()
     mHoleSize = UBSettings::settings()->casheLastHoleSize->get().toSize();
     
     QColor cacheColor;
-    QStringList colors = UBSettings::settings()->cacheColor->get().toString().split(" ", QString::SkipEmptyParts);
+    QStringList colors = UBSettings::settings()->cacheColor->get().toString().split(" ", Qt::SkipEmptyParts);
     if (colors.count())
     {
         if (3 == colors.count())

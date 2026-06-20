@@ -254,13 +254,13 @@ void UBSettings::init()
 
     QColor bgCrossColor;
     QStringList colors;
-    colors = userCrossDarkBackground->get().toString().split(" ", QString::SkipEmptyParts);
+    colors = userCrossDarkBackground->get().toString().split(" ", Qt::SkipEmptyParts);
     if (3 == colors.count())
         crossDarkBackground = QColor(colors[0].toInt(),colors[1].toInt(),colors[2].toInt());
     if (4 == colors.count())
         crossDarkBackground = QColor(colors[0].toInt(),colors[1].toInt(),colors[2].toInt(), colors[3].toInt());
 
-    colors = userCrossLightBackground->get().toString().split(" ", QString::SkipEmptyParts);
+    colors = userCrossLightBackground->get().toString().split(" ", Qt::SkipEmptyParts);
     if (3 == colors.count())
         crossLightBackground = QColor(colors[0].toInt(),colors[1].toInt(),colors[2].toInt());
     if (4 == colors.count())

@@ -184,7 +184,7 @@ void UBDrawingController::setStylusTool(int tool)
 
 void UBDrawingController::onActiveSceneChanged()
 {
-    for (const auto& QGraphicsItem* gi : UBApplication::boardController->activeScene()->items())
+    for (QGraphicsItem* gi : UBApplication::boardController->activeScene()->items())
     {
         if (gi->type() == UBGraphicsItemType::GraphicsPathItemType)
         {
@@ -200,7 +200,7 @@ void UBDrawingController::onActiveSceneChanged()
 
 void UBDrawingController::deactivateCreationModeForGraphicsPathItems()
 {
-    for (const auto& QGraphicsItem* gi : UBApplication::boardController->activeScene()->items())
+    for (QGraphicsItem* gi : UBApplication::boardController->activeScene()->items())
     {
         if (gi->type() == UBGraphicsItemType::GraphicsPathItemType)
         {

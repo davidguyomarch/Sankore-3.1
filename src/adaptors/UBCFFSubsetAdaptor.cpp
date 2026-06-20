@@ -344,10 +344,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     QPolygonF polygon;
 
     if (!svgPoints.isNull()) {
-        QStringList ts = svgPoints.split(QLatin1Char(' '), QString::SkipEmptyParts);
+        QStringList ts = svgPoints.split(QLatin1Char(' '), Qt::SkipEmptyParts);
 
         for (const auto& const QString sPoint : ts) {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
                 point.setX(sCoord.at(0).toFloat());
@@ -460,10 +460,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
 
     if (!svgPoints.isNull()) {
         QStringList ts = svgPoints.split(QLatin1Char(' '),
-                                                    QString::SkipEmptyParts);
+                                                    Qt::SkipEmptyParts);
 
         for (const auto& const QString sPoint : ts) {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
                 point.setX(sCoord.at(0).toFloat());
@@ -1199,7 +1199,7 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
 
 
 
-    for (const auto& QString key : strokesGroupsContainer.keys().toSet())
+    for (const QString& key : strokesGroupsContainer.keys().toSet())
     {
         UBGraphicsStrokesGroup* pStrokesGroup = new UBGraphicsStrokesGroup();
         UBGraphicsStroke *currentStroke = new UBGraphicsStroke();
@@ -1229,7 +1229,7 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
         }
     }
 
-    for (const auto& QGraphicsItem* item : groupContainer)
+    for (QGraphicsItem* item : groupContainer)
         group->addToGroup(item);
 
     if (group->childItems().count())
@@ -1419,7 +1419,7 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
     qreal angle = 0.0;
     QTransform tr;
 
-    for (const auto& QString trStr : trString.split(" ", Qt::SkipEmptyParts))
+    for (const QString& trStr : trString.split(" ", Qt::SkipEmptyParts))
     {
         //check pattern for strings like 'rotate(10)'
         QRegularExpression regexp("\\A" "rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)" "\\z");
@@ -1464,7 +1464,7 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::getViewBoxDimenstions(const QString& viewBox)
 {
-    QStringList capturedTexts = viewBox.split(" ", QString::SkipEmptyParts);
+    QStringList capturedTexts = viewBox.split(" ", Qt::SkipEmptyParts);
     if (capturedTexts.count())
     {
         if (4 == capturedTexts.count())

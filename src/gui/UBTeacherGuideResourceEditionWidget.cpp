@@ -136,7 +136,7 @@ QVector<tIDataStorage*> UBTeacherGuideResourceEditionWidget::save(int pageIndex)
         if (node) {
             tIDataStorage *data = new tIDataStorage(node->name, eElementType_UNIQUE);
 
-            for (const auto& QString currentKey : node->attributes.keys())
+            for (const QString& currentKey : node->attributes.keys())
                 data->attributes.insert(currentKey, node->attributes.value(currentKey));
 
             result << data;
@@ -151,7 +151,7 @@ QVector<tIDataStorage*> UBTeacherGuideResourceEditionWidget::save(int pageIndex)
         if (node) {
             tIDataStorage *data = new tIDataStorage(node->name, eElementType_UNIQUE);
 
-            for (const auto& QString currentKey : node->attributes.keys())
+            for (const QString& currentKey : node->attributes.keys())
                 data->attributes.insert(currentKey, node->attributes.value(currentKey));
 
             data->attributes.insert("student", "true");

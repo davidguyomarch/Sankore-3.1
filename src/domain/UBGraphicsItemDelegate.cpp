@@ -946,7 +946,7 @@ UBGraphicsToolBarItem::UBGraphicsToolBarItem(QGraphicsItem * parent) :
 void UBGraphicsToolBarItem::positionHandles()
 {
     int itemXOffset = 0;
-    for (const auto& QGraphicsItem* item : mItemsOnToolBar)
+    for (QGraphicsItem* item : mItemsOnToolBar)
     {
         if(item == DelegateButton::Spacer){
             itemXOffset += 10;

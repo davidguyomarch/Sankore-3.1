@@ -372,7 +372,7 @@ void UBCachePropertiesWidget::updateCurrentCache()
     {
         // Get the current page cache
         QList<QGraphicsItem*> items = UBApplication::boardController->activeScene()->items();
-        for (const auto& QGraphicsItem* it : items)
+        for (QGraphicsItem* it : items)
         {
             if("Cache" == it->data(Qt::UserRole).toString())
             {

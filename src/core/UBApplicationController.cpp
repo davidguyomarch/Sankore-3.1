@@ -779,7 +779,7 @@ QStringList UBApplicationController::widgetInlineJavaScripts()
     {
         QStringList files = scriptDir.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
 
-        for (const auto& QString file : files)
+        for (const QString& file : files)
         {
             QFile scriptFile(scriptDirPath + "/" + file);
             if (file.endsWith(".js") && scriptFile.open(QIODevice::ReadOnly))

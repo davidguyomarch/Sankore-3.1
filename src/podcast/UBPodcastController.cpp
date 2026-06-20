@@ -153,7 +153,7 @@ void UBPodcastController::updateActionState()
          UBSettings::settings()->podcastAudioRecordingDevice->set("None");
     else
     {
-        for (const auto& QAction* action : mAudioInputDevicesActions)
+        for (QAction* action : mAudioInputDevicesActions)
         {
             if (action->isChecked())
             {
@@ -321,7 +321,7 @@ void UBPodcastController::start()
 
             if (!mNoAudioInputDeviceAction->isChecked() && !mDefaultAudioInputDeviceAction->isChecked())
             {
-                for (const auto& QAction* audioDevice : mAudioInputDevicesActions)
+                for (QAction* audioDevice : mAudioInputDevicesActions)
                 {
                     if (audioDevice->isChecked())
                     {
@@ -878,7 +878,7 @@ QList<QAction*> UBPodcastController::audioRecordingDevicesActions()
         mAudioInputDevicesActions << mNoAudioInputDeviceAction;
         mAudioInputDevicesActions << mDefaultAudioInputDeviceAction;
 
-        for (const auto& QString audioDevice : audioRecordingDevices())
+        for (const QString& audioDevice : audioRecordingDevices())
         {
             QAction* act = new QAction(audioDevice, this);
             act->setCheckable(true);
@@ -890,7 +890,7 @@ QList<QAction*> UBPodcastController::audioRecordingDevicesActions()
         QActionGroup* audioInputActionGroup = new QActionGroup(this);
         audioInputActionGroup->setExclusive(true);
 
-        for (const auto& QAction* action : mAudioInputDevicesActions)
+        for (QAction* action : mAudioInputDevicesActions)
         {
             audioInputActionGroup->addAction(action);
             action->setCheckable(true);
@@ -922,7 +922,7 @@ QList<QAction*> UBPodcastController::videoSizeActions()
         QActionGroup* videoSizeActionGroup = new QActionGroup(this);
         videoSizeActionGroup->setExclusive(true);
 
-        for (const auto& QAction* videoSizeAction : mVideoSizesActions)
+        for (QAction* videoSizeAction : mVideoSizesActions)
         {
             videoSizeAction->setCheckable(true);
             videoSizeActionGroup->addAction(videoSizeAction);
@@ -961,7 +961,7 @@ QList<QAction*> UBPodcastController::podcastPublicationActions()
 
         mPodcastPublicationActions << mYoutubePublicationAction;
 
-        for (const auto& QAction* publicationAction : mPodcastPublicationActions)
+        for (QAction* publicationAction : mPodcastPublicationActions)
         {
             connect(publicationAction, SIGNAL(toggled(bool)), this, SLOT(actionToggled(bool)));
         }

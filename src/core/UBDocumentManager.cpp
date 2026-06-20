@@ -306,7 +306,7 @@ int UBDocumentManager::addImageDirToDocument(const QDir& pDir, UBDocumentProxy* 
 
     QStringList fileNames;
 
-    for (const auto& QString f : filenames)
+    for (const QString& f : filenames)
     {
         fileNames << pDir.absolutePath() + "/" + f;
     }

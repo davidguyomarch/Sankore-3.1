@@ -516,7 +516,7 @@ void UBApplication::setDisabled(bool disable)
 
 void UBApplication::decorateActionMenu(QAction* action)
 {
-    for (const auto& QWidget* menuWidget : action->associatedWidgets())
+    for (QWidget* menuWidget : action->associatedWidgets())
     {
         QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -578,7 +578,7 @@ void UBApplication::updateProtoActionsState()
         mainWindow->actionMultiScreen->setVisible(true);
     }
 
-    for (const auto& QMenu* protoMenu : mProtoMenus)
+    for (QMenu* protoMenu : mProtoMenus)
         protoMenu->setVisible(true);
 
 }

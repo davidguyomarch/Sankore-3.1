@@ -156,7 +156,7 @@ void UBPersistenceManager::createDocumentProxiesStructure(bool interactive)
 
 void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &contentInfo, bool interactive)
 {
-    for (const auto& QFileInfo path : contentInfo)
+    for (const QFileInfo& path : contentInfo)
     {
         QString fullPath = path.absoluteFilePath();
 
@@ -179,7 +179,7 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
             }
 
             UBDocumentProxy* docProxy = new UBDocumentProxy(fullPath); // managed in UBDocumentTreeNode
-            for (const auto& QString key : metadatas.keys()) {
+            for (const QString& key : metadatas.keys()) {
                 docProxy->setMetaData(key, metadatas.value(key));
             }
 
@@ -263,7 +263,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
 
 QString UBPersistenceManager::adjustDocumentVirtualPath(const QString &str)
 {
-    QStringList pathList = str.split("/", QString::SkipEmptyParts);
+    QStringList pathList = str.split("/", Qt::SkipEmptyParts);
 
     if (pathList.isEmpty()) {
         pathList.append(myDocumentsName);
@@ -318,7 +318,7 @@ QStringList UBPersistenceManager::allShapes()
     QStringList files = dir.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
     QStringList paths;
 
-    for (const auto& QString file : files)
+    for (const QString& file : files)
     {
         paths.append(shapeLibraryPath + QString("/") + file);
     }
@@ -335,7 +335,7 @@ QStringList UBPersistenceManager::allGips()
     QStringList files = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
     QStringList paths;
 
-    for (const auto& QString file : files)
+    for (const QString& file : files)
     {
         QFileInfo fi(file);
 
@@ -354,7 +354,7 @@ QStringList UBPersistenceManager::allImages(const QDir& dir)
     QStringList files = dir.entryList(QDir::Files | QDir::Hidden | QDir::NoDotAndDotDot, QDir::Name);
     QStringList paths;
 
-    for (const auto& QString file : files)
+    for (const QString& file : files)
     {
         paths.append(dir.path() + QString("/") + file);
     }
@@ -371,7 +371,7 @@ QStringList UBPersistenceManager::allVideos(const QDir& dir)
     QStringList files = dir.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
     QStringList paths;
 
-    for (const auto& QString file : files)
+    for (const QString& file : files)
     {
         paths.append(dir.path() + QString("/") + file);
     }
@@ -388,7 +388,7 @@ QStringList UBPersistenceManager::allWidgets(const QDir& dir)
     QStringList files = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
     QStringList paths;
 
-    for (const auto& QString file : files)
+    for (const QString& file : files)
     {
         QFileInfo fi(file);
 
@@ -513,7 +513,7 @@ UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDoc
     if(withEmptyPage) createDocumentSceneAt(doc, 0);
     if(addTitlePage) persistDocumentScene(doc, mSceneCache.createScene(doc, 0, false), 0);
 
-    for (const auto& QString key : metadatas.keys())
+    for (const QString& key : metadatas.keys())
     {
         doc->setMetaData(key, metadatas.value(key));
     }
@@ -578,7 +578,7 @@ UBDocumentProxy* UBPersistenceManager::duplicateDocument(UBDocumentProxy* pDocum
         UBSvgSubsetAdaptor::setSceneUuid(pDocumentProxy, i, QUuid::createUuid());
     }
 
-    for (const auto& QString key : pDocumentProxy->metaDatas().keys())
+    for (const QString& key : pDocumentProxy->metaDatas().keys())
     {
         copy->setMetaData(key, pDocumentProxy->metaDatas().value(key));
     }    
@@ -653,7 +653,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
         if (scene)
         {
             //scene is about to move into new document
-            for (const auto& QUrl relativeFile : scene->relativeDependencies())
+            for (const QUrl& relativeFile : scene->relativeDependencies())
             {
                 QString source = scene->document()->persistencePath() + "/" + relativeFile.toString();
                 QString target = trashDocProxy->persistencePath() + "/" + relativeFile.toString();
@@ -1044,7 +1044,7 @@ bool UBPersistenceManager::addDirectoryContentToDocument(const QString& document
         thumb.copy(pDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", targetIndex));
     }
 
-    for (const auto& QString dir : mDocumentSubDirectories)
+    for (const QString& dir : mDocumentSubDirectories)
     {
         qDebug() << "copying " << documentRootFolder << "/" << dir << " to " << pDocument->persistencePath() << "/" + dir;
 

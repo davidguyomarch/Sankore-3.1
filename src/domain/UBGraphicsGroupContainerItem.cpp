@@ -154,7 +154,7 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item,bool removeAct
     //we want the bounding rect of the visible children
     QRectF visibleChildrenBoundingRect;
 
-    for (const auto& QGraphicsItem* child : item->childItems()){
+    for (QGraphicsItem* child : item->childItems()){
         if(child->isVisible()){
             QPointF childB = child->boundingRect().topLeft();
             QRectF rect = QRectF(childB + child->pos(), child->boundingRect().size());

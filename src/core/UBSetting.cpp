@@ -100,7 +100,7 @@ UBColorListSetting::UBColorListSetting(UBSettings* owner, const QString& pDomain
     : UBSetting(owner, pDomain, pKey, pDefaultValue)
     , mAlpha(pAlpha)
 {
-    for (const auto& QString s : get().toStringList())
+    for (const QString& s : get().toStringList())
     {
         QColor color;
         color.setNamedColor(s);
@@ -120,7 +120,7 @@ QVariant UBColorListSetting::reset()
 
     mColors.clear();
 
-    for (const auto& QString s : get().toStringList())
+    for (const QString& s : get().toStringList())
     {
         QColor color;
         color.setNamedColor(s);

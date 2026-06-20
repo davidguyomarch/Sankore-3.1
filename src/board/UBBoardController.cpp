@@ -439,7 +439,7 @@ void UBBoardController::initToolbarTexts()
     allToolbarActions << mMainWindow->webToolBar->actions();
     allToolbarActions << mMainWindow->documentToolBar->actions();
 
-    for (const auto& QAction* action : allToolbarActions)
+    for (QAction* action : allToolbarActions)
     {
         QString nominalText = action->text();
         QString shortText = truncate(nominalText, 48);
@@ -464,7 +464,7 @@ void UBBoardController::setToolbarTexts()
     mMainWindow->webToolBar->setIconSize(iconSize);
     mMainWindow->documentToolBar->setIconSize(iconSize);
 
-    for (const auto& QAction* action : mActionTexts.keys())
+    for (QAction* action : mActionTexts.keys())
     {
         QPair<QString, QString> texts = mActionTexts.value(action);
 
@@ -534,7 +534,7 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
     {
         if (scene->document() && (scene->document() != selectedDocument()))
         {
-            for (const auto& QUrl relativeFile : scene->relativeDependencies())
+            for (const QUrl& relativeFile : scene->relativeDependencies())
             {
                 QString source = scene->document()->persistencePath() + "/" + relativeFile.toString();
                 QString target = selectedDocument()->persistencePath() + "/" + relativeFile.toString();
@@ -698,7 +698,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync, eIte
         QList<QGraphicsItem*> children = groupItem->childItems();
 
         mActiveScene->setURStackEnable(false);
-        for (const auto& QGraphicsItem* pIt : children){
+        for (QGraphicsItem* pIt : children){
             UBItem* pItem = dynamic_cast<UBItem*>(pIt);
             if(pItem){ // we diong sync duplication of all childs.
                 QGraphicsItem * itemToGroup = dynamic_cast<QGraphicsItem *>(duplicateItem(pItem, false, actionType));
@@ -1780,11 +1780,11 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
             QDir appDir(tempDir);
 
-            for (const auto& QString subDirName : appDir.entryList(QDir::AllDirs))
+            for (const QString& subDirName : appDir.entryList(QDir::AllDirs))
             {
                 QDir subDir(tempDir + "/" + subDirName + "/contents");
 
-                for (const auto& QString fileName : subDir.entryList(QDir::Files))
+                for (const QString& fileName : subDir.entryList(QDir::Files))
                 {
                     if (fileName.toLower().endsWith(".swf"))
                     {
@@ -2698,7 +2698,7 @@ void UBBoardController::cut()
     copy();
 
     QList<UBItem*> selected;
-    for (const auto& QGraphicsItem* gi : mActiveScene->selectedItems())
+    for (QGraphicsItem* gi : mActiveScene->selectedItems())
     {
         gi->setSelected(false);
 
@@ -2719,7 +2719,7 @@ void UBBoardController::copy()
 {
     QList<UBItem*> selected;
 
-    for (const auto& QGraphicsItem* gi : mActiveScene->selectedItems())
+    for (QGraphicsItem* gi : mActiveScene->selectedItems())
     {
         UBItem* ubItem = dynamic_cast<UBItem*>(gi);
         if (ubItem && !mActiveScene->tools().contains(gi))
@@ -2936,7 +2936,7 @@ void UBBoardController::addItem()
     QString defaultPath = UBSettings::settings()->lastImportToLibraryPath->get().toString();
 
     QString extensions;
-    for (const auto& QString ext : UBSettings::imageFileExtensions)
+    for (const QString& ext : UBSettings::imageFileExtensions)
     {
         extensions += " *.";
         extensions += ext;

@@ -1027,7 +1027,7 @@ bool UBDocumentTreeModel::newNodeAllowed(const QModelIndex &pSelectedIndex)  con
 
 QModelIndex UBDocumentTreeModel::goTo(const QString &dir)
 {
-    QStringList pathList = dir.split("/", QString::SkipEmptyParts);
+    QStringList pathList = dir.split("/", Qt::SkipEmptyParts);
 
     if (pathList.isEmpty()) {
         return untitledDocumentsIndex();
@@ -1946,7 +1946,7 @@ void UBDocumentController::setupViews()
         connect(mAddFileToDocumentAction, SIGNAL(triggered(bool)), this, SLOT(addFileToDocument()));
         connect(mAddImagesAction, SIGNAL(triggered(bool)), this, SLOT(addImages()));
 
-        for (const auto& QWidget* menuWidget : mMainWindow->actionDocumentAdd->associatedWidgets())
+        for (QWidget* menuWidget : mMainWindow->actionDocumentAdd->associatedWidgets())
         {
             QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -1978,7 +1978,7 @@ void UBDocumentController::setupViews()
             adaptor->setAssociatedAction(currentExportAction);
         }
 
-        for (const auto& QWidget* menuWidget : mMainWindow->actionExport->associatedWidgets())
+        for (QWidget* menuWidget : mMainWindow->actionExport->associatedWidgets())
         {
             QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -2806,7 +2806,7 @@ void UBDocumentController::addToDocument()
 
         QList<QPair<UBDocumentProxy*, int> > pageInfoList;
 
-        for (const auto& QGraphicsItem* item : selectedItems)
+        for (QGraphicsItem* item : selectedItems)
         {
             UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
 
@@ -2911,7 +2911,7 @@ void UBDocumentController::addImages()
 
         QString extensions;
 
-        for (const auto& QString ext : UBSettings::settings()->imageFileExtensions)
+        for (const QString& ext : UBSettings::settings()->imageFileExtensions)
         {
             extensions += " *.";
             extensions += ext;
@@ -3173,7 +3173,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
         QList<int> sceneIndexes;
         UBDocumentProxy* proxy = 0;
 
-        for (const auto& QGraphicsItem* item : itemsToDelete)
+        for (QGraphicsItem* item : itemsToDelete)
         {
             UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
 

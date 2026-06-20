@@ -283,7 +283,7 @@ QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save(int pageIndex)
             data = new tIDataStorage();
             data->name = node->name;
             data->type = eElementType_UNIQUE;
-            for (const auto& QString currentKey : node->attributes.keys())
+            for (const QString& currentKey : node->attributes.keys())
                 data->attributes.insert(currentKey, node->attributes.value(currentKey));
             result << data;
         }

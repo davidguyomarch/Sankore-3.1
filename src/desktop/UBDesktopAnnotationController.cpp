@@ -244,7 +244,7 @@ void UBDesktopAnnotationController::setAssociatedPalettePosition(UBActionPalette
     QList<QAction*> actions = mDesktopPalette->actions();
     int yPen = 0;
 
-    for (const auto& QAction* act : actions)
+    for (QAction* act : actions)
     {
         if(act->objectName() == actionName)
         {

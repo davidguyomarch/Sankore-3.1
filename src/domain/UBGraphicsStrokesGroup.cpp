@@ -215,7 +215,7 @@ QPainterPath UBGraphicsStrokesGroup::shape () const
     }
     else
     {
-        for (const auto& QGraphicsItem* item : childItems())
+        for (QGraphicsItem* item : childItems())
         {
             path.addPath(item->shape());
         }

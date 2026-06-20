@@ -608,7 +608,7 @@ bool UBGraphicsScene::inputDeviceRelease()
                 pStrokes->addToGroup(mArcPolygonItem);
 
                 // Add the center cross
-                for (const auto& QGraphicsItem* item : mAddedItems){
+                for (QGraphicsItem* item : mAddedItems){
                     mAddedItems.remove(item);
                     removeItem(item);
                     UBCoreGraphicsScene::removeItemFromDeletion(item);
@@ -1178,7 +1178,7 @@ void UBGraphicsScene::clearContent(clearCase pCase)
     case clearAnnotations :
         // Issue 1569 - CFA - 20131023 : undo "erase multi-selection"
         UBApplication::undoStack->beginMacro("remove items");
-        for (const auto& QGraphicsItem* item : items()) {
+        for (QGraphicsItem* item : items()) {
 
             bool isGroup = item->type() == UBGraphicsGroupContainerItem::Type;
             bool isStrokesGroup = item->type() == UBGraphicsStrokesGroup::Type;
@@ -1426,7 +1426,7 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, con
 
     UBGraphicsW3CWidgetItem *widget = 0;
 
-    for (const auto& QString widgetPath : widgetPaths)
+    for (const QString& widgetPath : widgetPaths)
     {
         if (widgetPath.contains("Sel video"))
         {
@@ -1719,7 +1719,7 @@ void UBGraphicsScene::removeShapeToUndoStack(QGraphicsItem* item)
 
 void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 {
-    for (const auto& QGraphicsItem* item : items) {
+    for (QGraphicsItem* item : items) {
         UBCoreGraphicsScene::addItem(item);
         UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(item));
     }
@@ -1747,11 +1747,11 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
 {
-    for (const auto& QGraphicsItem* item : items) {
+    for (QGraphicsItem* item : items) {
         UBCoreGraphicsScene::removeItem(item);
     }
 
-    for (const auto& QGraphicsItem* item : items)
+    for (QGraphicsItem* item : items)
         mFastAccessItems.removeAll(item);
 }
 
@@ -1861,7 +1861,7 @@ QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
     QRectF normalizedRect(nominalSize().width() / -2, nominalSize().height() / -2,
         nominalSize().width(), nominalSize().height());
 
-    for (const auto& QGraphicsItem* gi : mFastAccessItems)
+    for (QGraphicsItem* gi : mFastAccessItems)
     {
         if(gi && gi->isVisible() && !mTools.contains(gi))
         {
@@ -2473,7 +2473,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
             // Issue 1569 - CFA - 20131023 : undo erase multi-selection
             UBApplication::undoStack->beginMacro("remove items");
 
-            for (const auto& QGraphicsItem* item : si)
+            for (QGraphicsItem* item : si)
             {
 
                 switch (item->type())

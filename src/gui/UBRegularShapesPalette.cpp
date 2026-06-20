@@ -122,7 +122,7 @@ void UBRegularShapesPalette::buttonClicked()
             triggerAction(action);
 
             // Change the Action shown in the DrawingPalette :
-            for (const auto& QAction* a : actionPaletteButtonParent()->actions()) {
+            for (QAction* a : actionPaletteButtonParent()->actions()) {
                 actionPaletteButtonParent()->removeAction(a); // Remove all older actions, in order to let only one action associated to the button.
             }
             actionPaletteButtonParent()->setDefaultAction(action); // Associate the new Action to the Button.

@@ -40,7 +40,7 @@ void UBMessagesDialog::setMessages(const QList<QString> messages)
     if (mMessages.count())
     {        
         QVBoxLayout *messagesLayout = new QVBoxLayout(this);
-        for (const auto& QString message : mMessages)
+        for (const QString& message : mMessages)
         {
             QTextEdit *messageBox = new QTextEdit(this);
             messageBox->setMinimumHeight(55);

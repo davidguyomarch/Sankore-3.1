@@ -30,6 +30,7 @@
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QDomElement>
+#include <QGraphicsWidget>
 
 #include "core/UB.h"
 
@@ -51,7 +52,7 @@ struct UBWidgetType
     };
 };
 
-class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBResizableGraphicsItem, public UBGraphicsItem
+class UBGraphicsWidgetItem : public QGraphicsWidget, public UBItem, public UBResizableGraphicsItem, public UBGraphicsItem
 {
     Q_OBJECT
 
