@@ -66,7 +66,7 @@ UBRegularShapesPalette::UBRegularShapesPalette(QWidget *parent, Qt::Orientation 
 
     adjustSizeAndPosition();
 
-    for (const auto& const UBActionPaletteButton* button : mButtons)
+    for (UBActionPaletteButton* button : mButtons)
     {
         connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
     }
@@ -99,7 +99,7 @@ UBRegularShapesPalette::UBRegularShapesPalette(Qt::Orientation orient, QWidget *
 
     adjustSizeAndPosition();
 
-    for (const auto& const UBActionPaletteButton* button : mButtons)
+    for (UBActionPaletteButton* button : mButtons)
     {
         connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
     }

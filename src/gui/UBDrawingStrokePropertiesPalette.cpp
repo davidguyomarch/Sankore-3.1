@@ -118,12 +118,12 @@ UBDrawingStrokePropertiesPalette::~UBDrawingStrokePropertiesPalette()
 {
     DELETEPTR(mBtnColorPicker);
 
-    for (const auto& UBActionPaletteButton * button : mListBtnStrokeThickness){
+    for (UBActionPaletteButton* button : mListBtnStrokeThickness){
         DELETEPTR(button);
     }
     DELETEPTR(mButtonGroupStrokeThickness);
 
-    for (const auto& UBActionPaletteButton * button : mListBtnStrokeStyle){
+    for (UBActionPaletteButton* button : mListBtnStrokeStyle){
         DELETEPTR(button);
     }
     DELETEPTR(mButtonGroupStrokeStyle);
