@@ -100,7 +100,7 @@ public:
     bool isEnabled(){return locales!= nullptr;}
     virtual QSize  sizeHint () const;
     virtual void adjustSizeAndPosition(bool pUp = true);
-    QString getKeyButtonSize() const {QString res; res; snprintf(buf, sizeof(buf),"%dx%d", btnWidth, btnHeight); return res;}
+    QString getKeyButtonSize() const {return QString("%1x%2").arg(btnWidth).arg(btnHeight);}
     void setKeyButtonSize(const QString& strSize);
 
     bool m_isVisible;

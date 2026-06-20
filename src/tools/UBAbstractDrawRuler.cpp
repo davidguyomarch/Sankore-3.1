@@ -52,8 +52,8 @@ UBAbstractDrawRuler::UBAbstractDrawRuler()
     , mAntiScaleRatio(1.0)
 {
 	//we actually need to evaluate pixels per millimeter
-	QDesktopWidget* desktop = UBApplication::desktop();
-	int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+	QScreen* desktop = QGuiApplication::primaryScreen();
+	int dpiCommon = (desktop->physicalDotsPerInchX() + desktop->physicalDotsPerInchY()) / 2;
     sPixelsPerMillimeter = qRound(dpiCommon / UBGeometryUtils::inchSize);
 
 }

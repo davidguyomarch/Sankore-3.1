@@ -409,7 +409,7 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     loadHardcodedItemsToModel();
 
     featuresModel = new UBFeaturesModel(featuresList, this);
-    featuresModel->setSupportedDragActions(Qt::CopyAction | Qt::MoveAction);
+    featuresModel; // setSupportedDragActions removed in Qt6: Qt::CopyAction | Qt::MoveAction);
 
     featuresProxyModel = new UBFeaturesProxyModel(this);
     featuresProxyModel->setFilterFixedString(rootData.categoryFeature().getFullVirtualPath());
@@ -1003,7 +1003,7 @@ void UBFeaturesController::createBookmark(const QString& fileName, const QString
 
     QFile file(mFileName);
     file.open(QIODevice::WriteOnly | QIODevice::Text);
-    file.write(urlString.toAscii());
+    file.write(urlString.toLatin1());
     file.close();
 
     QImage thumb = createThumbnail(mFileName);

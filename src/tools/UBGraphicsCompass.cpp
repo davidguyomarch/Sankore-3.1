@@ -59,8 +59,8 @@ UBGraphicsCompass::UBGraphicsCompass()
 {
     setRect(sDefaultRect);
     //TODO claudio: remove code duplication
-    QDesktopWidget* desktop = UBApplication::desktop();
-    int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+    QScreen* desktop = QGuiApplication::primaryScreen();
+    int dpiCommon = (desktop->physicalDotsPerInchX() + desktop->physicalDotsPerInchY()) / 2;
     mPixelsPerMillimeter = qRound(dpiCommon / 25.4f);
 
     setFlag(QGraphicsItem::ItemIsMovable, true);

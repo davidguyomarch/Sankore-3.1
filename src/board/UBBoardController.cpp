@@ -133,7 +133,7 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     mMarkerColorOnLightBackground = UBSettings::settings()->markerColors(false).at(markerColorIndex);
 
     QScreen* desktop = QGuiApplication::primaryScreen();
-    int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+    int dpiCommon = (desktop->physicalDotsPerInchX() + desktop->physicalDotsPerInchY()) / 2;
     int sPixelsPerMillimeter = qRound(dpiCommon / UBGeometryUtils::inchSize);
     UBSettings::settings()->crossSize = 10*sPixelsPerMillimeter;
 }
