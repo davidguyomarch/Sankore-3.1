@@ -1,4 +1,5 @@
 #include "UBTeacherGuideResourcesPresentationWidget.h"
+#include <QHeaderView>
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
@@ -22,7 +23,6 @@ UBTeacherGuideResourcesPresentationWidget::UBTeacherGuideResourcesPresentationWi
     mpModePushButton = new QPushButton(this);
     mpModePushButton->setIcon(QIcon(":images/teacherGuide/pencil.svg"));
     mpModePushButton->setMaximumWidth(32);
-#include <QHeaderView>
     mpModePushButton->installEventFilter(this);
 
     connect(mpModePushButton, SIGNAL(clicked()), parentWidget(), SLOT(changeMode()));

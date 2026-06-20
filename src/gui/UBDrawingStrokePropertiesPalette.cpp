@@ -1,4 +1,5 @@
 /*
+#include <QColorDialog>
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
@@ -63,7 +64,7 @@ UBDrawingStrokePropertiesPalette::UBDrawingStrokePropertiesPalette(Qt::Orientati
 
     //group thickness buttons
     mButtonGroupStrokeThickness = new QButtonGroup(this);
-    for (const auto& UBActionPaletteButton* button : mListBtnStrokeThickness)
+    for (UBActionPaletteButton* button : mListBtnStrokeThickness)
     {
         mButtonGroupStrokeThickness->addButton(button);
         thicknessLayout->addWidget(button);
@@ -93,7 +94,7 @@ UBDrawingStrokePropertiesPalette::UBDrawingStrokePropertiesPalette(Qt::Orientati
 
     //group style buttons
     mButtonGroupStrokeStyle = new QButtonGroup(this);
-    for (const auto& UBActionPaletteButton* button : mListBtnStrokeStyle)
+    for (UBActionPaletteButton* button : mListBtnStrokeStyle)
     {
         mButtonGroupStrokeStyle->addButton(button);
         styleLayout->addWidget(button);
