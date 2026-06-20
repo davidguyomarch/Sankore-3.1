@@ -1073,7 +1073,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
     mMouseDownPos = event->pos ();
 
-    movingItem = scene()->itemAt(this->mapToScene(event->position().toPoint()));
+    movingItem = scene()->itemAt(this->mapToScene(event->position().toPoint()), transform());
 
     if (!movingItem)
         emit clickOnBoard();
@@ -1099,7 +1099,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
         else if (currentTool == UBStylusTool::Hand)
         {
             viewport ()->setCursor (QCursor (Qt::ClosedHandCursor));
-            mPreviousPoint = event->posF ();
+            mPreviousPoint = event->position();
             event->accept ();
         }
         else if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
@@ -1241,7 +1241,7 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
   if (currentTool == UBStylusTool::Hand && (mMouseButtonIsPressed || mTabletStylusIsPressed))
     {
-      QPointF eventPosition = event->posF ();
+      QPointF eventPosition = event->position();
       qreal dx = eventPosition.x () - mPreviousPoint.x ();
       qreal dy = eventPosition.y () - mPreviousPoint.y ();
       mController->handScroll (dx, dy);
@@ -1362,7 +1362,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           graphicsItem->Delegate()->commitUndoStep();
 
       bool bReleaseIsNeed = true;
-      if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->position().toPoint()))))
+      if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->position().toPoint()), transform())))
       {
           movingItem = nullptr;
           bReleaseIsNeed = false;

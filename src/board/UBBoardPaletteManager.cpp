@@ -447,7 +447,7 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionDrawing, SIGNAL(toggled(bool)), this, SLOT(toggleDrawingPalette(bool)));
     connect(UBApplication::mainWindow->actionStylus, SIGNAL(toggled(bool)), this, SLOT(toggleStylusPalette(bool)));
 
-    for (const auto& QWidget *widget : UBApplication::mainWindow->actionZoomIn->associatedWidgets())
+    for (QWidget *widget : UBApplication::mainWindow->actionZoomIn->associatedWidgets())
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -457,7 +457,7 @@ void UBBoardPaletteManager::connectPalettes()
         }
     }
 
-    for (const auto& QWidget *widget : UBApplication::mainWindow->actionZoomOut->associatedWidgets())
+    for (QWidget *widget : UBApplication::mainWindow->actionZoomOut->associatedWidgets())
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -467,7 +467,7 @@ void UBBoardPaletteManager::connectPalettes()
         }
     }
 
-    for (const auto& QWidget *widget : UBApplication::mainWindow->actionHand->associatedWidgets())
+    for (QWidget *widget : UBApplication::mainWindow->actionHand->associatedWidgets())
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -503,7 +503,7 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionFillImageBackground,SIGNAL(triggered()),mImageBackgroundPalette,SLOT(close()));
     connect(UBApplication::mainWindow->actionMosaicImageBackground,SIGNAL(triggered()),mImageBackgroundPalette,SLOT(close()));
 
-    for (const auto& QWidget *widget : UBApplication::mainWindow->actionErase->associatedWidgets())
+    for (QWidget *widget : UBApplication::mainWindow->actionErase->associatedWidgets())
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
@@ -518,7 +518,7 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionImportPage, SIGNAL(triggered()), mPagePalette, SLOT(close()));
     connect(mPagePalette, SIGNAL(closed()), this, SLOT(pagePaletteClosed()));
 
-    for (const auto& QWidget *widget : UBApplication::mainWindow->actionPages->associatedWidgets())
+    for (QWidget *widget : UBApplication::mainWindow->actionPages->associatedWidgets())
     {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)

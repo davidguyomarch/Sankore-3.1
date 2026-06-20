@@ -109,7 +109,7 @@ class UBDisplayManager : public QObject
 
         QList<int> mPreviousScreenIndexes;
 
-        QDesktopWidget* mDesktop;
+        // QDesktopWidget removed in Qt6 - use QGuiApplication::screens()
 
         QWidget* mControlWidget;
 

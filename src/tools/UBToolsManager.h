@@ -60,7 +60,7 @@ class UBToolsManager : public QObject
         {
             QStringList ids;
 
-            for (const auto& UBToolDescriptor tool : allTools())
+            for (const UBToolDescriptor& tool : allTools())
             {
                 ids << tool.id;
             }
@@ -70,7 +70,7 @@ class UBToolsManager : public QObject
 
         UBToolDescriptor toolByID(const QString& id)
         {
-            for (const auto& UBToolDescriptor tool : allTools())
+            for (const UBToolDescriptor& tool : allTools())
             {
                 if (tool.id == id)
                     return tool;

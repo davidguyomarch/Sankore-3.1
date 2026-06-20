@@ -702,7 +702,7 @@ void UBFeaturesController::loadHardcodedItemsToModel()
 
     QList <UBToolsManager::UBToolDescriptor> tools = UBToolsManager::manager()->allTools();
 
-    for (const auto& UBToolsManager::UBToolDescriptor tool : tools) {
+    for (const UBToolsManager::UBToolDescriptor& tool : tools) {
         featuresList->append(UBFeature(appData.categoryFeature().getFullVirtualPath() + "/" + tool.label, tool.icon.toImage(), tool.label, QUrl(tool.id), FEATURE_INTERNAL, UBFeature::NO_P));
         if (favoriteSet->find(QUrl(tool.id)) != favoriteSet->end()) {
             featuresList->append(UBFeature(favoriteData.categoryFeature().getFullVirtualPath() + "/" + tool.label, tool.icon.toImage(), tool.label, QUrl(tool.id), FEATURE_INTERNAL, UBFeature::NO_P));
