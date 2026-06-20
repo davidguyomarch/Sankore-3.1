@@ -28,6 +28,7 @@
 #include <QTransform>
 #include <QGraphicsItem>
 #include <QSvgRenderer>
+#include <algorithm>
 #include <QPainter>
 
 #include "UBGlobals.h"
@@ -1082,7 +1083,7 @@ void UBCFFAdaptor::UBToCFFConverter::setCoordinatesFromUBZ(const QDomElement &ub
     item.setRect(0,0, width, height);
     item.setTransform(tr);
     item.setRotation(-alpha);
-    QMatrix sceneMatrix = item.sceneMatrix();
+    QTransform sceneMatrix = item.sceneTransform();
  
     iwbElement.setAttribute(aX, x);
     iwbElement.setAttribute(aY, y);
@@ -1597,7 +1598,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseSVGGGroup(const QDomElement &element, 
     while (nextSVGElement.hasNext()) 
         layers << nextSVGElement.next().key();
 
-    qSort(layers);
+    std::sort(layers.begin(), layers.end());
     int layer = layers.at(0);
 
     nextSVGElement.toFront();

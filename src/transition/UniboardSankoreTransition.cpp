@@ -128,14 +128,12 @@ bool UniboardSankoreTransition::checkPage(QString& sankorePagePath)
     sankoreDirectory = QUrl::fromLocalFile(sankoreDirectory).toString();
     QString documentString(documentByteArray);
 
-    QRegExp videoRegExp("<video(.*)xlink:href=\"(.*)videos/(.*)/>");
-    videoRegExp.setMinimal(true);
+    QRegularExpression videoRegExp("<video(.*?)xlink:href=\"(.*?)videos/(.*?)/>");
 
     documentString.replace(videoRegExp,"<video\\1xlink:href=\"videos/\\3/>");
 
 
-    QRegExp audioRegExp("<audio(.*)xlink:href=\"(.*)audios/(.*)/>");
-    audioRegExp.setMinimal(true);
+    QRegularExpression audioRegExp("<audio(.*?)xlink:href=\"(.*?)audios/(.*?)/>");
 
     documentString.replace(audioRegExp,"<audio\\1xlink:href=\"audios/\\3/>");
 
@@ -160,29 +158,25 @@ bool UniboardSankoreTransition::checkWidget(QString& sankoreWidgetIndexPath)
 
     QString documentString(documentByteArray);
 
-    QRegExp swfOriginFilePathRegExp("<param name=\"movie\" value=\"(.*)\">");
-    swfOriginFilePathRegExp.setMinimal(true);
-    swfOriginFilePathRegExp.indexIn(documentString);
-    QString origin = swfOriginFilePathRegExp.cap(1);
+    QRegularExpression swfOriginFilePathRegExp("<param name=\"movie\" value=\"(.*?)\">");
+    QRegularExpressionMatch originMatch = swfOriginFilePathRegExp.match(documentString);
+    QString origin = originMatch.captured(1);
     if(origin.contains("http://")){
         // an url is the source of the swf. The source is kept as is.
         return true;
     }
 
     //changing the path
-    QRegExp swfDataPathRegExp("<object(.*)data=\"(.*)interactive content/Web/(.*)\"(.*)>");
-    swfDataPathRegExp.setMinimal(true);
+    QRegularExpression swfDataPathRegExp("<object(.*?)data=\"(.*?)interactive content/Web/(.*?)\"(.*?)>");
     documentString.replace(swfDataPathRegExp,"<object\\1data=\"\\3\">");
 
-    QRegExp swfMoviePathRegExp("<param name=\"movie\" value=\"(.*)interactive content/Web/(.*)\">");
-    swfMoviePathRegExp.setMinimal(true);
+    QRegularExpression swfMoviePathRegExp("<param name=\"movie\" value=\"(.*?)interactive content/Web/(.*?)\">");
     documentString.replace(swfMoviePathRegExp,"<param name=\"movie\" value=\"\\2\">");
 
     //copy the swf on the right place
-    QRegExp swfFileNameRegExp("<param name=\"movie\" value=\"(.*)\">");
-    swfFileNameRegExp.setMinimal(true);
-    swfFileNameRegExp.indexIn(documentString);
-    QString swfFileName = swfFileNameRegExp.cap(1);
+    QRegularExpression swfFileNameRegExp("<param name=\"movie\" value=\"(.*?)\">");
+    QRegularExpressionMatch swfMatch = swfFileNameRegExp.match(documentString);
+    QString swfFileName = swfMatch.captured(1);
     int lastDirectoryLevel = sankoreWidgetIndexPath.lastIndexOf("/");
     if (lastDirectoryLevel == -1)
         lastDirectoryLevel = sankoreWidgetIndexPath.lastIndexOf("\\");

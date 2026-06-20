@@ -28,6 +28,7 @@
 #include <QPainter>
 #include <QWebEngineView>
 #include <QDir>
+#include <QRegularExpression>
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBPlatformUtils.h"
@@ -220,7 +221,7 @@ void UBBoardController::setupViews()
 #ifndef QT_DEBUG
     QString version_type(VERSION_TYPE);
     QString version_patch(VERSION_PATCH);
-    if (version_type.contains("a") || version_type.contains("b") || !QRegExp("\\d*").exactMatch(version_patch))
+    if (version_type.contains("a") || version_type.contains("b") || !QRegularExpression("\\A\\d*\\z").match(version_patch).hasMatch())
     {
         mMainWindow->warning(tr("Warning"), tr("This is not a final release. Please use it only for testing."));
     }
@@ -2843,7 +2844,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
     {
         if(pMimeData->text().length()){
             // Sometimes, it is possible to have an URL as text. we check here if it is the case
-            QString qsTmp = pMimeData->text().remove(QRegExp("[\\0]"));
+            QString qsTmp = pMimeData->text().remove(QRegularExpression("[\\0]"));
             if(qsTmp.startsWith("http")){
                 downloadURL(QUrl(qsTmp), QString(), pPos);
             }

@@ -114,7 +114,7 @@ UBDocumentReplaceDialog::UBDocumentReplaceDialog(const QString &pIncommingName, 
     mLineEdit->setText(pIncommingName);
     mLineEdit->selectedText();
 
-    mValidator = new QRegExpValidator(QRegExp("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{1,}"), this);
+    mValidator = new QRegularExpressionValidator(QRegularExpression("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{1,}"), this);
 //    mLineEdit->setValidator(mValidator);
     labelLayout->addWidget(mLabelText);
     labelLayout->addWidget(mLineEdit);
@@ -138,9 +138,9 @@ UBDocumentReplaceDialog::UBDocumentReplaceDialog(const QString &pIncommingName, 
     reactOnTextChanged(mIncommingName);
 }
 
-void UBDocumentReplaceDialog::setRegexp(const QRegExp pRegExp)
+void UBDocumentReplaceDialog::setRegexp(const QRegularExpression pRegExp)
 {
-    mValidator->setRegExp(pRegExp);
+    mValidator->setRegularExpression(pRegExp);
 }
 bool UBDocumentReplaceDialog::validString(const QString &pStr)
 {
@@ -1595,7 +1595,7 @@ void UBDocumentTreeItemDelegate::processChangedText(const QString &str) const
 
 bool UBDocumentTreeItemDelegate::validateString(const QString &str) const
 {
-    return QRegExp("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{1,}").exactMatch(str)
+    return QRegularExpression("\\A[^\\/\\:\\?\\*\\|\\<\\>\\\"]{1,}\\z").match(str).hasMatch()
             && !mExistingFileNames.contains(str);
 
 }

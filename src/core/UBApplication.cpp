@@ -709,13 +709,13 @@ void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, 
 QString UBApplication::urlFromHtml(QString html)
 {
     QString _html;
-    QRegExp comments("\\<![ \r\n\t]*(--([^\\-]|[\r\n]|-[^\\-])*--[ \r\n\t]*)\\>");
+    QRegularExpression comments("\\<![ \r\n\t]*(--([^\\-]|[\r\n]|-[^\\-])*--[ \r\n\t]*)\\>");
     QString url;
     QDomDocument domDoc;
 
     //	We remove all the comments & CRLF of this html
     _html = html.remove(comments);
-    domDoc.setContent(_html.remove(QRegExp("[\\0]")));
+    domDoc.setContent(_html.remove(QRegularExpression("[\\0]")));
     QDomElement rootElem = domDoc.documentElement();
 
     //  QUICKFIX: Here we have to check rootElem. Sometimes it can be a <meta> tag

@@ -3047,7 +3047,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::textItemToSvg(UBGraphicsTextItem* it
     QString content = UBTextTools::cleanHtmlCData(item->toHtml());
 
     if(mIsOldVersionFileWithText){
-        content = content.replace(QRegExp("span style=\".*font-size:.*pt;\""), "span");
+        content = content.replace(QRegularExpression("span style=\".*font-size:.*pt;\""), "span");
     }
 
     mXmlWriter.writeCharacters(content);

@@ -1571,7 +1571,7 @@ UBBoardView::mouseDoubleClickEvent (QMouseEvent *event)
 void
 UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 {
-  if (isInteractive () && wheelEvent->orientation () == Qt::Vertical)
+  if (isInteractive () && wheelEvent->angleDelta().y() != 0)
     {
       // Too many wheelEvent are sent, how should we handle them to "smoothly" zoom ?
       // something like zoom( pow(zoomFactor, event->delta() / 120) )

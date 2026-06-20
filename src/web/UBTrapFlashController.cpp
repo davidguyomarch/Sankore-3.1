@@ -71,22 +71,22 @@ void UBTrapWebPageContentController::text_Changed(const QString &newText)
 
 #ifdef Q_OS_WIN // Defined on Windows.
     QString illegalCharList("      < > : \" / \\ | ? * ");
-    QRegExp regExp("[<>:\"/\\\\|?*]");
+    QRegularExpression regExp("[<>:\"/\\\\|?*]");
 #endif
 
 #ifdef Q_OS_LINUX // Defined on Qt for Embedded Linux.
     QString illegalCharList("      < > : \" / \\ | ? * ");
-    QRegExp regExp("[<>:\"/\\\\|?*]");
+    QRegularExpression regExp("[<>:\"/\\\\|?*]");
 #endif
 
 #ifdef Q_OS_MACOS // Defined on Mac OS X.
     QString illegalCharList("      < > : \" / \\ | ? * ");
-    QRegExp regExp("[<>:\"/\\\\|?*]");
+    QRegularExpression regExp("[<>:\"/\\\\|?*]");
 #endif
 
 #ifdef Q_OS_LINUX // Defined on X11.
     QString illegalCharList("      < > : \" / \\ | ? * ");
-    QRegExp regExp("[<>:\"/\\\\|?*]");
+    QRegularExpression regExp("[<>:\"/\\\\|?*]");
 #endif
 
     if(new_text.indexOf(regExp) > -1)

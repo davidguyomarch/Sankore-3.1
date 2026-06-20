@@ -21,7 +21,7 @@
 
 
 
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QStringList>
 #include <QDomDocument>
 #include <QDomElement>
@@ -56,16 +56,15 @@ void UBOEmbedParser::parse(const QString& html)
 {
     mContents.clear();
     QString query = "<link([^>]*)>";
-    QRegExp exp(query);
+    QRegularExpression exp(query);
     QStringList results;
     int count = 0;
-    int pos = 0;
-    while ((pos = exp.indexIn(html, pos)) != -1) {
+    QRegularExpressionMatchIterator it = exp.globalMatch(html);
+    while (it.hasNext()) {
+        QRegularExpressionMatch match = it.next();
         ++count;
-        pos += exp.matchedLength();
-        QStringList res = exp.capturedTexts();
-        if("" != res.at(1)){
-            results << res.at(1);
+        if("" != match.captured(1)){
+            results << match.captured(1);
         }
     }
 

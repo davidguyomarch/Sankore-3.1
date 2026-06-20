@@ -300,10 +300,10 @@ void WBBrowserWindow::adaptToolBar(bool wideRes)
 QUrl WBBrowserWindow::guessUrlFromString(const QString &string)
 {
     QString urlStr = string.trimmed();
-    QRegExp test(QLatin1String("^[a-zA-Z]+\\:.*"));
+    QRegularExpression test(QLatin1String("^[a-zA-Z]+\\:.*"));
 
     // Check if it looks like a qualified URL. Try parsing it and see.
-    bool hasSchema = test.exactMatch(urlStr);
+    bool hasSchema = test.match(urlStr).hasMatch();
     if (hasSchema)
     {
         int dotCount = urlStr.count(".");

@@ -812,7 +812,7 @@ UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
     QLabel *mLabel = new QLabel(labelText, this);
     mLineEdit = new QLineEdit(this);
 
-    mValidator = new QRegExpValidator(QRegExp("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{2,}"), this);
+    mValidator = new QRegularExpressionValidator(QRegularExpression("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{2,}"), this);
     mLineEdit->setValidator(mValidator);
     labelLayout->addWidget(mLabel);
     labelLayout->addWidget(mLineEdit);
@@ -836,9 +836,9 @@ UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
     reactOnTextChanged(QString());
 }
 
-void UBFeaturesNewFolderDialog::setRegexp(const QRegExp pRegExp)
+void UBFeaturesNewFolderDialog::setRegexp(const QRegularExpression pRegExp)
 {
-    mValidator->setRegExp(pRegExp);
+    mValidator->setRegularExpression(pRegExp);
 }
 bool UBFeaturesNewFolderDialog::validString(const QString &pStr)
 {

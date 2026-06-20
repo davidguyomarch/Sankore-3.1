@@ -2267,7 +2267,7 @@ QList<QUrl> UBGraphicsScene::relativeDependencies() const
         if (videoItem)
         {
             QString mediaUrl = videoItem->mediaFileUrl().toLocalFile();
-            relativePathes << mediaUrl.replace(QRegExp("\\{.*\\}"), UBGraphicsItem::getOwnUuid(videoItem).toString());
+            relativePathes << mediaUrl.replace(QRegularExpression("\\{.*\\}"), UBGraphicsItem::getOwnUuid(videoItem).toString());
         }
 
         UBGraphicsItem* ubItem = dynamic_cast<UBGraphicsItem*>(item);

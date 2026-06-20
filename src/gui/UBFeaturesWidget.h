@@ -37,6 +37,8 @@
 #include <QGraphicsLinearLayout>
 #include <QStackedWidget>
 #include <QDropEvent>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 #include "UBDockPaletteWidget.h"
 #include "core/UBSettings.h"
@@ -315,7 +317,7 @@ class UBFeaturesNewFolderDialog : public QWidget
 
 public:
     UBFeaturesNewFolderDialog(QWidget *parent = 0);
-    void setRegexp(const QRegExp pRegExp);
+    void setRegexp(const QRegularExpression pRegExp);
     bool validString(const QString &pStr);
 
 signals:
@@ -330,7 +332,7 @@ private slots:
 
 private:
     QLineEdit *mLineEdit;
-    QRegExpValidator *mValidator;
+    QRegularExpressionValidator *mValidator;
     QStringList mFileNameList;
     QPushButton *acceptButton;
     const QString acceptText;

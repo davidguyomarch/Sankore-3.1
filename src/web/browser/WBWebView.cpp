@@ -310,7 +310,7 @@ void WBWebView::wheelEvent(QWheelEvent *event)
 {
     if (QApplication::keyboardModifiers() & Qt::ControlModifier)
     {
-        int numDegrees = event->delta() / 8;
+        int numDegrees = event->angleDelta().y() / 8;
         int numSteps = numDegrees / 15;
         setTextSizeMultiplier(textSizeMultiplier() + numSteps * 0.1);
         event->accept();

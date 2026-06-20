@@ -355,10 +355,9 @@ bool UBWebController::hasEmbeddedContent()
 
         // search the presence of "+oembed"
         QString query = "\\+oembed([^>]*)>";
-        QRegExp exp(query);
-        exp.indexIn(html);
-        QStringList results = exp.capturedTexts();
-        if(2 <= results.size() && "" != results.at(1)){
+        QRegularExpression exp(query);
+        QRegularExpressionMatch expMatch = exp.match(html);
+        if(expMatch.hasMatch() && "" != expMatch.captured(1)){
             // An embedded content has been found, no need to check the other ones
             bHasContent = true;
         }else{
@@ -615,18 +614,19 @@ void UBWebController::lookForEmbedContent(QString* pHtml, QString tag, QString a
     if(nullptr != pHtml && nullptr != pList){
         QVector<QString> urlsFound;
         // Check for <embed> content
-        QRegExp exp(QString("<%0(.*)").arg(tag));
-        exp.indexIn(*pHtml);
-        QStringList strl = exp.capturedTexts();
+        QRegularExpression exp(QString("<%0(.*)").arg(tag));
+        QRegularExpressionMatch expMatch = exp.match(*pHtml);
+        QStringList strl;
+        if (expMatch.hasMatch()) { for (int ci = 0; ci <= expMatch.lastCapturedIndex(); ++ci) strl << expMatch.captured(ci); }
         if(2 <= strl.size() && strl.at(1) != ""){
             // Here we call this regular expression:
             // src\s?=\s?['"]([^'"]*)['"]
             // It says: give me all characters that are after src=" (or src = ")
-            QRegExp src(QString("%0\\s?=\\s?['\"]([^'\"]*)['\"]").arg(attribute));
-            for(int i=1; i<strl.size(); i++){
-                src.indexIn(strl.at(i));
-                QStringList urls = src.capturedTexts();
-                if(2 <= urls.size() && urls.at(1) != "" && !urlsFound.contains(urls.at(1))){
+            QRegularExpression src(QString("%0\\s?=\\s?['\"]([^'\"]*)['\"]").arg(attribute));
+                QRegularExpressionMatch srcMatch = src.match(strl.at(i));
+                if(srcMatch.hasMatch() && srcMatch.captured(1) != "" && !urlsFound.contains(srcMatch.captured(1))){
+                    urlsFound << srcMatch.captured(1);
+                    pList->append(QUrl(srcMatch.captured(1)));
                     urlsFound << urls.at(1);
                     pList->append(QUrl(urls.at(1)));
                 }

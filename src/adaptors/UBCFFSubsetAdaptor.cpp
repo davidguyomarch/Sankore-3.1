@@ -21,7 +21,7 @@
 
 
 
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QSvgGenerator>
 #include <QSvgRenderer>
 #include <QPixmap>
@@ -1386,19 +1386,20 @@ QColor UBCFFSubsetAdaptor::UBCFFSubsetReader::colorFromString(const QString& clr
 {
     //init regexp with pattern
     //pattern corresponds to strings like 'rgb(1,2,3) or rgb(10%,20%,30%)'
-    QRegExp regexp("rgb\\(([0-9]+%{0,1}),([0-9]+%{0,1}),([0-9]+%{0,1})\\)");
-    if (regexp.exactMatch(clrString))
+    QRegularExpression regexp("rgb\\(([0-9]+%{0,1}),([0-9]+%{0,1}),([0-9]+%{0,1})\\)");
+    QRegularExpressionMatch match = regexp.match(clrString);
+    if (match.hasMatch() && match.captured(0).length() == clrString.length())
     {
-        if (regexp.capturedTexts().count() == 4 && regexp.capturedTexts().at(0).length() == clrString.length())
+        if (match.lastCapturedIndex() == 3)
         {
-            int r = regexp.capturedTexts().at(1).toInt();
-            if (regexp.capturedTexts().at(1).indexOf("%") != -1)
+            int r = match.captured(1).toInt();
+            if (match.captured(1).indexOf("%") != -1)
                 r = r * 255 / 100;
-            int g = regexp.capturedTexts().at(2).toInt();
-            if (regexp.capturedTexts().at(2).indexOf("%") != -1)
+            int g = match.captured(2).toInt();
+            if (match.captured(2).indexOf("%") != -1)
                 g = g * 255 / 100;
-            int b = regexp.capturedTexts().at(3).toInt();
-            if (regexp.capturedTexts().at(3).indexOf("%") != -1)
+            int b = match.captured(3).toInt();
+            if (match.captured(3).indexOf("%") != -1)
                 b = b * 255 / 100;
             return QColor(r, g, b);
         }
@@ -1418,12 +1419,13 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
     qreal angle = 0.0;
     QTransform tr;
 
-    for (const auto& QString trStr : trString.split(" ", QString::SkipEmptyParts))
+    for (const auto& QString trStr : trString.split(" ", Qt::SkipEmptyParts))
     {
         //check pattern for strings like 'rotate(10)'
-        QRegExp regexp("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
-        if (regexp.exactMatch(trStr)) {
-            angle = regexp.capturedTexts().at(1).toDouble();
+        QRegularExpression regexp("\\A" "rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)" "\\z");
+        QRegularExpressionMatch match = regexp.match(trStr);
+        if (match.hasMatch()) {
+            angle = match.captured(1).toDouble();
             if (item)
             {    
                 item->setTransformOriginPoint(QPointF(0, 0));
@@ -1433,11 +1435,12 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
         };
         
         //check pattern for strings like 'rotate(10,20,20)' or 'rotate(10.1,10.2,34.2)'
-        regexp.setPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
-        if (regexp.exactMatch(trStr)) {
-            angle = regexp.capturedTexts().at(1).toDouble();
-            dxr = regexp.capturedTexts().at(2).toDouble();
-            dyr = regexp.capturedTexts().at(3).toDouble();
+        QRegularExpression regexp2("\\A" "rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)" "\\z");
+        match = regexp2.match(trStr);
+        if (match.hasMatch()) {
+            angle = match.captured(1).toDouble();
+            dxr = match.captured(2).toDouble();
+            dyr = match.captured(3).toDouble();
             if (item)
             {                
                 item->setTransformOriginPoint(QPointF(dxr, dyr)-item->pos());
@@ -1447,10 +1450,11 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
         }
 
         //check pattern for strings like 'translate(11.0, 12.34)'
-        regexp.setPattern("translate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *,*([-+]{0,1}[0-9]*\\.{0,1}[0-9]*)*\\)");
-        if (regexp.exactMatch(trStr)) {
-            dx = regexp.capturedTexts().at(1).toDouble();
-            dy = regexp.capturedTexts().at(2).toDouble();
+        QRegularExpression regexp3("\\A" "translate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *,*([-+]{0,1}[0-9]*\\.{0,1}[0-9]*)*\\)" "\\z");
+        match = regexp3.match(trStr);
+        if (match.hasMatch()) {
+            dx = match.captured(1).toDouble();
+            dy = match.captured(2).toDouble();
             tr.translate(dx,dy);
             continue;
         }
