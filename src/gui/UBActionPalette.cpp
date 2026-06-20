@@ -145,7 +145,7 @@ UBActionPalette::~UBActionPalette()
 
 void UBActionPalette::setButtonIconSize(const QSize& size)
 {
-    for (const auto& QToolButton* button : mButtons)
+    for (QToolButton* button : mButtons)
         button->setIconSize(size);
 
     mButtonSize = size;
@@ -156,7 +156,7 @@ void UBActionPalette::groupActions()
 {
     mButtonGroup = new QButtonGroup(this);
     int i = 0;
-    for (const auto& QToolButton* button : mButtons)
+    for (QToolButton* button : mButtons)
     {
         mButtonGroup->addButton(button, i);
         ++i;
@@ -168,7 +168,7 @@ void UBActionPalette::groupActions()
 
 void UBActionPalette::setToolButtonStyle(Qt::ToolButtonStyle tbs)
 {
-    for (const auto& QToolButton* button : mButtons)
+    for (QToolButton* button : mButtons)
         button->setToolButtonStyle(tbs);
 
     mToolButtonStyle = tbs;
