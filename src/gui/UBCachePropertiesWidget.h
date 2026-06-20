@@ -32,6 +32,7 @@
 #include <QSlider>
 #include <QVector>
 #include <QComboBox>
+#include <QCheckBox>
 
 #include "UBDockPaletteWidget.h"
 #include "tools/UBGraphicsCache.h"
@@ -123,6 +124,7 @@ private:
     QVBoxLayout *mpModeLayout;
     QVBoxLayout *mpPreviewLayout;
     QComboBox *mpModeComboBox;
+#include <QCheckBox>
     QColor mActualColor;
     eMaskShape mActualShape;
     UBGraphicsCache* mpCurrentCache;

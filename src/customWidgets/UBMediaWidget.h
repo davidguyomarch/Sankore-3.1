@@ -29,6 +29,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QSlider>
+#include <QVideoWidget>
 #include <QMouseEvent>
 #include <QStackedWidget>
 
@@ -118,6 +119,7 @@ private:
     UBMediaButton* mpPauseButton;
     /** The seeker slider */
     QSlider* mpSlider;
+#include <QVideoWidget>
     /** An indicator of the seeker auto update in progress */
     bool mAutoUpdate;
     /** An indicator of the thumbnail generation in progress */

@@ -119,7 +119,7 @@ void UBThumbnailAdaptor::load(UBDocumentProxy* proxy, QList<const QPixmap*>& lis
 
 void UBThumbnailAdaptor::clearThumbs(QList<const QPixmap *> &list)
 {
-    for (const auto& const QPixmap* pm : list)
+    for (const QPixmap* pm : list)
         delete pm;
     list.clear();
 }
