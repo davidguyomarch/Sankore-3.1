@@ -965,7 +965,7 @@ void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
 
     if (needRepaint)
     {
-        for (const auto& QGraphicsView* view : views())
+        for (QGraphicsView* view : views())
         {
             view->resetCachedContent();
         }
@@ -985,7 +985,7 @@ void UBGraphicsScene::setDrawingMode(bool bModeDesktop)
 void UBGraphicsScene::recolorAllItems()
 {
     QMap<QGraphicsView*, QGraphicsView::ViewportUpdateMode> previousUpdateModes;
-    for (const auto& QGraphicsView* view : views())
+    for (QGraphicsView* view : views())
     {
         previousUpdateModes.insert(view, view->viewportUpdateMode());
         view->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);
@@ -1010,7 +1010,7 @@ void UBGraphicsScene::recolorAllItems()
         }
     }
 
-    for (const auto& QGraphicsView* view : views())
+    for (QGraphicsView* view : views())
     {
         view->setViewportUpdateMode(previousUpdateModes.value(view));
     }
@@ -1321,7 +1321,7 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
     if (!shouldPlayAsap)
     {
         mediaItem->mediaObject()->pause();
-        mediaItem->mediaObject()->seek(0);
+        mediaItem->mediaObject()->setPosition(0);
     }
 
     setDocumentUpdated();
@@ -1724,7 +1724,7 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
         UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(item));
     }
 
-    mFastAccessItems += items.toList();
+    mFastAccessItems += QList<QGraphicsItem*>(items.begin(), items.end());
 }
 
 void UBGraphicsScene::removeItem(QGraphicsItem* item)

@@ -27,6 +27,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QUndoCommand>
 
 class UBAbstractUndoCommand : public QUndoCommand
 {

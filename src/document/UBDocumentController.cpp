@@ -24,6 +24,9 @@
 
 #include <QtCore>
 #include <QWidget>
+#include <QMenu>
+#include <QScrollBar>
+#include <QHeaderView>
 #include <QApplication>
 #include <QPainter>
 
@@ -279,7 +282,7 @@ QString UBDocumentTreeNode::dirPathInHierarchy()
 
 UBDocumentTreeNode::~UBDocumentTreeNode()
 {
-    for (const auto& UBDocumentTreeNode *curChildren : mChildren) {
+    for (UBDocumentTreeNode *curChildren : mChildren) {
         delete(curChildren);
         curChildren = 0;
     }
@@ -643,7 +646,7 @@ QMimeData *UBDocumentTreeModel::mimeData (const QModelIndexList &indexes) const
     QList <QModelIndex> indexList;
     QList<QUrl> urlList;
 
-    for (const auto& QModelIndex index : indexes) {
+    for (const QModelIndex& index : indexes) {
         if (index.isValid()) {
             indexList.append(index);
             urlList.append(QUrl());
@@ -676,7 +679,7 @@ bool UBDocumentTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction act
 
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-        for (const auto& UBMimeDataItem sourceItem : ubMime->items())
+        for (const UBMimeDataItem& sourceItem : ubMime->items())
         {
             UBDocumentProxy *fromProxy = sourceItem.documentProxy();
             int fromIndex = sourceItem.sceneIndex();
@@ -712,7 +715,7 @@ bool UBDocumentTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction act
 
     QList<QModelIndex> incomingIndexes = mimeData->indexes();
 
-    for (const auto& QModelIndex curIndex : incomingIndexes) {
+    for (const QModelIndex& curIndex : incomingIndexes) {
 #ifdef Q_OS_MACOS
         if (inModel(curIndex)) {
             return true;
@@ -746,7 +749,7 @@ bool UBDocumentTreeModel::removeRows(int row, int count, const QModelIndex &pare
     UBDocumentTreeNode *parentNode = nodeFromIndex(parent);
     for (int i = row; i < row + count; i++) {
         UBDocumentTreeNode *curChildNode = parentNode->children().at(i);
-        QModelIndex curChildIndex = parent.child(i, 0);
+        QModelIndex curChildIndex = parent.model()->index(i, 0, parent);
         if (curChildNode) {
             if (rowCount(curChildIndex)) {
                 while (rowCount(curChildIndex)) {
@@ -779,7 +782,7 @@ QPersistentModelIndex UBDocumentTreeModel::persistentIndexForNode(UBDocumentTree
 
 UBDocumentTreeNode *UBDocumentTreeModel::findProxy(UBDocumentProxy *pSearch, UBDocumentTreeNode *pParent) const
 {
-    for (const auto& UBDocumentTreeNode *curNode : pParent->children())
+    for (UBDocumentTreeNode *curNode : pParent->children())
     {
         if (UBDocumentTreeNode::Catalog != curNode->nodeType())
         {
@@ -882,7 +885,7 @@ QPersistentModelIndex UBDocumentTreeModel::copyIndexToNewParent(const QModelInde
 
     if (rowCount(source)) {
         for (int i = 0; i < rowCount(source); i++) {
-            QModelIndex curNewParentIndexChild = source.child(i, 0);
+            QModelIndex curNewParentIndexChild = source.model()->index(i, 0, source);
             copyIndexToNewParent(curNewParentIndexChild, newParentIndex, pMode);
         }
     }
@@ -958,7 +961,7 @@ QModelIndex UBDocumentTreeModel::indexForProxy(UBDocumentProxy *pSearch) const
 void UBDocumentTreeModel::setRootNode(UBDocumentTreeNode *pRoot)
 {
     mRootNode = pRoot;
-    reset();
+    beginResetModel(); endResetModel();
 }
 
 UBDocumentProxy *UBDocumentTreeModel::proxyForIndex(const QModelIndex &pIndex) const
@@ -1005,7 +1008,7 @@ QStringList UBDocumentTreeModel::nodeNameList(const QModelIndex &pIndex) const
         return QStringList();
     }
 
-    for (const auto& UBDocumentTreeNode *curNode : catalog->children()) {
+    for (UBDocumentTreeNode *curNode : catalog->children()) {
         result << curNode->nodeName();
     }
 
@@ -1198,7 +1201,7 @@ void UBDocumentTreeModel::updateIndexNameBindings(UBDocumentTreeNode *nd)
     Q_ASSERT(nd);
 
     if (nd->nodeType() == UBDocumentTreeNode::Catalog) {
-        for (const auto& UBDocumentTreeNode *lnd : nd->children()) {
+        for (UBDocumentTreeNode *lnd : nd->children()) {
             updateIndexNameBindings(lnd);
         }
     } else if (nd->proxyData()) {
@@ -1431,7 +1434,7 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
         int total = ubMime->items().size();
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-        for (const auto& UBMimeDataItem sourceItem : ubMime->items())
+        for (const UBMimeDataItem& sourceItem : ubMime->items())
         {
             UBDocumentProxy *fromProxy = sourceItem.documentProxy();
             int fromIndex = sourceItem.sceneIndex();
@@ -1746,7 +1749,7 @@ QList<UBDocumentProxy*> UBDocumentController::selectedProxies()
 {
     QList<UBDocumentProxy*> result;
 
-    for (const auto& QModelIndex curIndex : mapIndexesToSource(mDocumentUI->documentTreeView->selectionModel()->selectedIndexes())) {
+    for (const QModelIndex& curIndex : mapIndexesToSource(mDocumentUI->documentTreeView->selectionModel()->selectedIndexes())) {
         result << UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->proxyForIndex(curIndex);
     }
 
@@ -1886,7 +1889,7 @@ void UBDocumentController::TreeViewSelectionChanged(const QItemSelection &select
 
             //init children list
             for(int i = 0; i < model->rowCount(parent); i++){
-                children.push_back(parent.child(i, 0));
+                children.push_back(parent.model()->index(i, 0, parent));
             }
 
             for(int i = 0; i < children.size(); i++){
@@ -1895,7 +1898,7 @@ void UBDocumentController::TreeViewSelectionChanged(const QItemSelection &select
 
                 //add its children if any
                 for(int k = 0; k < model->rowCount(children.at(i)); k++){
-                    children.push_back(children.at(i).child(k, 0));
+                    children.push_back(children.at(i).model()->index(k, 0, children.at(i)));
                 }
             }
         }
@@ -2016,9 +2019,9 @@ void UBDocumentController::setupViews()
         mDocumentUI->documentTreeView->viewport()->setAcceptDrops(true);
         mDocumentUI->documentTreeView->setDropIndicatorShown(true);
         mDocumentUI->documentTreeView->header()->setStretchLastSection(false);
-        mDocumentUI->documentTreeView->header()->setResizeMode(0, QHeaderView::Stretch);
-        mDocumentUI->documentTreeView->header()->setResizeMode(1, QHeaderView::ResizeToContents);
-        mDocumentUI->documentTreeView->header()->setResizeMode(2, QHeaderView::ResizeToContents);
+        mDocumentUI->documentTreeView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+        mDocumentUI->documentTreeView->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+        mDocumentUI->documentTreeView->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
 
         mDocumentUI->documentTreeView->hideColumn(1);
         mDocumentUI->documentTreeView->hideColumn(2);
@@ -3197,7 +3200,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
             UBMetadataDcSubsetAdaptor::persist(proxy);
 
             int minIndex = proxy->pageCount() - 1;
-            for (const auto& int i : sceneIndexes)
+            for (int i : sceneIndexes)
                  minIndex = qMin(i, minIndex);
 
             mDocumentUI->thumbnailWidget->selectItemAt(minIndex);

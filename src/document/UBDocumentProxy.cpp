@@ -23,6 +23,7 @@
 
 #include "UBDocumentProxy.h"
 
+#include <QLocale>
 #include "frameworks/UBStringUtils.h"
 
 #include "core/UBApplication.h"
@@ -66,7 +67,7 @@ void UBDocumentProxy::init()
     setMetaData(UBSettings::documentGroupName, "");
 
     QDateTime now = QDateTime::currentDateTime();
-    setMetaData(UBSettings::documentName, now.toString(Qt::SystemLocaleShortDate));
+    setMetaData(UBSettings::documentName, QLocale().toString(now, QLocale::ShortFormat));
 
     setUuid(QUuid::createUuid());
 
