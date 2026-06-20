@@ -22,6 +22,9 @@
 
 
 #include "UBMousePressFilter.h"
+#include <QMouseEvent>
+#include <QTimer>
+#include <QTabletEvent>
 
 
 UBMousePressFilter::UBMousePressFilter(QObject* parent)

@@ -27,6 +27,9 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QBasicTimer>
 
 #include "UBFloatingPalette.h"
 

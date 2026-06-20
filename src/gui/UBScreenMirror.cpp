@@ -94,8 +94,8 @@ void UBScreenMirror::grabPixmap()
         // WHY HERE?
         // this is the case we are showing the desktop but the is no widget and we use the last widget rectagle to know
         // what we have to grab. Not very good way of doing
-        WId windowID = qApp->desktop()->screen(mScreenIndex)->winId();
-        mLastPixmap = QPixmap::grabWindow(windowID, mRect.x(), mRect.y(), mRect.width(), mRect.height());
+        // In Qt6, use QScreen::grabWindow()
+        mLastPixmap = QGuiApplication::screens().at(mScreenIndex)->grabWindow(0, mRect.x(), mRect.y(), mRect.width(), mRect.height());
     }
 
     mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -106,7 +106,7 @@ void UBScreenMirror::setSourceWidget(QWidget *sourceWidget)
 {
     mSourceWidget = sourceWidget;
 
-    mScreenIndex = qApp->desktop()->screenNumber(sourceWidget);
+    mScreenIndex = 0; // Qt6: use sourceWidget->screen() to find index
 
     grabPixmap();
 
