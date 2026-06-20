@@ -138,10 +138,13 @@ QTransform UBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
         matrix.setMatrix(
             sl.at(0).toFloat(),
             sl.at(1).toFloat(),
+            0,
             sl.at(2).toFloat(),
             sl.at(3).toFloat(),
+            0,
             sl.at(4).toFloat(),
-            sl.at(5).toFloat());
+            sl.at(5).toFloat(),
+            1);
     }
 
     return matrix;
@@ -275,7 +278,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return 0;
+            return QUuid();
         }
 
         UBGraphicsScene* scene = loadScene(proxy, file.readAll());
@@ -285,7 +288,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int
         return scene;
     }
 
-    return 0;
+    return QUuid();
 }
 
 
@@ -302,7 +305,7 @@ QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return 0;
+            return QUuid();
         }
 
         QXmlStreamReader xml(file.readAll());
@@ -338,7 +341,7 @@ QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 
 UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const QByteArray& pArray)
 {
-    UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toAscii());
+    UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toLatin1());
     return reader.loadScene();
 }
 
@@ -637,7 +640,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     QString parentId = QUuid::createUuid().toString();
 
-                    for (const auto& UBGraphicsPolygonItem* polygonItem : polygonItems)
+                    for (UBGraphicsPolygonItem* polygonItem : polygonItems)
                     {
                         polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
@@ -989,7 +992,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     if (pdfItem)
                     {
                         QScreen* desktop = QGuiApplication::primaryScreen();
-                        qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDotsPerInchY()) / 2;
+                        qreal currentDpi = (desktop->physicalDotsPerInchX() + desktop->physicalDotsPerInchY()) / 2;
                         qreal pdfScale = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
                         pdfItem->setScale(pdfScale);
                         pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -1066,7 +1069,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     if (textDelegate)
                     {
                         QScreen* desktop = QGuiApplication::primaryScreen();
-                        qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDotsPerInchY()) / 2;
+                        qreal currentDpi = (desktop->physicalDotsPerInchX() + desktop->physicalDotsPerInchY()) / 2;
                         qreal textSizeMultiplier = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
                         textDelegate->scaleTextSize(textSizeMultiplier);
                     }
@@ -1302,7 +1305,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "crossed-background", mScene->isCrossedBackground() ? xmlTrue : xmlFalse);
 
     QScreen* desktop = QGuiApplication::primaryScreen();
-    mXmlWriter.writeAttribute("pageDpi", QString("%1").arg((desktop->physicalDpiX() + desktop->physicalDotsPerInchY()) / 2));
+    mXmlWriter.writeAttribute("pageDpi", QString("%1").arg((desktop->physicalDotsPerInchX() + desktop->physicalDotsPerInchY()) / 2));
 
 
     mXmlWriter.writeStartElement("rect");
@@ -2103,7 +2106,7 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromLin
     else
     {
         qWarning() << "cannot make sense of 'line' value";
-        return 0;
+        return nullptr;
     }
 
     QStringView strokeWidth = mXmlReader.attributes().value("stroke-width");
@@ -2403,7 +2406,7 @@ UBGraphicsPixmapItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapItemFromSvg()
     else
     {
         qWarning() << "cannot make sens of image href value";
-        return 0;
+        return nullptr;
     }
 
     graphicsItemFromSvg(pixmapItem);
@@ -2468,7 +2471,7 @@ UBGraphicsSvgItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::svgItemFromSvg()
     else
     {
         qWarning() << "cannot make sens of image href value";
-        return 0;
+        return nullptr;
     }
 
     graphicsItemFromSvg(svgItem);
@@ -2518,7 +2521,7 @@ UBGraphicsPDFItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pdfItemFromPDF()
     if (parts.count() != 2)
     {
         qWarning() << "invalid pdf href value" << href;
-        return 0;
+        return nullptr;
     }
 
     QString pdfPath = parts[0];
@@ -2590,7 +2593,7 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
     if (audioHref.isNull())
     {
         qWarning() << "cannot make sens of video href value";
-        return 0;
+        return nullptr;
     }
 
     QString href = mDocumentPath + "/" + audioHref.toString();
@@ -2628,7 +2631,7 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
     if (videoHref.isNull())
     {
         qWarning() << "cannot make sens of video href value";
-        return 0;
+        return nullptr;
     }
 
     QString href = mDocumentPath + "/" + videoHref.toString();
@@ -2955,7 +2958,7 @@ UBGraphicsAppleWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsAppleW
     if (widgetUrl.isNull())
     {
         qWarning() << "cannot make sens of widget src value";
-        return 0;
+        return nullptr;
     }
 
     QString href = widgetUrl.toString();
@@ -2981,7 +2984,7 @@ UBGraphicsW3CWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsW3CWidge
     if (widgetUrl.isNull())
     {
         qWarning() << "cannot make sens of widget src value";
-        return 0;
+        return nullptr;
     }
 
     QString href = widgetUrl.toString();
@@ -3108,7 +3111,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
         if (mXmlReader.hasError())
         {
             delete textItem;
-            return 0;
+            return nullptr;
         }
 
         mXmlReader.readNext();

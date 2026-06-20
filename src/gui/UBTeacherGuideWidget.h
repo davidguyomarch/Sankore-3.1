@@ -278,7 +278,7 @@ class UBClickableLabel : public QLabel
     Q_OBJECT
 
 public:
-    UBClickableLabel(QWidget * parent = 0, Qt::WindowFlags f = 0):
+    UBClickableLabel(QWidget * parent = 0, Qt::WindowFlags f = Qt::WindowFlags()):
         QLabel(parent, f)
     {
 

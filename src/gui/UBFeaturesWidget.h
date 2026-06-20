@@ -37,6 +37,7 @@
 #include <QGraphicsLinearLayout>
 #include <QStackedWidget>
 #include <QDropEvent>
+#include <QProgressBar>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 
@@ -197,6 +198,7 @@ public:
 protected:
     virtual void dragEnterEvent(QDragEnterEvent *event);
     virtual void dropEvent(QDropEvent *event);
+#include <QProgressBar>
     virtual void dragMoveEvent(QDragMoveEvent *event);
 
 //issue 1474 - NNE - 20131118

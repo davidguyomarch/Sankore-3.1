@@ -36,6 +36,7 @@ class UBGraphicsWidgetItem;
 class UBRubberBand;
 
 class UBBoardView : public QGraphicsView
+#include <QGraphicsView>
 {
     Q_OBJECT
 
