@@ -346,7 +346,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     if (!svgPoints.isNull()) {
         QStringList ts = svgPoints.split(QLatin1Char(' '), Qt::SkipEmptyParts);
 
-        for (const auto& const QString sPoint : ts) {
+        for (const QString& sPoint : ts) {
             QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
@@ -462,7 +462,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
         QStringList ts = svgPoints.split(QLatin1Char(' '),
                                                     Qt::SkipEmptyParts);
 
-        for (const auto& const QString sPoint : ts) {
+        for (const QString& sPoint : ts) {
             QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;

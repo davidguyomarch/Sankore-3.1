@@ -135,7 +135,7 @@ QTransform UBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
 
     if (sl.size() >= 6)
     {
-        matrix.setTransform(
+        matrix.setMatrix(
             sl.at(0).toFloat(),
             sl.at(1).toFloat(),
             0,
@@ -278,7 +278,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return QUuid();
+            return nullptr;
         }
 
         UBGraphicsScene* scene = loadScene(proxy, file.readAll());
@@ -288,7 +288,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int
         return scene;
     }
 
-    return QUuid();
+    return nullptr;
 }
 
 
@@ -1748,7 +1748,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
     QUuid uuid = UBGraphicsScene::getPersonalUuid(groupItem);
     if (!uuid.isNull()) {
         QDomElement curGroupElement = groupDomDocument->createElement(tGroup);
-        curGroupElement.setAttribute(aId, uuid);
+        curGroupElement.setAttribute(aId, uuid.toString());
         //persist delegate properties
         UBGraphicsGroupContainerItem* group = dynamic_cast<UBGraphicsGroupContainerItem*>(groupItem);
         if(group && group->Delegate()){
@@ -1778,7 +1778,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
                 else {
                     QDomElement curSubElement = groupDomDocument->createElement(tElement);
 
-                    curSubElement.setAttribute(aId, tmpUuid);
+                    curSubElement.setAttribute(aId, tmpUuid.toString());
                     curGroupElement.appendChild(curSubElement);
                 }
             }
@@ -1970,7 +1970,7 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
                          Qt::SkipEmptyParts);
 
-        for (const auto& const QString sPoint : ts)
+        for (const QString& sPoint : ts)
         {
             QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
 
@@ -2267,7 +2267,7 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
 
         QList<QPointF> points;
 
-        for (const auto& const QString sPoint : ts)
+        for (const QString& sPoint : ts)
         {
             QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
 
@@ -2541,9 +2541,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsMed
 
     graphicsItemToSvg(audioItem);
 
-    if (audioItem->mediaPlayer()->playbackState() == QMediaPlayer::PausedState && audioItem->mediaPlayer()->duration() - audioItem->mediaPlayer()->position() > 0)
+    if (audioItem->mediaObject()->playbackState() == QMediaPlayer::PausedState && audioItem->mediaObject()->duration() - audioItem->mediaObject()->position() > 0)
     {
-        qint64 pos = audioItem->mediaPlayer()->position();
+        qint64 pos = audioItem->mediaObject()->position();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
@@ -2569,9 +2569,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsMed
 
     graphicsItemToSvg(videoItem);
 
-    if (videoItem->mediaPlayer()->playbackState() == QMediaPlayer::PausedState && videoItem->mediaPlayer()->duration() - videoItem->mediaPlayer()->position() > 0)
+    if (videoItem->mediaObject()->playbackState() == QMediaPlayer::PausedState && videoItem->mediaObject()->duration() - videoItem->mediaObject()->position() > 0)
     {
-        qint64 pos = videoItem->mediaPlayer()->position();
+        qint64 pos = videoItem->mediaObject()->position();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
@@ -3165,7 +3165,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                 }
                 QStringView fontStyle = mXmlReader.attributes().value("style");
                 if (!fontStyle.isNull()) {
-                    for (const QString& styleToken : fontStyle.toString().split(";")) {
+                    for (QString styleToken : fontStyle.toString().split(";")) {
                         styleToken = styleToken.trimmed();
                         if (styleToken.startsWith(sFontSizePrefix) && styleToken.endsWith(sPixelUnit)) {
                             int fontSize = styleToken.mid(
@@ -3880,7 +3880,7 @@ UBAbstractGraphicsPathItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::shapePathFrom
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
                          Qt::SkipEmptyParts);
 
-        for (const auto& const QString sPoint : ts)
+        for (const QString& sPoint : ts)
         {
             QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
 
@@ -3948,7 +3948,7 @@ UBEditableGraphicsRegularShapeItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::shape
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
                          Qt::SkipEmptyParts);
 
-        for (const auto& const QString sPoint : ts)
+        for (const QString& sPoint : ts)
         {
             QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
 

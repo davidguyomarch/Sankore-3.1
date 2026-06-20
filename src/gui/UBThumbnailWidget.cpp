@@ -112,7 +112,7 @@ void UBThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsI
 
     mLabelsItems.clear();
 
-    for (const auto& const QString label : pLabels)
+    for (const QString& label : pLabels)
     {
         QFontMetrics fm(font());
         UBThumbnailTextItem *labelItem =

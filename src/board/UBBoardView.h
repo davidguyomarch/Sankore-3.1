@@ -34,9 +34,9 @@ class UBBoardController;
 class UBGraphicsScene;
 class UBGraphicsWidgetItem;
 class UBRubberBand;
+#include <QGraphicsView>
 
 class UBBoardView : public QGraphicsView
-#include <QGraphicsView>
 {
     Q_OBJECT
 
