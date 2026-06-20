@@ -70,7 +70,7 @@ void UBGraphicsRuler::updateResizeCursor()
     qreal angle = topLine.angle();
     QTransform tr;
     tr.rotate(- angle);
-    QCursor resizeCursor  = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.horizontalAdvance() / 2,  pix.height() / 2);
+    QCursor resizeCursor  = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
     mResizeCursor = resizeCursor;
 }
 
@@ -145,7 +145,7 @@ QVariant UBGraphicsRuler::itemChange(GraphicsItemChange change, const QVariant &
 
 void UBGraphicsRuler::fillBackground(QPainter *painter)
 {
-    QRectF rect1(rect().topLeft(), QSizeF(rect().horizontalAdvance(), rect().height() / 4));
+    QRectF rect1(rect().topLeft(), QSizeF(rect().width(), rect().height() / 4));
     QLinearGradient linearGradient1(
         rect1.topLeft(),
         rect1.bottomLeft());
@@ -153,7 +153,7 @@ void UBGraphicsRuler::fillBackground(QPainter *painter)
     linearGradient1.setColorAt(1, middleFillColor());
     painter->fillRect(rect1, linearGradient1);
 
-    QRectF rect2(rect1.bottomLeft(), QSizeF(rect().horizontalAdvance(), rect().height() / 2));
+    QRectF rect2(rect1.bottomLeft(), QSizeF(rect().width(), rect().height() / 2));
     painter->fillRect(rect2, middleFillColor());
 
     QRectF rect3(rect2.bottomLeft(), rect1.size());
@@ -170,7 +170,7 @@ void UBGraphicsRuler::paintGraduations(QPainter *painter)
     painter->save();
     painter->setFont(font());
     QFontMetricsF fontMetrics(painter->font());
-    for (int millimeters = 0; millimeters < (rect().horizontalAdvance() - sLeftEdgeMargin - sRoundingRadius) / sPixelsPerMillimeter; millimeters++)
+    for (int millimeters = 0; millimeters < (rect().width() - sLeftEdgeMargin - sRoundingRadius) / sPixelsPerMillimeter; millimeters++)
     {
         int graduationX = rotationCenter().x() + sPixelsPerMillimeter * millimeters;
         int graduationHeight = (0 == millimeters % UBGeometryUtils::millimetersPerCentimeter) ?
@@ -225,11 +225,11 @@ QRectF UBGraphicsRuler::resizeButtonRect() const
 {
     QPixmap resizePixmap(":/images/resizeRuler.svg");
     QSizeF resizeRectSize(
-        resizePixmap.rect().horizontalAdvance(),
+        resizePixmap.rect().width(),
         rect().height());
 
     qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
-    QPointF resizeRectTopLeft(rect().horizontalAdvance() - resizeRectSize.horizontalAdvance() * ratio, 0);
+    QPointF resizeRectTopLeft(rect().width() - resizeRectSize.width() * ratio, 0);
 
     QRectF resizeRect(resizeRectTopLeft, resizeRectSize);
     resizeRect.translate(rect().topLeft());
@@ -242,7 +242,7 @@ QRectF UBGraphicsRuler::closeButtonRect() const
     QPixmap closePixmap(":/images/closeTool.svg");
 
     QSizeF closeRectSize(
-        closePixmap.horizontalAdvance() * mAntiScaleRatio,
+        closePixmap.width() * mAntiScaleRatio,
         closePixmap.height() * mAntiScaleRatio);
 
     QPointF closeRectCenter(
@@ -250,7 +250,7 @@ QRectF UBGraphicsRuler::closeButtonRect() const
         rect().center().y());
 
     QPointF closeRectTopLeft(
-        closeRectCenter.x() - closeRectSize.horizontalAdvance() / 2,
+        closeRectCenter.x() - closeRectSize.width() / 2,
         closeRectCenter.y() - closeRectSize.height() / 2);
 
     return QRectF(closeRectTopLeft, closeRectSize);
@@ -261,16 +261,16 @@ QRectF UBGraphicsRuler::rotateButtonRect() const
     QPixmap rotatePixmap(":/images/closeTool.svg");
 
     QSizeF rotateRectSize(
-        rotatePixmap.horizontalAdvance() * mAntiScaleRatio,
+        rotatePixmap.width() * mAntiScaleRatio,
         rotatePixmap.height() * mAntiScaleRatio);
 
-    int centimeters = (int)(rect().horizontalAdvance() - sLeftEdgeMargin - resizeButtonRect().horizontalAdvance()) / (int)(10 * sPixelsPerMillimeter);
+    int centimeters = (int)(rect().width() - sLeftEdgeMargin - resizeButtonRect().width()) / (int)(10 * sPixelsPerMillimeter);
     QPointF rotateRectCenter(
         rect().left() + sLeftEdgeMargin + (centimeters - 0.5) * 10 * sPixelsPerMillimeter,
         rect().center().y());
 
     QPointF rotateRectTopLeft(
-        rotateRectCenter.x() - rotateRectSize.horizontalAdvance() / 2,
+        rotateRectCenter.x() - rotateRectSize.width() / 2,
         rotateRectCenter.y() - rotateRectSize.height() / 2);
 
     return QRectF(rotateRectTopLeft, rotateRectSize);
@@ -336,13 +336,13 @@ void UBGraphicsRuler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if (mResizing)
         {
             QPointF delta = event->pos() - event->lastPos();
-            if (rect().horizontalAdvance() + delta.x() < sMinLength)
-                delta.setX(sMinLength - rect().horizontalAdvance());
+            if (rect().width() + delta.x() < sMinLength)
+                delta.setX(sMinLength - rect().width());
 
-            if (rect().horizontalAdvance() + delta.x() > sMaxLength)
-                delta.setX(sMaxLength - rect().horizontalAdvance());
+            if (rect().width() + delta.x() > sMaxLength)
+                delta.setX(sMaxLength - rect().width());
 
-            setRect(QRectF(rect().topLeft(), QSizeF(rect().horizontalAdvance() + delta.x(), rect().height())));
+            setRect(QRectF(rect().topLeft(), QSizeF(rect().width() + delta.x(), rect().height())));
         }
         else
         {
@@ -461,8 +461,8 @@ void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
 
     if (itemPos.x() < rect().x() + sLeftEdgeMargin)
         itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().horizontalAdvance() - sLeftEdgeMargin)
-        itemPos.setX(rect().x() + rect().horizontalAdvance() - sLeftEdgeMargin);
+    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
+        itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
 
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
@@ -486,8 +486,8 @@ void UBGraphicsRuler::DrawLine(const QPointF& scenePos, qreal width)
     }
     if (itemPos.x() < rect().x() + sLeftEdgeMargin)
         itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().horizontalAdvance() - sLeftEdgeMargin)
-        itemPos.setX(rect().x() + rect().horizontalAdvance() - sLeftEdgeMargin);
+    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
+        itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
 
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
