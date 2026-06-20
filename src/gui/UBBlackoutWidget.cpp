@@ -22,6 +22,7 @@
 
 
 #include <QWidget>
+#include <QKeyEvent>
 #include <QScreen>
 #include <QGuiApplication>
 #include <QApplication>

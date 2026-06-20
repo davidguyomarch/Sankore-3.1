@@ -100,9 +100,9 @@ void UBToolWidget::initialize()
 
     mWebView = new QWebEngineView(this);
 
-    QPalette palette = mWebView->QPalette();
+    QPalette palette;
     palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
-    mWebView->
+    // palette not supported in WebEngine
 
 
     mWebView->installEventFilter(this);

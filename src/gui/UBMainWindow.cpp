@@ -22,6 +22,8 @@
 
 
 #include <QWidget>
+#include <QStackedLayout>
+#include <QToolTip>
 #include <QKeyEvent>
 #include <QApplication>
 #include <QPainter>
