@@ -37,6 +37,7 @@
 
 THIRD_PARTY_WARNINGS_DISABLE
 #include "quazipfile.h"
+#include "quazipfileinfo.h"
 #include <openssl/md5.h>
 THIRD_PARTY_WARNINGS_ENABLE
 
@@ -262,7 +263,7 @@ QStringList UBFileSystemUtils::allFiles(const QString& pDirPath, bool isRecursiv
 
     QDir dir(pDirPath);
 
-    for (const QFileInfo& dirContent, dir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot  : QDir::Name))
+    for (const QFileInfo& dirContent : dir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name))
     {
         if (isRecursive && dirContent.isDir())
         {
@@ -294,7 +295,7 @@ bool UBFileSystemUtils::deleteFilesContaining(const QString& pDirPath, const QSt
     QDir dir(pDirPath);
 
     if (dir.exists())
-        for (const QString& dirContent, dir.entryList(QDir::Files | QDir::NoDotAndDotDot  : QDir::Name))
+        for (const QString& dirContent : dir.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name))
             if (dirContent.contains(pFileName))
                 QFile::remove(pDirPath + "/" + dirContent);
 

@@ -22,6 +22,7 @@
 
 
 #include "UBAbstractGraphicsProxyWidget.h"
+#include <QGraphicsSceneWheelEvent>
 
 #include <QWidget>
 #include <QApplication>

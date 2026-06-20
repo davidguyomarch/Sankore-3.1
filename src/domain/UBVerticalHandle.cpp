@@ -1,4 +1,5 @@
 #include "UBEditable.h"
+#include <QGraphicsSceneMouseEvent>
 
 #include "UBVerticalHandle.h"
 

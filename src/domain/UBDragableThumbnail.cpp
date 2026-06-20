@@ -22,6 +22,8 @@ UBDraggableThumbnail::UBDraggableThumbnail(QWidget* parent, const QPixmap& pixma
 }
 
 void UBDraggableThumbnail::setThumbnail(const QPixmap& pixmap)
+#include <QMimeData>
+#include <QDrag>
 {
     mThumbnail->setAttribute(Qt::WA_DeleteOnClose);
     setPixmap(pixmap);
@@ -94,7 +96,7 @@ void UBDraggableThumbnail::mousePressEvent(QMouseEvent *event)
     if (!child)
       return;
 
-    QPixmap pixmap = *child->pixmap();
+    QPixmap pixmap = child->pixmap();
 
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
