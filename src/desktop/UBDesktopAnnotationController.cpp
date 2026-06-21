@@ -484,11 +484,11 @@ void UBDesktopAnnotationController::screenCapture()
 
 QPixmap UBDesktopAnnotationController::getScreenPixmap()
 {
-    QDesktopWidget *desktop = QApplication::desktop();
+    // QDesktopWidget removed in Qt6
 
     // we capture the screen in which the mouse is.
     const QRect primaryScreenRect = desktop->screenGeometry(QCursor::pos());
-    QCoreApplication::flush();
+    QCoreApplication::processEvents();
 
     return QPixmap::grabWindow(desktop->winId(), primaryScreenRect.x()
                                , primaryScreenRect.y(), primaryScreenRect.width(), primaryScreenRect.height());

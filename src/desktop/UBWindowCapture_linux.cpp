@@ -22,6 +22,7 @@
 
 #include "UBWindowCapture.h"
 #include "UBDesktopAnnotationController.h"
+#include <QDialog>
 
 
 UBWindowCapture::UBWindowCapture(UBDesktopAnnotationController *parent)

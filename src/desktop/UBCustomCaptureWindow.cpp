@@ -22,6 +22,8 @@
 
 #include "UBCustomCaptureWindow.h"
 
+#include <QScreen>
+#include <QGuiApplication>
 #include "gui/UBRubberBand.h"
 
 
@@ -61,9 +63,11 @@ int UBCustomCaptureWindow::execute(const QPixmap &pScreenPixmap)
 {
     mWholeScreenPixmap = pScreenPixmap;
 
-    QDesktopWidget *desktop = QApplication::desktop();
-    int currentScreen = desktop->screenNumber(QCursor::pos());
-    setGeometry(desktop->screenGeometry(currentScreen));
+    int currentScreen = 0; /* Qt6: use QGuiApplication::screenAt(QCursor::pos()) */
+    setGeometry(QGuiApplication::screens().at(currentScreen)->geometry());
+
+
+
 
     showFullScreen();
     setWindowOpacity(1.0);
