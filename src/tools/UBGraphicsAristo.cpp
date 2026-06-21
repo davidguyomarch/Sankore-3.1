@@ -398,7 +398,7 @@ void UBGraphicsAristo::paintProtractorGraduations(QPainter* painter)
             painter->translate(center.x() + (rad/2 + graduationLength*1.5)*co, center.y() - (rad/2 + graduationLength*1.5)*si);
             int degrees = mOrientation == Bottom ? angle : -angle;
             painter->rotate(-90 + degrees);
-            painter->drawText(- fm2.width(grad)/2, - fm2.height()/2, fm2.width(grad), fm2.height(), Qt::AlignCenter, grad);
+            painter->drawText(- fm2.horizontalAdvance(grad)/2, - fm2.height()/2, fm2.horizontalAdvance(grad), fm2.height(), Qt::AlignCenter, grad);
             painter->restore();
 
             painter->setFont(font1);
@@ -409,7 +409,7 @@ void UBGraphicsAristo::paintProtractorGraduations(QPainter* painter)
                                      QPointF(center.x()+ (rad/2 + graduationLength)*co,
                                              center.y() - (rad/2 + graduationLength)*si)).intersects(referenceLine, &intersectionPoint) == QLineF::UnboundedIntersection)
 
-                painter->drawLine(QLineF(QPointF(center.x() + (rad/2 + graduationLength*1.5 + fm2.width(grad)/2)*co,
+                painter->drawLine(QLineF(QPointF(center.x() + (rad/2 + graduationLength*1.5 + fm2.horizontalAdvance(grad)/2)*co,
                                                  center.y() - (rad/2 + graduationLength*1.5 + fm2.height()/2)*si),
                                         intersectionPoint));
 
@@ -477,9 +477,9 @@ void UBGraphicsAristo::paintMarker(QPainter *painter)
     QFontMetricsF fm1(font1);
 
     if (mOrientation == Bottom)
-        painter->drawText(rotationCenter().x() - fm1.width(angleText)/2 - radius()/8, rotationCenter().y() + radius()/8 - fm1.height()/2, fm1.width(angleText), fm1.height(), Qt::AlignCenter, angleText);
+        painter->drawText(rotationCenter().x() - fm1.horizontalAdvance(angleText)/2 - radius()/8, rotationCenter().y() + radius()/8 - fm1.height()/2, fm1.horizontalAdvance(angleText), fm1.height(), Qt::AlignCenter, angleText);
     else
-        painter->drawText(rotationCenter().x() - fm1.width(angleText)/2 - radius()/8, rotationCenter().y() - radius()/8 - fm1.height()/2, fm1.width(angleText), fm1.height(), Qt::AlignCenter, angleText);
+        painter->drawText(rotationCenter().x() - fm1.horizontalAdvance(angleText)/2 - radius()/8, rotationCenter().y() - radius()/8 - fm1.height()/2, fm1.horizontalAdvance(angleText), fm1.height(), Qt::AlignCenter, angleText);
 }
 
 

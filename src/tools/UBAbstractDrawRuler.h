@@ -27,6 +27,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QGraphicsItem>
 #include "frameworks/UBGeometryUtils.h"
 
 class UBGraphicsScene;
