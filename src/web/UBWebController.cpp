@@ -334,7 +334,7 @@ void UBWebController::activePageChanged()
     {
         if (mTrapContentController && (*mCurrentWebBrowser)->currentTabWebView()->page())
         {
-            mTrapContentController->updateTrapContentFromPage((*mCurrentWebBrowser)->currentTabWebView()->page()->currentFrame());
+            mTrapContentController->updateTrapContentFromPage((*mCurrentWebBrowser)->currentTabWebView()->page());
         }
 
         mMainWindow->actionWebTrap->setChecked(false);
@@ -667,11 +667,11 @@ void UBWebController::captureEduMedia()
 
         if (isEduMedia(currentUrl))
         {
-            QWebElementCollection objects = webView->page()->currentFrame()->findAllElements("object");
+            // QWebElementCollection removed in Qt6
 
-            for (const QWebElement& object : objects)
+            // QWebElement removed in Qt6
             {
-                for (const QWebElement& param : object.findAll("param"))
+                // QWebElement removed in Qt6
                 {
                     if(param.attribute("name") == "flashvars")
                     {

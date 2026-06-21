@@ -69,6 +69,9 @@
 #include "ui_downloaditem.h"
 
 #include <QtNetwork>
+#include <QFileIconProvider>
+#include <QLabel>
+#include <QToolButton>
 #include <QtCore>
 
 class WBDownloadItem : public QWidget, public Ui_DownloadItem

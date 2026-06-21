@@ -70,6 +70,13 @@
 #include <QPainter>
 #include <QWebEngineView>
 #include <QWebEnginePage>
+#include <QLineEdit>
+#include <QCompleter>
+#include <QStackedWidget>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QComboBox>
+#include <QShortcut>
 #include <QWebEngineSettings>
 
 /*

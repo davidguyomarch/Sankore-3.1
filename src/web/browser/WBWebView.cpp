@@ -285,7 +285,7 @@ WBWebView::WBWebView(QWidget* parent)
 
 void WBWebView::contextMenuEvent(QContextMenuEvent *event)
 {
-    QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
+    QVariant r = page()->mainFrame()->hitTestContent(event->pos());
 
     if (!r.linkUrl().isEmpty())
     {

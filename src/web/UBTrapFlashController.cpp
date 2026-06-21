@@ -128,7 +128,7 @@ void UBTrapWebPageContentController::hideTrapContent()
 }
 
 
-void UBTrapWebPageContentController::setLastWebHitTestResult(const QWebHitTestResult &result)
+void UBTrapWebPageContentController::setLastWebHitTestResult(const QVariant &result)
 {
     mLastWebHitTestResult = result;
 }

@@ -62,7 +62,7 @@ class WBTrapWebPageContentWindow : public QDialog
         QLineEdit *mApplicationNameEdit;
         QToolButton *mShowDisclaimerToolButton;
         QList<QToolButton *> mTrapButtons;
-        QWebHitTestResult mLastHitTestResult;
+        QVariant mLastHitTestResult;
 
 };
 

@@ -72,9 +72,9 @@ void WBWebTrapWebView::highliteElementAtPos ( const QPoint& pos)
 {
     mCurrentContentType = Unknown;
 
-    if(page() && page()->currentFrame())
+    if(page() && page())
     {
-        QWebHitTestResult htr = page()->currentFrame()->hitTestContent (pos);
+        QVariant htr = page()->hitTestContent (pos);
         QRect pageHtr = htr.boundingRect().translated(htr.frame()->pos());
 
         QRect updateRect = mWebViewElementRect.united(pageHtr);
@@ -194,7 +194,7 @@ QString WBWebTrapWebView::potentialEmbedCodeAtPos(const QPoint& pos)
         .arg(pos.x())
         .arg(pos.y());
 
-    QVariant tagNameVar = page()->currentFrame()->evaluateJavaScript(scr);
+    QVariant tagNameVar = page()->evaluateJavaScript(scr);
     QString tagName = tagNameVar.toString().toLower();
 
     if ((tagName == "input") || (tagName == "textarea"))
@@ -214,7 +214,7 @@ QString WBWebTrapWebView::potentialEmbedCodeAtPos(const QPoint& pos)
                 .arg(pos.y());
         }
 
-        QVariant valueVar = page()->currentFrame()->evaluateJavaScript(valueScript);
+        QVariant valueVar = page()->evaluateJavaScript(valueScript);
         QString value = valueVar.toString();
 
         if (value.length() > 0 && value.contains("width") && value.contains("height"))
@@ -227,14 +227,14 @@ QString WBWebTrapWebView::potentialEmbedCodeAtPos(const QPoint& pos)
 }
 
 
-void WBWebTrapWebView::trapContentFromHitTest(const QWebHitTestResult& hitTest)
+void WBWebTrapWebView::trapContentFromHitTest(const QVariant& hitTest)
 {
     trapElementAtPos(hitTest.pos());
 }
 
 void WBWebTrapWebView::trapElementAtPos(const QPoint& pos)
 {
-    QWebHitTestResult htr = page()->currentFrame()->hitTestContent(pos);
+    QVariant htr = page()->hitTestContent(pos);
 
     if (!htr.pixmap().isNull())
     {
@@ -243,9 +243,9 @@ void WBWebTrapWebView::trapElementAtPos(const QPoint& pos)
     else if (mCurrentContentType == ObjectOrEmbed)
     {
         QString embedSelector = QString("document.elementFromPoint(%1, %2)").arg(pos.x()).arg(pos.y());
-        QVariant tagName = page()->currentFrame()->evaluateJavaScript(embedSelector + ".tagName");
+        QVariant tagName = page()->evaluateJavaScript(embedSelector + ".tagName");
 
-        QVariant innerHTML = page()->currentFrame()->evaluateJavaScript(embedSelector + ".innerHTML");
+        QVariant innerHTML = page()->evaluateJavaScript(embedSelector + ".innerHTML");
         qDebug() << "innerHTML" << innerHTML;
 
         if (tagName.toString().toLower() == "object")
@@ -255,18 +255,18 @@ void WBWebTrapWebView::trapElementAtPos(const QPoint& pos)
         }
 
         QString querySource = embedSelector + ".src";
-        QVariant resSource = page()->currentFrame()->evaluateJavaScript(querySource);
+        QVariant resSource = page()->evaluateJavaScript(querySource);
         qDebug() << "resSource" << resSource;
         QString source = resSource.toString();
 
         QString queryType = embedSelector + ".type";
-        QVariant resType = page()->currentFrame()->evaluateJavaScript(queryType);
+        QVariant resType = page()->evaluateJavaScript(queryType);
         QString type = resType.toString();
         qDebug() << "resType" << resType;
 
         if (source.trimmed().length() > 0)
         {
-            emit objectCaptured(QUrl(page()->currentFrame()->url().toString() + "/" + source), type,
+            emit objectCaptured(QUrl(page()->url().toString() + "/" + source), type,
                     htr.boundingRect().width(), htr.boundingRect().height());
 
             UBApplication::boardController->downloadURL(QUrl(source));
@@ -284,7 +284,7 @@ void WBWebTrapWebView::trapElementAtPos(const QPoint& pos)
     }
     else if (mCurrentContentType == ElementByQuery)
     {
-        webElementCaptured(page()->currentFrame()->url(), mElementQuery);
+        webElementCaptured(page()->url(), mElementQuery);
     }
 }
 
@@ -380,7 +380,7 @@ void WBWebTrapWebView::mouseReleaseEvent ( QMouseEvent * event )
 
         script += "'id: ' + element.id + ', TagName: ' + element.tagName + ', at: ' + path;";
 
-        QVariant result = page()->currentFrame()->evaluateJavaScript(script);
+        QVariant result = page()->evaluateJavaScript(script);
 
         qDebug() << result.isValid() << result.toString();
         */
@@ -398,7 +398,7 @@ void WBWebTrapWebView::paintEvent ( QPaintEvent * event )
     QWebEngineView::paintEvent(event);
 
     if (mIsTrapping && mDomElementRect.isValid()
-            && page() && page()->currentFrame())
+            && page() && page())
     {
         QPainter p(this);
 
@@ -417,7 +417,7 @@ void WBWebTrapWebView::paintEvent ( QPaintEvent * event )
         pen.setWidth(8);
         p.setPen(pen);
 
-        QPoint scrollPosition = page()->currentFrame()->scrollPosition();
+        QPoint scrollPosition = page()->scrollPosition();
         QRect webViewPosition = mDomElementRect;
         webViewPosition.translate(-scrollPosition);
 
