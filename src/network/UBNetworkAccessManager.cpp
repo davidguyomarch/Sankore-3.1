@@ -34,8 +34,8 @@
 #include "core/UBApplicationController.h"
 #include "core/UBSettings.h"
 
-#include "ui_passworddialog.h"
-#include "ui_proxy.h"
+// #include "ui_passworddialog.h" // excluded from build
+// #include "ui_proxy.h" // excluded from build
 
 #include "UBCookieJar.h"
 
@@ -107,24 +107,24 @@ void UBNetworkAccessManager::authenticationRequired(QNetworkReply *reply, QAuthe
     QDialog dialog(mainWindow);
     dialog.setWindowFlags(Qt::Sheet);
 
-    Ui::PasswordDialog passwordDialog;
-    passwordDialog.setupUi(&dialog);
-
-    passwordDialog.iconLabel->setText(QString());
-    passwordDialog.iconLabel->setPixmap(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxQuestion, 0, mainWindow).pixmap(32, 32));
-
-    QString introMessage = tr("<qt>Enter username and password for \"%1\" at %2</qt>");
-    introMessage = introMessage.arg(reply->url().toString().toHtmlEscaped()).arg(reply->url().toString().toHtmlEscaped());
-    passwordDialog.introLabel->setText(introMessage);
-    passwordDialog.introLabel->setWordWrap(true);
-
-    if (dialog.exec() == QDialog::Accepted)
-    {
-        if(auth && passwordDialog.userNameLineEdit)
-            auth->setUser(passwordDialog.userNameLineEdit->text());
-        if(auth && passwordDialog.passwordLineEdit)
-            auth->setPassword(passwordDialog.passwordLineEdit->text());
-    }
+    //     Ui::PasswordDialog passwordDialog;
+    //     passwordDialog.setupUi(&dialog);
+    // 
+    //     passwordDialog.iconLabel->setText(QString());
+    //     passwordDialog.iconLabel->setPixmap(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxQuestion, 0, mainWindow).pixmap(32, 32));
+    // 
+    //     QString introMessage = tr("<qt>Enter username and password for \"%1\" at %2</qt>");
+    //     introMessage = introMessage.arg(reply->url().toString().toHtmlEscaped()).arg(reply->url().toString().toHtmlEscaped());
+    //     passwordDialog.introLabel->setText(introMessage);
+    //     passwordDialog.introLabel->setWordWrap(true);
+    // 
+    //     if (dialog.exec() == QDialog::Accepted)
+    //     {
+    //         if(auth && passwordDialog.userNameLineEdit)
+    //             auth->setUser(passwordDialog.userNameLineEdit->text());
+    //         if(auth && passwordDialog.passwordLineEdit)
+    //             auth->setPassword(passwordDialog.passwordLineEdit->text());
+    //     }
 
 }
 
