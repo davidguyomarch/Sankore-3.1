@@ -75,7 +75,7 @@ UBGraphicsItemPlayAudioAction::UBGraphicsItemPlayAudioAction(QString audioFile, 
     mAudioOutput = new QAudioOutput(this);
     mMediaObject = new QMediaPlayer(this);
     mMediaObject->setAudioOutput(mAudioOutput);
-    mMediaObject->setCurrentSource(QUrl(mAudioPath));
+    mMediaObject->setSource(QUrl::fromLocalFile(QUrl(mAudioPath)));
 }
 
 
@@ -95,7 +95,7 @@ void UBGraphicsItemPlayAudioAction::setPath(QString audioPath)
     mAudioOutput = new QAudioOutput(this);
     mMediaObject = new QMediaPlayer(this);
     mMediaObject->setAudioOutput(mAudioOutput);
-    mMediaObject->setCurrentSource(QUrl(mAudioPath));
+    mMediaObject->setSource(QUrl::fromLocalFile(QUrl(mAudioPath)));
 }
 
 QString UBGraphicsItemPlayAudioAction::fullPath()
@@ -105,23 +105,23 @@ QString UBGraphicsItemPlayAudioAction::fullPath()
 
 UBGraphicsItemPlayAudioAction::~UBGraphicsItemPlayAudioAction()
 {
-    if(!mMediaObject && mMediaObject->state() == QMediaPlayer::PlayingState)
+    if(!mMediaObject && mMediaObject->playbackState() == QMediaPlayer::PlayingState)
         mMediaObject->stop();
 }
 
 void UBGraphicsItemPlayAudioAction::onSourceHide()
 {
-    if(mMediaObject && mMediaObject->state() == QMediaPlayer::PlayingState){
+    if(mMediaObject && mMediaObject->playbackState() == QMediaPlayer::PlayingState){
         mMediaObject->stop();
     }
 }
 
 void UBGraphicsItemPlayAudioAction::play()
 {
-    if(mMediaObject->state() == QMediaPlayer::PlayingState){
+    if(mMediaObject->playbackState() == QMediaPlayer::PlayingState){
         mMediaObject->stop();
     }
-    mMediaObject->seek(0);
+    mMediaObject->setPosition(0);
     mMediaObject->play();
 }
 

@@ -108,7 +108,7 @@ void UBMediaWidget::setFile(const QString &filePath)
     connect(mpMediaObject, SIGNAL(stateChanged(QMediaPlayer::PlaybackState,QMediaPlayer::PlaybackState)), this, SLOT(onStateChanged(QMediaPlayer::PlaybackState,QMediaPlayer::PlaybackState)));
     connect(mpMediaObject, SIGNAL(totalTimeChanged(qint64)), this, SLOT(onTotalTimeChanged(qint64)));
     connect(mpMediaObject, SIGNAL(tick(qint64)), this, SLOT(onTick(qint64)));
-    mpMediaObject->setSource(QUrl::fromLocalFile(QUrl(filePath)));
+    mpMediaObject->setSource(QUrl::fromLocalFile(QUrl(filePath.toString())));
     createMediaPlayer();
 }
 
