@@ -22,6 +22,7 @@
 
 
 #include "core/UBApplication.h"
+#include <QAudioOutput>
 #include "globals/UBGlobals.h"
 #include "UBMediaWidget.h"
 
@@ -107,7 +108,7 @@ void UBMediaWidget::setFile(const QString &filePath)
     connect(mpMediaObject, SIGNAL(stateChanged(QMediaPlayer::PlaybackState,QMediaPlayer::PlaybackState)), this, SLOT(onStateChanged(QMediaPlayer::PlaybackState,QMediaPlayer::PlaybackState)));
     connect(mpMediaObject, SIGNAL(totalTimeChanged(qint64)), this, SLOT(onTotalTimeChanged(qint64)));
     connect(mpMediaObject, SIGNAL(tick(qint64)), this, SLOT(onTick(qint64)));
-    mpMediaObject->setCurrentSource(QUrl(filePath));
+    mpMediaObject->setSource(QUrl::fromLocalFile(QUrl(filePath)));
     createMediaPlayer();
 }
 
@@ -141,7 +142,7 @@ void UBMediaWidget::showEvent(QShowEvent* event)
 
 void UBMediaWidget::hideEvent(QHideEvent* event)
 {
-    if(mpMediaObject->state() == QMediaPlayer::PlayingState)
+    if(mpMediaObject->playbackState() == QMediaPlayer::PlayingState)
         mpMediaObject->stop();
     UBActionableWidget::hideEvent(event);
 }
@@ -261,7 +262,7 @@ void UBMediaWidget::onTick(qint64 currentTime)
 void UBMediaWidget::onSliderChanged(int value)
 {
     if(!mAutoUpdate){
-        mpMediaObject->seek(value);
+        mpMediaObject->setPosition(value);
     }
 }
 
@@ -270,7 +271,7 @@ void UBMediaWidget::onSliderChanged(int value)
   */
 void UBMediaWidget::onPlayStopClicked()
 {
-    switch(mpMediaObject->state()){
+    switch(mpMediaObject->playbackState()){
     case QMediaPlayer::PlayingState:
         mpMediaObject->stop();
         break;
