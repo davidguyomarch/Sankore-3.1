@@ -79,7 +79,7 @@ FORMS += resources/forms/mainWindow.ui \
    resources/forms/brushProperties.ui \
    resources/forms/documents.ui \
    resources/forms/blackoutWidget.ui \
-   resources/forms/trapFlash.ui \
+   # resources/forms/trapFlash.ui # excluded \
    resources/forms/youTubePublishingDialog.ui \
    resources/forms/webPublishing.ui \
    resources/forms/capturePublishing.ui \
