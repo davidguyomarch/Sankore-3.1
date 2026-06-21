@@ -20,6 +20,8 @@
  */
 
 
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneHoverEvent>
 #include "UBGraphicsAristo.h"
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
@@ -299,9 +301,9 @@ void UBGraphicsAristo::paintRulerGraduations(QPainter *painter)
             QString text = QString("%1").arg((int)(millimeters / millimetersPerCentimeter));
             
             /* staying inside polygon */
-            if (rotationCenter().x() + sPixelsPerMillimeter * millimeters + fontMetrics.width(text) / 2 < boundingRect().right())
+            if (rotationCenter().x() + sPixelsPerMillimeter * millimeters + fontMetrics.horizontalAdvance(text) / 2 < boundingRect().right())
             {
-                qreal textWidth = fontMetrics.width(text);
+                qreal textWidth = fontMetrics.horizontalAdvance(text);
                 qreal textHeight = fontMetrics.tightBoundingRect(text).height() + 5;
                 
                 /* text y-coordinate is different according to tool's orientation */
@@ -312,10 +314,10 @@ void UBGraphicsAristo::paintRulerGraduations(QPainter *painter)
                 
                 bool paint = false;
 
-                if (mOrientation == Bottom && QLineF(QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters - textWidth / 2, rotationCenter().y()), QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters - textWidth / 2, textY + textHeight)).intersect(QLineF(A, C), &intersectionPoint) != QLineF::BoundedIntersection && QLineF(QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters + textWidth / 2, rotationCenter().y()), QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters + textWidth / 2, textY + textHeight)).intersect(QLineF(A, C), &intersectionPoint) != QLineF::BoundedIntersection) {
+                if (mOrientation == Bottom && QLineF(QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters - textWidth / 2, rotationCenter().y()), QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters - textWidth / 2, textY + textHeight)).intersects(QLineF(A, C), &intersectionPoint) != QLineF::BoundedIntersection && QLineF(QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters + textWidth / 2, rotationCenter().y()), QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters + textWidth / 2, textY + textHeight)).intersects(QLineF(A, C), &intersectionPoint) != QLineF::BoundedIntersection) {
                     paint = true;
                 }
-                else if (mOrientation == Top && QLineF(QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters - textWidth / 2, rotationCenter().y()), QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters - textWidth / 2, textY - textHeight)).intersect(QLineF(A, C), &intersectionPoint) != QLineF::BoundedIntersection && QLineF(QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters + textWidth / 2, rotationCenter().y()), QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters + textWidth / 2, textY - textHeight)).intersect(QLineF(A, C), &intersectionPoint) != QLineF::BoundedIntersection) {
+                else if (mOrientation == Top && QLineF(QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters - textWidth / 2, rotationCenter().y()), QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters - textWidth / 2, textY - textHeight)).intersects(QLineF(A, C), &intersectionPoint) != QLineF::BoundedIntersection && QLineF(QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters + textWidth / 2, rotationCenter().y()), QPointF(rotationCenter().x() - sPixelsPerMillimeter * millimeters + textWidth / 2, textY - textHeight)).intersects(QLineF(A, C), &intersectionPoint) != QLineF::BoundedIntersection) {
                     paint = true;
                 }
 
@@ -405,7 +407,7 @@ void UBGraphicsAristo::paintProtractorGraduations(QPainter* painter)
             /* drawing the graduation near tool's side */
             if (QLineF(QPointF(center.x()+ rad/2*co, center.y() - rad/2*si),
                                      QPointF(center.x()+ (rad/2 + graduationLength)*co,
-                                             center.y() - (rad/2 + graduationLength)*si)).intersect(referenceLine, &intersectionPoint) == QLineF::UnboundedIntersection)
+                                             center.y() - (rad/2 + graduationLength)*si)).intersects(referenceLine, &intersectionPoint) == QLineF::UnboundedIntersection)
 
                 painter->drawLine(QLineF(QPointF(center.x() + (rad/2 + graduationLength*1.5 + fm2.width(grad)/2)*co,
                                                  center.y() - (rad/2 + graduationLength*1.5 + fm2.height()/2)*si),
@@ -417,7 +419,7 @@ void UBGraphicsAristo::paintProtractorGraduations(QPainter* painter)
         else
             if (QLineF(QPointF(center.x()+ rad/2*co, center.y() - rad/2*si),
                                      QPointF(center.x()+ (rad/2 + graduationLength)*co,
-                                             center.y() - (rad/2 + graduationLength)*si)).intersect(referenceLine, &intersectionPoint) == QLineF::UnboundedIntersection)
+                                             center.y() - (rad/2 + graduationLength)*si)).intersects(referenceLine, &intersectionPoint) == QLineF::UnboundedIntersection)
 
                 painter->drawLine(QLineF(QPointF(intersectionPoint.x() - (graduationLength*1.5)*co,
                                                  intersectionPoint.y() + (graduationLength*1.5)*si),
@@ -432,9 +434,10 @@ void UBGraphicsAristo::paintMarker(QPainter *painter)
 {
     /* adjusting marker button */
     mMarkerSvgItem->resetTransform();
-    mMarkerSvgItem->translate(-markerButtonRect().left(), -markerButtonRect().top());
-    mMarkerSvgItem->rotate(mMarkerAngle);
-    mMarkerSvgItem->translate(markerButtonRect().left(), markerButtonRect().top());
+    { QTransform mt; mt.translate(-markerButtonRect().left(), -markerButtonRect().top()); mt.rotate(mMarkerAngle); mt.translate(markerButtonRect().left(), markerButtonRect().top()); mMarkerSvgItem->setTransform(mt); }
+
+
+
 
     
     qreal co = cos((mMarkerAngle) * PI/180);
@@ -458,7 +461,7 @@ void UBGraphicsAristo::paintMarker(QPainter *painter)
     /* getting intersection point to draw the wanted line */
     QLineF intersectedLine(rotationCenter(), QPointF(rotationCenter().x()+co, rotationCenter().y()+si)); 
     QPointF intersectionPoint;
-    if (intersectedLine.intersect(QLineF(referencePoint, C), &intersectionPoint))
+    if (intersectedLine.intersects(QLineF(referencePoint, C), &intersectionPoint))
         painter->drawLine(QLineF(intersectionPoint, rotationCenter()));
 
     /* drawing angle value */
@@ -500,9 +503,10 @@ void UBGraphicsAristo::rotateAroundCenter(QTransform& transform, QPointF center)
 void UBGraphicsAristo::resize(qreal factor)
 {
     prepareGeometryChange();
-    translate(rotationCenter().x(), rotationCenter().y());
-    scale(factor, factor);
-    translate(-rotationCenter().x(), -rotationCenter().y());
+    { QTransform st; st.translate(rotationCenter().x(), rotationCenter().y()); st.scale(factor, factor); st.translate(-rotationCenter().x(), -rotationCenter().y()); setTransform(st, true); }
+
+
+
 }
 
 

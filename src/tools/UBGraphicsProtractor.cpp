@@ -1,8 +1,4 @@
 /*
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsSceneHoverEvent>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsSceneHoverEvent>
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
@@ -25,6 +21,8 @@
 
 
 
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneHoverEvent>
 #include "UBGraphicsProtractor.h"
 #include "core/UBApplication.h"
 #include "gui/UBResources.h"
@@ -198,14 +196,14 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         mPreviousMousePos = currentPoint;
         break;
 
-    case Resize :
+    case Resize : {
         prepareGeometryChange();
         QTransform t; t.translate(rect().center().x(), rect().center().y()); t.scale(scaleFactor, scaleFactor); t.translate(-rect().center().x(), -rect().center().y()); setTransform(t, true);
 
 
 
         mScaleFactor *= scaleFactor;
-        break;
+        break; }
 
     case MoveMarker :
 
@@ -495,7 +493,7 @@ void UBGraphicsProtractor::paintAngleMarker(QPainter *painter)
     painter->save();
 
     painter->translate(rect().center());
-    painter->setRotation(painter->rotation() + -mStartAngle);
+    painter->rotate(-mStartAngle);
     painter->setTransform(QTransform().translate(-rect().center().x(), -rect(), true).center().y());
     qreal co = cos(mCurrentAngle * PI/180);
     qreal si = sin(mCurrentAngle * PI/180);
@@ -506,15 +504,15 @@ void UBGraphicsProtractor::paintAngleMarker(QPainter *painter)
     painter->drawArc(QRectF(center.x() - rad/8, center.y() - rad/8, rad / 4, rad / 4), 0
                      , (mCurrentAngle - (int)(mCurrentAngle/360)*360)*16);
     painter->translate(rect().center());
-    painter->setRotation(painter->rotation() + -mCurrentAngle);
+    painter->rotate(-mCurrentAngle);
     painter->setTransform(QTransform().translate(-rect().center().x(), -rect(), true).center().y());
 
     //Paint Angle text (horizontally)
 
     //restore transformations
     painter->translate(rect().center());
-    painter->setRotation(painter->rotation() + mCurrentAngle);
-    painter->setRotation(painter->rotation() + mStartAngle);
+    painter->rotate(mCurrentAngle);
+    painter->rotate(mStartAngle);
     painter->setTransform(QTransform().translate(-rect().center().x(), -rect(), true).center().y());
 
     qreal angle = mCurrentAngle - (int)(mCurrentAngle/360)*360;

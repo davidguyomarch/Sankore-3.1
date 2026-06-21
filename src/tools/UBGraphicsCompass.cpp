@@ -1,6 +1,4 @@
 /*
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsSceneHoverEvent>
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
@@ -23,6 +21,8 @@
 
 
 
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneHoverEvent>
 #include "tools/UBGraphicsCompass.h"
 #include "domain/UBGraphicsScene.h"
 #include "core/UBApplication.h"
