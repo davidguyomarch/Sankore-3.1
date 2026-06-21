@@ -82,7 +82,7 @@ UBGraphicsCache::UBGraphicsCache(UBGraphicsScene *scene) : QGraphicsRectItem()
     cursorPainter.fillRect(cursorImage.rect(), Qt::color0);
     cursorPainter.end();
 
-    mCursorForHole = QCursor(cursorImage, cursorMask);
+    mCursorForHole = QCursor(cursorImage);
 }
 
 UBGraphicsCache::~UBGraphicsCache()

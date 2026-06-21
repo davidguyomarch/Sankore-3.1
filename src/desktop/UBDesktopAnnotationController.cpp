@@ -20,7 +20,8 @@
  */
 
 
-#include <QDesktopWidget>
+#include <QScreen>
+#include <QGuiApplication>
 
 #include "UBDesktopAnnotationController.h"
 

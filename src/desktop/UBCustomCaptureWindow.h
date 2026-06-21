@@ -26,6 +26,10 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QDialog>
+#include <QRubberBand>
+#include <QMouseEvent>
+#include <QKeyEvent>
 /**
 * This class is used to do the custom capture of Uninotes
 **/
