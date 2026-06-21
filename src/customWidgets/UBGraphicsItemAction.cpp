@@ -75,7 +75,7 @@ UBGraphicsItemPlayAudioAction::UBGraphicsItemPlayAudioAction(QString audioFile, 
     mAudioOutput = new QAudioOutput(this);
     mMediaObject = new QMediaPlayer(this);
     mMediaObject->setAudioOutput(mAudioOutput);
-    mMediaObject->setSource(QUrl::fromLocalFile(QUrl(mAudioPath)));
+    mMediaObject->setSource(QUrl::fromLocalFile(mAudioPath));
 }
 
 
@@ -95,7 +95,7 @@ void UBGraphicsItemPlayAudioAction::setPath(QString audioPath)
     mAudioOutput = new QAudioOutput(this);
     mMediaObject = new QMediaPlayer(this);
     mMediaObject->setAudioOutput(mAudioOutput);
-    mMediaObject->setSource(QUrl::fromLocalFile(QUrl(mAudioPath)));
+    mMediaObject->setSource(QUrl::fromLocalFile(mAudioPath));
 }
 
 QString UBGraphicsItemPlayAudioAction::fullPath()

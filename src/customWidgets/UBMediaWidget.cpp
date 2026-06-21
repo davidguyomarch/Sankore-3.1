@@ -104,11 +104,11 @@ void UBMediaWidget::setFile(const QString &filePath)
     Q_ASSERT("" != filePath);
     mFilePath = filePath;
     mpMediaObject = new QMediaPlayer(this);
-    mpMediaObject->setTickInterval(TICK_INTERVAL);
+    // setTickInterval removed in Qt6
     connect(mpMediaObject, SIGNAL(stateChanged(QMediaPlayer::PlaybackState,QMediaPlayer::PlaybackState)), this, SLOT(onStateChanged(QMediaPlayer::PlaybackState,QMediaPlayer::PlaybackState)));
     connect(mpMediaObject, SIGNAL(totalTimeChanged(qint64)), this, SLOT(onTotalTimeChanged(qint64)));
     connect(mpMediaObject, SIGNAL(tick(qint64)), this, SLOT(onTick(qint64)));
-    mpMediaObject->setSource(QUrl::fromLocalFile(QUrl(filePath.toString())));
+    mpMediaObject->setSource(QUrl::fromLocalFile(filePath));
     createMediaPlayer();
 }
 
@@ -131,7 +131,7 @@ void UBMediaWidget::showEvent(QShowEvent* event)
 			mMediaLayout->addStretch(1);
 			mMediaLayout->addWidget(mpVideoWidget);
 			mMediaLayout->addStretch(1);
-			mpMediaObject->setAudioOutput(mpVideoWidget);
+			mpMediaObject->setVideoOutput(mpVideoWidget);
 			adaptSizeToVideo();
 			mpMediaObject->play();
 			mpMediaObject->stop();
@@ -164,7 +164,7 @@ void UBMediaWidget::createMediaPlayer()
             mMediaLayout->addStretch(1);
             mMediaLayout->addWidget(mpVideoWidget);
             mMediaLayout->addStretch(1);
-            mpMediaObject->setAudioOutput(mpVideoWidget);
+            mpMediaObject->setVideoOutput(mpVideoWidget);
             adaptSizeToVideo();
         }
         mpAudioOutput = new QAudioOutput(this);
