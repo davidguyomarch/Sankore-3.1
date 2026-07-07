@@ -10,22 +10,20 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
 
-      - name: Install Qt 6
-        uses: jurplel/install-qt-action@v4
-        with:
-          version: '6.7.3'
-          host: 'windows'
-          target: 'desktop'
-          arch: 'win64_msvc2019_64'
-          modules: 'qtmultimedia qtsvg qt5compat'
+      - name: Install Qt 6 via aqtinstall directly
+        shell: pwsh
+        run: |
+          pip install aqtinstall
+          aqt list-qt windows desktop --arch 6.7.2
+          aqt install-qt windows desktop 6.7.2 win64_msvc2019_64 -m qtmultimedia qtsvg qt5compat --outputdir C:\Qt
+          echo "C:\Qt\6.7.2\msvc2019_64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "Qt6_DIR=C:\Qt\6.7.2\msvc2019_64" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
@@ -33,24 +31,35 @@ jobs:
       - name: Create build directories
         shell: cmd
         run: |
-          mkdir build\win32\release\moc
-          mkdir build\win32\release\objects
-          mkdir build\win32\release\rcc
-          mkdir build\win32\release\ui
-          mkdir build\win32\release\product
+          mkdir build\win32\release\moc 2>NUL
+          mkdir build\win32\release\objects 2>NUL
+          mkdir build\win32\release\rcc 2>NUL
+          mkdir build\win32\release\ui 2>NUL
+          mkdir build\win32\release\product 2>NUL
 
       - name: Run qmake
         shell: cmd
-        run: qmake Sankore_3.1.pro
+        run: |
+          qmake Sankore_3.1.pro
+          if errorlevel 1 (
+            echo qmake failed, trying with QMAKE_MSC_VER
+            qmake "QMAKE_MSC_VER=1941" Sankore_3.1.pro
+          )
 
       - name: Build
         shell: cmd
-        run: nmake
+        run: nmake 2>&1 | tee build_output.txt
 
-      - name: Upload artifact
+      - name: Upload exe
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: Open-Sankore-Windows-x64
           path: build/win32/release/product/
-          if-no-files-found: warn
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build_output.txt
