@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          lfs: false
 
       - name: Install Qt 6 via aqtinstall directly
         shell: pwsh
