@@ -23,9 +23,9 @@ jobs:
         shell: pwsh
         run: |
           pip install aqtinstall
-          aqt install-qt windows desktop 6.7.2 win64_msvc2019_64 -m qtmultimedia qt5compat --outputdir C:\Qt
-          echo "C:\Qt\6.7.2\msvc2019_64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "Qt6_DIR=C:\Qt\6.7.2\msvc2019_64" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          aqt install-qt windows desktop 6.5.3 win64_msvc2019_64 -m qt5compat --outputdir C:\Qt
+          echo "C:\Qt\6.5.3\msvc2019_64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "Qt6_DIR=C:\Qt\6.5.3\msvc2019_64" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
@@ -44,7 +44,7 @@ jobs:
         run: |
           for /f "tokens=*" %%i in ('cl 2^>^&1 ^| findstr /C:"Version"') do set CL_VERSION=%%i
           echo Compiler: %CL_VERSION%
-          echo QMAKE_MSC_VER = 1941 >> C:\Qt\6.7.2\msvc2019_64\mkspecs\common\msvc-version.conf
+          echo QMAKE_MSC_VER = 1941 >> C:\Qt\6.5.3\msvc2019_64\mkspecs\common\msvc-version.conf
           qmake Sankore_3.1.pro
 
       - name: Build
