@@ -42,11 +42,10 @@ jobs:
       - name: Run qmake
         shell: cmd
         run: |
+          for /f "tokens=*" %%i in ('cl 2^>^&1 ^| findstr /C:"Version"') do set CL_VERSION=%%i
+          echo Compiler: %CL_VERSION%
+          echo QMAKE_MSC_VER = 1941 >> C:\Qt\6.7.2\msvc2019_64\mkspecs\common\msvc-version.conf
           qmake Sankore_3.1.pro
-          if errorlevel 1 (
-            echo qmake failed, trying with QMAKE_MSC_VER
-            qmake "QMAKE_MSC_VER=1941" Sankore_3.1.pro
-          )
 
       - name: Build
         shell: cmd
