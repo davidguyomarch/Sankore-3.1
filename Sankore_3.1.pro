@@ -24,8 +24,8 @@ VERSION_RC = $$replace(VERSION_RC, "a", "160") # 0xA0
 VERSION_RC = $$replace(VERSION_RC, "b", "176") # 0xB0
 VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
 
-# TODO: QT += webenginewidgets (separate migration)
-QT += webenginewidgets
+# TODO: QT += webenginewidgets (separate migration - not available on ARM64)
+# QT += webenginewidgets
 QT += svg
 QT += svgwidgets
 QT += network
@@ -38,7 +38,7 @@ QT += printsupport
 
 INCLUDEPATH += src
 
-include($$THIRD_PARTY_PATH/libs.pri)
+# include($$THIRD_PARTY_PATH/libs.pri)  # TODO: restore when ThirdParty available
 include(src/adaptors/adaptors.pri)
 include(src/api/api.pri)
 include(src/board/board.pri)
@@ -57,22 +57,23 @@ include(src/transition/transition.pri)
 include(src/interfaces/interfaces.pri)
 include(src/customWidgets/customWidgets.pri)
 
-DEPENDPATH += src/pdf-merger
-INCLUDEPATH += src/pdf-merger
-include(src/pdf-merger/pdfMerger.pri)
+# pdf-merger (TODO: restore when ThirdParty available)
+# DEPENDPATH += src/pdf-merger
+# INCLUDEPATH += src/pdf-merger
+# include(src/pdf-merger/pdfMerger.pri)
 
 #plugins
 include(plugins/plugins.pri)
 INCLUDEPATH += plugins/cffadaptor/src
 
 
-#ThirdParty
-DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
-INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
-include($$THIRD_PARTY_PATH/quazip/quazip.pri)
-DEPENDPATH += $$THIRD_PARTY_PATH/trolltech/singleapplication
-INCLUDEPATH += $$THIRD_PARTY_PATH/trolltech/singleapplication
-include($$THIRD_PARTY_PATH/trolltech/singleapplication/qtsingleapplication.pri)
+# ThirdParty (TODO: restore when dependencies are available)
+# DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
+# INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
+# include($$THIRD_PARTY_PATH/quazip/quazip.pri)
+# DEPENDPATH += $$THIRD_PARTY_PATH/trolltech/singleapplication
+# INCLUDEPATH += $$THIRD_PARTY_PATH/trolltech/singleapplication
+# include($$THIRD_PARTY_PATH/trolltech/singleapplication/qtsingleapplication.pri)
 
 FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \
@@ -118,7 +119,7 @@ UI_DIR = $$BUILD_DIR/ui
 
 win32 {
    RC_FILE = resources/win/sankore.rc
-   CONFIG += qaxcontainer
+   # CONFIG += qaxcontainer  # TODO: ActiveX not available on ARM64
    exists(console):CONFIG += console
    QMAKE_CXXFLAGS += /MP
    QMAKE_CXXFLAGS_RELEASE += /Od /Zi

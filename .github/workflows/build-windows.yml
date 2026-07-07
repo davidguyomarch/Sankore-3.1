@@ -1,0 +1,63 @@
+name: Build Windows
+
+on:
+  push:
+    branches: [ master, main, qt6-migration ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:  # Manual trigger from GitHub UI
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Qt 6
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.0'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2022_64'
+          modules: 'qtmultimedia qtsvg qt5compat qtwebengine'
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Create build directories
+        shell: cmd
+        run: |
+          mkdir build\win32\release\moc 2>NUL
+          mkdir build\win32\release\objects 2>NUL
+          mkdir build\win32\release\rcc 2>NUL
+          mkdir build\win32\release\ui 2>NUL
+          mkdir build\win32\release\product 2>NUL
+
+      - name: Run qmake
+        shell: cmd
+        run: qmake Sankore_3.1.pro "QMAKE_MSC_VER=1941"
+
+      - name: Build
+        shell: cmd
+        run: nmake
+
+      - name: Upload artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Open-Sankore-Windows-x64
+          path: build/win32/release/product/
+          if-no-files-found: warn
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: |
+            Makefile.Release
+            build/win32/release/
