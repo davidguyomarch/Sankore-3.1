@@ -62,7 +62,7 @@ public:
     void triggerAction(WebAction, bool = false) {}
 
     // Compatibility methods
-    static QString userAgentForUrl(const QUrl &) { return QStringLiteral("Mozilla/5.0 Open-Sankore/3.1"); }
+    virtual QString userAgentForUrl(const QUrl &) const { return QStringLiteral("Mozilla/5.0 Open-Sankore/3.1"); }
     QSize viewportSize() const { return QSize(1024, 768); }
     void setViewportSize(const QSize &) {}
     QSize contentsSize() const { return QSize(1024, 768); }

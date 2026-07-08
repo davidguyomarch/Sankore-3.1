@@ -33,7 +33,7 @@
 
 #include "UBWebController.h"
 #include "UBOEmbedParser.h"
-#include "UBTrapFlashController.h"
+// #include "UBTrapFlashController.h" // WebKit-specific, excluded from Qt6 build
 
 #include "web/browser/WBBrowserWindow.h"
 #include "web/browser/WBWebView.h"
@@ -163,7 +163,7 @@ void UBWebController::webBrowserInstance()
 
             adaptToolBar();
 
-            mTrapContentController = new UBTrapWebPageContentController((*mCurrentWebBrowser));
+            // mTrapContentController = nullptr; // UBTrapWebPageContentController not available
 
             connect((*mCurrentWebBrowser), SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
 
@@ -225,7 +225,7 @@ void UBWebController::tutorialWebInstance()
             mStackedWidget->insertWidget(Tutorial, (*mCurrentWebBrowser));
             adaptToolBar();
 
-            mTrapContentController = new UBTrapWebPageContentController((*mCurrentWebBrowser));
+            // mTrapContentController = nullptr; // UBTrapWebPageContentController not available
 
             connect((*mCurrentWebBrowser), SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
             (*mCurrentWebBrowser)->loadUrl(currentUrl);
@@ -285,7 +285,7 @@ void UBWebController::paraschoolWebInstance()
 
             adaptToolBar();
 
-            mTrapContentController = new UBTrapWebPageContentController((*mCurrentWebBrowser));
+            // mTrapContentController = nullptr; // UBTrapWebPageContentController not available
 
             connect((*mCurrentWebBrowser), SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
             (*mCurrentWebBrowser)->loadUrl(currentUrl);
@@ -334,7 +334,7 @@ void UBWebController::activePageChanged()
 {
     if (mCurrentWebBrowser && (*mCurrentWebBrowser)->currentTabWebView())
     {
-        if (mTrapContentController && (*mCurrentWebBrowser)->currentTabWebView()->page())
+        if (false && mTrapContentController && (*mCurrentWebBrowser)->currentTabWebView()->page())
         {
             mTrapContentController->updateTrapContentFromPage((*mCurrentWebBrowser)->currentTabWebView()->page());
         }
@@ -478,7 +478,7 @@ void UBWebController::toggleWebTrap(bool checked)
 
 void UBWebController::webTrapContent()
 {
-    mTrapContentController->showTrapContent();
+    // mTrapContentController not available (WebKit-specific)
     activePageChanged();
 }
 
