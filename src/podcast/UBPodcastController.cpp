@@ -56,8 +56,9 @@
 
 
 #ifdef Q_OS_WIN
-    #include "windowsmedia/UBWindowsMediaVideoEncoder.h"
-    #include "windowsmedia/UBWaveRecorder.h"
+    // Windows Media SDK podcast recording disabled for Qt6 migration
+    // #include "windowsmedia/UBWindowsMediaVideoEncoder.h"
+    // #include "windowsmedia/UBWaveRecorder.h"
 #elif defined(Q_OS_MACOS)
     #include "quicktime/UBQuickTimeVideoEncoder.h"
     #include "quicktime/UBAudioQueueRecorder.h"
@@ -302,7 +303,8 @@ void UBPodcastController::start()
         applicationMainModeChanged(UBApplication::applicationController->displayMode());
 
 #ifdef Q_OS_WIN
-        mVideoEncoder = new UBWindowsMediaVideoEncoder(this);  //deleted on stop
+        // Windows Media encoder disabled - podcast recording not available
+        mVideoEncoder = nullptr;
 #elif defined(Q_OS_MACOS)
         mVideoEncoder = new UBQuickTimeVideoEncoder(this);  //deleted on stop
 #endif
@@ -792,7 +794,8 @@ QStringList UBPodcastController::audioRecordingDevices()
     QStringList devices;
 
 #ifdef Q_OS_WIN
-    devices = UBWaveRecorder::waveInDevices();
+    // Wave recorder disabled - no audio device enumeration
+    devices = QStringList();
 #elif defined(Q_OS_MACOS)
     devices = UBAudioQueueRecorder::waveInDevices();
 #endif
