@@ -86,3 +86,4 @@ tests/build/
 tests/coverage_report/
 tests/*.info
 tests/target_wrapper.sh
+build_qt6/
