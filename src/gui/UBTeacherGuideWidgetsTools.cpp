@@ -82,6 +82,16 @@ UBAddItem::~UBAddItem()
 /***************************************************************************
  *                      class    UBTGActionWidget                          *
  ***************************************************************************/
+UBTGActionWidget::UBTGActionWidget(const UBTGActionWidget& src)
+  : QWidget(src.parentWidget())
+  , mpLayout(nullptr)
+  , mpOwner(nullptr)
+  , mpTask(nullptr)
+{
+    // Minimal copy constructor required by Qt meta-type system
+    Q_UNUSED(src);
+}
+
 UBTGActionWidget::UBTGActionWidget(QTreeWidgetItem* widget, QWidget* parent, const char* name) : QWidget(parent)
   , mpLayout(nullptr)
   , mpOwner(nullptr)

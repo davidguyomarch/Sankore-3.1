@@ -59,7 +59,7 @@ jobs:
         run: |
           git clone --depth 1 --branch v1.4 https://github.com/stachenov/quazip.git C:\quazip-src
           mkdir C:\quazip-build
-          cmake -S C:\quazip-src -B C:\quazip-build -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=C:\Qt\6.8.3\msvc2022_64 -DCMAKE_INSTALL_PREFIX=C:\quazip -DQUAZIP_QT_MAJOR_VERSION=6 -DBUILD_SHARED_LIBS=OFF -DZLIB_LIBRARY=C:\zlib\lib\zlibstatic.lib -DZLIB_INCLUDE_DIR=C:\zlib\include
+          cmake -S C:\quazip-src -B C:\quazip-build -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=C:\Qt\6.8.3\msvc2022_64 -DCMAKE_INSTALL_PREFIX=C:\quazip -DQUAZIP_QT_MAJOR_VERSION=6 -DBUILD_SHARED_LIBS=OFF -DZLIB_LIBRARY=C:\zlib\lib\zlibstatic.lib -DZLIB_INCLUDE_DIR=C:\zlib\include -DQUAZIP_BZIP2=OFF
           cmake --build C:\quazip-build
           cmake --install C:\quazip-build
           dir C:\quazip\lib

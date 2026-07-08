@@ -36,6 +36,7 @@ QT += xml
 QT += qml
 QT += widgets
 QT += printsupport
+QT += core5compat
 
 INCLUDEPATH += src
 INCLUDEPATH += src/frameworks
