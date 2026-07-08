@@ -10,7 +10,10 @@ HEADERS      += src/frameworks/UBGeometryUtils.h \
     src/frameworks/UBTrashRegistery.h \
     src/frameworks/UBWidgetUtils.h \
     src/frameworks/QGraphicsWebView.h \
-    src/frameworks/qtsingleapplication.h
+    src/frameworks/qtsingleapplication.h \
+    src/frameworks/QWebEnginePage_stub.h \
+    src/frameworks/QWebEngineView_stub.h \
+    src/frameworks/QWebEngineProfile_stub.h
 
 SOURCES      += src/frameworks/UBGeometryUtils.cpp \
                 src/frameworks/UBPlatformUtils.cpp \
@@ -23,7 +26,10 @@ SOURCES      += src/frameworks/UBGeometryUtils.cpp \
     src/frameworks/UBTrashRegistery.cpp \
     src/frameworks/UBWidgetUtils.cpp \
     src/frameworks/QGraphicsWebView.cpp \
-    src/frameworks/qtsingleapplication.cpp
+    src/frameworks/qtsingleapplication.cpp \
+    src/frameworks/QWebEnginePage_stub.cpp \
+    src/frameworks/QWebEngineView_stub.cpp \
+    src/frameworks/QWebEngineProfile_stub.cpp
 
 
 win32 {

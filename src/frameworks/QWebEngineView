@@ -10,8 +10,7 @@ class QWebEnginePage;
 
 class QWebEngineView : public QWidget
 {
-    // Note: Q_OBJECT removed - stub does not need moc meta-object support
-    // Signals are declared but non-functional (no emit, no connect)
+    Q_OBJECT
 public:
     explicit QWebEngineView(QWidget *parent = nullptr) : QWidget(parent) {}
     virtual ~QWebEngineView() {}

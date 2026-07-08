@@ -8,7 +8,7 @@
 
 class QWebEngineProfile : public QObject
 {
-    // Note: Q_OBJECT removed - stub does not need moc meta-object support
+    Q_OBJECT
 public:
     static QWebEngineProfile *defaultProfile() {
         static QWebEngineProfile p;

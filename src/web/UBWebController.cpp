@@ -21,29 +21,19 @@
 
 /**
  * @file UBWebController.cpp
- * @brief Stub implementation - web browser functionality disabled in Qt6 build.
- *
- * The full UBWebController requires QtWebEngine with a functional browser.
- * This stub provides the necessary symbols to link while the web module
- * is non-functional (QGraphicsWebView is stubbed).
+ * @brief Stub - web browser disabled in Qt6 build (no QtWebEngine).
  */
 
-#include <QWidget>
-#include <QApplication>
+#include "UBWebController.h"
+
+#include <QDesktopServices>
 #include <QGuiApplication>
 #include <QScreen>
-#include <QDesktopServices>
 
-#include "UBWebController.h"
-#include "UBOEmbedParser.h"
-
-#include "gui/UBMainWindow.h"
-#include "core/UBApplication.h"
-#include "core/UBApplicationController.h"
-
+class UBMainWindow;
 
 UBWebController::UBWebController(UBMainWindow* mainWindow)
-    : QObject(mainWindow->centralWidget())
+    : QObject(reinterpret_cast<QObject*>(mainWindow))
     , mMainWindow(mainWindow)
     , mCurrentWebBrowser(0)
     , mBrowserWidget(0)
@@ -60,181 +50,52 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     }
 }
 
-UBWebController::~UBWebController()
-{
-}
-
-void UBWebController::closing()
-{
-    // NOOP - web browser not functional
-}
-
-void UBWebController::adaptToolBar()
-{
-    // NOOP - web browser not functional
-}
-
-QPixmap UBWebController::captureCurrentPage()
-{
-    return QPixmap();
-}
-
-void UBWebController::showTabAtTop(bool attop)
-{
-    Q_UNUSED(attop);
-}
+UBWebController::~UBWebController() {}
+void UBWebController::closing() {}
+void UBWebController::adaptToolBar() {}
+QPixmap UBWebController::captureCurrentPage() { return QPixmap(); }
+void UBWebController::showTabAtTop(bool) {}
 
 void UBWebController::loadUrl(const QUrl& url)
 {
-    // Open in system browser since embedded browser is not functional
     QDesktopServices::openUrl(url);
 }
 
-QWebEngineView* UBWebController::createNewTab()
-{
-    return nullptr;
-}
-
-QUrl UBWebController::currentPageUrl() const
-{
-    return QUrl();
-}
-
-void UBWebController::show(WebInstance type)
-{
-    Q_UNUSED(type);
-    // Web browser not functional in this build
-}
-
-void UBWebController::setupPalettes()
-{
-}
+QWebEngineView* UBWebController::createNewTab() { return nullptr; }
+QUrl UBWebController::currentPageUrl() const { return QUrl(); }
+void UBWebController::show(WebInstance) {}
+void UBWebController::setupPalettes() {}
 
 QPixmap UBWebController::getScreenPixmap()
 {
     QScreen *screen = QGuiApplication::primaryScreen();
-    if (!screen)
-        return QPixmap();
-    return screen->grabWindow(0);
+    return screen ? screen->grabWindow(0) : QPixmap();
 }
 
-void UBWebController::screenLayoutChanged()
-{
-}
-
-void UBWebController::setSourceWidget(QWidget* pWidget)
-{
-    Q_UNUSED(pWidget);
-}
-
-void UBWebController::toggleWebToolsPalette(bool checked)
-{
-    Q_UNUSED(checked);
-}
-
-void UBWebController::captureWindow()
-{
-}
-
-void UBWebController::customCapture()
-{
-}
-
-void UBWebController::toogleMirroring(bool checked)
-{
-    Q_UNUSED(checked);
-}
-
-void UBWebController::captureoEmbed(QUrl currentUrl)
-{
-    Q_UNUSED(currentUrl);
-}
-
-void UBWebController::captureoEmbed()
-{
-}
-
-void UBWebController::captureEduMedia()
-{
-}
-
-bool UBWebController::isOEmbedable(const QUrl& pUrl)
-{
-    Q_UNUSED(pUrl);
-    return false;
-}
-
-bool UBWebController::hasEmbeddedContent()
-{
-    return false;
-}
-
-void UBWebController::getEmbeddableContent()
-{
-}
-
-bool UBWebController::isEduMedia(const QUrl& pUrl)
-{
-    Q_UNUSED(pUrl);
-    return false;
-}
-
-void UBWebController::copy()
-{
-}
-
-void UBWebController::paste()
-{
-}
-
-void UBWebController::cut()
-{
-}
-
-void UBWebController::activePageChanged()
-{
-}
-
-void UBWebController::toggleWebTrap(bool checked)
-{
-    Q_UNUSED(checked);
-}
-
-void UBWebController::webTrapContent()
-{
-}
-
-void UBWebController::onOEmbedParsed(QVector<sOEmbedContent> contents)
-{
-    Q_UNUSED(contents);
-}
-
-void UBWebController::onActionBookmark()
-{
-}
-
-void UBWebController::initialiazemOEmbedProviders()
-{
-}
-
-void UBWebController::tutorialWebInstance()
-{
-}
-
-void UBWebController::webBrowserInstance()
-{
-}
-
-void UBWebController::paraschoolWebInstance()
-{
-}
-
-void UBWebController::lookForEmbedContent(QString* pHtml, QString tag, QString attribute, QList<QUrl>* pList)
-{
-    Q_UNUSED(pHtml); Q_UNUSED(tag); Q_UNUSED(attribute); Q_UNUSED(pList);
-}
-
-void UBWebController::checkForOEmbed(QString* pHtml)
-{
-    Q_UNUSED(pHtml);
-}
+void UBWebController::screenLayoutChanged() {}
+void UBWebController::setSourceWidget(QWidget*) {}
+void UBWebController::toggleWebToolsPalette(bool) {}
+void UBWebController::captureWindow() {}
+void UBWebController::customCapture() {}
+void UBWebController::toogleMirroring(bool) {}
+void UBWebController::captureoEmbed(QUrl) {}
+void UBWebController::captureoEmbed() {}
+void UBWebController::captureEduMedia() {}
+bool UBWebController::isOEmbedable(const QUrl&) { return false; }
+bool UBWebController::hasEmbeddedContent() { return false; }
+void UBWebController::getEmbeddableContent() {}
+bool UBWebController::isEduMedia(const QUrl&) { return false; }
+void UBWebController::copy() {}
+void UBWebController::paste() {}
+void UBWebController::cut() {}
+void UBWebController::activePageChanged() {}
+void UBWebController::toggleWebTrap(bool) {}
+void UBWebController::webTrapContent() {}
+void UBWebController::onOEmbedParsed(QVector<sOEmbedContent>) {}
+void UBWebController::onActionBookmark() {}
+void UBWebController::initialiazemOEmbedProviders() {}
+void UBWebController::tutorialWebInstance() {}
+void UBWebController::webBrowserInstance() {}
+void UBWebController::paraschoolWebInstance() {}
+void UBWebController::lookForEmbedContent(QString*, QString, QString, QList<QUrl>*) {}
+void UBWebController::checkForOEmbed(QString*) {}
