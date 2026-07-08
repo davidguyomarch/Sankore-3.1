@@ -26,7 +26,7 @@ VERSION_RC = $$replace(VERSION_RC, "b", "176") # 0xB0
 VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
 
 # TODO: QT += webenginewidgets (separate migration - not available on ARM64)
-QT += webenginewidgets
+# QT += webenginewidgets  # Stubbed out - aqtinstall bug prevents install
 QT += svg
 QT += svgwidgets
 QT += network

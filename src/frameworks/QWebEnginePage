@@ -1,0 +1,25 @@
+// Stub for QWebEnginePage
+#ifndef QWEBENGINEPAGE_STUB_H
+#define QWEBENGINEPAGE_STUB_H
+
+#include <QObject>
+#include <QUrl>
+
+class QWebEnginePage : public QObject
+{
+    Q_OBJECT
+public:
+    QWebEnginePage(QObject *parent = nullptr) : QObject(parent) {}
+    virtual ~QWebEnginePage() {}
+    void setUrl(const QUrl &) {}
+    QUrl url() const { return QUrl(); }
+    void runJavaScript(const QString &) {}
+    QString title() const { return QString(); }
+
+signals:
+    void loadFinished(bool ok);
+    void urlChanged(const QUrl &url);
+    void titleChanged(const QString &title);
+};
+
+#endif

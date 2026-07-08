@@ -1,0 +1,2 @@
+// Stub: redirect to our compatibility header
+#include "QGraphicsWebView.h"
