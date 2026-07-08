@@ -4,17 +4,59 @@
 
 #include <QObject>
 #include <QUrl>
+#include <QAction>
+
+class QNetworkRequest;
 
 class QWebEnginePage : public QObject
 {
     Q_OBJECT
 public:
+    enum WebAction {
+        NoWebAction = -1,
+        Back, Forward, Stop, Reload,
+        Cut, Copy, Paste,
+        Undo, Redo,
+        SelectAll,
+        OpenLinkInNewWindow,
+        OpenLinkInThisWindow,
+        DownloadLinkToDisk,
+        CopyLinkToClipboard,
+        OpenImageInNewWindow,
+        DownloadImageToDisk,
+        CopyImageToClipboard,
+        CopyImageUrlToClipboard,
+        InspectElement,
+        ExitFullScreen,
+        RequestClose,
+        Unselect,
+        SavePage,
+        ViewSource
+    };
+
+    enum NavigationType {
+        NavigationTypeLinkClicked,
+        NavigationTypeFormSubmitted,
+        NavigationTypeBackForward,
+        NavigationTypeReload,
+        NavigationTypeOther
+    };
+
+    enum WebWindowType {
+        WebBrowserWindow,
+        WebBrowserTab,
+        WebDialog,
+        WebBrowserBackgroundTab
+    };
+
     QWebEnginePage(QObject *parent = nullptr) : QObject(parent) {}
     virtual ~QWebEnginePage() {}
     void setUrl(const QUrl &) {}
     QUrl url() const { return QUrl(); }
     void runJavaScript(const QString &) {}
     QString title() const { return QString(); }
+    QAction *action(WebAction) const { return nullptr; }
+    void triggerAction(WebAction, bool = false) {}
 
 signals:
     void loadFinished(bool ok);

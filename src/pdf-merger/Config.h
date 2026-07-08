@@ -30,8 +30,13 @@ Is intended for multiplatform support
 
 #ifdef WIN32
 
-#define _CRT_SECURE_NO_WARNINGS 
+#define _CRT_SECURE_NO_WARNINGS
+
+// _snprintf was needed for old MSVC versions (< 2015)
+// Modern MSVC (>= 1900) provides standard snprintf
+#if defined(_MSC_VER) && _MSC_VER < 1900
 #define snprintf _snprintf
+#endif
 
 #endif    
 

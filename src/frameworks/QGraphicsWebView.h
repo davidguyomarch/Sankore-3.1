@@ -31,6 +31,8 @@ public:
     void setUrl(const QUrl &) {}
     QString toHtml() const { return QString(); }
     QVariant evaluateJavaScript(const QString &) { return QVariant(); }
+    QVariant evaluateJavaScriptSync(const QString &) { return QVariant(); }
+    void addToJavaScriptWindowObject(const QString &, QObject *) {}
     QSize contentsSize() const { return QSize(800, 600); }
 signals:
     void javaScriptWindowObjectCleared();

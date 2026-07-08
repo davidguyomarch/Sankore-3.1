@@ -59,10 +59,10 @@ include(src/transition/transition.pri)
 include(src/interfaces/interfaces.pri)
 include(src/customWidgets/customWidgets.pri)
 
-# pdf-merger (TODO: restore when ThirdParty available)
-# DEPENDPATH += src/pdf-merger
-# INCLUDEPATH += src/pdf-merger
-# include(src/pdf-merger/pdfMerger.pri)
+# pdf-merger (built-in PDF merge library)
+DEPENDPATH += src/pdf-merger
+INCLUDEPATH += src/pdf-merger
+include(src/pdf-merger/pdfMerger.pri)
 
 #plugins
 include(plugins/plugins.pri)

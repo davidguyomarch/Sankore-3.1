@@ -619,7 +619,7 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parsePageset(const QStringList &page
 
     QDomElement svgPagesetElement = mDocumentToWrite->createElementNS(svgIWBNS,":"+ tIWBPageSet);
 
-    QMapIterator<int, QDomElement> nextSVGElement(pageList);
+    QMultiMapIterator<int, QDomElement> nextSVGElement(pageList);
     nextSVGElement.toFront();
     while (nextSVGElement.hasNext()) 
         svgPagesetElement.appendChild(nextSVGElement.next().value());
@@ -669,7 +669,7 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parseSvgPageSection(const QDomElemen
     // to do:
     // there we must to sort elements (take elements from list and assign parent ordered like in parseSVGGGroup)
     // we returns just element because we don't care about layer.
-    QMapIterator<int, QDomElement> nextSVGElement(svgElements);
+    QMultiMapIterator<int, QDomElement> nextSVGElement(svgElements);
     nextSVGElement.toFront();
     while (nextSVGElement.hasNext()) 
         svgElementPart.appendChild(nextSVGElement.next().value());
@@ -1594,7 +1594,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseSVGGGroup(const QDomElement &element, 
     }
 
     QList<int> layers;
-    QMapIterator<int, QDomElement> nextSVGElement(svgElements);
+    QMultiMapIterator<int, QDomElement> nextSVGElement(svgElements);
     while (nextSVGElement.hasNext()) 
         layers << nextSVGElement.next().key();
 
@@ -1948,7 +1948,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZLine(const QDomElement &element, QM
 void UBCFFAdaptor::UBToCFFConverter::addSVGElementToResultModel(const QDomElement &element, QMultiMap<int, QDomElement> &dstList, int layer)
 {
     int elementLayer = (DEFAULT_LAYER == layer) ? DEFAULT_LAYER : layer;
-    dstList.setInsertInOrder(true);
+    
     QDomElement rootElement = element.cloneNode(true).toElement();
     mDocumentToWrite->firstChildElement().appendChild(rootElement);
     dstList.insert(elementLayer, rootElement);
@@ -2007,7 +2007,7 @@ QSize UBCFFAdaptor::UBToCFFConverter::getSVGDimentions(const QString &element)
 
     QStringList dimList;
 
-    dimList = element.split(dimensionsDelimiter1, QString::KeepEmptyParts);
+    dimList = element.split(dimensionsDelimiter1, Qt::KeepEmptyParts);
     if (dimList.count() != 2) // row unlike 0x0
         return QSize();
 
@@ -2029,7 +2029,7 @@ QRect UBCFFAdaptor::UBToCFFConverter::getViewboxRect(const QString &element) con
 {
     QStringList dimList;
 
-    dimList = element.split(dimensionsDelimiter2, QString::KeepEmptyParts);
+    dimList = element.split(dimensionsDelimiter2, Qt::KeepEmptyParts);
     if (dimList.count() != 4) // row unlike 0 0 0 0
         return QRect();
     

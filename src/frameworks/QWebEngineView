@@ -4,6 +4,7 @@
 
 #include <QWidget>
 #include <QUrl>
+#include "QWebEngineSettings"
 
 class QWebEnginePage;
 
@@ -27,6 +28,7 @@ public:
     void reload() {}
     void back() {}
     void forward() {}
+    QWebEngineSettings *settings() const { return QWebEngineSettings::defaultSettings(); }
 
 signals:
     void loadStarted();

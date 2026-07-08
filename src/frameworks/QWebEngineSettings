@@ -11,7 +11,11 @@ public:
         PluginsEnabled,
         JavascriptCanOpenWindows,
         LocalContentCanAccessRemoteUrls,
-        LocalContentCanAccessFileUrls
+        LocalContentCanAccessFileUrls,
+        JavascriptCanAccessClipboard,
+        DnsPrefetchEnabled,
+        ScrollAnimatorEnabled,
+        FullScreenSupportEnabled
     };
 
     static QWebEngineSettings *defaultSettings() {

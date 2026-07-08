@@ -28,6 +28,12 @@ jobs:
           echo "C:\Qt\6.8.3\msvc2022_64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo "Qt6_DIR=C:\Qt\6.8.3\msvc2022_64" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
+      - name: Install zlib via vcpkg
+        shell: pwsh
+        run: |
+          vcpkg install zlib:x64-windows
+          echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
 
