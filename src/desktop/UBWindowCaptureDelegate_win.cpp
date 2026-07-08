@@ -22,6 +22,13 @@
 
 
 #include "UBWindowCaptureDelegate_win.h"
+
+#include <QMutex>
+#include <QWaitCondition>
+#include <QDialog>
+#include <QScreen>
+#include <QGuiApplication>
+
 #include <windows.h>
 
 
@@ -74,7 +81,7 @@ int UBWindowCaptureDelegate::execute()
         mutex.lock();
         sleep.wait(&mutex, 200);
         mutex.unlock();
-        mCapturedPixmap = QPixmap::grabWindow(mCurrentWindow);
+        mCapturedPixmap = QGuiApplication::primaryScreen()->grabWindow(reinterpret_cast<WId>(mCurrentWindow));
         return QDialog::Accepted;
     }
     else

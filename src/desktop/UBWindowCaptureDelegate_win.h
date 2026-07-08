@@ -28,6 +28,8 @@
 #include <QApplication>
 #include <QPainter>
 
+#include <windows.h>
+
 class UBWindowCaptureDelegate : public QObject
 {
         Q_OBJECT;
