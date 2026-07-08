@@ -55,6 +55,16 @@ jobs:
           dir C:\quazip\lib
           dir C:\quazip\include /s
 
+      - name: Verify library files
+        shell: cmd
+        run: |
+          echo === vcpkg libs ===
+          dir %VCPKG_INSTALLATION_ROOT%\installed\x64-windows\lib\zlib*
+          dir %VCPKG_INSTALLATION_ROOT%\installed\x64-windows\lib\libssl*
+          dir %VCPKG_INSTALLATION_ROOT%\installed\x64-windows\lib\libcrypto*
+          echo === quazip lib ===
+          dir C:\quazip\lib\*
+
       - name: Create build directories
         shell: cmd
         run: |

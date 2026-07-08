@@ -74,8 +74,8 @@ win32 {
     # QuaZip built from source - MUST come before src/frameworks to override stubs
     INCLUDEPATH = C:/quazip/include/QuaZip-Qt6-1.4/quazip $$INCLUDEPATH
     INCLUDEPATH += $$(VCPKG_ROOT)/installed/x64-windows/include
-    LIBS += -LC:/quazip/lib -lquazip1-qt6
-    LIBS += -L$$(VCPKG_ROOT)/installed/x64-windows/lib -lzlib
+    LIBS += C:/quazip/lib/quazip1-qt6.lib
+    LIBS += $$(VCPKG_ROOT)/installed/x64-windows/lib/zlib.lib
 }
 linux-* {
     INCLUDEPATH += /usr/include/QuaZip-Qt6-1.4/quazip
@@ -132,7 +132,8 @@ win32 {
    QMAKE_CXXFLAGS += /MP
    QMAKE_CXXFLAGS_RELEASE += /Od /Zi
    QMAKE_LFLAGS_RELEASE += /DEBUG
-   LIBS += -L$$(VCPKG_ROOT)/installed/x64-windows/lib -llibssl -llibcrypto -lzlib
+   LIBS += $$(VCPKG_ROOT)/installed/x64-windows/lib/libssl.lib
+   LIBS += $$(VCPKG_ROOT)/installed/x64-windows/lib/libcrypto.lib
    LIBS += -lDwmapi -lWtsapi32 -lUser32 -lShell32 -lOle32 -lAdvapi32 -lGdi32 -lCrypt32 -lWs2_32
    INCLUDEPATH += $$(VCPKG_ROOT)/installed/x64-windows/include
    UB_LIBRARY.path = $$DESTDIR
