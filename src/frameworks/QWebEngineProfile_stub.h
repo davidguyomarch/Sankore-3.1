@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include "QWebEngineSettings"
 
 class QWebEngineProfile : public QObject
 {
@@ -20,6 +21,8 @@ public:
     void setCachePath(const QString &) {}
     QString persistentStoragePath() const { return QString(); }
     void setPersistentStoragePath(const QString &) {}
+    QWebEngineSettings *settings() const { return QWebEngineSettings::defaultSettings(); }
+};
 };
 
 #endif
