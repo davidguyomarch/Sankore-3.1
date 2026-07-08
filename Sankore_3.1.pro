@@ -129,6 +129,8 @@ win32 {
    QMAKE_CXXFLAGS += /MP
    QMAKE_CXXFLAGS_RELEASE += /Od /Zi
    QMAKE_LFLAGS_RELEASE += /DEBUG
+   LIBS += -L$$(VCPKG_ROOT)/installed/x64-windows/lib -lssl -lcrypto
+   INCLUDEPATH += $$(VCPKG_ROOT)/installed/x64-windows/include
    UB_LIBRARY.path = $$DESTDIR
    UB_I18N.path = $$DESTDIR/i18n
    UB_ETC.path = $$DESTDIR
