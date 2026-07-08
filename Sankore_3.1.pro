@@ -73,9 +73,10 @@ INCLUDEPATH += plugins/cffadaptor/src
 win32 {
     # QuaZip built from source - MUST come before src/frameworks to override stubs
     INCLUDEPATH = C:/quazip/include/QuaZip-Qt6-1.4/quazip $$INCLUDEPATH
+    INCLUDEPATH += C:/zlib/include
     INCLUDEPATH += $$(VCPKG_ROOT)/installed/x64-windows/include
     LIBS += C:/quazip/lib/quazip1-qt6.lib
-    LIBS += $$(VCPKG_ROOT)/installed/x64-windows/lib/zlib.lib
+    LIBS += C:/zlib/lib/zlibstatic.lib
 }
 linux-* {
     INCLUDEPATH += /usr/include/QuaZip-Qt6-1.4/quazip

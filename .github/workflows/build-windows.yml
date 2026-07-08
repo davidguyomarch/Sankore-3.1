@@ -31,39 +31,38 @@ jobs:
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Install zlib and OpenSSL via vcpkg
+      - name: Install OpenSSL via vcpkg
         shell: pwsh
         run: |
-          vcpkg install zlib:x64-windows openssl:x64-windows
-          # Verify installations
+          vcpkg install openssl:x64-windows
+          # Verify
           if (!(Test-Path "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\include\openssl\evp.h")) {
-            Write-Error "OpenSSL headers not found after vcpkg install!"
+            Write-Error "OpenSSL headers not found!"
             exit 1
           }
-          Write-Host "=== All libs in vcpkg ==="
+          Write-Host "=== vcpkg x64-windows lib ==="
           Get-ChildItem "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\lib\*.lib" | ForEach-Object { Write-Host $_.Name }
           echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Build zlib from source
+        shell: cmd
+        run: |
+          git clone --depth 1 --branch v1.3.1 https://github.com/madler/zlib.git C:\zlib-src
+          mkdir C:\zlib-build
+          cmake -S C:\zlib-src -B C:\zlib-build -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zlib
+          cmake --build C:\zlib-build
+          cmake --install C:\zlib-build
+          dir C:\zlib\lib
 
       - name: Build QuaZip from source
         shell: cmd
         run: |
           git clone --depth 1 --branch v1.4 https://github.com/stachenov/quazip.git C:\quazip-src
           mkdir C:\quazip-build
-          cmake -S C:\quazip-src -B C:\quazip-build -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=C:\Qt\6.8.3\msvc2022_64 -DCMAKE_INSTALL_PREFIX=C:\quazip -DQUAZIP_QT_MAJOR_VERSION=6 -DBUILD_SHARED_LIBS=OFF -DZLIB_LIBRARY=%VCPKG_INSTALLATION_ROOT%\installed\x64-windows\lib\zlib.lib -DZLIB_INCLUDE_DIR=%VCPKG_INSTALLATION_ROOT%\installed\x64-windows\include
+          cmake -S C:\quazip-src -B C:\quazip-build -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=C:\Qt\6.8.3\msvc2022_64 -DCMAKE_INSTALL_PREFIX=C:\quazip -DQUAZIP_QT_MAJOR_VERSION=6 -DBUILD_SHARED_LIBS=OFF -DZLIB_LIBRARY=C:\zlib\lib\zlibstatic.lib -DZLIB_INCLUDE_DIR=C:\zlib\include
           cmake --build C:\quazip-build
           cmake --install C:\quazip-build
           dir C:\quazip\lib
-          dir C:\quazip\include /s
-
-      - name: Verify library files
-        shell: cmd
-        run: |
-          echo === vcpkg libs ===
-          dir %VCPKG_INSTALLATION_ROOT%\installed\x64-windows\lib\zlib*
-          dir %VCPKG_INSTALLATION_ROOT%\installed\x64-windows\lib\libssl*
-          dir %VCPKG_INSTALLATION_ROOT%\installed\x64-windows\lib\libcrypto*
-          echo === quazip lib ===
-          dir C:\quazip\lib\*
 
       - name: Create build directories
         shell: cmd

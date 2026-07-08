@@ -64,8 +64,8 @@ macx {
 }
 
 win32 {
-    # zlib is linked from the main .pro file via vcpkg
-    INCLUDEPATH += $$(VCPKG_ROOT)/installed/x64-windows/include
+    # zlib built from source, linked from the main .pro file
+    INCLUDEPATH += C:/zlib/include
 }
 
 linux-* {
