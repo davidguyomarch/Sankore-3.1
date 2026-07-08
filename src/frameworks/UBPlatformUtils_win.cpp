@@ -100,7 +100,7 @@ void UBPlatformUtils::runInstaller(const QString &installerFilePath)
     {
         qWarning() << "Running '" << installerFilePath << "' failed (error=" << process.error() << ")";
         QString verb = "runas";
-        ::ShellExecute(nullptr, verb.utf16(), installerFilePath.utf16(), nullptr, nullptr, SW_HIDE);
+        ::ShellExecute(nullptr, reinterpret_cast<LPCWSTR>(verb.utf16()), reinterpret_cast<LPCWSTR>(installerFilePath.utf16()), nullptr, nullptr, SW_HIDE);
     }
 }
 
@@ -140,10 +140,11 @@ void UBPlatformUtils::setDesktopMode(bool desktop)
 
 void UBPlatformUtils::setWindowNonActivableFlag(QWidget* widget, bool nonAcivable)
 {
-	long exStyle = (nonAcivable) ? GetWindowLong(widget->winId(), GWL_EXSTYLE) | WS_EX_NOACTIVATE
-		: GetWindowLong(widget->winId(), GWL_EXSTYLE) & ~WS_EX_NOACTIVATE;
+	HWND hwnd = reinterpret_cast<HWND>(widget->winId());
+	long exStyle = (nonAcivable) ? GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_NOACTIVATE
+		: GetWindowLong(hwnd, GWL_EXSTYLE) & ~WS_EX_NOACTIVATE;
 
-	SetWindowLong(widget->winId(), GWL_EXSTYLE, exStyle);
+	SetWindowLong(hwnd, GWL_EXSTYLE, exStyle);
 }
 
 #define KEYBTDECL(s1, s2, clSwitch) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(s1), KEYCODE(s2))
