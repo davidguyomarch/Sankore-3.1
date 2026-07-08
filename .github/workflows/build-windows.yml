@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 1
           lfs: false
 
-      - name: Install Qt 6 via aqtinstall directly
+      - name: Install Qt 6 via aqtinstall
         shell: pwsh
         run: |
           pip install aqtinstall
@@ -27,14 +27,17 @@ jobs:
           echo "C:\Qt\6.5.3\msvc2019_64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo "Qt6_DIR=C:\Qt\6.5.3\msvc2019_64" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
-      - name: Install QuaZip via vcpkg
-        shell: pwsh
-        run: |
-          vcpkg install quazip:x64-windows
-          echo "VCPKG_ROOT=C:\vcpkg" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install QuaZip from source
+        shell: cmd
+        run: |
+          git clone --depth 1 --branch v1.4 https://github.com/stachenov/quazip.git C:\quazip-src
+          mkdir C:\quazip-build
+          cmake -S C:\quazip-src -B C:\quazip-build -DCMAKE_PREFIX_PATH=C:\Qt\6.5.3\msvc2019_64 -DCMAKE_INSTALL_PREFIX=C:\quazip -DQUAZIP_QT_MAJOR_VERSION=6
+          cmake --build C:\quazip-build --config Release
+          cmake --install C:\quazip-build --config Release
 
       - name: Create build directories
         shell: cmd
@@ -47,22 +50,32 @@ jobs:
 
       - name: Run qmake
         shell: cmd
-        run: qmake Sankore_3.1.pro
+        run: qmake Sankore_3.1.pro "INCLUDEPATH+=C:/quazip/include" "LIBS+=-LC:/quazip/lib -lquazip1-qt6"
 
       - name: Build
         shell: cmd
-        run: nmake 2>&1 | tee build_output.txt
+        run: nmake release
 
-      - name: Upload exe
+      - name: Find and upload exe
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse -Filter "*.exe" -Path build | ForEach-Object { Write-Host $_.FullName }
+          Get-ChildItem -Recurse -Filter "Open-Sankore.exe" -Path . | ForEach-Object { Write-Host "FOUND: $($_.FullName)" }
+
+      - name: Upload artifact
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: Open-Sankore-Windows-x64
-          path: build/win32/release/product/
+          path: |
+            build/**/product/**
+            build/**/*.exe
+          if-no-files-found: warn
 
       - name: Upload build log on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: build-log
-          path: build_output.txt
+          path: |
+            Makefile.Release
