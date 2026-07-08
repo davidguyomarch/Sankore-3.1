@@ -27,6 +27,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QPointer>
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QStackedLayout>
