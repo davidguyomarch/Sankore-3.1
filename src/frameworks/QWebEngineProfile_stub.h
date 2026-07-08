@@ -1,5 +1,25 @@
-// Wrapper header for moc processing of QWebEngineProfile stub
-#ifndef QWEBENGINEPROFILE_STUB_WRAPPER_H
-#define QWEBENGINEPROFILE_STUB_WRAPPER_H
-#include "QWebEngineProfile"
+#ifndef QWEBENGINEPROFILE_STUB_MOC_H
+#define QWEBENGINEPROFILE_STUB_MOC_H
+
+#include <QObject>
+#include <QString>
+
+class QWebEngineProfile : public QObject
+{
+    Q_OBJECT
+public:
+    static QWebEngineProfile *defaultProfile() {
+        static QWebEngineProfile p;
+        return &p;
+    }
+    QWebEngineProfile(QObject *parent = nullptr) : QObject(parent) {}
+    QWebEngineProfile(const QString &, QObject *parent = nullptr) : QObject(parent) {}
+    void setHttpCacheType(int) {}
+    void setPersistentCookiesPolicy(int) {}
+    QString cachePath() const { return QString(); }
+    void setCachePath(const QString &) {}
+    QString persistentStoragePath() const { return QString(); }
+    void setPersistentStoragePath(const QString &) {}
+};
+
 #endif
