@@ -9,12 +9,7 @@
 #include <QIODevice>
 #include <QString>
 #include "quazip.h"
-
-struct QuaZipFileInfo {
-    QString name;
-    uint compressedSize;
-    uint uncompressedSize;
-};
+#include "quazipfileinfo.h"
 
 struct QuaZipNewInfo {
     QuaZipNewInfo(const QString &name, const QString &file = QString())
