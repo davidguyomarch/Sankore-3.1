@@ -100,6 +100,47 @@ struct KEYBT
     int modifierCaps;
     KEYCODE codes[8];
 
+    KEYBT() : simpleSymbol(0), shiftedSymbol(0),
+#if defined(Q_OS_MACOS)
+              capsedSymbol(0),
+#else
+              capsLockSwitch(false),
+#endif
+              modifierNo(0), modifierShift(0)
+#if defined(Q_OS_MACOS)
+              , modifierCaps(0)
+#endif
+    { codes[0]=codes[1]=codes[2]=codes[3]=codes[4]=codes[5]=codes[6]=codes[7]=0; }
+
+    // Qt6 compat: accept int for QChar (QChar(int) is explicit in Qt6)
+    KEYBT(  int _simple,
+            int _shifted,
+#if defined(Q_OS_MACOS)
+            int _capsed,
+#else
+            bool _capsLockSwitch,
+#endif
+            int _modNo,
+            int _modShift,
+#if defined(Q_OS_MACOS)
+            int _modCaps,
+#endif
+            KEYCODE c1 = 0, KEYCODE c2 = 0, KEYCODE c3 = 0, KEYCODE c4 = 0,
+            KEYCODE c5 = 0, KEYCODE c6 = 0, KEYCODE c7 = 0, KEYCODE c8 = 0)
+                :simpleSymbol(QChar(_simple))
+                ,shiftedSymbol(QChar(_shifted))
+#if defined(Q_OS_MACOS)
+                ,capsedSymbol(QChar(_capsed))
+#else
+                ,capsLockSwitch(_capsLockSwitch)
+#endif
+                ,modifierNo(_modNo)
+                ,modifierShift(_modShift)
+#if defined(Q_OS_MACOS)
+                ,modifierCaps(_modCaps)
+#endif
+    { codes[0]=c1; codes[1]=c2; codes[2]=c3; codes[3]=c4; codes[4]=c5; codes[5]=c6; codes[6]=c7; codes[7]=c8; }
+
     KEYBT(  QChar _simple,
             QChar _shifted,
 #if defined(Q_OS_MACOS)
