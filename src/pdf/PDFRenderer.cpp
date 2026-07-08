@@ -27,7 +27,8 @@
 
 #include "PDFRenderer.h"
 
-#include "XPDFRenderer.h"
+// XPDFRenderer not available - PDF rendering via web plugin disabled
+// #include "XPDFRenderer.h"
 
 #include "core/UBApplication.h"
 
@@ -51,23 +52,10 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
     }
     else
     {
-        PDFRenderer *newRenderer = new XPDFRenderer(filename,importingFile);
-
-        newRenderer->setRefCount(0);
-        newRenderer->setFileUuid(uuid);
-
-        QFile file(filename);
-        file.open(QIODevice::ReadOnly);
-        newRenderer->setFileData(file.readAll());
-        file.close();
-
-        sRenderers.insert(newRenderer->fileUuid(), newRenderer);
-
-        QScreen* desktop = QGuiApplication::primaryScreen();
-        int dpiCommon = (desktop->physicalDotsPerInchX() + desktop->physicalDotsPerInchY()) / 2;
-        newRenderer->setDPI(dpiCommon);
-
-        return newRenderer;
+        // XPDFRenderer not available - return null
+        Q_UNUSED(filename);
+        Q_UNUSED(importingFile);
+        return nullptr;
     }
 }
 

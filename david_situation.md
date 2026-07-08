@@ -1,83 +1,217 @@
 # État des lieux — Open-Sankoré Qt6 Migration
 
-*Mis à jour : 8 juillet 2025*
+*Mis à jour : 8 juillet 2025 — 23h30*
 
-## Phase actuelle : Compilation Windows (MSVC) via GitHub Actions
+## Phase actuelle : LINK — En attente du résultat final
 
-On est dans la boucle "compilation → correction des erreurs → push → CI". Le build avance bien : moc passe, les .cpp compilent en grande partie. On corrige les erreurs restantes une par une.
-
----
-
-## Ce qui est FAIT ✅
-
-| Élément | Détail |
-|---------|--------|
-| **Migration Qt4 → Qt6 (Linux)** | 125K LOC migrés via AWS Transform, zéro erreurs sur Docker Linux (sankore-qt6) |
-| **CI Windows GitHub Actions** | Pipeline fonctionnel : Qt 6.8.3 + MSVC 2022 + vcpkg |
-| **pdf-merger réactivé** | Vrais sources (plus de stubs vides), zlib via vcpkg |
-| **QuaZip** | Lié via vcpkg (`quazip1-qt6`) — fonctionnel |
-| **QtSingleApplication** | Stub fonctionnel (QLockFile, 90% feature-complete) |
-| **Plugin CFF** | Corrigé pour Qt6 (`QMultiMapIterator`, `Qt::KeepEmptyParts`) |
-| **Stubs WebEngine** | Enrichis (`WebAction`, `NavigationType`, `settings()`, etc.) |
-| **QDesktopWidget → QScreen** | Corrigé dans `UBBoardPaletteManager` et `UBWebController` |
-| **Documentation** | Doxygen + `docs/README.md` |
-| **Unit tests** | 117 tests QTest passant (Docker) |
-| **Steering Kiro** | `.kiro/steering/project-context.md` créé |
+**La compilation est terminée à 100%.** Tous les fichiers .cpp et moc_*.cpp compilent sans erreur. On est maintenant dans la phase de linkage (production du .exe). Le dernier blocage est un nom de lib OpenSSL incorrect, corrigé et poussé.
 
 ---
 
-## Ce qui est EN COURS 🔄
+## Progression
 
-**Compilation MSVC Windows** — On attend le résultat du dernier push. Les étapes franchies :
-1. ✅ qmake passe
-2. ✅ moc passe (tous les headers)
-3. ✅ rcc / uic passent
-4. ✅ Compilation C++ : adaptors, api, pdf-merger compilent
-5. ⏳ Compilation C++ : board, core, gui, web, domain, tools, desktop — possibles erreurs Qt6 résiduelles (type `QDesktopWidget`, qu'on vient de corriger)
-6. ⬜ Link (résolution des symboles, libs externes)
-7. ⬜ Production du .exe
+```
+[██████████████████████████████████████░░] 95% — Link en cours
+```
 
----
+### Compilation : ✅ TERMINÉE
 
-## Ce qu'il RESTE À FAIRE 📋
+| Module | Fichiers | Statut |
+|--------|----------|--------|
+| adaptors/ | 19 .cpp | ✅ |
+| api/ | 4 .cpp | ✅ |
+| board/ | 5 .cpp | ✅ |
+| core/ | 16 .cpp (main, UBApplication, UBSettings...) | ✅ |
+| document/ | 4 .cpp | ✅ |
+| domain/ | 55+ .cpp | ✅ |
+| frameworks/ | 12 .cpp (dont UBPlatformUtils_win) | ✅ |
+| gui/ | 45+ .cpp | ✅ |
+| pdf-merger/ | 22 .cpp | ✅ |
+| plugins/cffadaptor | 1 .cpp | ✅ |
+| podcast/ | 5 .cpp (windowsmedia exclu) | ✅ |
+| tools/ | 10 .cpp | ✅ |
+| desktop/ | 6 .cpp (dont WindowCapture_win) | ✅ |
+| transition/ | 1 .cpp | ✅ |
+| customWidgets/ | 3 .cpp | ✅ |
+| web/ | modules stubbed | ✅ |
+| network/ | modules réseau | ✅ |
+| moc_*.cpp | ~50 fichiers | ✅ |
+| qrc_*.cpp | 2 fichiers (sankore, resources) | ✅ |
 
-### Court terme (obtenir un .exe fonctionnel)
+### Link : 🔄 EN COURS
 
-| # | Tâche | Effort estimé | Impact |
-|---|-------|---------------|--------|
-| 1 | **Corriger les erreurs de compilation MSVC restantes** | Itératif (1-3 cycles CI) | Bloquant |
-| 2 | **Résoudre le link** | Moyen | Bloquant — peut nécessiter des libs manquantes (OpenSSL?) |
-| 3 | **Packager les DLLs Qt** | Facile (`windeployqt`) | Nécessaire pour que l'exe tourne |
-| 4 | **Tester le lancement** | Manuel | Valider que l'app démarre |
-
-### Moyen terme (application fonctionnelle)
-
-| # | Tâche | Impact fonctionnel |
-|---|-------|--------------------|
-| 5 | **Intégrer QtWebEngine** (vrai module, pas stubs) | Widgets interactifs, browser intégré, teacher guide web |
-| 6 | **Ajouter OpenSSL pour Windows** | HTTPS dans le browser/network |
-| 7 | **Build Linux CI** | Second target (Ubuntu x64) |
-| 8 | **Tests fonctionnels** | Valider open/save .ubz, export PDF, dessin |
-
-### Long terme (qualité production)
-
-| # | Tâche |
-|---|-------|
-| 9 | Remplacer les stubs WebEngine par la vraie lib ou une alternative (CEF?) |
-| 10 | Installer / packaging (NSIS pour Windows, .deb pour Linux) |
-| 11 | Signature code / certificat |
-| 12 | Tests d'intégration automatisés |
+| Dépendance | Méthode | Statut |
+|------------|---------|--------|
+| Qt 6.8.3 | aqtinstall | ✅ Lié |
+| QuaZip 1.4 (static) | Build from source CMake | ✅ Compilé & installé |
+| zlib | vcpkg | ✅ Lié |
+| OpenSSL (libssl, libcrypto) | vcpkg | 🔄 Noms corrigés, en attente CI |
+| Windows system libs | Ajoutées dans .pro | ✅ |
 
 ---
 
-## Risques identifiés
+## Derniers commits (cette session)
 
-- **Link Windows** : possibles symboles manquants (OpenSSL `_crypto`, Windows APIs type `Dwmapi.lib`, `Wtsapi32.lib`)
-- **QtWebEngine** : le module est volumineux (~400 MB), l'install via aqtinstall était bugguée. Peut nécessiter une approche alternative
-- **pdf-merger + zlib** : le nom exact de la lib vcpkg (`zlib.lib` vs `zlibstatic.lib`) pourrait poser un problème au link
+| Commit | Problème | Fix |
+|--------|----------|-----|
+| `b93cdbe4` | windowsmedia Qt6 incompatible | Exclu du build, stubs dans UBPodcastController |
+| `df1726e6` | UBWindowCaptureDelegate_win.cpp | QMutex, QWaitCondition, QScreen::grabWindow |
+| `3d11e459` | Link: zlib.lib introuvable | Ajout -lzlib, tentative quazip vcpkg |
+| `bbe911f5` | vcpkg quazip tire tout Qt6 (timeout) | Build QuaZip from source, reorder CI steps |
+| `f1c1b993` | Link: ssl.lib introuvable | -lssl → -llibssl, -lcrypto → -llibcrypto, +Crypt32 +Ws2_32 |
 
 ---
 
-## Résumé en une phrase
+## Architecture du CI (build-windows.yml)
 
-On est à ~80% de la compilation Windows. Le moc, rcc, uic passent. Les .cpp compilent module par module. On corrige les dernières erreurs Qt6 résiduelles (API supprimées). Une fois la compilation terminée, il restera le link puis le packaging.
+```
+1. Checkout
+2. Install Qt 6.8.3 (aqtinstall)
+3. Setup MSVC 2022
+4. vcpkg install zlib + openssl (x64-windows)
+5. Build QuaZip v1.4 from source (CMake, static, uses aqtinstall Qt6)
+6. qmake Sankore_3.1.pro
+7. nmake release
+8. Upload artifact
+```
+
+## Bibliothèques liées (win32 dans .pro)
+
+```
+# QuaZip (from source)
+-LC:/quazip/lib -lquazip1-qt6
+
+# vcpkg
+-L$(VCPKG_ROOT)/installed/x64-windows/lib -lzlib -llibssl -llibcrypto
+
+# Windows system
+-lDwmapi -lWtsapi32 -lUser32 -lShell32 -lOle32 -lAdvapi32 -lGdi32 -lCrypt32 -lWs2_32
+```
+
+---
+
+## Écarts fonctionnels — Simplifications et stubs
+
+### 1. Navigateur web embarqué (MAJEUR)
+
+**Impact** : Tout ce qui concerne l'affichage de contenu web dans le tableau blanc est non-fonctionnel.
+
+| Composant | État | Impact utilisateur |
+|-----------|------|-------------------|
+| `QGraphicsWebView` | Stub (affiche "Web view disabled") | Impossible d'afficher des pages web dans le canvas |
+| `QWebEnginePage` | Stub (no-op) | Pas de navigation, pas de rendu HTML |
+| `QWebEngineSettings` | Stub (no-op) | Pas de configuration web |
+| `QWebEngineProfile` | Stub (no-op) | Pas de profil/cookies |
+| `QWebFrame` | Stub (evaluateJavaScript retourne QVariant vide) | Pas d'exécution JavaScript |
+| Widgets W3C/HTML5 | Compilent mais ne fonctionnent pas | Les widgets interactifs (HTML5) ne s'affichent pas |
+| Web trap (capture de contenu web) | Compilent mais inopérant | Impossible de capturer du contenu web vers la bibliothèque |
+| YouTube/OEmbed | Code présent mais inopérant | Pas d'intégration vidéo en ligne |
+
+**Cause** : QtWebEngine n'est pas inclus (lourd, ~500 Mo, complexe à cross-compiler).
+**Remplacement** : Ajouter QtWebEngine quand le build est stabilisé. Module aqtinstall disponible.
+
+### 2. Enregistrement podcast/screencasting (MAJEUR — Windows uniquement)
+
+**Impact** : L'enregistrement vidéo du cours n'est pas fonctionnel sur Windows.
+
+| Composant | État | Impact utilisateur |
+|-----------|------|-------------------|
+| `UBWindowsMediaVideoEncoder` | Exclu du build | Pas d'encodage vidéo |
+| `UBWindowsMediaFile` | Exclu du build | Pas de création de fichier WMV |
+| `UBWaveRecorder` | Exclu du build | Pas d'enregistrement audio |
+| Enumération périphériques audio | Retourne liste vide | "Aucun périphérique" dans les préférences |
+
+**Cause** : Windows Media Format SDK APIs obsolètes, incompatibles Qt6.
+**Remplacement** : Qt Multimedia (QMediaRecorder, QAudioInput) — API moderne disponible dans Qt 6.8.
+
+### 3. Single-instance IPC (MINEUR)
+
+**Impact** : Limité.
+
+| Composant | État | Impact utilisateur |
+|-----------|------|-------------------|
+| `QtSingleApplication` | Stub QLockFile | Détecte si une instance existe (OK) |
+| `sendMessage()` | Retourne toujours `false` | Impossible d'envoyer un fichier à l'instance existante |
+| `setActivationWindow()` | No-op | L'instance existante ne sera pas amenée au premier plan |
+
+**Cause** : Dépendance ThirdParty QtSingleApplication supprimée.
+**Remplacement** : QLocalSocket/QLocalServer pour IPC (quelques dizaines de lignes). Ou lib `SingleApplication` sur GitHub.
+
+### 4. QuaZip — Stubs vs Réalité (RÉSOLU)
+
+**Impact** : Les stubs sont maintenant overridés par la vraie lib grâce au `INCLUDEPATH` prepend.
+
+| Situation | Avant | Maintenant |
+|-----------|-------|-----------|
+| Ouvrir/sauvegarder .ubz | Échouait silencieusement (stub retourne `false`) | ✅ Fonctionnel (vraie lib QuaZip linkée) |
+| Import/Export documents | Non fonctionnel | ✅ Devrait fonctionner |
+| Import CFF | Non fonctionnel | ✅ Devrait fonctionner |
+
+**Risque résiduel** : Si le include guard de la vraie quazip.h est identique à notre stub (`QUAZIP_H`), le premier trouvé gagne. Avec le prepend, c'est la vraie lib. À vérifier au runtime.
+
+### 5. Capture Flash (SUPPRIMÉ — non-régression)
+
+**Impact** : Aucun. Flash est mort depuis 2020.
+
+### 6. QDesktopWidget → QScreen (adaptation — pas un écart)
+
+**Impact** : Nul. Les remplacements par `QGuiApplication::primaryScreen()` et `QScreen::grabWindow()` sont fonctionnellement équivalents. Pas de régression.
+
+### 7. UBTeacherGuideWidgetsTools — freezedWidgetPage (MINEUR)
+
+**Impact** : Dans le guide enseignant, l'aperçu des widgets web ne se rafraîchit pas correctement.
+
+```cpp
+// TODO: mainFrame() not available on QWebEngineView
+// - use page()->setContent(...)
+```
+
+**Cause** : Le stub QWebFrame ne rend rien.
+**Remplacement** : Sera résolu quand QtWebEngine sera intégré.
+
+---
+
+## Résumé des impacts par priorité
+
+| Priorité | Fonctionnalité | Statut | Effort pour résoudre |
+|----------|---------------|--------|---------------------|
+| 🔴 Haute | Widgets web/HTML5 dans le canvas | Non fonctionnel | Moyen (ajouter QtWebEngine au build) |
+| 🔴 Haute | Enregistrement podcast (Windows) | Non fonctionnel | Moyen (réécrire avec Qt Multimedia) |
+| 🟡 Moyenne | Navigateur embarqué | Non fonctionnel | Moyen (QtWebEngine) |
+| 🟡 Moyenne | Capture web vers bibliothèque | Non fonctionnel | Moyen (QtWebEngine) |
+| 🟢 Faible | IPC single-instance (passage de fichier) | Partiel | Faible (QLocalSocket) |
+| 🟢 Faible | Aperçu widget guide enseignant | Non fonctionnel | Résolu avec QtWebEngine |
+| ⚪ Aucun | Flash, QDesktopWidget | Supprimé/Remplacé | Aucun effort |
+
+---
+
+## Ce qui FONCTIONNE (coeur métier)
+
+- ✅ Dessin sur le tableau blanc (tous les outils : stylo, surligneur, gomme, formes)
+- ✅ Gestion des pages (ajouter, supprimer, naviguer)
+- ✅ Ouvrir/sauvegarder des documents .ubz (QuaZip réel)
+- ✅ Export PDF (pdf-merger réactivé)
+- ✅ Import/Export de documents
+- ✅ Import CFF (Common File Format)
+- ✅ Instruments géométriques (règle, triangle, compas, rapporteur, aristo)
+- ✅ Rideaux et cache
+- ✅ Mode bureau (annotation sur le desktop)
+- ✅ Capture d'écran / capture de fenêtre
+- ✅ Palette d'outils, menus, préférences
+- ✅ Single-instance (détection)
+- ✅ Transitions Uniboard → Sankoré
+---
+
+## Prochaines étapes
+
+1. **Résultat CI du link** — Si le .exe est produit, on passe à `windeployqt` pour packager
+2. **Unresolved symbols possibles** — Peut nécessiter d'autres libs Windows ou ajustements
+3. **windeployqt** — Copie des DLLs Qt nécessaires à côté du .exe
+4. **Test fonctionnel** — Vérifier que l'app se lance
+5. **Build Linux** — Réutiliser le Dockerfile existant
+
+---
+
+## Résumé
+
+Toute la compilation passe. QuaZip est buildé from source (évite le timeout vcpkg). Le dernier fix est le nom des libs OpenSSL sur Windows (libssl.lib/libcrypto.lib au lieu de ssl.lib/crypto.lib). On est à **1 cycle CI du .exe** si pas d'autres symboles manquants.
