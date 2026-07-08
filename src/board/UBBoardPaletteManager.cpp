@@ -846,8 +846,8 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                         mRightPalette->setAdditionalVOffset(30);
                     else
                     {
-                        QDesktopWidget *desktop = QApplication::desktop();
-                        int taskBarOffset = desktop->screenGeometry(mRightPalette).height() - desktop->availableGeometry(mRightPalette).height();
+                        QScreen *screen = mRightPalette->screen();
+                        int taskBarOffset = screen->geometry().height() - screen->availableGeometry().height();
                         mRightPalette->setAdditionalVOffset(-taskBarOffset);
                     }
                 }

@@ -23,6 +23,8 @@
 
 #include <QWidget>
 #include <QApplication>
+#include <QGuiApplication>
+#include <QScreen>
 #include <QPainter>
 #include <QDomDocument>
 #include <QXmlStreamReader>
@@ -524,12 +526,13 @@ void UBWebController::toogleMirroring(bool checked)
 
 QPixmap UBWebController::getScreenPixmap()
 {
-    QDesktopWidget *desktop = QApplication::desktop();
-    // we capture the screen in which the mouse is.
-    const QRect primaryScreenRect = desktop->screenGeometry(QCursor::pos());
-    QCoreApplication::flush ();
+    // Qt6: QDesktopWidget removed, use QScreen
+    QScreen *screen = QGuiApplication::screenAt(QCursor::pos());
+    if (!screen)
+        screen = QGuiApplication::primaryScreen();
+    const QRect primaryScreenRect = screen->geometry();
 
-    return QPixmap::grabWindow(desktop->winId(),
+    return screen->grabWindow(0,
                                primaryScreenRect.x(), primaryScreenRect.y(),
                                primaryScreenRect.width(), primaryScreenRect.height());
 }
