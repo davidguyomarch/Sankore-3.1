@@ -212,6 +212,16 @@
 
 ---
 
+## Sujets restants (non-bloquants)
+
+| Sujet | Priorité | Description |
+|-------|----------|-------------|
+| Warning D9025 `/O2` vs `/Od` | Faible | qmake ajoute `/O2` (release) puis on ajoute `/Od` (debug info). Le dernier gagne, c'est inoffensif mais bruyant. Fix : `QMAKE_CXXFLAGS_RELEASE -= -O2` avant d'ajouter `/Od /Zi` |
+| Warning LNK4217 UBCFFAdaptor | Faible | Symboles définis dans `UBCFFAdaptor.obj` importés par `UBExportCFF.obj`. Mismatch `__declspec(dllimport)` dans le header du plugin. Non bloquant, fonctionne quand même |
+| QuaZip include guard | Faible | Vérifier au runtime que les vrais headers QuaZip sont bien utilisés (stubs supprimés, devrait être OK) |
+
+---
+
 ## Résumé
 
 Toute la compilation passe. QuaZip est buildé from source (évite le timeout vcpkg). Le dernier fix est le nom des libs OpenSSL sur Windows (libssl.lib/libcrypto.lib au lieu de ssl.lib/crypto.lib). On est à **1 cycle CI du .exe** si pas d'autres symboles manquants.
