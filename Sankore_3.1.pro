@@ -30,14 +30,15 @@ VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
 QT += svg
 QT += svgwidgets
 QT += network
-# QT += multimedia       # TODO: restore when qtmultimedia is available
-# QT += multimediawidgets # TODO: restore when qtmultimedia is available
+QT += multimedia
+QT += multimediawidgets
 QT += xml
 QT += qml
 QT += widgets
 QT += printsupport
 
 INCLUDEPATH += src
+INCLUDEPATH += src/frameworks
 
 # include($$THIRD_PARTY_PATH/libs.pri)  # TODO: restore when ThirdParty available
 include(src/adaptors/adaptors.pri)
