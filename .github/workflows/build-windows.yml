@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
 
     steps:
       - name: Checkout code
@@ -23,21 +23,13 @@ jobs:
         shell: pwsh
         run: |
           pip install aqtinstall
-          aqt install-qt windows desktop 6.5.3 win64_msvc2019_64 -m qt5compat --outputdir C:\Qt
-          echo "C:\Qt\6.5.3\msvc2019_64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "Qt6_DIR=C:\Qt\6.5.3\msvc2019_64" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          aqt list-qt windows desktop
+          aqt install-qt windows desktop 6.8.3 win64_msvc2022_64 -m qt5compat --outputdir C:\Qt
+          echo "C:\Qt\6.8.3\msvc2022_64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "Qt6_DIR=C:\Qt\6.8.3\msvc2022_64" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
-
-      - name: Install QuaZip from source
-        shell: cmd
-        run: |
-          git clone --depth 1 --branch v1.4 https://github.com/stachenov/quazip.git C:\quazip-src
-          mkdir C:\quazip-build
-          cmake -S C:\quazip-src -B C:\quazip-build -G "NMake Makefiles" -DCMAKE_PREFIX_PATH=C:\Qt\6.5.3\msvc2019_64 -DCMAKE_INSTALL_PREFIX=C:\quazip -DQUAZIP_QT_MAJOR_VERSION=6 -DCMAKE_BUILD_TYPE=Release -DZLIB_INCLUDE_DIR=C:\Qt\6.5.3\msvc2019_64\include\QtZlib -DZLIB_LIBRARY=C:\Qt\6.5.3\msvc2019_64\lib\Qt6Core.lib
-          cmake --build C:\quazip-build
-          cmake --install C:\quazip-build
 
       - name: Create build directories
         shell: cmd
@@ -50,17 +42,20 @@ jobs:
 
       - name: Run qmake
         shell: cmd
-        run: qmake Sankore_3.1.pro "INCLUDEPATH+=C:/quazip/include" "LIBS+=-LC:/quazip/lib -lquazip1-qt6"
+        run: qmake Sankore_3.1.pro
 
       - name: Build
         shell: cmd
         run: nmake release
 
-      - name: Find and upload exe
+      - name: List build output
+        if: always()
         shell: pwsh
         run: |
-          Get-ChildItem -Recurse -Filter "*.exe" -Path build | ForEach-Object { Write-Host $_.FullName }
-          Get-ChildItem -Recurse -Filter "Open-Sankore.exe" -Path . | ForEach-Object { Write-Host "FOUND: $($_.FullName)" }
+          Write-Host "=== Looking for exe files ==="
+          Get-ChildItem -Recurse -Filter "*.exe" -Path build -ErrorAction SilentlyContinue | ForEach-Object { Write-Host $_.FullName }
+          Write-Host "=== Looking for product dir ==="
+          Get-ChildItem -Recurse -Path build -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -match "product" } | ForEach-Object { Write-Host $_.FullName }
 
       - name: Upload artifact
         if: success()
@@ -68,14 +63,6 @@ jobs:
         with:
           name: Open-Sankore-Windows-x64
           path: |
-            build/**/product/**
+            build/**/product/
             build/**/*.exe
           if-no-files-found: warn
-
-      - name: Upload build log on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: |
-            Makefile.Release
