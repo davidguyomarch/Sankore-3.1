@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout code
@@ -28,16 +28,19 @@ jobs:
           echo "C:\Qt\6.8.3\msvc2022_64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo "Qt6_DIR=C:\Qt\6.8.3\msvc2022_64" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
-      - name: Install zlib and OpenSSL via vcpkg
+      - name: Install zlib, quazip and OpenSSL via vcpkg
         shell: pwsh
         run: |
-          vcpkg install zlib:x64-windows openssl:x64-windows
-          # Verify OpenSSL headers were installed
+          # Set CMAKE_PREFIX_PATH so vcpkg's quazip finds aqtinstall's Qt6
+          $env:CMAKE_PREFIX_PATH = "C:\Qt\6.8.3\msvc2022_64"
+          vcpkg install zlib:x64-windows openssl:x64-windows quazip:x64-windows
+          # Verify installations
           if (!(Test-Path "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\include\openssl\evp.h")) {
             Write-Error "OpenSSL headers not found after vcpkg install!"
             exit 1
           }
-          Write-Host "OpenSSL headers found at $env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\include\openssl\"
+          Write-Host "=== All libs in vcpkg ==="
+          Get-ChildItem "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\lib\*.lib" | ForEach-Object { Write-Host $_.Name }
           echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Setup MSVC

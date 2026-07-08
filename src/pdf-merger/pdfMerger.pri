@@ -64,9 +64,8 @@ macx {
 }
 
 win32 {
-    # Use zlib from vcpkg or Qt's bundled zlib
+    # zlib is linked from the main .pro file via vcpkg
     INCLUDEPATH += $$(VCPKG_ROOT)/installed/x64-windows/include
-    LIBS += -L$$(VCPKG_ROOT)/installed/x64-windows/lib -lzlib
 }
 
 linux-* {
