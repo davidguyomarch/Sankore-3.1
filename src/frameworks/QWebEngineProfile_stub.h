@@ -23,6 +23,5 @@ public:
     void setPersistentStoragePath(const QString &) {}
     QWebEngineSettings *settings() const { return QWebEngineSettings::defaultSettings(); }
 };
-};
 
 #endif
