@@ -35,9 +35,9 @@ jobs:
         run: |
           git clone --depth 1 --branch v1.4 https://github.com/stachenov/quazip.git C:\quazip-src
           mkdir C:\quazip-build
-          cmake -S C:\quazip-src -B C:\quazip-build -DCMAKE_PREFIX_PATH=C:\Qt\6.5.3\msvc2019_64 -DCMAKE_INSTALL_PREFIX=C:\quazip -DQUAZIP_QT_MAJOR_VERSION=6
-          cmake --build C:\quazip-build --config Release
-          cmake --install C:\quazip-build --config Release
+          cmake -S C:\quazip-src -B C:\quazip-build -G "NMake Makefiles" -DCMAKE_PREFIX_PATH=C:\Qt\6.5.3\msvc2019_64 -DCMAKE_INSTALL_PREFIX=C:\quazip -DQUAZIP_QT_MAJOR_VERSION=6 -DCMAKE_BUILD_TYPE=Release -DZLIB_INCLUDE_DIR=C:\Qt\6.5.3\msvc2019_64\include\QtZlib -DZLIB_LIBRARY=C:\Qt\6.5.3\msvc2019_64\lib\Qt6Core.lib
+          cmake --build C:\quazip-build
+          cmake --install C:\quazip-build
 
       - name: Create build directories
         shell: cmd
