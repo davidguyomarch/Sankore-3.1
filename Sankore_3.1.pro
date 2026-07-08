@@ -67,13 +67,16 @@ include(plugins/plugins.pri)
 INCLUDEPATH += plugins/cffadaptor/src
 
 
-# ThirdParty (TODO: restore when dependencies are available)
-# DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
-# INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
-# include($$THIRD_PARTY_PATH/quazip/quazip.pri)
-# DEPENDPATH += $$THIRD_PARTY_PATH/trolltech/singleapplication
-# INCLUDEPATH += $$THIRD_PARTY_PATH/trolltech/singleapplication
-# include($$THIRD_PARTY_PATH/trolltech/singleapplication/qtsingleapplication.pri)
+# QuaZip - use vcpkg or system install
+win32 {
+    INCLUDEPATH += $$(VCPKG_ROOT)/installed/x64-windows/include
+    LIBS += -L$$(VCPKG_ROOT)/installed/x64-windows/lib -lquazip1-qt6
+}
+linux-* {
+    INCLUDEPATH += /usr/include/QuaZip-Qt6-1.4/quazip
+    LIBS += -lquazip1-qt6
+}
+DEFINES += QUAZIP_STATIC
 
 FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \
