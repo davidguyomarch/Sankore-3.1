@@ -132,8 +132,8 @@ win32 {
    QMAKE_CXXFLAGS += /MP
    QMAKE_CXXFLAGS_RELEASE += /Od /Zi
    QMAKE_LFLAGS_RELEASE += /DEBUG
-   LIBS += -L$$(VCPKG_ROOT)/installed/x64-windows/lib -lssl -lcrypto -lzlib
-   LIBS += -lDwmapi -lWtsapi32 -lUser32 -lShell32 -lOle32 -lAdvapi32 -lGdi32
+   LIBS += -L$$(VCPKG_ROOT)/installed/x64-windows/lib -llibssl -llibcrypto -lzlib
+   LIBS += -lDwmapi -lWtsapi32 -lUser32 -lShell32 -lOle32 -lAdvapi32 -lGdi32 -lCrypt32 -lWs2_32
    INCLUDEPATH += $$(VCPKG_ROOT)/installed/x64-windows/include
    UB_LIBRARY.path = $$DESTDIR
    UB_I18N.path = $$DESTDIR/i18n
