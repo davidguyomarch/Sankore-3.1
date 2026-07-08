@@ -32,6 +32,12 @@ jobs:
         shell: pwsh
         run: |
           vcpkg install zlib:x64-windows openssl:x64-windows
+          # Verify OpenSSL headers were installed
+          if (!(Test-Path "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\include\openssl\evp.h")) {
+            Write-Error "OpenSSL headers not found after vcpkg install!"
+            exit 1
+          }
+          Write-Host "OpenSSL headers found at $env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\include\openssl\"
           echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Setup MSVC
@@ -48,11 +54,15 @@ jobs:
 
       - name: Run qmake
         shell: cmd
-        run: qmake Sankore_3.1.pro
+        run: |
+          set VCPKG_ROOT=%VCPKG_INSTALLATION_ROOT%
+          qmake Sankore_3.1.pro
 
       - name: Build
         shell: cmd
-        run: nmake release
+        run: |
+          set VCPKG_ROOT=%VCPKG_INSTALLATION_ROOT%
+          nmake release
 
       - name: List build output
         if: always()
