@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QUrl>
+#include "QWebEngineSettings"
 
 class QWebEnginePage;
 
@@ -26,6 +27,7 @@ public:
     void back() {}
     void forward() {}
     QAction *pageAction(int) const { return nullptr; }
+    QWebEngineSettings *settings() const { return QWebEngineSettings::defaultSettings(); }
 signals:
     void loadStarted();
     void loadFinished(bool ok);
