@@ -21,27 +21,22 @@
 
 #include "UBWebPage.h"
 
-#include <QtCore>
-
-// QWebPluginFactory removed in Qt6 - plugin system not available
-
 
 UBWebPage::UBWebPage(QObject *parent)
     : QWebEnginePage(parent)
+    , mPluginFactory(nullptr)
 {
-    mCachedUserAgentString = QWebEnginePage::userAgentForUrl(QUrl());
+    mCachedUserAgentString = QStringLiteral("Mozilla/5.0 Open-Sankore/3.1");
 }
 
 UBWebPage::~UBWebPage()
 {
 }
 
-
 void UBWebPage::javaScriptConsoleMessage(const QString &message, int lineNumber, const QString &sourceID)
 {
     qDebug("JavaScript> %s (%s:%d)", qPrintable(message), qPrintable(sourceID), lineNumber);
 }
-
 
 QString UBWebPage::userAgentForUrl(const QUrl& url) const
 {
