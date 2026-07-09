@@ -27,6 +27,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QStackedWidget>
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>

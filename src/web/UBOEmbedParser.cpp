@@ -26,8 +26,10 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDomNode>
-#include <QScriptValue>
-#include <QScriptEngine>
+// QScriptValue/QScriptEngine removed in Qt6 - use QJsonDocument instead
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 #include <QDebug>
 
 #include "UBOEmbedParser.h"
@@ -111,23 +113,23 @@ sOEmbedContent UBOEmbedParser::getJSONInfos(const QString &json)
 {
     sOEmbedContent content;
 
-    QScriptValue scriptValue;
-    QScriptEngine scriptEngine;
-    scriptValue = scriptEngine.evaluate ("(" + json + ")");
+    // Qt6: QScriptEngine removed, use QJsonDocument for JSON parsing
+    QJsonDocument doc = QJsonDocument::fromJson(json.toUtf8());
+    QJsonObject obj = doc.object();
 
-    QString providerUrl = scriptValue.property("provider_url").toString();
-    QString title = scriptValue.property("title").toString();
-    QString html = scriptValue.property("html").toString();
-    QString authorName = scriptValue.property("author_name").toString();
-    int height = scriptValue.property("height").toInteger();
-    int thumbnailWidth = scriptValue.property("thumbnail_width").toInteger();
-    int width = scriptValue.property("width").toInteger();
-    float version = scriptValue.property("version").toString().toFloat();
-    QString authorUrl = scriptValue.property("author_url").toString();
-    QString providerName = scriptValue.property("provider_name").toString();
-    QString thumbnailUrl = scriptValue.property("thumbnail_url").toString();
-    QString type = scriptValue.property("type").toString();
-    int thumbnailHeight = scriptValue.property("thumbnail_height").toInteger();
+    QString providerUrl = obj.value("provider_url").toString();
+    QString title = obj.value("title").toString();
+    QString html = obj.value("html").toString();
+    QString authorName = obj.value("author_name").toString();
+    int height = obj.value("height").toInt();
+    int thumbnailWidth = obj.value("thumbnail_width").toInt();
+    int width = obj.value("width").toInt();
+    float version = obj.value("version").toString().toFloat();
+    QString authorUrl = obj.value("author_url").toString();
+    QString providerName = obj.value("provider_name").toString();
+    QString thumbnailUrl = obj.value("thumbnail_url").toString();
+    QString type = obj.value("type").toString();
+    int thumbnailHeight = obj.value("thumbnail_height").toInt();
 
     content.providerUrl = providerUrl;
     content.title = title;
