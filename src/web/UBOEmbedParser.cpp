@@ -146,7 +146,7 @@ sOEmbedContent UBOEmbedParser::getJSONInfos(const QString &json)
     content.thumbHeight = QString::number(thumbnailHeight);
 
     if("photo" == content.type){
-        content.url = scriptValue.property("url").toString();
+        content.url = obj.value("url").toString();
     }else if("video" == content.type){
         QStringList strl = content.html.split('\"');
         for(int i=0; i<strl.size(); i++){
