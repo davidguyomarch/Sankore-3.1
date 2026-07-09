@@ -143,7 +143,7 @@ sOEmbedContent UBOEmbedParser::getJSONInfos(const QString &json)
     content.providerName = providerName;
     content.thumbUrl = thumbnailUrl;
     content.type = type;
-    content.thumbHeight = thumbnailHeight;
+    content.thumbHeight = QString::number(thumbnailHeight);
 
     if("photo" == content.type){
         content.url = scriptValue.property("url").toString();
@@ -202,7 +202,7 @@ sOEmbedContent UBOEmbedParser::getXMLInfos(const QString &xml)
         }else if("type" == tag){
             content.type = value;
         }else if("thumbnail_height" == tag){
-            content.thumbHeight = value.toInt();
+            content.thumbHeight = value;
         }else if("url" == tag){
             content.url = value; // This case appears only for type = photo
         }
@@ -222,8 +222,7 @@ sOEmbedContent UBOEmbedParser::getXMLInfos(const QString &xml)
 
 void UBOEmbedParser::onParseContent(QString url)
 {
-    QUrl qurl;
-    qurl.setEncodedUrl(url.toLatin1());
+    QUrl qurl = QUrl::fromEncoded(url.toLatin1());
 
     QNetworkRequest req;
     req.setUrl(qurl);
