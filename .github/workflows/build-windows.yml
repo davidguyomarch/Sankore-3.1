@@ -94,12 +94,20 @@ jobs:
           Write-Host "=== Looking for product dir ==="
           Get-ChildItem -Recurse -Path build -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -match "product" } | ForEach-Object { Write-Host $_.FullName }
 
+      - name: Deploy Qt DLLs
+        if: success()
+        shell: cmd
+        run: |
+          windeployqt --release --no-translations --no-system-d3d-compiler --no-opengl-sw build\win32\release\product\Open-Sankore.exe
+          copy C:\zlib\bin\zlib.dll build\win32\release\product\
+          copy C:\vcpkg\installed\x64-windows\bin\libssl-3-x64.dll build\win32\release\product\
+          copy C:\vcpkg\installed\x64-windows\bin\libcrypto-3-x64.dll build\win32\release\product\
+          dir build\win32\release\product\
+
       - name: Upload artifact
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: Open-Sankore-Windows-x64
-          path: |
-            build/**/product/
-            build/**/*.exe
+          path: build/win32/release/product/
           if-no-files-found: warn
