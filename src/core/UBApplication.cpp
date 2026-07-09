@@ -28,6 +28,7 @@
 #include <QPainter>
 #include <QWebEngineView>
 #include <QWebEngineProfile>
+#include <cstdio>
 #include <QDesktopServices>
 #include <QMenu>
 #include <QActionGroup>
@@ -283,6 +284,8 @@ void UBApplication::setupTranslators(QStringList args)
 
 int UBApplication::exec(const QString& pFileToImport)
 {
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 4: UBApplication::exec() entered\n");fclose(f);} }
+
     QPixmapCache::setCacheLimit(1024 * 100);
 
     QString webDbPath = UBSettings::userDataDirectory() + "/web-databases";
@@ -290,21 +293,20 @@ int UBApplication::exec(const QString& pFileToImport)
     if (!webDbDir.exists(webDbPath))
         webDbDir.mkpath(webDbPath);
 
-    // setIconDatabasePath removed in Qt6
-    // setOfflineStoragePath removed in Qt6
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 5: web db path created\n");fclose(f);} }
 
     QWebEngineSettings *gs = QWebEngineProfile::defaultProfile()->settings();
     // JavaEnabled removed in Qt6
     gs->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     gs->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
-    // OfflineWebApplicationCacheEnabled removed in Qt6
-    // OfflineStorageDatabaseEnabled removed in Qt6
     gs->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
-    // DnsPrefetchEnabled removed in Qt6
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 6: web settings done\n");fclose(f);} }
 
-    mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint); // deleted by application destructor
+    mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint);
     mainWindow->setAttribute(Qt::WA_NativeWindow, true);
+
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 7: mainWindow created\n");fclose(f);} }
 
     mainWindow->actionCopy->setShortcuts(QKeySequence::Copy);
     mainWindow->actionPaste->setShortcuts(QKeySequence::Paste);
@@ -319,8 +321,15 @@ int UBApplication::exec(const QString& pFileToImport)
     boardController = new UBBoardController(mainWindow);
     boardController->init();
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 8: boardController created and init'd\n");fclose(f);} }
+
     webController = new UBWebController(mainWindow);
+
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 9: webController created\n");fclose(f);} }
+
     documentController = new UBDocumentController(mainWindow);
+
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 10: documentController created\n");fclose(f);} }
 
     boardController->paletteManager()->connectToDocumentController();
 

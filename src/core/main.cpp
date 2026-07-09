@@ -24,6 +24,8 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <cstdio>
+#include <string>
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
@@ -83,11 +85,28 @@ int main(int argc, char *argv[])
 #endif
 */
 
+    // === STARTUP DIAGNOSTIC LOG ===
+    // Write to a file next to the exe to diagnose crashes
+    {
+        // Use argv[0] directory since QApplication isn't created yet
+        std::string exePath(argv[0]);
+        size_t lastSlash = exePath.find_last_of("\\/");
+        std::string logPath = (lastSlash != std::string::npos ? exePath.substr(0, lastSlash + 1) : "") + "startup.log";
+        FILE *f = fopen(logPath.c_str(), "w");
+        if (f) { fprintf(f, "=== Open-Sankore Startup Log ===\nStep 0: main() entered\n"); fclose(f); }
+    }
+
     Q_INIT_RESOURCE(sankore);
 
     qInstallMessageHandler(ub_message_output);
 
+    // Log step 1
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 1: QApplication creating\n");fclose(f);} }
+
     UBApplication app("Sankore", argc, argv);
+
+    // Log step 2
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 2: UBApplication created\n");fclose(f);} }
 
     QStringList args = app.arguments();
 
@@ -123,6 +142,10 @@ int main(int argc, char *argv[])
     QObject::connect(&app, &QtSingleApplication::messageReceived, &app, &UBApplication::handleOpenMessage);
 
     qDebug() << "file name argument" << fileToOpen;
+
+    // Log step 3
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 3: calling app.exec()\n");fclose(f);} }
+
     int result = app.exec(fileToOpen);
 
     app.cleanup();
