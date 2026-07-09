@@ -208,7 +208,8 @@
 2. **Unresolved symbols possibles** — Peut nécessiter d'autres libs Windows ou ajustements
 3. **windeployqt** — Copie des DLLs Qt nécessaires à côté du .exe
 4. **Test fonctionnel** — Vérifier que l'app se lance
-5. **Build Linux** — Réutiliser le Dockerfile existant
+5. **Tests unitaires dans le CI** — Compiler et exécuter `tests/tests.pro` (6 test classes QTest existantes : UBStringUtils, UBFileSystemUtils, UBGeometryUtils, UBCryptoUtils, UBDocumentProxy, UBSettings). Adaptations nécessaires pour MSVC : retirer `--coverage` (gcov/GCC only), lier OpenSSL via vcpkg.
+6. **Build Linux** — Réutiliser le Dockerfile existant
 
 ---
 
