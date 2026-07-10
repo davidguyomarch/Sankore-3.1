@@ -22,6 +22,9 @@ cd "$PROJECT_DIR"
 echo "Downloading latest artifact from GitHub Actions..."
 gh run download --name Open-Sankore-Windows-x64 --dir "$INSTALL_DIR"
 
+# Copy the test runner script
+cp "$SCRIPT_DIR/run-test.bat" "$INSTALL_DIR/"
+
 FILE_COUNT=$(ls "$INSTALL_DIR" | wc -l | tr -d ' ')
 echo ""
 echo "✅ Done! $FILE_COUNT files deployed to:"

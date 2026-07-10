@@ -28,6 +28,7 @@
 #include <QVariant>
 #include <QDomDocument>
 #include <QXmlStreamWriter>
+#include <cstdio>
 #include <QModelIndex>
 
 #include "frameworks/UBPlatformUtils.h"
@@ -407,13 +408,17 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName
                                                       , int pageCount
                                                       , bool promptDialogIfExists)
 {
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  createDocument: start (dir='%s')\n", directory.toUtf8().constData());fflush(f);fclose(f);} }
+
     UBDocumentProxy *doc;
     if(directory.length() != 0 ){
-        doc = new UBDocumentProxy(directory); // deleted in UBPersistenceManager::destructor
+        doc = new UBDocumentProxy(directory);
         doc->setPageCount(pageCount);
     }
     else{
+        { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  createDocument: checkIfDocumentRepositoryExists\n");fflush(f);fclose(f);} }
         checkIfDocumentRepositoryExists();
+        { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  createDocument: creating proxy\n");fflush(f);fclose(f);} }
         doc = new UBDocumentProxy();
     }
 
@@ -439,6 +444,7 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName
     //Issue N/C - NNE - 20140526 : END
 
     if (withEmptyPage) {
+        { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  createDocument: creating scene at 0\n");fflush(f);fclose(f);} }
         createDocumentSceneAt(doc, 0);
     }
     else{
@@ -446,9 +452,11 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName
         QDir dir(doc->persistencePath());
         if (!dir.mkpath(doc->persistencePath()))
         {
-            return 0; // if we can't create the path, abort function.
+            return 0;
         }
     }
+
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  createDocument: adding to model\n");fflush(f);fclose(f);} }
 
     bool addDoc = false;
     if (!promptDialogIfExists) {
