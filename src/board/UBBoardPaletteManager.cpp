@@ -153,12 +153,12 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    setupDockPaletteWidgets: teacherGuide\n");fflush(f);fclose(f);} }
 
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool() || UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()){
-
-        mpTeacherGuideWidget = new UBDockTeacherGuideWidget();
-        mLeftPalette->registerWidget(mpTeacherGuideWidget);
-        mLeftPalette->addTab(mpTeacherGuideWidget);
-    }
+    // Teacher Guide disabled - UBDockTeacherGuideWidget crashes (uses QWebEngineView stubs)
+    // if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool() || UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()){
+    //     mpTeacherGuideWidget = new UBDockTeacherGuideWidget();
+    //     mLeftPalette->registerWidget(mpTeacherGuideWidget);
+    //     mLeftPalette->addTab(mpTeacherGuideWidget);
+    // }
 
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    setupDockPaletteWidgets: teacherResources\n");fflush(f);fclose(f);} }
 
