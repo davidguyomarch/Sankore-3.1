@@ -26,6 +26,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <cstdio>
 #include <QWebEngineView>
 #include <QDir>
 #include <QRegularExpression>
@@ -141,9 +142,12 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
 
 void UBBoardController::init()
 {
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  init: setupViews...\n");fflush(f);fclose(f);} }
     setupViews();
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  init: setupToolbar...\n");fflush(f);fclose(f);} }
     setupToolbar();
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  init: connects...\n");fflush(f);fclose(f);} }
     connect(UBApplication::undoStack, SIGNAL(canUndoChanged(bool))
             , this, SLOT(undoRedoStateChange(bool)));
 
@@ -162,8 +166,10 @@ void UBBoardController::init()
     connect(UBDownloadManager::downloadManager(), SIGNAL(downloadModalFinished()), this, SLOT(onDownloadModalFinished()));
     connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool,bool)), this, SLOT(downloadFinished(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool,bool)));
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  init: createNewDocument...\n");fflush(f);fclose(f);} }
     UBDocumentProxy* doc = UBPersistenceManager::persistenceManager()->createNewDocument();
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  init: setActiveDocumentScene...\n");fflush(f);fclose(f);} }
     setActiveDocumentScene(doc);
 
     connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(groupButtonClicked()));
@@ -172,6 +178,7 @@ void UBBoardController::init()
 
     //EV-7 - NNE - 20131231
     mShapeFactory.init();
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  init: DONE\n");fflush(f);fclose(f);} }
 }
 
 
