@@ -26,6 +26,31 @@
 #include <QPainter>
 #include <cstdio>
 #include <string>
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
+// Static initializer that runs BEFORE main() to detect pre-main crashes
+#ifdef _WIN32
+struct StartupProbe {
+    StartupProbe() {
+        wchar_t exePath[MAX_PATH];
+        GetModuleFileNameW(NULL, exePath, MAX_PATH);
+        std::wstring logPath(exePath);
+        size_t lastSlash = logPath.find_last_of(L"\\/");
+        if (lastSlash != std::wstring::npos) logPath = logPath.substr(0, lastSlash + 1);
+        logPath += L"startup.log";
+        FILE *f = _wfopen(logPath.c_str(), L"w");
+        if (f) {
+            fprintf(f, "=== Open-Sankore Startup Log ===\n");
+            fprintf(f, "PRE-MAIN: Static initialization reached\n");
+            fflush(f);
+            fclose(f);
+        }
+    }
+};
+static StartupProbe _startupProbe;
+#endif
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
@@ -87,13 +112,24 @@ int main(int argc, char *argv[])
 
     // === STARTUP DIAGNOSTIC LOG ===
     // Write to a file next to the exe to diagnose crashes
+    // Use GetModuleFileName to get absolute path (works even on network drives)
     {
-        // Use argv[0] directory since QApplication isn't created yet
-        std::string exePath(argv[0]);
-        size_t lastSlash = exePath.find_last_of("\\/");
-        std::string logPath = (lastSlash != std::string::npos ? exePath.substr(0, lastSlash + 1) : "") + "startup.log";
-        FILE *f = fopen(logPath.c_str(), "w");
-        if (f) { fprintf(f, "=== Open-Sankore Startup Log ===\nStep 0: main() entered\n"); fclose(f); }
+#ifdef _WIN32
+        wchar_t exePath[MAX_PATH];
+        GetModuleFileNameW(NULL, exePath, MAX_PATH);
+        std::wstring logPath(exePath);
+        size_t lastSlash = logPath.find_last_of(L"\\/");
+        if (lastSlash != std::wstring::npos) logPath = logPath.substr(0, lastSlash + 1);
+        logPath += L"startup.log";
+        FILE *f = _wfopen(logPath.c_str(), L"w");
+        if (f) {
+            fprintf(f, "=== Open-Sankore Startup Log ===\n");
+            fprintf(f, "Step 0: main() entered OK\n");
+            fprintf(f, "argc=%d\n", argc);
+            fflush(f);
+            fclose(f);
+        }
+#endif
     }
 
     Q_INIT_RESOURCE(sankore);
