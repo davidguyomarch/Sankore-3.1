@@ -197,35 +197,35 @@ int UBBoardController::currentPage()
 
 void UBBoardController::setupViews()
 {
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: creating controlContainer\n");fflush(f);fclose(f);} }
     mControlContainer = new QWidget(mMainWindow->centralWidget());
-
-    //mControlLayout = new QHBoxLayout(mControlContainer);
-    //mControlLayout->setContentsMargins(0, 0, 0, 0);
 
     mControlView = new UBBoardView(this, mControlContainer, true, false);
     mControlView->setInteractive(true);
     mControlView->setMouseTracking(true);
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: controlView created\n");fflush(f);fclose(f);} }
+
     mControlView->grabGesture(Qt::SwipeGesture);
 
     mControlView->setTransformationAnchor(QGraphicsView::NoAnchor);
 
-    //mControlLayout->addWidget(mControlView);
     mControlContainer->setObjectName("ubBoardControlContainer");
     mMainWindow->addBoardWidget(mControlContainer);
 
     connect(mControlView, SIGNAL(resized(QResizeEvent*)), this, SLOT(boardViewResized(QResizeEvent*)));
 
-    // TODO UB 4.x Optimization do we have to create the display view even if their is
-    // only 1 screen
-    //
     mDisplayView = new UBBoardView(this, UBItemLayerType::FixedBackground, UBItemLayerType::Tool, 0);
     mDisplayView->setInteractive(false);
     mDisplayView->setTransformationAnchor(QGraphicsView::NoAnchor);
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: displayView created\n");fflush(f);fclose(f);} }
+
     mMessageWindow = new UBMessageWindow(mControlView);
     mMessageWindow->setCustomPosition(true);
     mMessageWindow->hide();
+
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: messageWindow created\n");fflush(f);fclose(f);} }
 
 //Issue retours 2.4RC1 - CFA - 20140218 : show warning if not official release
 #ifndef QT_DEBUG
@@ -238,6 +238,7 @@ void UBBoardController::setupViews()
 #endif
 
     mPaletteManager = new UBBoardPaletteManager(mControlContainer, this);
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: paletteManager created\n");fflush(f);fclose(f);} }
     connect(this, SIGNAL(activeSceneChanged()), mPaletteManager, SLOT(activeSceneChanged()));
 
 }
