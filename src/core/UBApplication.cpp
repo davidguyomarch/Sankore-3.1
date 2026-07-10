@@ -295,13 +295,13 @@ int UBApplication::exec(const QString& pFileToImport)
 
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 5: web db path created\n");fclose(f);} }
 
-    QWebEngineSettings *gs = QWebEngineProfile::defaultProfile()->settings();
-    // JavaEnabled removed in Qt6
-    gs->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    gs->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
-    gs->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
+    // WebEngine settings disabled - stubs crash on ARM64 emulation
+    // QWebEngineSettings *gs = QWebEngineProfile::defaultProfile()->settings();
+    // gs->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+    // gs->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
+    // gs->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 6: web settings done\n");fclose(f);} }
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 6: web settings skipped\n");fclose(f);} }
 
     mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint);
     mainWindow->setAttribute(Qt::WA_NativeWindow, true);
