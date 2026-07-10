@@ -779,6 +779,7 @@ void UBPersistenceManager::copyDocumentScene(UBDocumentProxy *from, int fromInde
 
 UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* proxy, int index, bool useUndoRedoStack)
 {
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    createDocumentSceneAt: sceneCount\n");fflush(f);fclose(f);} }
     int count = sceneCount(proxy);
 
     for(int i = count - 1; i >= index; i--)
@@ -786,16 +787,20 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
 
     mSceneCache.shiftUpScenes(proxy, index, count -1);
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    createDocumentSceneAt: createScene\n");fflush(f);fclose(f);} }
     UBGraphicsScene *newScene = mSceneCache.createScene(proxy, index, useUndoRedoStack);
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    createDocumentSceneAt: setBackground\n");fflush(f);fclose(f);} }
     newScene->setBackground(UBSettings::settings()->isDarkBackground(),
             UBSettings::settings()->UBSettings::isCrossedBackground());
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    createDocumentSceneAt: persistScene\n");fflush(f);fclose(f);} }
     persistDocumentScene(proxy, newScene, index);
 
     proxy->incPageCount();
 
     emit documentSceneCreated(proxy, index);
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    createDocumentSceneAt: DONE\n");fflush(f);fclose(f);} }
 
     return newScene;
 }
