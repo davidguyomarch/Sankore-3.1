@@ -306,11 +306,13 @@ int UBApplication::exec(const QString& pFileToImport)
     mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint);
     mainWindow->setAttribute(Qt::WA_NativeWindow, true);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 7: mainWindow created\n");fclose(f);} }
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 7: mainWindow created\n");fflush(f);fclose(f);} }
 
     mainWindow->actionCopy->setShortcuts(QKeySequence::Copy);
     mainWindow->actionPaste->setShortcuts(QKeySequence::Paste);
     mainWindow->actionCut->setShortcuts(QKeySequence::Cut);
+
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 7a: shortcuts set\n");fflush(f);fclose(f);} }
 
     connect(mainWindow->actionBoard, SIGNAL(triggered()), this, SLOT(showBoard()));
     connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(showInternet()));
@@ -318,10 +320,15 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(closing()));
     connect(mainWindow, SIGNAL(closeEvent_Signal(QCloseEvent*)), this, SLOT(closeEvent(QCloseEvent*)));
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 7b: connects done\n");fflush(f);fclose(f);} }
+
     boardController = new UBBoardController(mainWindow);
+
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 7c: boardController created\n");fflush(f);fclose(f);} }
+
     boardController->init();
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 8: boardController created and init'd\n");fclose(f);} }
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 8: boardController init'd\n");fflush(f);fclose(f);} }
 
     webController = new UBWebController(mainWindow);
 
