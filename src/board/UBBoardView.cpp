@@ -1769,7 +1769,18 @@ UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
       return;
     }
 
-  bool darkBackground = scene () && scene ()->isDarkBackground ();
+  // Safe cast to UBGraphicsScene
+  UBGraphicsScene* ubScene = scene();  // Already does qobject_cast via override
+  if (!ubScene) {
+    // Not a UBGraphicsScene - just draw white
+    painter->fillRect(rect, Qt::white);
+    { static bool logged=false; if(!logged){FILE *f=fopen("startup.log","a");if(f){fprintf(f,"  drawBackground: no UBGraphicsScene, filled white\n");fflush(f);fclose(f);}logged=true;} }
+    return;
+  }
+
+  { static bool logged=false; if(!logged){FILE *f=fopen("startup.log","a");if(f){fprintf(f,"  drawBackground: ubScene OK, drawing bg\n");fflush(f);fclose(f);}logged=true;} }
+
+  bool darkBackground = ubScene->isDarkBackground();
 
   if (darkBackground)
     {
@@ -1797,7 +1808,7 @@ UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 
       painter->setPen (bgCrossColor);
 
-      if (scene () && scene ()->isCrossedBackground ())
+      if (ubScene->isCrossedBackground ())
         {
           qreal firstY = ((int) (rect.y () / UBSettings::crossSize)) * UBSettings::crossSize;
 
