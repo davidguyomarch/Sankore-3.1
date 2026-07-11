@@ -929,13 +929,9 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 
     if (pScene->isModified() || teacherGuideModified || teacherResourcesModified)
     {
-        // Guard: skip SVG persist if scene has no items (empty scene crashes UBSvgSubsetAdaptor)
-        if (pScene->items().isEmpty()) {
-            { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: SKIPPED (empty scene)\n");fflush(f);fclose(f);} }
-        } else {
-            UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
-            UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
-        }
+        // Skip SVG persist entirely during startup - crashes with access violation
+        // TODO: Fix UBSvgSubsetAdaptor::persistScene for empty/background-only scenes
+        { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: SKIPPED (deferred)\n");fflush(f);fclose(f);} }
         pScene->setModified(false);
     }
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: DONE\n");fflush(f);fclose(f);} }
