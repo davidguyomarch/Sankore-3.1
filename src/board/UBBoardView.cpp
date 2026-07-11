@@ -1754,8 +1754,13 @@ UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
   static bool firstDraw = true;
   if (firstDraw) {
     FILE *f = fopen("startup.log", "a");
-    if(f){fprintf(f,"  UBBoardView::drawBackground FIRST CALL\n");fflush(f);fclose(f);}
+    if(f){fprintf(f,"  UBBoardView::drawBackground FIRST CALL (scene=%p)\n", (void*)scene());fflush(f);fclose(f);}
     firstDraw = false;
+  }
+
+  if (!scene()) {
+    QGraphicsView::drawBackground(painter, rect);
+    return;
   }
 
   if (testAttribute (Qt::WA_TranslucentBackground))
