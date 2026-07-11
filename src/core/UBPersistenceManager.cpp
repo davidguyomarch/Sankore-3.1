@@ -795,7 +795,9 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
             UBSettings::settings()->UBSettings::isCrossedBackground());
 
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    createDocumentSceneAt: persistScene\n");fflush(f);fclose(f);} }
-    persistDocumentScene(proxy, newScene, index);
+    // Skip persist on new empty scene - UBSvgSubsetAdaptor crashes on first scene
+    // The scene will be persisted when the user actually modifies it
+    // persistDocumentScene(proxy, newScene, index);
 
     proxy->incPageCount();
 
