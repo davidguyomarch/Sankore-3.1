@@ -150,9 +150,12 @@ void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
             pDisplayWidget->setWindowFlags(mDisplayWidget->windowFlags());
         }
         mDisplayWidget = pDisplayWidget;
-        mDisplayWidget->setGeometry(QGuiApplication::screens().at(mDisplayScreenIndex)->geometry());
-        if (UBSettings::settings()->appUseMultiscreen->get().toBool())
-            mDisplayWidget->showFullScreen();
+        if (mDisplayScreenIndex >= 0 && mDisplayScreenIndex < QGuiApplication::screens().size())
+        {
+            mDisplayWidget->setGeometry(QGuiApplication::screens().at(mDisplayScreenIndex)->geometry());
+            if (UBSettings::settings()->appUseMultiscreen->get().toBool())
+                mDisplayWidget->showFullScreen();
+        }
     }
 }
 
