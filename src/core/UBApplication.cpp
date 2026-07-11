@@ -414,6 +414,12 @@ int UBApplication::exec(const QString& pFileToImport)
 
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 15: board shown, entering event loop\n");fflush(f);fclose(f);} }
 
+    // Timer to confirm we survive the first paint cycle
+    QTimer::singleShot(1000, [](){
+        FILE *f = fopen("startup.log", "a");
+        if(f){fprintf(f,"Step 16: SURVIVED 1 second in event loop! App is running!\n");fflush(f);fclose(f);}
+    });
+
     onScreenCountChanged(1);
     return QApplication::exec();
 }

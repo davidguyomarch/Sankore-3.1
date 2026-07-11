@@ -28,6 +28,7 @@
 #include <QPainter>
 #include <QtXml>
 #include <QListView>
+#include <cstdio>
 
 #include "UBDrawingController.h"
 
@@ -1731,6 +1732,13 @@ void UBBoardView::dropEvent (QDropEvent *event)
 void
 UBBoardView::resizeEvent (QResizeEvent * event)
 {
+  static bool firstResize = true;
+  if (firstResize) {
+    FILE *f = fopen("startup.log", "a");
+    if(f){fprintf(f,"  UBBoardView::resizeEvent FIRST CALL (%dx%d)\n", width(), height());fflush(f);fclose(f);}
+    firstResize = false;
+  }
+
   const qreal maxWidth = width () * 10;
   const qreal maxHeight = height () * 10;
 
@@ -1743,6 +1751,13 @@ UBBoardView::resizeEvent (QResizeEvent * event)
 void
 UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 {
+  static bool firstDraw = true;
+  if (firstDraw) {
+    FILE *f = fopen("startup.log", "a");
+    if(f){fprintf(f,"  UBBoardView::drawBackground FIRST CALL\n");fflush(f);fclose(f);}
+    firstDraw = false;
+  }
+
   if (testAttribute (Qt::WA_TranslucentBackground))
     {
       QGraphicsView::drawBackground (painter, rect);
