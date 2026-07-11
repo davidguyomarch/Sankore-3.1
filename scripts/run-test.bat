@@ -2,8 +2,9 @@
 echo === Open-Sankore Test Runner ===
 echo.
 
-echo [1/4] Copying to C:\Sankore...
-if not exist C:\Sankore mkdir C:\Sankore
+echo [1/4] Removing old C:\Sankore and copying fresh...
+rmdir /S /Q C:\Sankore >nul 2>&1
+mkdir C:\Sankore
 xcopy "%~dp0*" C:\Sankore\ /E /Y /Q >nul 2>&1
 
 echo [2/4] Cleaning old log...
