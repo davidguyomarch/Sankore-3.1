@@ -895,29 +895,35 @@ void UBPersistenceManager::reassignDocProxy(UBDocumentProxy *newDocument, UBDocu
 
 void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex)
 {
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: checkRepo\n");fflush(f);fclose(f);} }
     checkIfDocumentRepositoryExists();
 
     pScene->deselectAllItems();
 
     generatePathIfNeeded(pDocumentProxy);
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: path='%s'\n", pDocumentProxy->persistencePath().toUtf8().constData());fflush(f);fclose(f);} }
+
     QDir dir(pDocumentProxy->persistencePath());
     dir.mkpath(pDocumentProxy->persistencePath());
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: checking teacherGuide\n");fflush(f);fclose(f);} }
+
     UBBoardPaletteManager* paletteManager = UBApplication::boardController->paletteManager();
     bool teacherGuideModified = false;
-    if(UBApplication::app()->boardController->currentPage() == pSceneIndex &&  paletteManager->teacherGuideDockWidget())
+    if(paletteManager && UBApplication::app()->boardController->currentPage() == pSceneIndex && paletteManager->teacherGuideDockWidget())
         teacherGuideModified = paletteManager->teacherGuideDockWidget()->teacherGuideWidget()->isModified();
 
-    //issue 1682 - NNE - 20140110
     bool teacherResourcesModified = false;
-    if(UBApplication::app()->boardController->currentPage() == pSceneIndex &&  paletteManager->teacherResourcesDockWidget())
+    if(paletteManager && UBApplication::app()->boardController->currentPage() == pSceneIndex && paletteManager->teacherResourcesDockWidget())
         teacherResourcesModified = paletteManager->teacherResourcesDockWidget()->isModified();
 
-    //issue 1682 - NNE - 20140110 : END
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: persisting metadata\n");fflush(f);fclose(f);} }
 
     if (pDocumentProxy->isModified() || teacherGuideModified || teacherResourcesModified)
         UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
+
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: persisting SVG\n");fflush(f);fclose(f);} }
 
     if (pScene->isModified() || teacherGuideModified || teacherResourcesModified)
     {
@@ -927,6 +933,7 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 
         pScene->setModified(false);
     }
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: DONE\n");fflush(f);fclose(f);} }
 
     mSceneCache.insert(pDocumentProxy, pSceneIndex, pScene);
 }
