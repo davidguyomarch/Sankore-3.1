@@ -338,15 +338,19 @@ int UBApplication::exec(const QString& pFileToImport)
 
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 10: documentController created\n");fclose(f);} }
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 11: connectToDocumentController\n");fflush(f);fclose(f);} }
     boardController->paletteManager()->connectToDocumentController();
 
     UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 12: creating applicationController\n");fflush(f);fclose(f);} }
     applicationController = new UBApplicationController(boardController->controlView(),
                                                         boardController->displayView(),
                                                         mainWindow,
                                                         staticMemoryCleaner,
                                                         boardController->paletteManager()->rightPalette());
+
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 13: applicationController created, connecting signals\n");fflush(f);fclose(f);} }
 
 
     connect(applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode)),
@@ -389,6 +393,8 @@ int UBApplication::exec(const QString& pFileToImport)
     applicationController->initScreenLayout(bUseMultiScreen);
     boardController->setupLayout();
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 14: layout done, showing board\n");fflush(f);fclose(f);} }
+
     if (pFileToImport.length() > 0)
         UBApplication::applicationController->importFile(pFileToImport);
 
@@ -402,8 +408,9 @@ int UBApplication::exec(const QString& pFileToImport)
     else
         applicationController->showBoard();
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 15: board shown, entering event loop\n");fflush(f);fclose(f);} }
+
     onScreenCountChanged(1);
-        // screenCountChanged handled via QGuiApplication::screens()
     return QApplication::exec();
 }
 
