@@ -369,6 +369,7 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
 #endif
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 13a: preferencesController\n");fflush(f);fclose(f);} }
     mPreferencesController = new UBPreferencesController(mainWindow);
 
     connect(mainWindow->actionPreferences, SIGNAL(triggered()), mPreferencesController, SLOT(show()));
@@ -376,7 +377,8 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionSankoreEditor, SIGNAL(triggered()), applicationController, SLOT(showSankoreEditor()));
     connect(mainWindow->actionCheckUpdate, SIGNAL(triggered()), applicationController, SLOT(checkUpdateRequest()));
 
-    toolBarDisplayTextChanged(UBSettings::settings()->appToolBarDisplayText->get()); // Issue corrected by 'x49' on GitHub - 20140618 : toolbar text state was not read from configuration.
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 13b: toolBar settings\n");fflush(f);fclose(f);} }
+    toolBarDisplayTextChanged(UBSettings::settings()->appToolBarDisplayText->get());
     toolBarPositionChanged(UBSettings::settings()->appToolBarPositionedAtTop->get());
 
     bool bUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
@@ -390,7 +392,9 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionCopy, SIGNAL(triggered()), applicationController, SLOT(actionCopy()));
     connect(mainWindow->actionPaste, SIGNAL(triggered()), applicationController, SLOT(actionPaste()));
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 13c: initScreenLayout\n");fflush(f);fclose(f);} }
     applicationController->initScreenLayout(bUseMultiScreen);
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 13d: setupLayout\n");fflush(f);fclose(f);} }
     boardController->setupLayout();
 
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 14: layout done, showing board\n");fflush(f);fclose(f);} }
