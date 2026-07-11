@@ -25,6 +25,7 @@
 #include <QDesktopServices>
 #include <QScreen>
 #include <QGuiApplication>
+#include <cstdio>
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBVersion.h"
@@ -148,14 +149,20 @@ void UBApplicationController::initViewState(int horizontalPosition, int vertical
 
 void UBApplicationController::initScreenLayout(bool useMultiscreen)
 {
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  initScreenLayout: setControlWidget\n");fflush(f);fclose(f);} }
     mDisplayManager->setControlWidget(mMainWindow);
     mDisplayManager->setDisplayWidget(mDisplayView);
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  initScreenLayout: setPreviousDisplays\n");fflush(f);fclose(f);} }
     mDisplayManager->setPreviousDisplaysWidgets(mPreviousViews);
+
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  initScreenLayout: setDesktopWidget\n");fflush(f);fclose(f);} }
     mDisplayManager->setDesktopWidget(mUninoteController->drawingView());
 
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  initScreenLayout: adjustScreens\n");fflush(f);fclose(f);} }
     mDisplayManager->setUseMultiScreen(useMultiscreen);
     mDisplayManager->adjustScreens(-1);
+    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  initScreenLayout: DONE\n");fflush(f);fclose(f);} }
 }
 
 
