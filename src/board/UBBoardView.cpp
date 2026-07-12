@@ -1791,6 +1791,19 @@ UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
       painter->fillRect (rect, QBrush (QColor (Qt::white)));
     }
 
+  // Skip grid drawing for now - investigate crash later
+  // The crossed background drawing loop was the suspected crash point
+  return;
+
+  if (darkBackground)
+    {
+      painter->fillRect (rect, QBrush (QColor (Qt::black)));
+    }
+  else
+    {
+      painter->fillRect (rect, QBrush (QColor (Qt::white)));
+    }
+
   if (transform ().m11 () > 0.5)
     {
       QColor bgCrossColor;
