@@ -102,8 +102,9 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mDownloadInProgress(false)
 {
     mTeacherResources = nullptr;
-    setupPalettes();
-    connectPalettes();
+    // TEMPORARY: skip all palette creation to isolate paint crash
+    // setupPalettes();
+    // connectPalettes();
 }
 
 
