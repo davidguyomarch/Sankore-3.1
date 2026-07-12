@@ -43,6 +43,11 @@ struct StartupProbe {
         FILE *f = _wfopen(logPath.c_str(), L"w");
         if (f) {
             fprintf(f, "=== Open-Sankore Startup Log ===\n");
+#ifdef GIT_COMMIT
+            fprintf(f, "Build: %s (compiled %s %s)\n", GIT_COMMIT, __DATE__, __TIME__);
+#else
+            fprintf(f, "Build: LOCAL (compiled %s %s)\n", __DATE__, __TIME__);
+#endif
             fprintf(f, "PRE-MAIN: Static initialization reached\n");
             fflush(f);
             fclose(f);
