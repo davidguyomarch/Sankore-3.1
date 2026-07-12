@@ -77,8 +77,8 @@ jobs:
         shell: cmd
         run: |
           set VCPKG_ROOT=%VCPKG_INSTALLATION_ROOT%
-          for /f %%i in ('git rev-parse --short HEAD') do set GIT_HASH=%%i
-          qmake Sankore_3.1.pro "DEFINES+=GIT_COMMIT=\\\"%GIT_HASH%\\\""
+          for /f %%i in ('git rev-parse --short HEAD') do echo #define GIT_COMMIT "%%i" > src\core\git_version.h
+          qmake Sankore_3.1.pro
 
       - name: Build
         shell: cmd
