@@ -130,9 +130,8 @@ int main(int argc, char *argv[])
         size_t lastSlash = logPath.find_last_of(L"\\/");
         if (lastSlash != std::wstring::npos) logPath = logPath.substr(0, lastSlash + 1);
         logPath += L"startup.log";
-        FILE *f = _wfopen(logPath.c_str(), L"w");
+        FILE *f = _wfopen(logPath.c_str(), L"a");
         if (f) {
-            fprintf(f, "=== Open-Sankore Startup Log ===\n");
             fprintf(f, "Step 0: main() entered OK\n");
             fprintf(f, "argc=%d\n", argc);
             fflush(f);
