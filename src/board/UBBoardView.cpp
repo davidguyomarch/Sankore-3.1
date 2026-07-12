@@ -1751,15 +1751,18 @@ UBBoardView::resizeEvent (QResizeEvent * event)
 void
 UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 {
-  static bool firstDraw = true;
-  if (firstDraw) {
+  // Log first 5 calls to catch crash in second view
+  static int callCount = 0;
+  if (callCount < 5) {
     FILE *f = fopen("startup.log", "a");
-    if(f){fprintf(f,"  UBBoardView::drawBackground FIRST CALL (scene=%p)\n", (void*)scene());fflush(f);fclose(f);}
-    firstDraw = false;
+    if(f){fprintf(f,"  drawBg[%d]: this=%p rawScene=%p\n", callCount, (void*)this, (void*)QGraphicsView::scene());fflush(f);fclose(f);}
+    callCount++;
   }
 
-  if (!scene()) {
-    QGraphicsView::drawBackground(painter, rect);
+  if (!QGraphicsView::scene()) {
+    // No scene at all - just fill white and return safely
+    if (painter && painter->isActive())
+      painter->fillRect(rect, Qt::white);
     return;
   }
 
@@ -1769,22 +1772,10 @@ UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
       return;
     }
 
-  // Safe cast to UBGraphicsScene
-  UBGraphicsScene* ubScene = scene();  // Already does qobject_cast via override
-  if (!ubScene) {
-    // Not a UBGraphicsScene - just draw white
-    painter->fillRect(rect, Qt::white);
-    { static bool logged=false; if(!logged){FILE *f=fopen("startup.log","a");if(f){fprintf(f,"  drawBackground: no UBGraphicsScene, filled white\n");fflush(f);fclose(f);}logged=true;} }
-    return;
-  }
-
-  { static bool logged=false; if(!logged){FILE *f=fopen("startup.log","a");if(f){fprintf(f,"  drawBackground: ubScene OK, drawing bg\n");fflush(f);fclose(f);}logged=true;} }
-
-  // TEMPORARY: skip all scene access - isDarkBackground() crashes
+  // Safe: just fill white, skip all scene access
   if (painter && painter->isActive()) {
     painter->fillRect(rect, Qt::white);
   }
-  { static bool logged2=false; if(!logged2){FILE *f=fopen("startup.log","a");if(f){fprintf(f,"  drawBackground: fillRect done, returning\n");fflush(f);fclose(f);}logged2=true;} }
   return;
 
   bool darkBackground = ubScene->isDarkBackground();
