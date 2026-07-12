@@ -1778,7 +1778,7 @@ UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
   }
   return;
 
-  bool darkBackground = ubScene->isDarkBackground();
+  bool darkBackground = scene()->isDarkBackground();
 
   if (darkBackground)
     {
@@ -1819,7 +1819,7 @@ UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 
       painter->setPen (bgCrossColor);
 
-      if (ubScene->isCrossedBackground ())
+      if (scene()->isCrossedBackground())
         {
           qreal firstY = ((int) (rect.y () / UBSettings::crossSize)) * UBSettings::crossSize;
 
