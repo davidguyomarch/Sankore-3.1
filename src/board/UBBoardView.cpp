@@ -1751,31 +1751,10 @@ UBBoardView::resizeEvent (QResizeEvent * event)
 void
 UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 {
-  // Log first 5 calls to catch crash in second view
-  static int callCount = 0;
-  if (callCount < 5) {
-    FILE *f = fopen("startup.log", "a");
-    if(f){fprintf(f,"  drawBg[%d]: this=%p rawScene=%p\n", callCount, (void*)this, (void*)QGraphicsView::scene());fflush(f);fclose(f);}
-    callCount++;
-  }
-
-  if (!QGraphicsView::scene()) {
-    // No scene at all - just fill white and return safely
-    if (painter && painter->isActive())
-      painter->fillRect(rect, Qt::white);
-    return;
-  }
-
-  if (testAttribute (Qt::WA_TranslucentBackground))
-    {
-      QGraphicsView::drawBackground (painter, rect);
-      return;
-    }
-
-  // Safe: just fill white, skip all scene access
-  if (painter && painter->isActive()) {
-    painter->fillRect(rect, Qt::white);
-  }
+  Q_UNUSED(painter);
+  Q_UNUSED(rect);
+  // TEMPORARY: completely empty drawBackground to bypass crash
+  // The default QGraphicsView::drawBackground just fills with backgroundBrush
   return;
 
   bool darkBackground = scene()->isDarkBackground();
