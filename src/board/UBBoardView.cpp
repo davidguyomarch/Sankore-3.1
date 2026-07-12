@@ -1780,6 +1780,10 @@ UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 
   { static bool logged=false; if(!logged){FILE *f=fopen("startup.log","a");if(f){fprintf(f,"  drawBackground: ubScene OK, drawing bg\n");fflush(f);fclose(f);}logged=true;} }
 
+  // TEMPORARY: skip all scene access - isDarkBackground() crashes
+  painter->fillRect(rect, Qt::white);
+  return;
+
   bool darkBackground = ubScene->isDarkBackground();
 
   if (darkBackground)
