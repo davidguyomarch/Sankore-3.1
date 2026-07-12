@@ -283,7 +283,9 @@ void UBBoardPaletteManager::setupPalettes()
     mStylusPalette->stackUnder(mZoomPalette);
     mDrawingPalette->stackUnder(mZoomPalette);
 
-    mTipPalette = new UBStartupHintsPalette(mContainer);
+    // UBStartupHintsPalette disabled - contains QWebEngineView that crashes on paint
+    // mTipPalette = new UBStartupHintsPalette(mContainer);
+    mTipPalette = nullptr;
 
     QList<QAction*> backgroundsActions;
 
