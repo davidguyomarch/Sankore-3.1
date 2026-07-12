@@ -203,6 +203,7 @@ void UBBoardController::setupViews()
     mControlView = new UBBoardView(this, mControlContainer, true, false);
     mControlView->setInteractive(true);
     mControlView->setMouseTracking(true);
+    mControlView->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);  // TEMP: prevent paint crash
 
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: controlView created\n");fflush(f);fclose(f);} }
 
@@ -218,6 +219,7 @@ void UBBoardController::setupViews()
     mDisplayView = new UBBoardView(this, UBItemLayerType::FixedBackground, UBItemLayerType::Tool, 0);
     mDisplayView->setInteractive(false);
     mDisplayView->setTransformationAnchor(QGraphicsView::NoAnchor);
+    mDisplayView->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);  // TEMP: prevent paint crash
 
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: displayView created\n");fflush(f);fclose(f);} }
 
