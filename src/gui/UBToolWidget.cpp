@@ -98,20 +98,14 @@ void UBToolWidget::initialize()
     }
 
 
-    mWebView = new QWebEngineView(this);
-
-    QPalette palette;
-    palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
-    // palette not supported in WebEngine
-
-
-    mWebView->installEventFilter(this);
+    // QWebEngineView disabled - stub crashes on paint
+    mWebView = nullptr;
+    // mWebView = new QWebEngineView(this);
 
     mFrameWidth = UBSettings::settings()->objectFrameWidth;
     mContentMargin = sClosePixmap->width() / 2 + mFrameWidth;
     setLayout(new QVBoxLayout());
     layout()->setContentsMargins(mContentMargin, mContentMargin, mContentMargin, mContentMargin);
-    layout()->addWidget(mWebView);
 
     setFixedSize(mToolWidget->boundingRect().width() + mContentMargin * 2, mToolWidget->boundingRect().height() + mContentMargin * 2);
 

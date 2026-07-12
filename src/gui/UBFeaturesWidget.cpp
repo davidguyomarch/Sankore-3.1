@@ -943,21 +943,13 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     mpLayout = new QVBoxLayout();
     setLayout(mpLayout);
 
-    mpView = new QWebEngineView(this);
-    mpView->setObjectName("SearchEngineView");
-    mpSankoreAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
-    // TODO: Use QWebChannel for JS object injection: mpView->page()->runJavaScript("sankore", mpSankoreAPI);
-    connect(mpView->page(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
-    mpWebSettings = QWebEngineProfile::defaultProfile()->settings();
-    // JavaEnabled removed in Qt6
-    mpWebSettings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    // LocalStorageDatabaseEnabled removed in Qt6
-    // OfflineWebApplicationCacheEnabled removed in Qt6
-    // OfflineStorageDatabaseEnabled removed in Qt6
-    mpWebSettings->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
-    mpWebSettings->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
-
-    mpLayout->addWidget(mpView);
+    // QWebEngineView disabled - stub crashes on paint
+    mpView = nullptr;
+    mpSankoreAPI = nullptr;
+    mpWebSettings = nullptr;
+    // mpView = new QWebEngineView(this);
+    // connect(mpView->page(), ...);
+    // mpLayout->addWidget(mpView);
     mpLayout->setContentsMargins(0,0,0,0);
 
     connect(mpView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished(bool)));
