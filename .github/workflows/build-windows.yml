@@ -95,6 +95,28 @@ jobs:
           Write-Host "=== Looking for product dir ==="
           Get-ChildItem -Recurse -Path build -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -match "product" } | ForEach-Object { Write-Host $_.FullName }
 
+      - name: Build and run unit tests
+        shell: pwsh
+        run: |
+          $env:VCPKG_ROOT = $env:VCPKG_INSTALLATION_ROOT
+          cd tests
+          qmake tests.pro
+          nmake
+          Write-Host "=== Looking for test exe ==="
+          Get-ChildItem -Recurse -Filter "OpenSankoreTests.exe" | ForEach-Object { Write-Host $_.FullName }
+          $exe = Get-ChildItem -Recurse -Filter "OpenSankoreTests.exe" | Select-Object -First 1
+          if (-not $exe) {
+            Write-Error "Test executable not found!"
+            exit 1
+          }
+          Write-Host "=== Running unit tests ==="
+          & $exe.FullName
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Unit tests FAILED with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }
+          Write-Host "All unit tests passed!"
+
       - name: Deploy Qt DLLs
         if: success()
         shell: cmd

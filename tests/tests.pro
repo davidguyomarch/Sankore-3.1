@@ -67,8 +67,22 @@ OBJECTS_DIR = build/objects
 MOC_DIR = build/moc
 
 # OpenSSL for UBCryptoUtils
-LIBS += -lcrypto
+win32-msvc* {
+    # On CI, VCPKG_ROOT is set; locally adjust as needed
+    VCPKG_ROOT_PATH = $$(VCPKG_ROOT)
+    !isEmpty(VCPKG_ROOT_PATH) {
+        INCLUDEPATH += $$VCPKG_ROOT_PATH/installed/x64-windows/include
+        LIBS += -L$$VCPKG_ROOT_PATH/installed/x64-windows/lib -llibcrypto
+    } else {
+        # Fallback: assume vcpkg default location
+        LIBS += -llibcrypto
+    }
+} else {
+    LIBS += -lcrypto
+}
 
-# Code coverage (gcov/lcov)
-QMAKE_CXXFLAGS += --coverage
-QMAKE_LFLAGS += --coverage
+# Code coverage (GCC/Clang only — not available on MSVC)
+!win32-msvc* {
+    QMAKE_CXXFLAGS += --coverage
+    QMAKE_LFLAGS += --coverage
+}
