@@ -44,6 +44,15 @@
 #ifdef _WIN32
 LONG WINAPI CrashHandler(EXCEPTION_POINTERS* pExceptionInfo)
 {
+    // Open startup.log next to the exe
+    wchar_t exePath[MAX_PATH];
+    GetModuleFileNameW(NULL, exePath, MAX_PATH);
+    std::wstring logPath(exePath);
+    size_t lastSlash = logPath.find_last_of(L"\\/");
+    if (lastSlash != std::wstring::npos) logPath = logPath.substr(0, lastSlash + 1);
+    logPath += L"startup.log";
+    FILE *f = _wfopen(logPath.c_str(), L"a");
+
     if (f) {
         fprintf(f, "\n=== CRASH DETECTED ===\n");
         fprintf(f, "Exception code: 0x%08lX\n", pExceptionInfo->ExceptionRecord->ExceptionCode);
