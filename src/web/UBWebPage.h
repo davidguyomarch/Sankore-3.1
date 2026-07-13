@@ -39,12 +39,9 @@ class UBWebPage : public QWebEnginePage
         UBWebPage(QObject *parent = 0);
         virtual ~UBWebPage();
 
-        virtual void javaScriptConsoleMessage(const QString &message, int lineNumber, const QString &sourceID);
-
-        virtual QString userAgentForUrl(const QUrl& url) const;
+        void javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID) override;
 
     private:
-        QString mCachedUserAgentString;
         void *mPluginFactory;
 
 };
