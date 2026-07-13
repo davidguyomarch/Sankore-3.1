@@ -105,6 +105,38 @@ jobs:
           copy C:\vcpkg\installed\x64-windows\bin\libcrypto-3-x64.dll build\win32\release\product\
           dir build\win32\release\product\
 
+      - name: Smoke test (launch and verify no crash)
+        if: success()
+        shell: pwsh
+        run: |
+          $exe = "build\win32\release\product\Open-Sankore.exe"
+          Write-Host "=== Smoke Test: launching $exe ==="
+          
+          # Launch the app in background
+          $proc = Start-Process -FilePath $exe -PassThru -WindowStyle Hidden
+          Write-Host "Process started with PID $($proc.Id)"
+          
+          # Wait 8 seconds — enough for init + first paint cycle
+          Start-Sleep -Seconds 8
+          
+          # Check if still running (no crash)
+          if ($proc.HasExited) {
+            Write-Host "FAIL: Process exited with code $($proc.ExitCode)"
+            # Check for startup.log crash info
+            $logPath = "build\win32\release\product\startup.log"
+            if (Test-Path $logPath) {
+              Write-Host "=== startup.log ==="
+              Get-Content $logPath
+            }
+            exit 1
+          }
+          
+          Write-Host "PASS: Process is still running after 8 seconds (PID $($proc.Id))"
+          
+          # Kill gracefully
+          $proc | Stop-Process -Force
+          Write-Host "Process terminated. Smoke test passed!"
+
       - name: Upload artifact
         if: success()
         uses: actions/upload-artifact@v4
