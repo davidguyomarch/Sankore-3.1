@@ -407,9 +407,8 @@ int UBApplication::exec(const QString& pFileToImport)
     AEInstallEventHandler(kCoreEventClass, kAEReopenApplication, ub_proc_ae_handlerUPP, SRefCon(UBApplication::applicationController), true);
 #endif
 
-    // TEMPORARY: just show the window without calling showBoard/showDesktop
-    // showBoard() triggers paint events in palette widgets that crash
-    mainWindow->show();
+    // Restored: call showBoard() to properly initialize the board view and palettes
+    showBoard();
     mainWindow->showMaximized();
 
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 15: board shown, entering event loop\n");fflush(f);fclose(f);} }
