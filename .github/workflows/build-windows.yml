@@ -99,6 +99,8 @@ jobs:
         shell: pwsh
         run: |
           $env:VCPKG_ROOT = $env:VCPKG_INSTALLATION_ROOT
+          # Add OpenSSL DLLs to PATH for test runtime
+          $env:PATH = "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin;$env:PATH"
           cd tests
           qmake tests.pro
           nmake
@@ -110,7 +112,7 @@ jobs:
             exit 1
           }
           Write-Host "=== Running unit tests ==="
-          & $exe.FullName
+          & $exe.FullName -v2
           if ($LASTEXITCODE -ne 0) {
             Write-Error "Unit tests FAILED with exit code $LASTEXITCODE"
             exit $LASTEXITCODE
