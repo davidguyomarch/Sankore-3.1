@@ -23,7 +23,6 @@
 
 #include "UBBoardPaletteManager.h"
 
-#include <cstdio>
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
 
@@ -133,7 +132,6 @@ void UBBoardPaletteManager::setupLayout()
  */
 void UBBoardPaletteManager::setupDockPaletteWidgets()
 {
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    setupDockPaletteWidgets: start\n");fflush(f);fclose(f);} }
 
     //------------------------------------------------//
     // Create the widgets for the dock palettes
@@ -141,7 +139,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mpCachePropWidget = new UBCachePropertiesWidget();
     mpDownloadWidget = new UBDockDownloadWidget();
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    setupDockPaletteWidgets: leftPalette\n");fflush(f);fclose(f);} }
 
     // Add the dock palettes
     mLeftPalette = new UBLeftPalette(mContainer);
@@ -151,7 +148,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    setupDockPaletteWidgets: teacherGuide\n");fflush(f);fclose(f);} }
 
     // Teacher Guide disabled - UBDockTeacherGuideWidget crashes (uses QWebEngineView stubs)
     // if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool() || UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()){
@@ -160,7 +156,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     //     mLeftPalette->addTab(mpTeacherGuideWidget);
     // }
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    setupDockPaletteWidgets: teacherResources\n");fflush(f);fclose(f);} }
 
     //issue 1682 - NNE - 20131218
     mTeacherResources = new UBDockResourcesWidget;
@@ -170,7 +165,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     mLeftPalette->connectSignals();
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    setupDockPaletteWidgets: rightPalette\n");fflush(f);fclose(f);} }
 
     mRightPalette = new UBRightPalette(mContainer);
     // RIGHT palette widgets
@@ -178,7 +172,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mRightPalette->registerWidget(mpFeaturesWidget);
     mRightPalette->addTab(mpFeaturesWidget);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    setupDockPaletteWidgets: features done\n");fflush(f);fclose(f);} }
 
     // The cache widget will be visible only if a cache is put on the page
     mRightPalette->registerWidget(mpCachePropWidget);
@@ -254,7 +247,6 @@ void UBBoardPaletteManager::slot_changeDesktopMode(bool isDesktop)
 
 void UBBoardPaletteManager::setupPalettes()
 {
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupPalettes: start\n");fflush(f);fclose(f);} }
 
     if (UBPlatformUtils::hasVirtualKeyboard())
     {
@@ -264,11 +256,9 @@ void UBBoardPaletteManager::setupPalettes()
 #endif
     }
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupPalettes: keyboard done, calling setupDockPaletteWidgets\n");fflush(f);fclose(f);} }
 
     setupDockPaletteWidgets();
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupPalettes: dockWidgets done, creating stylusPalette\n");fflush(f);fclose(f);} }
 
 
     // Add the other palettes

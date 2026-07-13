@@ -28,7 +28,6 @@
 #include <QVariant>
 #include <QDomDocument>
 #include <QXmlStreamWriter>
-#include <cstdio>
 #include <QModelIndex>
 
 #include "frameworks/UBPlatformUtils.h"
@@ -408,7 +407,6 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName
                                                       , int pageCount
                                                       , bool promptDialogIfExists)
 {
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  createDocument: start (dir='%s')\n", directory.toUtf8().constData());fflush(f);fclose(f);} }
 
     UBDocumentProxy *doc;
     if(directory.length() != 0 ){
@@ -416,9 +414,7 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName
         doc->setPageCount(pageCount);
     }
     else{
-        { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  createDocument: checkIfDocumentRepositoryExists\n");fflush(f);fclose(f);} }
         checkIfDocumentRepositoryExists();
-        { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  createDocument: creating proxy\n");fflush(f);fclose(f);} }
         doc = new UBDocumentProxy();
     }
 
@@ -444,7 +440,6 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName
     //Issue N/C - NNE - 20140526 : END
 
     if (withEmptyPage) {
-        { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  createDocument: creating scene at 0\n");fflush(f);fclose(f);} }
         createDocumentSceneAt(doc, 0);
     }
     else{
@@ -456,7 +451,6 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName
         }
     }
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  createDocument: adding to model\n");fflush(f);fclose(f);} }
 
     bool addDoc = false;
     if (!promptDialogIfExists) {
@@ -779,7 +773,6 @@ void UBPersistenceManager::copyDocumentScene(UBDocumentProxy *from, int fromInde
 
 UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* proxy, int index, bool useUndoRedoStack)
 {
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    createDocumentSceneAt: sceneCount\n");fflush(f);fclose(f);} }
     int count = sceneCount(proxy);
 
     for(int i = count - 1; i >= index; i--)
@@ -787,14 +780,11 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
 
     mSceneCache.shiftUpScenes(proxy, index, count -1);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    createDocumentSceneAt: createScene\n");fflush(f);fclose(f);} }
     UBGraphicsScene *newScene = mSceneCache.createScene(proxy, index, useUndoRedoStack);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    createDocumentSceneAt: setBackground\n");fflush(f);fclose(f);} }
     newScene->setBackground(UBSettings::settings()->isDarkBackground(),
             UBSettings::settings()->UBSettings::isCrossedBackground());
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    createDocumentSceneAt: persistScene\n");fflush(f);fclose(f);} }
     // Skip persist on new empty scene - UBSvgSubsetAdaptor crashes on first scene
     // The scene will be persisted when the user actually modifies it
     // persistDocumentScene(proxy, newScene, index);
@@ -802,7 +792,6 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
     proxy->incPageCount();
 
     emit documentSceneCreated(proxy, index);
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"    createDocumentSceneAt: DONE\n");fflush(f);fclose(f);} }
 
     return newScene;
 }
@@ -897,19 +886,16 @@ void UBPersistenceManager::reassignDocProxy(UBDocumentProxy *newDocument, UBDocu
 
 void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex)
 {
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: checkRepo\n");fflush(f);fclose(f);} }
     checkIfDocumentRepositoryExists();
 
     pScene->deselectAllItems();
 
     generatePathIfNeeded(pDocumentProxy);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: path='%s'\n", pDocumentProxy->persistencePath().toUtf8().constData());fflush(f);fclose(f);} }
 
     QDir dir(pDocumentProxy->persistencePath());
     dir.mkpath(pDocumentProxy->persistencePath());
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: checking teacherGuide\n");fflush(f);fclose(f);} }
 
     UBBoardPaletteManager* paletteManager = UBApplication::boardController->paletteManager();
     bool teacherGuideModified = false;
@@ -921,12 +907,10 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     if(paletteManager && UBApplication::app()->boardController->currentPage() == pSceneIndex && paletteManager->teacherResourcesDockWidget())
         teacherResourcesModified = paletteManager->teacherResourcesDockWidget()->isModified();
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: persisting metadata\n");fflush(f);fclose(f);} }
 
     if (pDocumentProxy->isModified() || teacherGuideModified || teacherResourcesModified)
         UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: persisting SVG\n");fflush(f);fclose(f);} }
 
     if (pScene->isModified() || teacherGuideModified || teacherResourcesModified)
     {
@@ -936,7 +920,6 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 
         pScene->setModified(false);
     }
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: DONE\n");fflush(f);fclose(f);} }
 
     mSceneCache.insert(pDocumentProxy, pSceneIndex, pScene);
 }

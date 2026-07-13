@@ -28,7 +28,6 @@
 #include <QPainter>
 #include <QWebEngineView>
 #include <QWebEngineProfile>
-#include <cstdio>
 #include <QDesktopServices>
 #include <QMenu>
 #include <QActionGroup>
@@ -284,7 +283,6 @@ void UBApplication::setupTranslators(QStringList args)
 
 int UBApplication::exec(const QString& pFileToImport)
 {
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 4: UBApplication::exec() entered\n");fclose(f);} }
 
     QPixmapCache::setCacheLimit(1024 * 100);
 
@@ -293,7 +291,6 @@ int UBApplication::exec(const QString& pFileToImport)
     if (!webDbDir.exists(webDbPath))
         webDbDir.mkpath(webDbPath);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 5: web db path created\n");fclose(f);} }
 
     // WebEngine settings disabled - stubs crash on ARM64 emulation
     // QWebEngineSettings *gs = QWebEngineProfile::defaultProfile()->settings();
@@ -301,18 +298,15 @@ int UBApplication::exec(const QString& pFileToImport)
     // gs->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
     // gs->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 6: web settings skipped\n");fclose(f);} }
 
     mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint);
     mainWindow->setAttribute(Qt::WA_NativeWindow, true);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 7: mainWindow created\n");fflush(f);fclose(f);} }
 
     mainWindow->actionCopy->setShortcuts(QKeySequence::Copy);
     mainWindow->actionPaste->setShortcuts(QKeySequence::Paste);
     mainWindow->actionCut->setShortcuts(QKeySequence::Cut);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 7a: shortcuts set\n");fflush(f);fclose(f);} }
 
     connect(mainWindow->actionBoard, SIGNAL(triggered()), this, SLOT(showBoard()));
     connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(showInternet()));
@@ -320,37 +314,29 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(closing()));
     connect(mainWindow, SIGNAL(closeEvent_Signal(QCloseEvent*)), this, SLOT(closeEvent(QCloseEvent*)));
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 7b: connects done\n");fflush(f);fclose(f);} }
 
     boardController = new UBBoardController(mainWindow);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 7c: boardController created\n");fflush(f);fclose(f);} }
 
     boardController->init();
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 8: boardController init'd\n");fflush(f);fclose(f);} }
 
     webController = new UBWebController(mainWindow);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 9: webController created\n");fclose(f);} }
 
     documentController = new UBDocumentController(mainWindow);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 10: documentController created\n");fclose(f);} }
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 11: connectToDocumentController\n");fflush(f);fclose(f);} }
     boardController->paletteManager()->connectToDocumentController();
 
     UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 12: creating applicationController\n");fflush(f);fclose(f);} }
     applicationController = new UBApplicationController(boardController->controlView(),
                                                         boardController->displayView(),
                                                         mainWindow,
                                                         staticMemoryCleaner,
                                                         boardController->paletteManager()->rightPalette());
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 13: applicationController created, connecting signals\n");fflush(f);fclose(f);} }
 
 
     connect(applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode)),
@@ -369,7 +355,6 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
 #endif
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 13a: preferencesController\n");fflush(f);fclose(f);} }
     mPreferencesController = new UBPreferencesController(mainWindow);
 
     connect(mainWindow->actionPreferences, SIGNAL(triggered()), mPreferencesController, SLOT(show()));
@@ -377,7 +362,6 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionSankoreEditor, SIGNAL(triggered()), applicationController, SLOT(showSankoreEditor()));
     connect(mainWindow->actionCheckUpdate, SIGNAL(triggered()), applicationController, SLOT(checkUpdateRequest()));
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 13b: toolBar settings\n");fflush(f);fclose(f);} }
     toolBarDisplayTextChanged(UBSettings::settings()->appToolBarDisplayText->get());
     toolBarPositionChanged(UBSettings::settings()->appToolBarPositionedAtTop->get());
 
@@ -392,12 +376,9 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionCopy, SIGNAL(triggered()), applicationController, SLOT(actionCopy()));
     connect(mainWindow->actionPaste, SIGNAL(triggered()), applicationController, SLOT(actionPaste()));
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 13c: initScreenLayout\n");fflush(f);fclose(f);} }
     applicationController->initScreenLayout(bUseMultiScreen);
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 13d: setupLayout\n");fflush(f);fclose(f);} }
     boardController->setupLayout();
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 14: layout done, showing board\n");fflush(f);fclose(f);} }
 
     if (pFileToImport.length() > 0)
         UBApplication::applicationController->importFile(pFileToImport);
@@ -410,14 +391,6 @@ int UBApplication::exec(const QString& pFileToImport)
     // Restored: call showBoard() to properly initialize the board view and palettes
     showBoard();
     mainWindow->showMaximized();
-
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 15: board shown, entering event loop\n");fflush(f);fclose(f);} }
-
-    // Timer to confirm we survive the first paint cycle
-    QTimer::singleShot(1000, [](){
-        FILE *f = fopen("startup.log", "a");
-        if(f){fprintf(f,"Step 16: SURVIVED 1 second in event loop! App is running!\n");fflush(f);fclose(f);}
-    });
 
     onScreenCountChanged(1);
     return QApplication::exec();

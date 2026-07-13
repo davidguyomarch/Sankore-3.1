@@ -44,7 +44,6 @@
 #ifdef _WIN32
 LONG WINAPI CrashHandler(EXCEPTION_POINTERS* pExceptionInfo)
 {
-    FILE *f = fopen("startup.log", "a");
     if (f) {
         fprintf(f, "\n=== CRASH DETECTED ===\n");
         fprintf(f, "Exception code: 0x%08lX\n", pExceptionInfo->ExceptionRecord->ExceptionCode);
@@ -174,27 +173,11 @@ int main(int argc, char *argv[])
 #endif
 */
 
-    // === STARTUP DIAGNOSTIC LOG ===
-    // Write to a file next to the exe to diagnose crashes
-    // Use GetModuleFileName to get absolute path (works even on network drives)
+    // === STARTUP CRASH HANDLER ===
     {
 #ifdef _WIN32
         // Install crash handler FIRST
         SetUnhandledExceptionFilter(CrashHandler);
-
-        wchar_t exePath[MAX_PATH];
-        GetModuleFileNameW(NULL, exePath, MAX_PATH);
-        std::wstring logPath(exePath);
-        size_t lastSlash = logPath.find_last_of(L"\\/");
-        if (lastSlash != std::wstring::npos) logPath = logPath.substr(0, lastSlash + 1);
-        logPath += L"startup.log";
-        FILE *f = _wfopen(logPath.c_str(), L"a");
-        if (f) {
-            fprintf(f, "Step 0: main() entered OK\n");
-            fprintf(f, "argc=%d\n", argc);
-            fflush(f);
-            fclose(f);
-        }
 #endif
     }
 
@@ -202,13 +185,7 @@ int main(int argc, char *argv[])
 
     qInstallMessageHandler(ub_message_output);
 
-    // Log step 1
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 1: QApplication creating\n");fclose(f);} }
-
     UBApplication app("Sankore", argc, argv);
-
-    // Log step 2
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 2: UBApplication created\n");fclose(f);} }
 
     QStringList args = app.arguments();
 
@@ -245,8 +222,6 @@ int main(int argc, char *argv[])
 
     qDebug() << "file name argument" << fileToOpen;
 
-    // Log step 3
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"Step 3: calling app.exec()\n");fclose(f);} }
 
     int result = app.exec(fileToOpen);
 

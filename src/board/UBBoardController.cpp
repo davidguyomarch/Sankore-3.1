@@ -27,7 +27,6 @@
 #include <QVBoxLayout>
 #include <QApplication>
 #include <QPainter>
-#include <cstdio>
 #include <QWebEngineView>
 #include <QDir>
 #include <QRegularExpression>
@@ -143,12 +142,9 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
 
 void UBBoardController::init()
 {
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  init: setupViews...\n");fflush(f);fclose(f);} }
     setupViews();
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  init: setupToolbar...\n");fflush(f);fclose(f);} }
     setupToolbar();
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  init: connects...\n");fflush(f);fclose(f);} }
     connect(UBApplication::undoStack, SIGNAL(canUndoChanged(bool))
             , this, SLOT(undoRedoStateChange(bool)));
 
@@ -167,10 +163,8 @@ void UBBoardController::init()
     connect(UBDownloadManager::downloadManager(), SIGNAL(downloadModalFinished()), this, SLOT(onDownloadModalFinished()));
     connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool,bool)), this, SLOT(downloadFinished(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool,bool)));
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  init: createNewDocument...\n");fflush(f);fclose(f);} }
     UBDocumentProxy* doc = UBPersistenceManager::persistenceManager()->createNewDocument();
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  init: setActiveDocumentScene...\n");fflush(f);fclose(f);} }
     setActiveDocumentScene(doc);
 
     connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(groupButtonClicked()));
@@ -179,7 +173,6 @@ void UBBoardController::init()
 
     //EV-7 - NNE - 20131231
     mShapeFactory.init();
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  init: DONE\n");fflush(f);fclose(f);} }
 }
 
 
@@ -198,7 +191,6 @@ int UBBoardController::currentPage()
 
 void UBBoardController::setupViews()
 {
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: creating controlContainer\n");fflush(f);fclose(f);} }
     mControlContainer = new QWidget(mMainWindow->centralWidget());
 
     mControlView = new UBBoardView(this, mControlContainer, true, false);
@@ -211,7 +203,6 @@ void UBBoardController::setupViews()
     controlLayout->setContentsMargins(0, 0, 0, 0);
     controlLayout->addWidget(mControlView);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: controlView created\n");fflush(f);fclose(f);} }
 
     mControlView->grabGesture(Qt::SwipeGesture);
 
@@ -227,13 +218,11 @@ void UBBoardController::setupViews()
     mDisplayView->setTransformationAnchor(QGraphicsView::NoAnchor);
     mDisplayView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: displayView created\n");fflush(f);fclose(f);} }
 
     mMessageWindow = new UBMessageWindow(mControlView);
     mMessageWindow->setCustomPosition(true);
     mMessageWindow->hide();
 
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: messageWindow created\n");fflush(f);fclose(f);} }
 
 //Issue retours 2.4RC1 - CFA - 20140218 : show warning if not official release
 #ifndef QT_DEBUG
@@ -246,7 +235,6 @@ void UBBoardController::setupViews()
 #endif
 
     mPaletteManager = new UBBoardPaletteManager(mControlContainer, this);
-    { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: paletteManager created\n");fflush(f);fclose(f);} }
     connect(this, SIGNAL(activeSceneChanged()), mPaletteManager, SLOT(activeSceneChanged()));
 
 }
