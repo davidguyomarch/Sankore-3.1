@@ -125,7 +125,10 @@ void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* p
 
     QFile thumbFile(fileName);
 
-    if (pScene->isModified() || overrideModified || !thumbFile.exists() || UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified())
+    if (pScene->isModified() || overrideModified || !thumbFile.exists()
+        || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget()
+            && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()
+            && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()))
     {
         qreal nominalWidth = pScene->nominalSize().width();
         qreal nominalHeight = pScene->nominalSize().height();
@@ -156,8 +159,11 @@ void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* p
 
         pScene->render(&painter, imageRect, sceneRect, Qt::KeepAspectRatio);
 
-        if(UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->hasUserDataInTeacherGuide()
-                || UBApplication::boardController->paletteManager()->teacherResourcesDockWidget()->hasUserDataInTeacherGuide()){
+        if((UBApplication::boardController->paletteManager()->teacherGuideDockWidget()
+                && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()
+                && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->hasUserDataInTeacherGuide())
+                || (UBApplication::boardController->paletteManager()->teacherResourcesDockWidget()
+                    && UBApplication::boardController->paletteManager()->teacherResourcesDockWidget()->hasUserDataInTeacherGuide())){
             QPixmap toque(":images/toque.svg");
             painter.setOpacity(0.6);
             painter.drawPixmap(QPoint(width - toque.width(),0),toque);

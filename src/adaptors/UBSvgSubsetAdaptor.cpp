@@ -1322,8 +1322,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 {
     //issue 1682 - NNE - add the test on the teacherResources
-    if (mScene->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()) ||
-            UBApplication::boardController->paletteManager()->teacherResourcesDockWidget() && UBApplication::boardController->paletteManager()->teacherResourcesDockWidget()->isModified())
+    if (mScene->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()) ||
+            (UBApplication::boardController->paletteManager()->teacherResourcesDockWidget() && UBApplication::boardController->paletteManager()->teacherResourcesDockWidget()->isModified()))
     {
 
         //Creating dom structure to store information

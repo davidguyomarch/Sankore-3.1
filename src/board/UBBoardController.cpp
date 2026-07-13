@@ -2318,7 +2318,8 @@ void UBBoardController::show()
 void UBBoardController::persistCurrentScene(UBDocumentProxy *pProxy)
 {
     UBBoardPaletteManager *paletteManager = UBApplication::boardController->paletteManager();
-    UBTeacherGuideWidget *teacherGuide = paletteManager->teacherGuideDockWidget()->teacherGuideWidget();
+    UBDockTeacherGuideWidget *tgDock = paletteManager->teacherGuideDockWidget();
+    UBTeacherGuideWidget *teacherGuide = tgDock ? tgDock->teacherGuideWidget() : nullptr;
     UBDockResourcesWidget *teacherResources = paletteManager->teacherResourcesDockWidget();
 
     //issue 1682 - NNE - 20140122 : Add the test on the teacherResources
