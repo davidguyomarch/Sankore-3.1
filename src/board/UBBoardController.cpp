@@ -24,6 +24,7 @@
 #include "UBBoardController.h"
 
 #include <QWidget>
+#include <QVBoxLayout>
 #include <QApplication>
 #include <QPainter>
 #include <cstdio>
@@ -203,7 +204,12 @@ void UBBoardController::setupViews()
     mControlView = new UBBoardView(this, mControlContainer, true, false);
     mControlView->setInteractive(true);
     mControlView->setMouseTracking(true);
-    mControlView->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);  // TEMP: prevent paint crash
+    mControlView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+
+    // Layout so mControlView fills its container and receives mouse events
+    QVBoxLayout *controlLayout = new QVBoxLayout(mControlContainer);
+    controlLayout->setContentsMargins(0, 0, 0, 0);
+    controlLayout->addWidget(mControlView);
 
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: controlView created\n");fflush(f);fclose(f);} }
 
@@ -219,7 +225,7 @@ void UBBoardController::setupViews()
     mDisplayView = new UBBoardView(this, UBItemLayerType::FixedBackground, UBItemLayerType::Tool, 0);
     mDisplayView->setInteractive(false);
     mDisplayView->setTransformationAnchor(QGraphicsView::NoAnchor);
-    mDisplayView->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);  // TEMP: prevent paint crash
+    mDisplayView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"  setupViews: displayView created\n");fflush(f);fclose(f);} }
 
