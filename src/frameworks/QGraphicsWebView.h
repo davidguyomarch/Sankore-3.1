@@ -1,41 +1,52 @@
 /**
  * @file QGraphicsWebView.h
- * @brief Stub QGraphicsWebView for Qt6 compilation without WebEngine.
+ * @brief QGraphicsWebView replacement for Qt6 using QWebEngineView + QGraphicsProxyWidget.
  *
- * Provides the QGraphicsWebView interface as a stub that compiles
- * but does not render web content. Web functionality is disabled
- * until QtWebEngine is properly integrated.
+ * In Qt5, QGraphicsWebView was part of QtWebKit. In Qt6, there is no direct equivalent.
+ * This class wraps a QWebEngineView inside a QGraphicsProxyWidget to provide the same
+ * interface for embedding web content in a QGraphicsScene.
  */
 #ifndef QGRAPHICSWEBVIEW_H
 #define QGRAPHICSWEBVIEW_H
 
 #include <QGraphicsWidget>
+#include <QGraphicsProxyWidget>
 #include <QUrl>
 #include <QPainter>
-#include <QGraphicsProxyWidget>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
+#include <QWebEngineProfile>
 
-// Forward declare WebEngine types as opaque
-class QWebEnginePage;
-class QWebEngineSettings;
-class QWebEngineProfile;
-class QWebEngineView;
-
-// Stub for QWebFrame (removed in Qt6)
+// Stub for QWebFrame (removed in Qt6 — compatibility shim)
 class QWebFrame : public QObject
 {
     Q_OBJECT
 public:
-    QWebFrame(QObject *parent = nullptr) : QObject(parent) {}
+    QWebFrame(QObject *parent = nullptr) : QObject(parent), m_page(nullptr) {}
+    void setPage(QWebEnginePage *page) { m_page = page; }
     void setScrollBarPolicy(Qt::Orientation, Qt::ScrollBarPolicy) {}
-    QUrl url() const { return QUrl(); }
-    void setUrl(const QUrl &) {}
+    QUrl url() const { return m_page ? m_page->url() : QUrl(); }
+    void setUrl(const QUrl &url) { if (m_page) m_page->setUrl(url); }
     QString toHtml() const { return QString(); }
-    QVariant evaluateJavaScript(const QString &) { return QVariant(); }
-    QVariant evaluateJavaScriptSync(const QString &) { return QVariant(); }
-    void addToJavaScriptWindowObject(const QString &, QObject *) {}
-    QSize contentsSize() const { return QSize(800, 600); }
+    QVariant evaluateJavaScript(const QString &script) {
+        // Async in Qt6 — this stub returns empty for compatibility
+        if (m_page) m_page->runJavaScript(script);
+        return QVariant();
+    }
+    QVariant evaluateJavaScriptSync(const QString &script) {
+        return evaluateJavaScript(script);
+    }
+    void addToJavaScriptWindowObject(const QString &, QObject *) {
+        // Qt6 uses QWebChannel instead — no direct equivalent
+    }
+    QSize contentsSize() const {
+        return m_page ? m_page->contentsSize().toSize() : QSize(800, 600);
+    }
 signals:
     void javaScriptWindowObjectCleared();
+private:
+    QWebEnginePage *m_page;
 };
 
 class QGraphicsWebView : public QGraphicsWidget
@@ -43,42 +54,44 @@ class QGraphicsWebView : public QGraphicsWidget
     Q_OBJECT
 
 public:
-    explicit QGraphicsWebView(QGraphicsItem *parent = nullptr)
-        : QGraphicsWidget(parent), m_mainFrame(new QWebFrame(this)), m_zoomFactor(1.0) {}
-    virtual ~QGraphicsWebView() {}
+    explicit QGraphicsWebView(QGraphicsItem *parent = nullptr);
+    virtual ~QGraphicsWebView();
 
-    // Page management (stub - returns null)
-    QWebEnginePage* page() const { return nullptr; }
-    void setPage(QWebEnginePage *) {}
+    // Page management
+    QWebEnginePage* page() const;
+    void setPage(QWebEnginePage *page);
 
-    // Frame compatibility
+    // Frame compatibility (Qt5 shim)
     QWebFrame* mainFrame() const { return m_mainFrame; }
 
-    // Settings (stub)
-    QWebEngineSettings* settings() const { return nullptr; }
+    // Settings
+    QWebEngineSettings* settings() const;
 
-    // URL/Content loading (stub - no-op)
-    QUrl url() const { return m_url; }
-    void setUrl(const QUrl &url) { m_url = url; emit urlChanged(url); }
-    void load(const QUrl &url) { setUrl(url); emit loadFinished(true); }
-    void setHtml(const QString &, const QUrl & = QUrl()) { emit loadFinished(true); }
+    // URL/Content loading
+    QUrl url() const;
+    void setUrl(const QUrl &url);
+    void load(const QUrl &url);
+    void setHtml(const QString &html, const QUrl &baseUrl = QUrl());
 
     // Title
-    QString title() const { return m_title; }
+    QString title() const;
 
     // Zoom
-    qreal zoomFactor() const { return m_zoomFactor; }
-    void setZoomFactor(qreal factor) { m_zoomFactor = factor; }
+    qreal zoomFactor() const;
+    void setZoomFactor(qreal factor);
 
     // QGraphicsWidget reimplementations
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget * = nullptr) override {
-        painter->fillRect(boundingRect(), Qt::white);
-        painter->drawText(boundingRect(), Qt::AlignCenter, "Web view disabled");
-    }
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
     // Size management
-    void resize(const QSizeF &size) { QGraphicsWidget::resize(size); }
-    void resize(qreal w, qreal h) { QGraphicsWidget::resize(w, h); }
+    void resize(const QSizeF &size);
+    void resize(qreal w, qreal h);
+    QSizeF size() const { return QGraphicsWidget::size(); }
+    void setMaximumSize(qreal w, qreal h) { QGraphicsWidget::setMaximumSize(w, h); }
+
+    // Type for qgraphicsitem_cast
+    enum { Type = UserType + 100 };
+    int type() const override { return Type; }
 
 signals:
     void loadStarted();
@@ -90,10 +103,9 @@ signals:
     void linkClicked(const QUrl &url);
 
 private:
+    QWebEngineView *m_webView;
+    QGraphicsProxyWidget *m_proxy;
     QWebFrame *m_mainFrame;
-    QUrl m_url;
-    QString m_title;
-    qreal m_zoomFactor;
 };
 
 #endif // QGRAPHICSWEBVIEW_H
