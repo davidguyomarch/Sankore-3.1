@@ -913,7 +913,8 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 
     UBBoardPaletteManager* paletteManager = UBApplication::boardController->paletteManager();
     bool teacherGuideModified = false;
-    if(paletteManager && UBApplication::app()->boardController->currentPage() == pSceneIndex && paletteManager->teacherGuideDockWidget())
+    if(paletteManager && UBApplication::app()->boardController->currentPage() == pSceneIndex
+       && paletteManager->teacherGuideDockWidget() && paletteManager->teacherGuideDockWidget()->teacherGuideWidget())
         teacherGuideModified = paletteManager->teacherGuideDockWidget()->teacherGuideWidget()->isModified();
 
     bool teacherResourcesModified = false;
@@ -929,9 +930,10 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 
     if (pScene->isModified() || teacherGuideModified || teacherResourcesModified)
     {
-        // Skip SVG persist entirely during startup - crashes with access violation
-        // TODO: Fix UBSvgSubsetAdaptor::persistScene for empty/background-only scenes
-        { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: SKIPPED (deferred)\n");fflush(f);fclose(f);} }
+        UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
+
+        UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
+
         pScene->setModified(false);
     }
     { FILE *f = fopen("startup.log", "a"); if(f){fprintf(f,"      persistScene: DONE\n");fflush(f);fclose(f);} }
