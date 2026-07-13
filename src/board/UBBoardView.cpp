@@ -1059,6 +1059,8 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
     //EV-7 - NNE - 20131231
     emit mousePress(event);
 
+    { FILE *f = fopen("C:\\Sankore\\draw-debug.log", "a"); if(f){fprintf(f,"mousePressEvent: bIsControl=%d bIsDesktop=%d button=%d\n", (int)bIsControl, (int)bIsDesktop, (int)event->button());fflush(f);fclose(f);} }
+
     if (!bIsControl && !bIsDesktop) {
         event->ignore();
         return;
@@ -1203,6 +1205,8 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                 viewport()->setCursor (QCursor (Qt::BlankCursor));
             }
 
+            { FILE *f = fopen("C:\\Sankore\\draw-debug.log", "a"); if(f){fprintf(f,"PEN mousePressEvent: tool=%d mTabletStylusIsPressed=%d scene=%p\n", (int)currentTool, (int)mTabletStylusIsPressed, (void*)scene());fflush(f);fclose(f);} }
+
             if (scene () && !mTabletStylusIsPressed)
             {
                 if (currentTool == UBStylusTool::Eraser)
@@ -1210,6 +1214,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                     connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
                     mLongPressTimer.start();
                 }
+                { FILE *f = fopen("C:\\Sankore\\draw-debug.log", "a"); if(f){fprintf(f,"PEN calling inputDevicePress\n");fflush(f);fclose(f);} }
                 scene ()->inputDevicePress (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())));
             }
             event->accept ();
@@ -1329,6 +1334,7 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
     {
       if (!mTabletStylusIsPressed && scene ())
       {
+          { static int moveCount = 0; if(++moveCount <= 5) { FILE *f = fopen("C:\\Sankore\\draw-debug.log", "a"); if(f){fprintf(f,"PEN mouseMoveEvent: calling inputDeviceMove (count=%d, mMouseButtonIsPressed=%d)\n", moveCount, (int)mMouseButtonIsPressed);fflush(f);fclose(f);} } }
           scene ()->inputDeviceMove (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())), mMouseButtonIsPressed);
       }
       event->accept ();

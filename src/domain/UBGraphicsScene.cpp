@@ -398,6 +398,8 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
 
     bool accepted = false;
 
+    { FILE *f = fopen("C:\\Sankore\\draw-debug.log", "a"); if(f){fprintf(f,"inputDevicePress: mInputDeviceIsPressed=%d isDrawingTool=%d tool=%d\n", (int)mInputDeviceIsPressed, (int)UBDrawingController::drawingController()->isDrawingTool(), UBDrawingController::drawingController()->stylusTool());fflush(f);fclose(f);} }
+
     if (mInputDeviceIsPressed)
     {
         qWarning() << "scene received input device pressed, without input device release, muting event as input device move";
