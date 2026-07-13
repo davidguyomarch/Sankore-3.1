@@ -1049,8 +1049,10 @@ void UBSceneThumbnailProxyWidget::paint(QPainter *painter, const QStyleOptionGra
 
     }
 
-    if(UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->hasUserDataInTeacherGuide()
-            || UBApplication::boardController->paletteManager()->teacherResourcesDockWidget()->hasUserDataInTeacherGuide()){
+    auto* tgDock = UBApplication::boardController->paletteManager()->teacherGuideDockWidget();
+    auto* trDock = UBApplication::boardController->paletteManager()->teacherResourcesDockWidget();
+    if((tgDock && tgDock->teacherGuideWidget() && tgDock->teacherGuideWidget()->hasUserDataInTeacherGuide())
+            || (trDock && trDock->hasUserDataInTeacherGuide())){
         QPixmap toque(":images/toque.svg");
         painter->setOpacity(0.6);
         painter->drawPixmap(QPoint(UBSettings::maxThumbnailWidth - toque.width(),0),toque);
