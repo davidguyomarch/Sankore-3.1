@@ -99,7 +99,6 @@ jobs:
         shell: pwsh
         run: |
           $env:VCPKG_ROOT = $env:VCPKG_INSTALLATION_ROOT
-          # Add OpenSSL DLLs to PATH for test runtime
           $env:PATH = "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin;$env:PATH"
           cd tests
           qmake tests.pro
@@ -111,19 +110,13 @@ jobs:
             Write-Error "Test executable not found!"
             exit 1
           }
-          # Copy OpenSSL DLLs next to test exe
           $exeDir = $exe.DirectoryName
           Copy-Item "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin\libcrypto-3-x64.dll" $exeDir -ErrorAction SilentlyContinue
           Copy-Item "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin\libssl-3-x64.dll" $exeDir -ErrorAction SilentlyContinue
           Write-Host "=== Running unit tests ==="
-          & $exe.FullName -v2 2>&1 | Tee-Object -Variable testOutput
-          $exitCode = $LASTEXITCODE
-          Write-Host $testOutput
-          if ($exitCode -ne 0) {
-            Write-Error "Unit tests FAILED with exit code $exitCode"
-            exit $exitCode
-          }
-          Write-Host "All unit tests passed!"
+          & $exe.FullName -v2
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Unit tests FAILED with exit code $LASTEXITCODE"
             exit $LASTEXITCODE
           }
           Write-Host "All unit tests passed!"
