@@ -105,9 +105,9 @@ jobs:
           echo === Deploy test exe ===
           windeployqt --release --no-translations build\OpenSankoreTests.exe
           copy "C:\Qt\6.8.3\msvc2022_64\plugins\platforms\qoffscreen.dll" build\platforms\ 2>NUL
+          copy "C:\Qt\6.8.3\msvc2022_64\bin\Qt6Widgets.dll" build\ 2>NUL
           echo === Running unit tests ===
           set QT_QPA_PLATFORM=offscreen
-          set QT_DEBUG_PLUGINS=1
           build\OpenSankoreTests.exe -v2
           echo Exit code: %ERRORLEVEL%
 
