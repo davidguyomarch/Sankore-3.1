@@ -118,10 +118,12 @@ jobs:
           Write-Host "=== Checking DLL dependencies with dumpbin ==="
           dumpbin /dependents $exe.FullName 2>$null | Select-String "\.dll" | ForEach-Object { Write-Host $_.Line.Trim() }
           Write-Host "=== Running unit tests ==="
-          $proc = Start-Process -FilePath $exe.FullName -ArgumentList "-v2" -NoNewWindow -Wait -PassThru
-          Write-Host "Exit code: $($proc.ExitCode)"
-          if ($proc.ExitCode -ne 0) {
-            Write-Host "WARNING: Unit tests returned exit code $($proc.ExitCode)"
+          Set-Location $exeDir
+          .\OpenSankoreTests.exe -v2
+          $testExit = $LASTEXITCODE
+          Write-Host "Exit code: $testExit"
+          if ($testExit -ne 0) {
+            Write-Host "WARNING: Unit tests returned exit code $testExit"
             Write-Host "Tests are not blocking the build for now (investigating)"
           }
 
