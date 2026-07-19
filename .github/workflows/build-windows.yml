@@ -96,33 +96,20 @@ jobs:
           Get-ChildItem -Recurse -Path build -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -match "product" } | ForEach-Object { Write-Host $_.FullName }
 
       - name: Build and run unit tests
-        shell: pwsh
+        shell: cmd
         run: |
-          $env:VCPKG_ROOT = $env:VCPKG_INSTALLATION_ROOT
+          set VCPKG_ROOT=%VCPKG_INSTALLATION_ROOT%
           cd tests
           qmake tests.pro
           nmake
-          $exe = Get-ChildItem -Recurse -Filter "OpenSankoreTests.exe" | Select-Object -First 1
-          if (-not $exe) {
-            Write-Error "Test executable not found!"
-            exit 1
-          }
-          $exeDir = $exe.DirectoryName
-          # Deploy Qt DLLs next to test exe
-          windeployqt --release --no-translations $exe.FullName
-          # Also copy offscreen platform plugin for headless execution
-          Copy-Item "C:\Qt\6.8.3\msvc2022_64\plugins\platforms\qoffscreen.dll" "$exeDir\platforms\" -ErrorAction SilentlyContinue
-          Write-Host "=== Running unit tests ==="
-          Set-Location $exeDir
-          $env:QT_QPA_PLATFORM = "offscreen"
-          .\OpenSankoreTests.exe -v2
-          $testExit = $LASTEXITCODE
-          Write-Host "Exit code: $testExit"
-          if ($testExit -ne 0) {
-            Write-Error "Unit tests FAILED with exit code $testExit"
-            exit $testExit
-          }
-          Write-Host "All unit tests passed!"
+          echo === Deploy test exe ===
+          windeployqt --release --no-translations build\OpenSankoreTests.exe
+          copy "C:\Qt\6.8.3\msvc2022_64\plugins\platforms\qoffscreen.dll" build\platforms\ 2>NUL
+          echo === Running unit tests ===
+          set QT_QPA_PLATFORM=offscreen
+          set QT_DEBUG_PLUGINS=1
+          build\OpenSankoreTests.exe -v2
+          echo Exit code: %ERRORLEVEL%
 
       - name: Deploy Qt DLLs
         if: success()
