@@ -95,27 +95,32 @@ jobs:
           Write-Host "=== Looking for product dir ==="
           Get-ChildItem -Recurse -Path build -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -match "product" } | ForEach-Object { Write-Host $_.FullName }
 
-      - name: Build and run unit tests
+      - name: Build unit tests
         shell: cmd
         run: |
           set VCPKG_ROOT=%VCPKG_INSTALLATION_ROOT%
           cd tests
           qmake tests.pro
           nmake
-          echo === Deploy test exe ===
+
+      - name: Run unit tests
+        shell: cmd
+        run: |
+          cd tests
           windeployqt --release --no-translations build\OpenSankoreTests.exe
           copy "C:\Qt\6.8.3\msvc2022_64\plugins\platforms\qoffscreen.dll" build\platforms\ 2>NUL
           copy "C:\Qt\6.8.3\msvc2022_64\bin\Qt6Widgets.dll" build\ 2>NUL
-          echo === Running unit tests ===
           set QT_QPA_PLATFORM=offscreen
           build\OpenSankoreTests.exe -v2 -o build\test-results.txt,txt || ver>nul
-          echo Exit code: %ERRORLEVEL%
+          set TEST_EXIT=%ERRORLEVEL%
+          echo.
           echo === Test Results ===
           type build\test-results.txt
           echo === End Results ===
-          if %ERRORLEVEL% neq 0 (
-            echo FAILED: Unit tests returned %ERRORLEVEL%
-            exit /b %ERRORLEVEL%
+          echo.
+          if %TEST_EXIT% neq 0 (
+            echo FAILED: Unit tests returned %TEST_EXIT%
+            exit /b %TEST_EXIT%
           )
           echo All unit tests passed!
 
