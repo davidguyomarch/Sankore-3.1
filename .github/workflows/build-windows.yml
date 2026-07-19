@@ -107,16 +107,23 @@ jobs:
             Write-Error "Test executable not found!"
             exit 1
           }
+          $exeDir = $exe.DirectoryName
           # Deploy Qt DLLs next to test exe
           windeployqt --release --no-translations $exe.FullName
           # Copy OpenSSL DLLs
-          Copy-Item "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin\libcrypto-3-x64.dll" $exe.DirectoryName -ErrorAction SilentlyContinue
-          Copy-Item "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin\libssl-3-x64.dll" $exe.DirectoryName -ErrorAction SilentlyContinue
+          Copy-Item "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin\libcrypto-3-x64.dll" $exeDir -ErrorAction SilentlyContinue
+          Copy-Item "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin\libssl-3-x64.dll" $exeDir -ErrorAction SilentlyContinue
+          # Force-copy Qt6Widgets in case windeployqt missed it
+          Copy-Item "C:\Qt\6.8.3\msvc2022_64\bin\Qt6Widgets.dll" $exeDir -ErrorAction SilentlyContinue
+          Write-Host "=== DLLs in test dir ==="
+          Get-ChildItem $exeDir -Filter "*.dll" | ForEach-Object { Write-Host $_.Name }
           Write-Host "=== Running unit tests ==="
-          & $exe.FullName -v2
-          if ($LASTEXITCODE -ne 0) {
-            Write-Error "Unit tests FAILED with exit code $LASTEXITCODE"
-            exit $LASTEXITCODE
+          $proc = Start-Process -FilePath $exe.FullName -ArgumentList "-v2" -NoNewWindow -Wait -PassThru -RedirectStandardOutput "$exeDir\test-stdout.txt" -RedirectStandardError "$exeDir\test-stderr.txt"
+          Get-Content "$exeDir\test-stdout.txt" -ErrorAction SilentlyContinue
+          Get-Content "$exeDir\test-stderr.txt" -ErrorAction SilentlyContinue
+          if ($proc.ExitCode -ne 0) {
+            Write-Error "Unit tests FAILED with exit code $($proc.ExitCode)"
+            exit $proc.ExitCode
           }
           Write-Host "All unit tests passed!"
 
