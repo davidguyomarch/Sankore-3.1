@@ -110,6 +110,8 @@ jobs:
           $exeDir = $exe.DirectoryName
           # Deploy Qt DLLs next to test exe
           windeployqt --release --no-translations $exe.FullName
+          # Also copy offscreen platform plugin for headless execution
+          Copy-Item "C:\Qt\6.8.3\msvc2022_64\plugins\platforms\qoffscreen.dll" "$exeDir\platforms\" -ErrorAction SilentlyContinue
           Write-Host "=== Running unit tests ==="
           Set-Location $exeDir
           $env:QT_QPA_PLATFORM = "offscreen"
