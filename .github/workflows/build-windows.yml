@@ -108,8 +108,13 @@ jobs:
           copy "C:\Qt\6.8.3\msvc2022_64\bin\Qt6Widgets.dll" build\ 2>NUL
           echo === Running unit tests ===
           set QT_QPA_PLATFORM=offscreen
-          build\OpenSankoreTests.exe -v2
+          build\OpenSankoreTests.exe -v2 || ver>nul
           echo Exit code: %ERRORLEVEL%
+          if %ERRORLEVEL% neq 0 (
+            echo FAILED: Unit tests returned %ERRORLEVEL%
+            exit /b %ERRORLEVEL%
+          )
+          echo All unit tests passed!
 
       - name: Deploy Qt DLLs
         if: success()
