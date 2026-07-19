@@ -112,6 +112,7 @@ jobs:
           windeployqt --release --no-translations $exe.FullName
           Write-Host "=== Running unit tests ==="
           Set-Location $exeDir
+          $env:QT_QPA_PLATFORM = "offscreen"
           .\OpenSankoreTests.exe -v2
           $testExit = $LASTEXITCODE
           Write-Host "Exit code: $testExit"

@@ -4,7 +4,7 @@ TEMPLATE = app
 CONFIG += testcase console c++17
 CONFIG -= app_bundle
 
-QT += core gui widgets testlib
+QT += core gui testlib
 
 # Skip crypto tests on MSVC (OpenSSL DLL loading issues on CI)
 win32-msvc*: DEFINES += SKIP_CRYPTO_TESTS
