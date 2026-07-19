@@ -99,20 +99,19 @@ jobs:
         shell: pwsh
         run: |
           $env:VCPKG_ROOT = $env:VCPKG_INSTALLATION_ROOT
-          $env:PATH = "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin;$env:PATH"
           cd tests
           qmake tests.pro
           nmake
-          Write-Host "=== Looking for test exe ==="
-          Get-ChildItem -Recurse -Filter "OpenSankoreTests.exe" | ForEach-Object { Write-Host $_.FullName }
           $exe = Get-ChildItem -Recurse -Filter "OpenSankoreTests.exe" | Select-Object -First 1
           if (-not $exe) {
             Write-Error "Test executable not found!"
             exit 1
           }
-          $exeDir = $exe.DirectoryName
-          Copy-Item "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin\libcrypto-3-x64.dll" $exeDir -ErrorAction SilentlyContinue
-          Copy-Item "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin\libssl-3-x64.dll" $exeDir -ErrorAction SilentlyContinue
+          # Deploy Qt DLLs next to test exe
+          windeployqt --release --no-translations $exe.FullName
+          # Copy OpenSSL DLLs
+          Copy-Item "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin\libcrypto-3-x64.dll" $exe.DirectoryName -ErrorAction SilentlyContinue
+          Copy-Item "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin\libssl-3-x64.dll" $exe.DirectoryName -ErrorAction SilentlyContinue
           Write-Host "=== Running unit tests ==="
           & $exe.FullName -v2
           if ($LASTEXITCODE -ne 0) {
