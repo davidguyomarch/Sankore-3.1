@@ -126,8 +126,6 @@ jobs:
           }
 
       - name: Deploy Qt DLLs
-
-      - name: Deploy Qt DLLs
         if: success()
         shell: cmd
         run: |
