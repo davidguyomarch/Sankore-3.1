@@ -6,6 +6,9 @@ CONFIG -= app_bundle
 
 QT += core gui widgets testlib
 
+# Skip crypto tests on MSVC (OpenSSL DLL loading issues on CI)
+win32-msvc*: DEFINES += SKIP_CRYPTO_TESTS
+
 # Paths
 INCLUDEPATH += ../src
 INCLUDEPATH += .
@@ -28,8 +31,10 @@ HEADERS += stubs/UBFileSystemUtils_stub.h
 SOURCES += stubs/UBFileSystemUtils_stub.cpp
 
 # UBCryptoUtils stub (bypasses UBApplication singleton)
-HEADERS += stubs/UBCryptoUtils_stub.h
-SOURCES += stubs/UBCryptoUtils_stub.cpp
+!win32-msvc* {
+    HEADERS += stubs/UBCryptoUtils_stub.h
+    SOURCES += stubs/UBCryptoUtils_stub.cpp
+}
 
 # UBDocumentProxy stubs (UBSettings, UBFeature, UBDocumentManager, UBDocumentProxy)
 HEADERS += stubs/UBSettings_stub.h \
@@ -48,36 +53,32 @@ SOURCES += stubs/UBPlatformUtils_stub.cpp
 HEADERS += tst_UBStringUtils.h \
            tst_UBFileSystemUtils.h \
            tst_UBGeometryUtils.h \
-           tst_UBCryptoUtils.h \
            tst_UBDocumentProxy.h \
            tst_UBSettings.h
+
+!win32-msvc* {
+    HEADERS += tst_UBCryptoUtils.h
+}
 
 # Test sources
 SOURCES += main.cpp \
            tst_UBStringUtils.cpp \
            tst_UBFileSystemUtils.cpp \
            tst_UBGeometryUtils.cpp \
-           tst_UBCryptoUtils.cpp \
            tst_UBDocumentProxy.cpp \
            tst_UBSettings.cpp
+
+!win32-msvc* {
+    SOURCES += tst_UBCryptoUtils.cpp
+}
 
 # Build output
 DESTDIR = build
 OBJECTS_DIR = build/objects
 MOC_DIR = build/moc
 
-# OpenSSL for UBCryptoUtils
-win32-msvc* {
-    # On CI, VCPKG_ROOT is set; locally adjust as needed
-    VCPKG_ROOT_PATH = $$(VCPKG_ROOT)
-    !isEmpty(VCPKG_ROOT_PATH) {
-        INCLUDEPATH += $$VCPKG_ROOT_PATH/installed/x64-windows/include
-        LIBS += -L$$VCPKG_ROOT_PATH/installed/x64-windows/lib -llibcrypto
-    } else {
-        # Fallback: assume vcpkg default location
-        LIBS += -llibcrypto
-    }
-} else {
+# OpenSSL for UBCryptoUtils (Linux/Mac only — skipped on Windows CI)
+!win32-msvc* {
     LIBS += -lcrypto
 }
 
