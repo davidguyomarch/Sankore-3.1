@@ -291,13 +291,11 @@ int UBApplication::exec(const QString& pFileToImport)
     if (!webDbDir.exists(webDbPath))
         webDbDir.mkpath(webDbPath);
 
-
-    // WebEngine settings disabled - stubs crash on ARM64 emulation
-    // QWebEngineSettings *gs = QWebEngineProfile::defaultProfile()->settings();
-    // gs->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    // gs->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
-    // gs->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
-
+    // Configure WebEngine default settings
+    QWebEngineSettings *gs = QWebEngineProfile::defaultProfile()->settings();
+    gs->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+    gs->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
+    gs->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
 
     mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint);
     mainWindow->setAttribute(Qt::WA_NativeWindow, true);

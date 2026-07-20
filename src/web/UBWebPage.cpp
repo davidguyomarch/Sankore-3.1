@@ -26,20 +26,14 @@ UBWebPage::UBWebPage(QObject *parent)
     : QWebEnginePage(parent)
     , mPluginFactory(nullptr)
 {
-    mCachedUserAgentString = QStringLiteral("Mozilla/5.0 Open-Sankore/3.1");
 }
 
 UBWebPage::~UBWebPage()
 {
 }
 
-void UBWebPage::javaScriptConsoleMessage(const QString &message, int lineNumber, const QString &sourceID)
+void UBWebPage::javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID)
 {
+    Q_UNUSED(level);
     qDebug("JavaScript> %s (%s:%d)", qPrintable(message), qPrintable(sourceID), lineNumber);
-}
-
-QString UBWebPage::userAgentForUrl(const QUrl& url) const
-{
-    Q_UNUSED(url);
-    return mCachedUserAgentString;
 }

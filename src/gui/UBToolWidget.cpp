@@ -98,9 +98,8 @@ void UBToolWidget::initialize()
     }
 
 
-    // QWebEngineView disabled - stub crashes on paint
-    mWebView = nullptr;
-    // mWebView = new QWebEngineView(this);
+    // Create the embedded web view for HTML widgets
+    mWebView = new QWebEngineView(this);
 
     mFrameWidth = UBSettings::settings()->objectFrameWidth;
     mContentMargin = sClosePixmap->width() / 2 + mFrameWidth;

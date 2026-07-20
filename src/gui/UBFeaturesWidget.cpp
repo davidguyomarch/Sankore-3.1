@@ -943,13 +943,10 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     mpLayout = new QVBoxLayout();
     setLayout(mpLayout);
 
-    // QWebEngineView disabled - stub crashes on paint
-    mpView = nullptr;
+    mpView = new QWebEngineView(this);
     mpSankoreAPI = nullptr;
-    mpWebSettings = nullptr;
-    // mpView = new QWebEngineView(this);
-    // connect(mpView->page(), ...);
-    // mpLayout->addWidget(mpView);
+    mpWebSettings = mpView->page()->settings();
+    mpLayout->addWidget(mpView);
     mpLayout->setContentsMargins(0,0,0,0);
 
     connect(mpView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished(bool)));
