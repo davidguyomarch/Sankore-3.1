@@ -24,13 +24,26 @@ class QWebFrame : public QObject
     Q_OBJECT
 public:
     QWebFrame(QObject *parent = nullptr) : QObject(parent), m_page(nullptr) {}
-    void setPage(QWebEnginePage *page) { m_page = page; }
+    void setPage(QWebEnginePage *page) {
+        if (m_page) {
+            disconnect(m_page, nullptr, this, nullptr);
+        }
+        m_page = page;
+        if (m_page) {
+            // Emit javaScriptWindowObjectCleared on each page load (Qt5 WebKit behavior)
+            connect(m_page, &QWebEnginePage::loadFinished, this, [this](bool ok) {
+                if (ok) {
+                    emit javaScriptWindowObjectCleared();
+                    emit initialLayoutCompleted();
+                }
+            });
+        }
+    }
     void setScrollBarPolicy(Qt::Orientation, Qt::ScrollBarPolicy) {}
     QUrl url() const { return m_page ? m_page->url() : QUrl(); }
     void setUrl(const QUrl &url) { if (m_page) m_page->setUrl(url); }
     QString toHtml() const { return QString(); }
     QVariant evaluateJavaScript(const QString &script) {
-        // Async in Qt6 — this stub returns empty for compatibility
         if (m_page) m_page->runJavaScript(script);
         return QVariant();
     }
@@ -38,13 +51,14 @@ public:
         return evaluateJavaScript(script);
     }
     void addToJavaScriptWindowObject(const QString &, QObject *) {
-        // Qt6 uses QWebChannel instead — no direct equivalent
+        // Qt6 uses QWebChannel instead — TODO: implement with QWebChannel
     }
     QSize contentsSize() const {
         return m_page ? m_page->contentsSize().toSize() : QSize(800, 600);
     }
 signals:
     void javaScriptWindowObjectCleared();
+    void initialLayoutCompleted();
 private:
     QWebEnginePage *m_page;
 };
