@@ -135,7 +135,9 @@ jobs:
           copy C:\zlib\bin\zlib.dll build\win32\release\product\
           copy C:\vcpkg\installed\x64-windows\bin\libssl-3-x64.dll build\win32\release\product\
           copy C:\vcpkg\installed\x64-windows\bin\libcrypto-3-x64.dll build\win32\release\product\
-          REM Copy WebEngine resources (QtWebEngineProcess + data files)
+          REM Copy Qt6WebEngineCore.dll explicitly (windeployqt misses it)
+          if exist "C:\Qt\6.8.3\msvc2022_64\bin\Qt6WebEngineCore.dll" copy "C:\Qt\6.8.3\msvc2022_64\bin\Qt6WebEngineCore.dll" build\win32\release\product\
+          REM Copy WebEngine process and resources
           if exist "C:\Qt\6.8.3\msvc2022_64\bin\QtWebEngineProcess.exe" copy "C:\Qt\6.8.3\msvc2022_64\bin\QtWebEngineProcess.exe" build\win32\release\product\
           if exist "C:\Qt\6.8.3\msvc2022_64\resources" xcopy /E /I /Y "C:\Qt\6.8.3\msvc2022_64\resources" "build\win32\release\product\resources"
           if exist "C:\Qt\6.8.3\msvc2022_64\translations\qtwebengine_locales" xcopy /E /I /Y "C:\Qt\6.8.3\msvc2022_64\translations\qtwebengine_locales" "build\win32\release\product\translations\qtwebengine_locales"
