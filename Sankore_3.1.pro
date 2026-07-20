@@ -132,7 +132,7 @@ win32 {
    # CONFIG += qaxcontainer  # TODO: ActiveX not available on ARM64
    exists(console):CONFIG += console
    QMAKE_CXXFLAGS += /MP
-   QMAKE_CXXFLAGS_RELEASE += /Od /Zi
+   QMAKE_CXXFLAGS_RELEASE += /Zi
    QMAKE_LFLAGS_RELEASE += /DEBUG
    LIBS += $$(VCPKG_ROOT)/installed/x64-windows/lib/libssl.lib
    LIBS += $$(VCPKG_ROOT)/installed/x64-windows/lib/libcrypto.lib

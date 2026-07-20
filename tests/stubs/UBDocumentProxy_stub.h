@@ -122,7 +122,7 @@ inline bool operator==(const UBDocumentProxy &proxy1, const UBDocumentProxy &pro
     return proxy1.persistencePath() == proxy2.persistencePath();
 }
 
-inline uint qHash(const UBDocumentProxy &key)
+inline size_t qHash(const UBDocumentProxy &key)
 {
     return qHash(key.persistencePath());
 }

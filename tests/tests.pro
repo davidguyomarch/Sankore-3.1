@@ -68,14 +68,17 @@ MOC_DIR = build/moc
 
 # OpenSSL for UBCryptoUtils
 win32-msvc* {
-    # On CI, VCPKG_ROOT is set; locally adjust as needed
-    VCPKG_ROOT_PATH = $$(VCPKG_ROOT)
-    !isEmpty(VCPKG_ROOT_PATH) {
+    # Static linking to avoid DLL loading issues on CI
+    OPENSSL_STATIC_PATH = $$(VCPKG_ROOT)/installed/x64-windows-static
+    !isEmpty(OPENSSL_STATIC_PATH):exists($$OPENSSL_STATIC_PATH/lib/libcrypto.lib) {
+        INCLUDEPATH += $$OPENSSL_STATIC_PATH/include
+        LIBS += -L$$OPENSSL_STATIC_PATH/lib -llibcrypto
+        LIBS += -lws2_32 -lcrypt32 -ladvapi32 -luser32
+    } else {
+        # Fallback to dynamic
+        VCPKG_ROOT_PATH = $$(VCPKG_ROOT)
         INCLUDEPATH += $$VCPKG_ROOT_PATH/installed/x64-windows/include
         LIBS += -L$$VCPKG_ROOT_PATH/installed/x64-windows/lib -llibcrypto
-    } else {
-        # Fallback: assume vcpkg default location
-        LIBS += -llibcrypto
     }
 } else {
     LIBS += -lcrypto

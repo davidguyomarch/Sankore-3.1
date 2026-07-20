@@ -34,7 +34,7 @@ jobs:
       - name: Install OpenSSL via vcpkg
         shell: pwsh
         run: |
-          vcpkg install openssl:x64-windows
+          vcpkg install openssl:x64-windows openssl:x64-windows-static
           # Verify
           if (!(Test-Path "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\include\openssl\evp.h")) {
             Write-Error "OpenSSL headers not found!"
@@ -42,6 +42,8 @@ jobs:
           }
           Write-Host "=== vcpkg x64-windows lib ==="
           Get-ChildItem "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\lib\*.lib" | ForEach-Object { Write-Host $_.Name }
+          Write-Host "=== vcpkg x64-windows-static lib ==="
+          Get-ChildItem "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows-static\lib\*.lib" | ForEach-Object { Write-Host $_.Name }
           echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Build zlib from source
@@ -95,27 +97,34 @@ jobs:
           Write-Host "=== Looking for product dir ==="
           Get-ChildItem -Recurse -Path build -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -match "product" } | ForEach-Object { Write-Host $_.FullName }
 
-      - name: Build and run unit tests
-        shell: pwsh
+      - name: Build unit tests
+        shell: cmd
         run: |
-          $env:VCPKG_ROOT = $env:VCPKG_INSTALLATION_ROOT
+          set VCPKG_ROOT=%VCPKG_INSTALLATION_ROOT%
           cd tests
           qmake tests.pro
           nmake
-          Write-Host "=== Looking for test exe ==="
-          Get-ChildItem -Recurse -Filter "OpenSankoreTests.exe" | ForEach-Object { Write-Host $_.FullName }
-          $exe = Get-ChildItem -Recurse -Filter "OpenSankoreTests.exe" | Select-Object -First 1
-          if (-not $exe) {
-            Write-Error "Test executable not found!"
-            exit 1
-          }
-          Write-Host "=== Running unit tests ==="
-          & $exe.FullName
-          if ($LASTEXITCODE -ne 0) {
-            Write-Error "Unit tests FAILED with exit code $LASTEXITCODE"
-            exit $LASTEXITCODE
-          }
-          Write-Host "All unit tests passed!"
+
+      - name: Run unit tests
+        shell: cmd
+        run: |
+          cd tests
+          windeployqt --release --no-translations build\OpenSankoreTests.exe
+          copy "C:\Qt\6.8.3\msvc2022_64\plugins\platforms\qoffscreen.dll" build\platforms\ 2>NUL
+          copy "C:\Qt\6.8.3\msvc2022_64\bin\Qt6Widgets.dll" build\ 2>NUL
+          set QT_QPA_PLATFORM=offscreen
+          build\OpenSankoreTests.exe -v2 -o build\test-results.txt,txt || ver>nul
+          set TEST_EXIT=%ERRORLEVEL%
+          echo.
+          echo === Test Results ===
+          type build\test-results.txt
+          echo === End Results ===
+          echo.
+          if %TEST_EXIT% neq 0 (
+            echo FAILED: Unit tests returned %TEST_EXIT%
+            exit /b %TEST_EXIT%
+          )
+          echo All unit tests passed!
 
       - name: Deploy Qt DLLs
         if: success()
