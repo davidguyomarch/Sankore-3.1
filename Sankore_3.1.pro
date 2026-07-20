@@ -27,6 +27,7 @@ VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
 
 # TODO: QT += webenginewidgets (separate migration - not available on ARM64)
 QT += webenginewidgets
+QT += webchannel
 QT += svg
 QT += svgwidgets
 QT += network
