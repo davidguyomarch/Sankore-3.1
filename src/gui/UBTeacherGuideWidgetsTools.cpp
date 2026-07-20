@@ -29,10 +29,14 @@
 #include <QLabel>
 #include <QDebug>
 #include <QUrl>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineSettings>
+#endif
 #include <QApplication>
 #include <QDomElement>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEnginePage>
+#endif
 #include <QTextDocument>
 #include <QTextBlock>
 #include <QTextCursor>

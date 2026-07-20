@@ -27,7 +27,9 @@
 #include <QVBoxLayout>
 #include <QApplication>
 #include <QPainter>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
+#endif
 #include <QDir>
 #include <QRegularExpression>
 #include <QRandomGenerator>

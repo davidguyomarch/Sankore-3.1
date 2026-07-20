@@ -25,9 +25,13 @@ VERSION_RC = $$replace(VERSION_RC, "a", "160") # 0xA0
 VERSION_RC = $$replace(VERSION_RC, "b", "176") # 0xB0
 VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
 
-# TODO: QT += webenginewidgets (separate migration - not available on ARM64)
-QT += webenginewidgets
-QT += webchannel
+# WebEngine is optional — disable with CONFIG+=no_webengine on the qmake command line
+!CONFIG(no_webengine) {
+    QT += webenginewidgets webchannel
+    DEFINES += SANKORE_WEBENGINE
+} else {
+    message("Building WITHOUT QtWebEngine (lightweight mode)")
+}
 QT += svg
 QT += svgwidgets
 QT += network

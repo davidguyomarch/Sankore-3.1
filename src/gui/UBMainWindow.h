@@ -26,7 +26,9 @@
 
 #include <QMainWindow>
 #include <QWidget>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
+#endif
 #include <QMessageBox>
 #include "UBDownloadWidget.h"
 

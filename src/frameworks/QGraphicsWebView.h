@@ -1,10 +1,6 @@
 /**
  * @file QGraphicsWebView.h
- * @brief QGraphicsWebView replacement for Qt6 using QWebEngineView + QGraphicsProxyWidget.
- *
- * In Qt5, QGraphicsWebView was part of QtWebKit. In Qt6, there is no direct equivalent.
- * This class wraps a QWebEngineView inside a QGraphicsProxyWidget to provide the same
- * interface for embedding web content in a QGraphicsScene.
+ * @brief QGraphicsWebView for Qt6 — real WebEngine or stub depending on SANKORE_WEBENGINE.
  */
 #ifndef QGRAPHICSWEBVIEW_H
 #define QGRAPHICSWEBVIEW_H
@@ -13,6 +9,8 @@
 #include <QGraphicsProxyWidget>
 #include <QUrl>
 #include <QPainter>
+
+#ifdef SANKORE_WEBENGINE
 #include <QEventLoop>
 #include <QTimer>
 #include <QWebEngineView>
@@ -22,37 +20,40 @@
 #include <QWebChannel>
 #include <QWebEngineScript>
 #include <QWebEngineScriptCollection>
+#endif
 
-// Compatibility shim for QWebFrame (removed in Qt6)
-// Provides the same API surface using QWebChannel + QWebEnginePage
+// Forward declarations for non-WebEngine mode
+#ifndef SANKORE_WEBENGINE
+class QWebEnginePage;
+class QWebEngineSettings;
+class QWebEngineView;
+#endif
+
+// QWebFrame compatibility shim
 class QWebFrame : public QObject
 {
     Q_OBJECT
 public:
-    QWebFrame(QObject *parent = nullptr)
-        : QObject(parent), m_page(nullptr), m_channel(nullptr) {}
+    QWebFrame(QObject *parent = nullptr) : QObject(parent), m_page(nullptr)
+#ifdef SANKORE_WEBENGINE
+        , m_channel(nullptr)
+#endif
+    {}
 
+#ifdef SANKORE_WEBENGINE
     void setPage(QWebEnginePage *page) {
-        if (m_page) {
-            disconnect(m_page, nullptr, this, nullptr);
-        }
+        if (m_page) disconnect(m_page, nullptr, this, nullptr);
         m_page = page;
         if (m_page) {
-            // Setup QWebChannel for JS↔C++ communication
-            if (!m_channel) {
-                m_channel = new QWebChannel(this);
-            }
+            if (!m_channel) m_channel = new QWebChannel(this);
             m_page->setWebChannel(m_channel);
 
-            // Inject qwebchannel.js on every page load
             QWebEngineScript channelScript;
             channelScript.setName("qwebchannel");
             channelScript.setSourceCode(
                 "new QWebChannel(qt.webChannelTransport, function(channel) {"
                 "  window.__qt_webchannel_objects = channel.objects;"
-                "  for (var name in channel.objects) {"
-                "    window[name] = channel.objects[name];"
-                "  }"
+                "  for (var name in channel.objects) { window[name] = channel.objects[name]; }"
                 "});"
             );
             channelScript.setInjectionPoint(QWebEngineScript::DocumentReady);
@@ -60,7 +61,6 @@ public:
             channelScript.setRunsOnSubFrames(false);
             m_page->scripts().insert(channelScript);
 
-            // Emit signals on page load
             connect(m_page, &QWebEnginePage::loadFinished, this, [this](bool ok) {
                 if (ok) {
                     emit javaScriptWindowObjectCleared();
@@ -69,35 +69,22 @@ public:
             });
         }
     }
-
-    void setScrollBarPolicy(Qt::Orientation, Qt::ScrollBarPolicy) {}
-    QUrl url() const { return m_page ? m_page->url() : QUrl(); }
-    void setUrl(const QUrl &url) { if (m_page) m_page->setUrl(url); }
-    QString toHtml() const { return QString(); }
-
     QVariant evaluateJavaScript(const QString &script) {
-        if (!m_page) return QVariant();
-        // Fire-and-forget: execute JS without waiting for result
-        m_page->runJavaScript(script);
+        if (m_page) m_page->runJavaScript(script);
         return QVariant();
     }
-
     QVariant evaluateJavaScriptSync(const QString &script) {
         if (!m_page) return QVariant();
-        // Synchronous evaluation using a local event loop
         QVariant result;
         bool finished = false;
         m_page->runJavaScript(script, [&result, &finished](const QVariant &v) {
-            result = v;
-            finished = true;
+            result = v; finished = true;
         });
-        // Wait up to 1 second for the result
         if (!finished) {
             QEventLoop loop;
             QTimer timer;
             timer.setSingleShot(true);
             connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
-            // Use a polling approach since we can't connect to the lambda completion
             timer.start(1000);
             while (!finished && timer.isActive()) {
                 loop.processEvents(QEventLoop::AllEvents, 50);
@@ -105,7 +92,6 @@ public:
         }
         return result;
     }
-
     void addToJavaScriptWindowObject(const QString &name, QObject *object) {
         if (!m_channel) {
             m_channel = new QWebChannel(this);
@@ -113,10 +99,18 @@ public:
         }
         m_channel->registerObject(name, object);
     }
+#else
+    void setPage(QWebEnginePage *) {}
+    QVariant evaluateJavaScript(const QString &) { return QVariant(); }
+    QVariant evaluateJavaScriptSync(const QString &) { return QVariant(); }
+    void addToJavaScriptWindowObject(const QString &, QObject *) {}
+#endif
 
-    QSize contentsSize() const {
-        return m_page ? m_page->contentsSize().toSize() : QSize(800, 600);
-    }
+    void setScrollBarPolicy(Qt::Orientation, Qt::ScrollBarPolicy) {}
+    QUrl url() const { return m_url; }
+    void setUrl(const QUrl &url) { m_url = url; }
+    QString toHtml() const { return QString(); }
+    QSize contentsSize() const { return QSize(800, 600); }
 
 signals:
     void javaScriptWindowObjectCleared();
@@ -124,7 +118,10 @@ signals:
 
 private:
     QWebEnginePage *m_page;
+    QUrl m_url;
+#ifdef SANKORE_WEBENGINE
     QWebChannel *m_channel;
+#endif
 };
 
 class QGraphicsWebView : public QGraphicsWidget
@@ -135,40 +132,27 @@ public:
     explicit QGraphicsWebView(QGraphicsItem *parent = nullptr);
     virtual ~QGraphicsWebView();
 
-    // Page management
     QWebEnginePage* page() const;
     void setPage(QWebEnginePage *page);
-
-    // Frame compatibility (Qt5 shim)
     QWebFrame* mainFrame() const { return m_mainFrame; }
-
-    // Settings
     QWebEngineSettings* settings() const;
 
-    // URL/Content loading
     QUrl url() const;
     void setUrl(const QUrl &url);
     void load(const QUrl &url);
     void setHtml(const QString &html, const QUrl &baseUrl = QUrl());
-
-    // Title
     QString title() const;
-
-    // Zoom
     qreal zoomFactor() const;
     void setZoomFactor(qreal factor);
 
-    // QGraphicsWidget reimplementations
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
-    // Size management
     void resize(const QSizeF &size);
     void resize(qreal w, qreal h);
     QSizeF size() const { return QGraphicsWidget::size(); }
     void setMaximumSize(const QSizeF &size) { QGraphicsWidget::setMaximumSize(size); }
     void setMaximumSize(qreal w, qreal h) { QGraphicsWidget::setMaximumSize(w, h); }
 
-    // Type for qgraphicsitem_cast
     enum { Type = UserType + 100 };
     int type() const override { return Type; }
 
@@ -182,9 +166,13 @@ signals:
     void linkClicked(const QUrl &url);
 
 private:
+#ifdef SANKORE_WEBENGINE
     QWebEngineView *m_webView;
     QGraphicsProxyWidget *m_proxy;
+#endif
     QWebFrame *m_mainFrame;
+    QUrl m_url;
+    qreal m_zoomFactor;
 };
 
 #endif // QGRAPHICSWEBVIEW_H

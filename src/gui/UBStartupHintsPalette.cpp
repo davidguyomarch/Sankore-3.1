@@ -26,7 +26,9 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QCheckBox>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEnginePage>
+#endif
 #include "UBStartupHintsPalette.h"
 
 #include "globals/UBGlobals.h"

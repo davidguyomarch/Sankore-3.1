@@ -28,9 +28,15 @@
 #include <QApplication>
 #include <QPainter>
 #include <QStackedWidget>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
+#endif
+#ifdef SANKORE_WEBENGINE
 #include <QWebEnginePage>
+#endif
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineSettings>
+#endif
 
 #include "UBOEmbedParser.h"
 

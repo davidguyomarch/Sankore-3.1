@@ -26,7 +26,9 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
+#endif
 #include <QtSvg>
 #include <QGraphicsView>
 

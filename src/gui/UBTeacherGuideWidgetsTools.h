@@ -33,7 +33,9 @@
 #include <QLineEdit>
 #include <QMimeData>
 #include <QStackedWidget>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
+#endif
 #include <QFocusEvent>
 #include <QMouseEvent>
 

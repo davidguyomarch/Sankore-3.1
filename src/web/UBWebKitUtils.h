@@ -24,9 +24,15 @@
 #ifndef UBWEBKITUTILS_H_
 #define UBWEBKITUTILS_H_
 
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
+#endif
+#ifdef SANKORE_WEBENGINE
 #include <QWebEnginePage>
+#endif
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineSettings>
+#endif
 
 class UBWebKitUtils
 {

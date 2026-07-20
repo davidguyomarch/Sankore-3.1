@@ -48,12 +48,18 @@
 #include "api/UBWidgetUniboardAPI.h"
 #include "UBFeaturesActionBar.h"
 #include "UBRubberBand.h"
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
+#endif
 #include <QPushButton>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
+#endif
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineSettings>
+#endif
 #include "UBActionPalette.h"
 
 #define THUMBNAIL_WIDTH 400

@@ -22,8 +22,12 @@
 
 
 #include <QDomDocument>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineProfile>
+#endif
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
+#endif
 
 #include "UBFeaturesWidget.h"
 #include "gui/UBThumbnailWidget.h"

@@ -26,8 +26,11 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
 #include <QWebEngineProfile>
+#include <QWebEngineSettings>
+#endif
 #include <QDesktopServices>
 #include <QMenu>
 #include <QActionGroup>
@@ -292,10 +295,12 @@ int UBApplication::exec(const QString& pFileToImport)
         webDbDir.mkpath(webDbPath);
 
     // Configure WebEngine default settings
+#ifdef SANKORE_WEBENGINE
     QWebEngineSettings *gs = QWebEngineProfile::defaultProfile()->settings();
     gs->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     gs->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
     gs->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
+#endif
 
     mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint);
     mainWindow->setAttribute(Qt::WA_NativeWindow, true);

@@ -70,11 +70,17 @@
 
 #include <QWidget>
 #include <QApplication>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineSettings>
+#endif
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineProfile>
+#endif
 #include <algorithm>
 #include <QPainter>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
+#endif
 
 
 static const unsigned int JAR_VERSION = 23;

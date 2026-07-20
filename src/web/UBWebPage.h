@@ -29,7 +29,9 @@
  */
 
 #include <QtCore>
+#ifdef SANKORE_WEBENGINE
 #include <QWebEnginePage>
+#endif
 
 class UBWebPage : public QWebEnginePage
 {

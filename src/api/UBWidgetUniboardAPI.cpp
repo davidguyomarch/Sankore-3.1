@@ -23,7 +23,9 @@
 
 #include "UBWidgetUniboardAPI.h"
 
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
+#endif
 #include <QDomDocument>
 #include <QWidget>
 #include <QApplication>

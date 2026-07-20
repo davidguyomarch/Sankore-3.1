@@ -28,7 +28,9 @@ class QCheckBox;
 class QVBoxLayout;
 class QHBoxLayout;
 
+#ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
+#endif
 
 #include "UBFloatingPalette.h"
 #include "api/UBWidgetUniboardAPI.h"
