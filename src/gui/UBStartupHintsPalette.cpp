@@ -48,8 +48,7 @@ UBStartupHintsPalette::UBStartupHintsPalette(QWidget *parent) :
         QString url = UBSettings::settings()->applicationStartupHintsDirectory() + "/index.html";
         mpWebView = new QWebEngineView(this);
         mpSankoreAPI = new UBWidgetUniboardAPI(0);
-        // TODO: Use QWebChannel: //"sankore", mpSankoreAPI);
-        connect(mpWebView->page(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
+        // TODO: Use QWebChannel to inject "sankore" API into JavaScript
         mpWebView->setUrl(QUrl::fromLocalFile(url));
         mpWebView->setAcceptDrops(false);
         mLayout->addWidget(mpWebView);
