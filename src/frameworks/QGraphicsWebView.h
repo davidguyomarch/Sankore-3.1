@@ -101,6 +101,7 @@ public:
     void resize(const QSizeF &size);
     void resize(qreal w, qreal h);
     QSizeF size() const { return QGraphicsWidget::size(); }
+    void setMaximumSize(const QSizeF &size) { QGraphicsWidget::setMaximumSize(size); }
     void setMaximumSize(qreal w, qreal h) { QGraphicsWidget::setMaximumSize(w, h); }
 
     // Type for qgraphicsitem_cast
