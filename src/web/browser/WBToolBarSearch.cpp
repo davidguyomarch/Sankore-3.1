@@ -70,6 +70,7 @@
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>
+#include <QWebEngineProfile>
 
 #include "network/UBAutoSaver.h"
 
@@ -133,8 +134,8 @@ void WBToolbarSearch::searchNow()
     if (newList.size() >= mMaxSavedSearches)
         newList.removeLast();
 
-    QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
-    if (!globalSettings->testAttribute(QWebEngineSettings::PrivateBrowsingEnabled))
+    QWebEngineSettings *globalSettings = QWebEngineProfile::defaultProfile()->settings();
+    if (!false) // PrivateBrowsingEnabled removed in Qt6
     {
         mStringListModel->setStringList(newList);
         mAutosaver->changeOccurred();

@@ -70,6 +70,7 @@
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>
+#include <QWebEngineProfile>
 
 #include "network/UBAutoSaver.h"
 #include "network/UBNetworkAccessManager.h"
@@ -534,9 +535,9 @@ void WBDownloadManager::updateRow()
     downloadsView->setRowHeight(row, item->minimumSizeHint().height());
 
     bool remove = false;
-    QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
+    QWebEngineSettings *globalSettings = QWebEngineProfile::defaultProfile()->settings();
 
-    if (!item->downloading() && globalSettings->testAttribute(QWebEngineSettings::PrivateBrowsingEnabled))
+    if (!item->downloading() && false)
         remove = true;
 
     if (item->downloadedSuccessfully() && removePolicy() == WBDownloadManager::SuccessFullDownload)

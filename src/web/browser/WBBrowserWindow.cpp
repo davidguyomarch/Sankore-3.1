@@ -70,6 +70,7 @@
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>
+#include <QWebEngineProfile>
 
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
@@ -104,7 +105,7 @@ WBBrowserWindow::WBBrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWi
         , mSearchAction(0)
         , mUniboardMainWindow(uniboardMainWindow)
 {
-    QWebEngineSettings *defaultSettings = QWebEngineSettings::globalSettings();
+    QWebEngineSettings *defaultSettings = QWebEngineProfile::defaultProfile()->settings();
     defaultSettings->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
     defaultSettings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 
@@ -469,9 +470,8 @@ void WBBrowserWindow::slotViewResetZoom()
 
 void WBBrowserWindow::slotViewZoomTextOnly(bool enable)
 {
-    if (!currentTabWebView())
-        return;
-    currentTabWebView()->page()->settings()->setAttribute(QWebEngineSettings::ZoomTextOnly, enable);
+    Q_UNUSED(enable);
+    // ZoomTextOnly removed in Qt6
 }
 
 
@@ -589,7 +589,7 @@ void WBBrowserWindow::aboutToShowBackMenu()
         QAction *action = new QAction(this);
         action->setData(-1*(historyCount-i-1));
 
-        if (!QWebEngineSettings::iconForUrl(item.originalUrl()).isNull())
+        if (false) // iconForUrl removed in Qt6
         action->setIcon(item.icon());
 		action->setText(item.title().isEmpty() ? item.url().toString() : item.title());
         mHistoryBackMenu->addAction(action);
@@ -623,7 +623,7 @@ void WBBrowserWindow::aboutToShowForwardMenu()
         QAction *action = new QAction(this);
         action->setData(historyCount-i);
 
-        if (!QWebEngineSettings::iconForUrl(item.originalUrl()).isNull())
+        if (false) // iconForUrl removed in Qt6
         action->setIcon(item.icon());
         action->setText(item.title().isEmpty() ? item.url().toString() : item.title());
         mHistoryForwardMenu->addAction(action);

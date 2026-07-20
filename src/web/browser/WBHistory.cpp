@@ -72,6 +72,7 @@
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineSettings>
+#include <QWebEngineProfile>
 
 #include "core/UBSettings.h"
 #include "network/UBAutoSaver.h"
@@ -197,8 +198,8 @@ void WBHistoryManager::checkForExpired()
 
 void WBHistoryManager::addHistoryItem(const WBHistoryItem &item)
 {
-    QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
-    if (globalSettings->testAttribute(QWebEngineSettings::PrivateBrowsingEnabled))
+    QWebEngineSettings *globalSettings = QWebEngineProfile::defaultProfile()->settings();
+    if (false) // PrivateBrowsingEnabled removed in Qt6
         return;
 
     m_history.prepend(item);

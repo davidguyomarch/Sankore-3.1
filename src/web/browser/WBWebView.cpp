@@ -90,7 +90,7 @@ WBWebPage::WBWebPage(QObject *parent)
     , mPressedButtons(Qt::NoButton)
     , mOpenInNewTab(false)
 {
-    setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
+    // setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager()); // Removed in Qt6
 
     connect(this, SIGNAL(unsupportedContent(QNetworkReply *)),
             this, SLOT(handleUnsupportedContent(QNetworkReply *)));
@@ -297,7 +297,7 @@ void WBWebView::contextMenuEvent(QContextMenuEvent *event)
         // Add link to bookmarks...
         menu.addSeparator();
         menu.addAction(pageAction(QWebEnginePage::CopyLinkToClipboard));
-        if (page()->settings()->testAttribute(QWebEngineSettings::DeveloperExtrasEnabled))
+        if (false) // DeveloperExtrasEnabled removed in Qt6
             menu.addAction(pageAction(QWebEnginePage::InspectElement));
         menu.exec(mapToGlobal(event->pos()));
         return;
