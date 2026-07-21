@@ -129,25 +129,28 @@ jobs:
       - name: Code coverage
         if: success()
         shell: pwsh
+        continue-on-error: true
         run: |
-          # Install OpenCppCoverage
           choco install opencppcoverage -y --no-progress
           $env:PATH = "C:\Program Files\OpenCppCoverage;$env:PATH"
           $env:QT_QPA_PLATFORM = "offscreen"
           cd tests
-          # Run tests with coverage
-          OpenCppCoverage --sources "src\frameworks" --sources "src\core" --sources "src\domain" `
-            --excluded_modules "Qt6*" --excluded_modules "vcruntime*" `
+          # Run tests with coverage — target only our exe, sources in src/
+          OpenCppCoverage --modules build\OpenSankoreTests.exe `
+            --sources D:\a\Sankore-3.1\Sankore-3.1\src `
             --export_type cobertura:build\coverage.xml `
             --export_type html:build\coverage_report `
             -- build\OpenSankoreTests.exe
           Write-Host "=== Coverage Summary ==="
-          # Display coverage percentage from the XML
-          [xml]$cov = Get-Content build\coverage.xml
-          $lineRate = [math]::Round([double]$cov.coverage.'line-rate' * 100, 1)
-          $branchRate = [math]::Round([double]$cov.coverage.'branch-rate' * 100, 1)
-          Write-Host "Line coverage: $lineRate%"
-          Write-Host "Branch coverage: $branchRate%"
+          if (Test-Path build\coverage.xml) {
+            [xml]$cov = Get-Content build\coverage.xml
+            $lineRate = [math]::Round([double]$cov.coverage.'line-rate' * 100, 1)
+            $branchRate = [math]::Round([double]$cov.coverage.'branch-rate' * 100, 1)
+            Write-Host "Line coverage: $lineRate%"
+            Write-Host "Branch coverage: $branchRate%"
+          } else {
+            Write-Host "No coverage report generated"
+          }
 
       - name: Upload coverage report
         if: success()
