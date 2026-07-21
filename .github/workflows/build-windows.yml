@@ -135,12 +135,13 @@ jobs:
           $env:PATH = "C:\Program Files\OpenCppCoverage;$env:PATH"
           $env:QT_QPA_PLATFORM = "offscreen"
           cd tests
-          # Run tests with coverage — target only our exe, sources in src/
-          OpenCppCoverage --modules build\OpenSankoreTests.exe `
-            --sources D:\a\Sankore-3.1\Sankore-3.1\src `
-            --export_type cobertura:build\coverage.xml `
-            --export_type html:build\coverage_report `
-            -- build\OpenSankoreTests.exe
+          # Run tests with coverage — use absolute exe path and relative sources
+          $exePath = (Resolve-Path build\OpenSankoreTests.exe).Path
+          OpenCppCoverage --modules $exePath `
+            --sources src\frameworks --sources src\core --sources stubs `
+            --export_type "cobertura:build\coverage.xml" `
+            --export_type "html:build\coverage_report" `
+            -- $exePath
           Write-Host "=== Coverage Summary ==="
           if (Test-Path build\coverage.xml) {
             [xml]$cov = Get-Content build\coverage.xml
