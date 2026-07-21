@@ -126,6 +126,37 @@ jobs:
           )
           echo All unit tests passed!
 
+      - name: Code coverage
+        if: success()
+        shell: pwsh
+        run: |
+          # Install OpenCppCoverage
+          choco install opencppcoverage -y --no-progress
+          $env:PATH = "C:\Program Files\OpenCppCoverage;$env:PATH"
+          $env:QT_QPA_PLATFORM = "offscreen"
+          cd tests
+          # Run tests with coverage
+          OpenCppCoverage --sources "src\frameworks" --sources "src\core" --sources "src\domain" `
+            --excluded_modules "Qt6*" --excluded_modules "vcruntime*" `
+            --export_type cobertura:build\coverage.xml `
+            --export_type html:build\coverage_report `
+            -- build\OpenSankoreTests.exe
+          Write-Host "=== Coverage Summary ==="
+          # Display coverage percentage from the XML
+          [xml]$cov = Get-Content build\coverage.xml
+          $lineRate = [math]::Round([double]$cov.coverage.'line-rate' * 100, 1)
+          $branchRate = [math]::Round([double]$cov.coverage.'branch-rate' * 100, 1)
+          Write-Host "Line coverage: $lineRate%"
+          Write-Host "Branch coverage: $branchRate%"
+
+      - name: Upload coverage report
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: tests/build/coverage_report/
+          if-no-files-found: warn
+
       - name: Deploy Qt DLLs
         if: success()
         shell: cmd
