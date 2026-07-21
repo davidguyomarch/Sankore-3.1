@@ -1,0 +1,69 @@
+name: Build Linux x64
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            qt6-base-dev \
+            qt6-base-dev-tools \
+            libqt6svg6-dev \
+            qt6-svg-dev \
+            qt6-multimedia-dev \
+            qt6-tools-dev \
+            qt6-tools-dev-tools \
+            qt6-l10n-tools \
+            libqt6opengl6-dev \
+            libgl1-mesa-dev \
+            libssl-dev \
+            zlib1g-dev \
+            libx11-dev \
+            libquazip1-qt6-dev \
+            libomp-dev \
+            qmake6 \
+            pkg-config
+
+      - name: Generate git version header
+        run: |
+          echo "#define GIT_COMMIT \"$(git rev-parse --short HEAD)\"" > src/core/git_version.h
+
+      - name: Run qmake
+        run: |
+          mkdir -p build/linux/release/moc build/linux/release/objects build/linux/release/rcc build/linux/release/ui build/linux/release/product
+          qmake6 Sankore_3.1.pro CONFIG+=no_webengine
+
+      - name: Build
+        run: |
+          make -j$(nproc)
+
+      - name: List build output
+        if: always()
+        run: |
+          find build -name "Open-Sankore*" -o -name "*.so" 2>/dev/null || echo "No output found"
+          ls -la build/linux/release/product/ 2>/dev/null || echo "Product dir not found"
+
+      - name: Upload artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Open-Sankore-Linux-x64
+          path: build/linux/release/product/
+          if-no-files-found: warn
