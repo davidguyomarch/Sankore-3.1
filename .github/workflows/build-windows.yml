@@ -133,34 +133,30 @@ jobs:
         run: |
           $env:QT_QPA_PLATFORM = "offscreen"
           cd tests
-          # Use VS Enterprise CodeCoverage (already installed on runner)
           $coverageTool = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe"
           $exePath = (Resolve-Path build\OpenSankoreTests.exe).Path
-          if (Test-Path $coverageTool) {
-            Write-Host "=== Running tests with VS Coverage ==="
-            & $coverageTool instrument $exePath
-            & $exePath
-            & $coverageTool collect --output build\coverage.coverage -- $exePath
-            # Convert to XML for reporting
-            & $coverageTool merge --output build\coverage.xml --output-format cobertura build\coverage.coverage
-            Write-Host "=== Coverage Summary ==="
-            if (Test-Path build\coverage.xml) {
-              [xml]$cov = Get-Content build\coverage.xml
-              $lineRate = [math]::Round([double]$cov.coverage.'line-rate' * 100, 1)
-              Write-Host "Line coverage: $lineRate%"
-            }
-          } else {
-            Write-Host "VS Coverage tool not found at expected path, skipping"
+          if (-not (Test-Path $coverageTool)) {
+            Write-Host "VS Coverage tool not found, skipping"
+            exit 0
           }
+          Write-Host "=== Running tests with VS Coverage ==="
+          & $coverageTool instrument $exePath
+          & $coverageTool collect --output build\coverage.coverage -- $exePath
+          & $coverageTool merge --output build\coverage.xml --output-format cobertura build\coverage.coverage
           Write-Host "=== Coverage Summary ==="
           if (Test-Path build\coverage.xml) {
             [xml]$cov = Get-Content build\coverage.xml
-            $lineRate = [math]::Round([double]$cov.coverage.'line-rate' * 100, 1)
-            $branchRate = [math]::Round([double]$cov.coverage.'branch-rate' * 100, 1)
-            Write-Host "Line coverage: $lineRate%"
-            Write-Host "Branch coverage: $branchRate%"
+            $linesValid = [int]$cov.coverage.'lines-valid'
+            $linesCovered = [int]$cov.coverage.'lines-covered'
+            Write-Host "Lines covered: $linesCovered / $linesValid"
+            if ($linesValid -gt 0) {
+              $lineRate = [math]::Round($linesCovered * 100.0 / $linesValid, 1)
+              Write-Host "Line coverage: $lineRate%"
+            } else {
+              Write-Host "WARNING: 0 lines instrumented (binary could not be instrumented)"
+            }
           } else {
-            Write-Host "No coverage report generated"
+            Write-Host "No coverage.xml generated"
           }
 
       - name: Upload coverage report
