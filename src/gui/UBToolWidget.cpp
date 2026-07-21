@@ -208,6 +208,7 @@ void UBToolWidget::paintEvent(QPaintEvent *event)
 
 void UBToolWidget::javaScriptWindowObjectCleared()
 {
+#ifdef SANKORE_WEBENGINE
     UBWidgetUniboardAPI *uniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene(), mToolWidget);
 
     mWebView->page()->runJavaScript(QString("window.sankore = {};"));
@@ -217,6 +218,7 @@ void UBToolWidget::javaScriptWindowObjectCleared()
     {
         mWebView->page()->runJavaScript(QString("window.widget = {};"));
     }
+#endif
 }
 
 void UBToolWidget::reactOnBoardChanged()
