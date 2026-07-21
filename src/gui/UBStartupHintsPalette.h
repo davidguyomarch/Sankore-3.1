@@ -59,7 +59,11 @@ private:
     QVBoxLayout* mLayout;
     QHBoxLayout* mButtonLayout;
     UBWidgetUniboardAPI *mpSankoreAPI;
+#ifdef SANKORE_WEBENGINE
     QWebEngineView * mpWebView;
+#else
+    QWidget* mpWebView;
+#endif
 
 private slots:
     void onShowNextTimeStateChanged(int state);

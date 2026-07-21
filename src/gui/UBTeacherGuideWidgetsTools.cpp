@@ -493,7 +493,12 @@ void UBTGAdaptableText::setCursorToTheEnd()
 /***************************************************************************
  *                      class   UBTGDraggableWeb                           *
  ***************************************************************************/
-UBDraggableWeb::UBDraggableWeb(QString& relativePath, QWidget* parent): QWebEngineView(parent)
+UBDraggableWeb::UBDraggableWeb(QString& relativePath, QWidget* parent):
+#ifdef SANKORE_WEBENGINE
+    QWebEngineView(parent)
+#else
+    QWidget(parent)
+#endif
   , mDragStartPosition(QPoint(-1,-1))
   , mDragStarted(false)
 
@@ -502,20 +507,27 @@ UBDraggableWeb::UBDraggableWeb(QString& relativePath, QWidget* parent): QWebEngi
         mRelativePath = QUrl::fromLocalFile(relativePath).toString();
     else
         mRelativePath = relativePath;
-    //NOOP
 }
 
 void UBDraggableWeb::mousePressEvent(QMouseEvent* event)
 {
     mDragStartPosition = event->pos();
     mDragStarted = true;
+#ifdef SANKORE_WEBENGINE
     QWebEngineView::mousePressEvent(event);
+#else
+    QWidget::mousePressEvent(event);
+#endif
 }
 
 void UBDraggableWeb::mouseReleaseEvent(QMouseEvent* event)
 {
     mDragStarted = false;
+#ifdef SANKORE_WEBENGINE
     QWebEngineView::mouseReleaseEvent(event);
+#else
+    QWidget::mouseReleaseEvent(event);
+#endif
 }
 
 void UBDraggableWeb::mouseMoveEvent(QMouseEvent* event)
@@ -532,9 +544,13 @@ void UBDraggableWeb::mouseMoveEvent(QMouseEvent* event)
         event->accept();
         mDragStarted = false;
     }
-    else
+    else {
+#ifdef SANKORE_WEBENGINE
         QWebEngineView::mouseMoveEvent(event);
-
+#else
+        QWidget::mouseMoveEvent(event);
+#endif
+    }
 }
 
 /***************************************************************************

@@ -65,7 +65,11 @@ class UBWebController : public QObject
 
         void loadUrl(const QUrl& url);
 
+#ifdef SANKORE_WEBENGINE
         QWebEngineView* createNewTab();
+#else
+        void* createNewTab();
+#endif
 
         QUrl currentPageUrl() const;
 

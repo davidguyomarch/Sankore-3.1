@@ -184,7 +184,12 @@ private:
 };
 
 
-class UBDraggableWeb : public QWebEngineView
+class UBDraggableWeb : public
+#ifdef SANKORE_WEBENGINE
+    QWebEngineView
+#else
+    QWidget
+#endif
 {
     Q_OBJECT
 public:

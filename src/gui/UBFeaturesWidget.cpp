@@ -947,13 +947,18 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     mpLayout = new QVBoxLayout();
     setLayout(mpLayout);
 
+#ifdef SANKORE_WEBENGINE
     mpView = new QWebEngineView(this);
     mpSankoreAPI = nullptr;
     mpWebSettings = mpView->page()->settings();
     mpLayout->addWidget(mpView);
-    mpLayout->setContentsMargins(0,0,0,0);
-
     connect(mpView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished(bool)));
+#else
+    mpView = nullptr;
+    mpSankoreAPI = nullptr;
+    mpWebSettings = nullptr;
+#endif
+    mpLayout->setContentsMargins(0,0,0,0);
 }
 
 UBFeaturesWebView::~UBFeaturesWebView()

@@ -99,7 +99,11 @@ void UBToolWidget::initialize()
 
 
     // Create the embedded web view for HTML widgets
+#ifdef SANKORE_WEBENGINE
     mWebView = new QWebEngineView(this);
+#else
+    mWebView = nullptr;
+#endif
 
     mFrameWidth = UBSettings::settings()->objectFrameWidth;
     mContentMargin = sClosePixmap->width() / 2 + mFrameWidth;
@@ -108,14 +112,13 @@ void UBToolWidget::initialize()
 
     setFixedSize(mToolWidget->boundingRect().width() + mContentMargin * 2, mToolWidget->boundingRect().height() + mContentMargin * 2);
 
+#ifdef SANKORE_WEBENGINE
     connect(mWebView->page(), SIGNAL(loadFinished(bool)), this, SLOT(javaScriptWindowObjectCleared()));
     mWebView->load(mToolWidget->mainHtml());
-
-
     mWebView->setAcceptDrops(false);
     mWebView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     mWebView->setAttribute(Qt::WA_OpaquePaintEvent, false);
-
+#endif
 
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(javaScriptWindowObjectCleared()));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(reactOnBoardChanged()));

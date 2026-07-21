@@ -48,11 +48,15 @@ UBStartupHintsPalette::UBStartupHintsPalette(QWidget *parent) :
         mLayout->setContentsMargins(10,28,10,10);
         setLayout(mLayout);
         QString url = UBSettings::settings()->applicationStartupHintsDirectory() + "/index.html";
+#ifdef SANKORE_WEBENGINE
         mpWebView = new QWebEngineView(this);
         mpSankoreAPI = new UBWidgetUniboardAPI(0);
-        // TODO: Use QWebChannel to inject "sankore" API into JavaScript
         mpWebView->setUrl(QUrl::fromLocalFile(url));
         mpWebView->setAcceptDrops(false);
+#else
+        mpWebView = nullptr;
+        mpSankoreAPI = nullptr;
+#endif
         mLayout->addWidget(mpWebView);
         mButtonLayout = new QHBoxLayout();
         mLayout->addLayout(mButtonLayout);

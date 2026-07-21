@@ -386,8 +386,13 @@ private slots:
     void javaScriptWindowObjectCleared();
 
 private:
+#ifdef SANKORE_WEBENGINE
     QWebEngineView * mpView;
     QWebEngineSettings* mpWebSettings;
+#else
+    QWidget* mpView;
+    void* mpWebSettings;
+#endif
     QVBoxLayout* mpLayout;
     UBWidgetUniboardAPI* mpSankoreAPI;
 };
