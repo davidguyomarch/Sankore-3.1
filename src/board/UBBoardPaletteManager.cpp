@@ -873,7 +873,9 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
             {
                 mAddItemPalette->setParent(UBApplication::mainWindow);
 
+#ifdef SANKORE_WEBENGINE
                 mRightPalette->assignParent(UBApplication::webController->GetCurrentWebBrowser());
+#endif
                 mRightPalette->setVisible(rightPaletteVisible);
 
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != nullptr)
