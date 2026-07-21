@@ -131,22 +131,27 @@ jobs:
         shell: pwsh
         continue-on-error: true
         run: |
-          choco install opencppcoverage -y --no-progress
-          $env:PATH = "C:\Program Files\OpenCppCoverage;$env:PATH"
           $env:QT_QPA_PLATFORM = "offscreen"
           cd tests
-          # Run tests with coverage
+          # Use VS Enterprise CodeCoverage (already installed on runner)
+          $coverageTool = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe"
           $exePath = (Resolve-Path build\OpenSankoreTests.exe).Path
-          $srcRoot = (Resolve-Path ..\src).Path
-          $stubsRoot = (Resolve-Path stubs).Path
-          # Use --continue_after_cpp_exception to get coverage even when tests fail
-          OpenCppCoverage --modules $exePath `
-            --sources $srcRoot --sources $stubsRoot `
-            --optimized_build --continue_after_cpp_exception `
-            --export_type "cobertura:build\coverage.xml" `
-            --export_type "html:build\coverage_report" `
-            -- $exePath
-          Write-Host "OpenCppCoverage exit: $LASTEXITCODE"
+          if (Test-Path $coverageTool) {
+            Write-Host "=== Running tests with VS Coverage ==="
+            & $coverageTool instrument $exePath
+            & $exePath
+            & $coverageTool collect --output build\coverage.coverage -- $exePath
+            # Convert to XML for reporting
+            & $coverageTool merge --output build\coverage.xml --output-format cobertura build\coverage.coverage
+            Write-Host "=== Coverage Summary ==="
+            if (Test-Path build\coverage.xml) {
+              [xml]$cov = Get-Content build\coverage.xml
+              $lineRate = [math]::Round([double]$cov.coverage.'line-rate' * 100, 1)
+              Write-Host "Line coverage: $lineRate%"
+            }
+          } else {
+            Write-Host "VS Coverage tool not found at expected path, skipping"
+          }
           Write-Host "=== Coverage Summary ==="
           if (Test-Path build\coverage.xml) {
             [xml]$cov = Get-Content build\coverage.xml
@@ -163,7 +168,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: tests/build/coverage_report/
+          path: tests/build/coverage.xml
           if-no-files-found: warn
 
       - name: Deploy Qt DLLs
