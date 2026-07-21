@@ -691,10 +691,14 @@ void UBPodcastController::applicationDesktopMode(bool displayed)
 
 void UBPodcastController::webActiveWebPageChanged(WBWebView* pWebView)
 {
+#ifdef SANKORE_WEBENGINE
     if(UBApplication::applicationController->displayMode() == UBApplicationController::Internet)
     {
          setSourceWidget(pWebView);
     }
+#else
+    Q_UNUSED(pWebView);
+#endif
 }
 
 
