@@ -139,11 +139,14 @@ jobs:
           $exePath = (Resolve-Path build\OpenSankoreTests.exe).Path
           $srcRoot = (Resolve-Path ..\src).Path
           $stubsRoot = (Resolve-Path stubs).Path
+          # Use --continue_after_cpp_exception to get coverage even when tests fail
           OpenCppCoverage --modules $exePath `
             --sources $srcRoot --sources $stubsRoot `
+            --optimized_build --continue_after_cpp_exception `
             --export_type "cobertura:build\coverage.xml" `
             --export_type "html:build\coverage_report" `
             -- $exePath
+          Write-Host "OpenCppCoverage exit: $LASTEXITCODE"
           Write-Host "=== Coverage Summary ==="
           if (Test-Path build\coverage.xml) {
             [xml]$cov = Get-Content build\coverage.xml
