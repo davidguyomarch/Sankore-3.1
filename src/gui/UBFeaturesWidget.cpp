@@ -1016,7 +1016,9 @@ void UBFeaturesWebView::showElement(const UBFeature &elem)
         }
     }
 
+#ifdef SANKORE_WEBENGINE
     mpView->load(QUrl::fromLocalFile(QString("%0/%1").arg(path).arg(qsWidgetName)));
+#endif
 }
 
 void UBFeaturesWebView::onLoadFinished(bool ok)

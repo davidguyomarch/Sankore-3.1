@@ -751,12 +751,14 @@ void UBTGMediaWidget::hideEvent(QHideEvent* event)
 void UBTGMediaWidget::showEvent(QShowEvent* event)
 {
     QWidget::showEvent(event);
+#ifdef SANKORE_WEBENGINE
     if(mpWebView){
         QString indexPath = mMediaPath+"/index.htm";
         if(!QFile::exists(indexPath))
             indexPath += "l";
         mpWebView->load(QUrl::fromLocalFile(indexPath));
     }
+#endif
 }
 
 tUBGEElementNode* UBTGMediaWidget::saveData()
@@ -811,17 +813,15 @@ void UBTGMediaWidget::createWorkWidget(bool forceFlashMediaType)
         }
         mpWebView = new UBDraggableWeb(mMediaPath);
         mpWebView->setAcceptDrops(false);
-    // JavaEnabled removed in Qt6
+#ifdef SANKORE_WEBENGINE
         mpWebView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    // LocalStorageDatabaseEnabled removed in Qt6
-    // OfflineWebApplicationCacheEnabled removed in Qt6
-    // OfflineStorageDatabaseEnabled removed in Qt6
         mpWebView->settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
         mpWebView->settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
         QString indexPath = mMediaPath+"/index.htm";
         if(!QFile::exists(indexPath))
             indexPath += "l";
         mpWebView->load(QUrl::fromLocalFile(indexPath));
+#endif
     }
     else if(mimeType.contains("x-shockwave-flash") || forceFlashMediaType){
         mMediaType = "flash";
@@ -832,17 +832,15 @@ void UBTGMediaWidget::createWorkWidget(bool forceFlashMediaType)
         qDebug() << mMediaPath;
         mpWebView = new UBDraggableWeb(mMediaPath);
         mpWebView->setAcceptDrops(false);
-    // JavaEnabled removed in Qt6
+#ifdef SANKORE_WEBENGINE
         mpWebView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    // LocalStorageDatabaseEnabled removed in Qt6
-    // OfflineWebApplicationCacheEnabled removed in Qt6
-    // OfflineStorageDatabaseEnabled removed in Qt6
         mpWebView->settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
         mpWebView->settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
         QString indexPath = mMediaPath+"/index.htm";
         if(!QFile::exists(indexPath))
             indexPath += "l";
         mpWebView->load(QUrl::fromLocalFile(indexPath));
+#endif
     }
     else{
         qDebug() << "createWorkWidget mime type not handled" << mimeType;
