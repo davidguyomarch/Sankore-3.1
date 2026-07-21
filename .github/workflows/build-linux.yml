@@ -60,10 +60,32 @@ jobs:
           find build -name "Open-Sankore*" -o -name "*.so" 2>/dev/null || echo "No output found"
           ls -la build/linux/release/product/ 2>/dev/null || echo "Product dir not found"
 
-      - name: Upload artifact
+      - name: Package .deb and .rpm
+        if: success()
+        run: |
+          sudo apt-get install -y rpm
+          ./scripts/package-linux.sh amd64
+
+      - name: Upload binary artifact
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: Open-Sankore-Linux-x64
           path: build/linux/release/product/
+          if-no-files-found: warn
+
+      - name: Upload .deb package
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: open-sankore-deb-x64
+          path: build/packages/*.deb
+          if-no-files-found: warn
+
+      - name: Upload .rpm package
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: open-sankore-rpm-x64
+          path: build/packages/*.rpm
           if-no-files-found: warn
