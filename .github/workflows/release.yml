@@ -68,11 +68,19 @@ jobs:
           $version = "${{ github.ref_name }}".TrimStart('v')
           Compress-Archive -Path build\win32\release\product\* -DestinationPath "Open-Sankore-${version}-windows-x64.zip"
 
+      - name: Build installer
+        shell: cmd
+        run: |
+          choco install innosetup -y --no-progress
+          "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" scripts\installer.iss
+
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
           name: windows-release
-          path: Open-Sankore-*-windows-x64.zip
+          path: |
+            Open-Sankore-*-windows-x64.zip
+            build/installer/Open-Sankore-*-setup.exe
 
   build-linux:
     runs-on: ubuntu-24.04
@@ -130,5 +138,6 @@ jobs:
           generate_release_notes: true
           files: |
             windows-release/*.zip
+            windows-release/*.exe
             linux-release/*.deb
             linux-release/*.rpm

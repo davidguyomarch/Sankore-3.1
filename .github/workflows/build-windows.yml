@@ -209,10 +209,25 @@ jobs:
           $proc | Stop-Process -Force
           Write-Host "Process terminated. Smoke test passed!"
 
+      - name: Build installer
+        if: success()
+        shell: cmd
+        run: |
+          choco install innosetup -y --no-progress
+          "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" scripts\installer.iss
+
       - name: Upload artifact
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: Open-Sankore-Windows-x64
           path: build/win32/release/product/
+          if-no-files-found: warn
+
+      - name: Upload installer
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Open-Sankore-Windows-x64-Setup
+          path: build/installer/Open-Sankore-*-setup.exe
           if-no-files-found: warn
