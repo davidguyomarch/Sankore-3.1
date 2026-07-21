@@ -37,7 +37,9 @@
 class UBGraphicsWidgetItem;
 class QWidget;
 class UBGraphicsScene;
+#ifdef SANKORE_WEBENGINE
 class QWebEngineView;
+#endif
 
 class UBToolWidget : public QWidget
 {
@@ -70,7 +72,11 @@ class UBToolWidget : public QWidget
         void reactOnBoardChanged();
 
     protected:
+#ifdef SANKORE_WEBENGINE
         QWebEngineView *mWebView;
+#else
+        QWidget *mWebView;
+#endif
         UBGraphicsWidgetItem *mToolWidget;
 
         static QPixmap *sClosePixmap;

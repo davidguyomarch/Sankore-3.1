@@ -61,7 +61,11 @@ void UBWebController::loadUrl(const QUrl& url)
     QDesktopServices::openUrl(url);
 }
 
+#ifdef SANKORE_WEBENGINE
 QWebEngineView* UBWebController::createNewTab() { return nullptr; }
+#else
+void* UBWebController::createNewTab() { return nullptr; }
+#endif
 QUrl UBWebController::currentPageUrl() const { return QUrl(); }
 void UBWebController::show(WebInstance) {}
 void UBWebController::setupPalettes() {}

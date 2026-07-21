@@ -74,12 +74,14 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     , mUniboardAPI(0)
     , mProxyLoadingMessage(0)
 {
-    setData(UBGraphicsItemData::ItemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
+    setData(UBGraphicsItemData::ItemLayerType, QVariant(itemLayerType::ObjectItem));
 
+#ifdef SANKORE_WEBENGINE
     QGraphicsWebView::setPage(new UBWebPage(this));
     QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
     QGraphicsWebView::settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
+#endif
 
     // Network access managed by QWebEngineProfile
 

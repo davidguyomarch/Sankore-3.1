@@ -36,7 +36,11 @@ class UBLibraryAPI : public QObject
     Q_OBJECT;
 
     public:
+#ifdef SANKORE_WEBENGINE
         UBLibraryAPI(QWebEngineView *pWebView = 0);
+#else
+        UBLibraryAPI(QWidget *pWebView = 0);
+#endif
         virtual ~UBLibraryAPI();
 
     public slots:
@@ -65,7 +69,11 @@ class UBLibraryAPI : public QObject
 
 
     private:
+#ifdef SANKORE_WEBENGINE
         QWebEngineView * mWebView;
+#else
+        QWidget* mWebView;
+#endif
 
 
 };

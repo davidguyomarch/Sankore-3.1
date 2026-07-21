@@ -251,11 +251,13 @@ QList<QNetworkCookie> UBCookieJar::cookiesForUrl(const QUrl &url) const
     if (!mLoaded)
         that->load();
 
+#ifdef SANKORE_WEBENGINE
     QWebEngineSettings *globalSettings = QWebEngineProfile::defaultProfile()->settings();
     if (globalSettings->testAttribute(QWebEngineSettings::LocalStorageEnabled)) {
         QList<QNetworkCookie> noCookies;
         return noCookies;
     }
+#endif
 
     return QNetworkCookieJar::cookiesForUrl(url);
 }
@@ -265,9 +267,11 @@ bool UBCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, con
     if (!mLoaded)
         load();
 
-    QWebEngineSettings *globalSettings = QWebEngineProfile::defaultProfile()->settings();
-    if (globalSettings->testAttribute(QWebEngineSettings::LocalStorageEnabled))
+#ifdef SANKORE_WEBENGINE
+    QWebEngineSettings *globalSettings2 = QWebEngineProfile::defaultProfile()->settings();
+    if (globalSettings2->testAttribute(QWebEngineSettings::LocalStorageEnabled))
         return false;
+#endif
 
     QString host = url.host();
     bool eBlock = std::binary_search(mExceptionsBlock.begin(), mExceptionsBlock.end(), host);

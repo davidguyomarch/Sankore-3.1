@@ -27,7 +27,11 @@
 #include "board/UBBoardController.h"
 
 
+#ifdef SANKORE_WEBENGINE
 UBLibraryAPI::UBLibraryAPI(QWebEngineView *pWebView)
+#else
+UBLibraryAPI::UBLibraryAPI(QWidget *pWebView)
+#endif
     : QObject(pWebView)
     , mWebView(pWebView)
 {

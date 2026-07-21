@@ -1715,7 +1715,9 @@ void UBBoardView::dropEvent (QDropEvent *event)
     } else {
         if (!event->source()
                 || qobject_cast<UBThumbnailWidget *>(event->source())
+#ifdef SANKORE_WEBENGINE
                 || qobject_cast<QWebEngineView *>(event->source())
+#endif
                 || qobject_cast<UBTGMediaWidget*>(event->source())
                 || qobject_cast<QListView *>(event->source())
                 || qobject_cast<UBTGDraggableTreeItem*>(event->source())) {
