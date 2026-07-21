@@ -46,9 +46,11 @@
 
 #include "web/UBWebPage.h"
 #include "web/UBWebController.h"
+#ifdef SANKORE_WEBENGINE
 #include "web/browser/WBBrowserWindow.h"
 #include "web/browser/WBTabWidget.h"
 #include "web/browser/WBWebView.h"
+#endif
 
 #include "desktop/UBDesktopAnnotationController.h"
 

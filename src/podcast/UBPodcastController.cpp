@@ -42,7 +42,9 @@
 #include "gui/UBMainWindow.h"
 
 #include "web/UBWebController.h"
+#ifdef SANKORE_WEBENGINE
 #include "web/browser/WBWebView.h"
+#endif
 
 #include "domain/UBGraphicsScene.h"
 
