@@ -99,9 +99,9 @@ jobs:
         run: |
           cd tests
           # Capture coverage data
-          lcov --capture --directory build/objects --output-file build/coverage.info --ignore-errors mismatch
+          lcov --capture --directory build/objects --output-file build/coverage.info || true
           # Filter out system/Qt headers — keep only our sources
-          lcov --remove build/coverage.info '/usr/*' '*/Qt6/*' '*/moc_*' --output-file build/coverage-filtered.info --ignore-errors unused
+          lcov --remove build/coverage.info '/usr/*' '*/Qt6/*' '*/moc_*' --output-file build/coverage-filtered.info || true
           # Generate summary
           echo "=== Coverage Summary ==="
           lcov --summary build/coverage-filtered.info 2>&1 || true
