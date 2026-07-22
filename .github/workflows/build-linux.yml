@@ -85,7 +85,12 @@ jobs:
         run: |
           cd tests
           qmake6 tests.pro
-          make -j$(nproc) 2>&1 || echo "WARNING: Test build failed (moc issue) - skipping"
+          # Fix: regenerate moc_predefs.h without aarch64 paths
+          g++ -pipe --coverage -O2 -std=gnu++1z -Wall -Wextra -fPIC -dM -E -o build/moc/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
+          # Patch: remove aarch64 include paths from Makefile
+          sed -i 's|-I/usr/include/aarch64-linux-gnu[^ ]*||g' Makefile 2>/dev/null || true
+          sed -i 's|-I/usr/lib/gcc/aarch64-linux-gnu[^ ]*||g' Makefile 2>/dev/null || true
+          make -j$(nproc) 2>&1 || echo "WARNING: Test build failed - skipping"
 
       - name: Run unit tests with coverage
         continue-on-error: true
