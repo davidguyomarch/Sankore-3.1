@@ -23,11 +23,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             build-essential \
+            cmake \
             qt6-base-dev \
             qt6-base-dev-tools \
             qt6-declarative-dev \
             libqt6svg6-dev \
-            qt6-svg-dev \
             qt6-multimedia-dev \
             qt6-tools-dev \
             qt6-tools-dev-tools \
@@ -37,11 +37,22 @@ jobs:
             libssl-dev \
             zlib1g-dev \
             libx11-dev \
-            libquazip1-qt6-dev \
             libomp-dev \
             qmake6 \
             pkg-config \
             lcov
+
+      - name: Build QuaZip from source
+        run: |
+          git clone --depth 1 --branch v1.4 https://github.com/stachenov/quazip.git /tmp/quazip-src
+          cmake -S /tmp/quazip-src -B /tmp/quazip-build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr/local \
+            -DQUAZIP_QT_MAJOR_VERSION=6 \
+            -DBUILD_SHARED_LIBS=ON \
+            -DQUAZIP_BZIP2=OFF
+          cmake --build /tmp/quazip-build -j$(nproc)
+          sudo cmake --install /tmp/quazip-build
 
       - name: Generate git version header
         run: |

@@ -86,7 +86,8 @@ win32 {
 }
 linux-* {
     INCLUDEPATH += /usr/include/QuaZip-Qt6-1.4/quazip
-    LIBS += -lquazip1-qt6
+    INCLUDEPATH += /usr/local/include/QuaZip-Qt6-1.4/quazip
+    LIBS += -L/usr/local/lib -lquazip1-qt6
 }
 DEFINES += QUAZIP_STATIC
 
