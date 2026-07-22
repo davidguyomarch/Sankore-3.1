@@ -24,9 +24,9 @@ jobs:
         run: |
           pip install aqtinstall
           aqt list-qt windows desktop
-          aqt install-qt windows desktop 6.8.3 win64_msvc2022_64 -m qt5compat qtmultimedia --outputdir C:\Qt
-          echo "C:\Qt\6.8.3\msvc2022_64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "Qt6_DIR=C:\Qt\6.8.3\msvc2022_64" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          aqt install-qt windows desktop 6.8.2 win64_msvc2022_64 -m qt5compat qtmultimedia --outputdir C:\Qt
+          echo "C:\Qt\6.8.2\msvc2022_64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "Qt6_DIR=C:\Qt\6.8.2\msvc2022_64" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
@@ -61,7 +61,7 @@ jobs:
         run: |
           git clone --depth 1 --branch v1.4 https://github.com/stachenov/quazip.git C:\quazip-src
           mkdir C:\quazip-build
-          cmake -S C:\quazip-src -B C:\quazip-build -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=C:\Qt\6.8.3\msvc2022_64 -DCMAKE_INSTALL_PREFIX=C:\quazip -DQUAZIP_QT_MAJOR_VERSION=6 -DBUILD_SHARED_LIBS=OFF -DZLIB_LIBRARY=C:\zlib\lib\zlibstatic.lib -DZLIB_INCLUDE_DIR=C:\zlib\include -DQUAZIP_BZIP2=OFF
+          cmake -S C:\quazip-src -B C:\quazip-build -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=C:\Qt\6.8.2\msvc2022_64 -DCMAKE_INSTALL_PREFIX=C:\quazip -DQUAZIP_QT_MAJOR_VERSION=6 -DBUILD_SHARED_LIBS=OFF -DZLIB_LIBRARY=C:\zlib\lib\zlibstatic.lib -DZLIB_INCLUDE_DIR=C:\zlib\include -DQUAZIP_BZIP2=OFF
           cmake --build C:\quazip-build
           cmake --install C:\quazip-build
           dir C:\quazip\lib
@@ -110,8 +110,8 @@ jobs:
         run: |
           cd tests
           windeployqt --release --no-translations build\OpenSankoreTests.exe
-          copy "C:\Qt\6.8.3\msvc2022_64\plugins\platforms\qoffscreen.dll" build\platforms\ 2>NUL
-          copy "C:\Qt\6.8.3\msvc2022_64\bin\Qt6Widgets.dll" build\ 2>NUL
+          copy "C:\Qt\6.8.2\msvc2022_64\plugins\platforms\qoffscreen.dll" build\platforms\ 2>NUL
+          copy "C:\Qt\6.8.2\msvc2022_64\bin\Qt6Widgets.dll" build\ 2>NUL
           set QT_QPA_PLATFORM=offscreen
           build\OpenSankoreTests.exe -v2 -o build\test-results.txt,txt || ver>nul
           set TEST_EXIT=%ERRORLEVEL%
