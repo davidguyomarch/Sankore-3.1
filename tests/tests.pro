@@ -42,13 +42,7 @@ SOURCES += stubs/UBSettings_stub.cpp \
 # UBPlatformUtils stub
 SOURCES += stubs/UBPlatformUtils_stub.cpp
 
-# Test headers
-HEADERS += tst_UBStringUtils.h \
-           tst_UBFileSystemUtils.h \
-           tst_UBGeometryUtils.h \
-           tst_UBCryptoUtils.h \
-           tst_UBDocumentProxy.h \
-           tst_UBSettings.h
+# Test headers — not in HEADERS (premoc used instead to avoid moc issues on Linux)
 
 # Test sources
 SOURCES += main.cpp \
@@ -57,7 +51,13 @@ SOURCES += main.cpp \
            tst_UBGeometryUtils.cpp \
            tst_UBCryptoUtils.cpp \
            tst_UBDocumentProxy.cpp \
-           tst_UBSettings.cpp
+           tst_UBSettings.cpp \
+           premoc/moc_tst_UBStringUtils.cpp \
+           premoc/moc_tst_UBFileSystemUtils.cpp \
+           premoc/moc_tst_UBGeometryUtils.cpp \
+           premoc/moc_tst_UBCryptoUtils.cpp \
+           premoc/moc_tst_UBDocumentProxy.cpp \
+           premoc/moc_tst_UBSettings.cpp
 
 # Build output
 DESTDIR = build
