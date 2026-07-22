@@ -1,6 +1,5 @@
 #include "tst_UBStringUtils.h"
 #include "frameworks/UBStringUtils.h"
-#include <QTimeZone>
 
 void TestUBStringUtils::testSortByLastDigit()
 {
@@ -80,7 +79,7 @@ void TestUBStringUtils::testToCanonicalUuid_noBraces()
 
 void TestUBStringUtils::testToUtcIsoDateTime()
 {
-    QDateTime dt(QDate(2013, 6, 15), QTime(10, 30, 0), QTimeZone::UTC);
+    QDateTime dt(QDate(2013, 6, 15), QTime(10, 30, 0), Qt::UTC);
     QString result = UBStringUtils::toUtcIsoDateTime(dt);
 
     QVERIFY(result.endsWith("Z"));
@@ -102,7 +101,7 @@ void TestUBStringUtils::testFromUtcIsoDate()
 
 void TestUBStringUtils::testFromUtcIsoDate_roundtrip()
 {
-    QDateTime original(QDate(2024, 1, 15), QTime(14, 45, 30), QTimeZone::UTC);
+    QDateTime original(QDate(2024, 1, 15), QTime(14, 45, 30), Qt::UTC);
     QString isoStr = UBStringUtils::toUtcIsoDateTime(original);
     QDateTime restored = UBStringUtils::fromUtcIsoDate(isoStr);
 
