@@ -30,17 +30,12 @@ SOURCES += stubs/UBFileSystemUtils_stub.cpp
 # Not in HEADERS to avoid moc parsing system headers on Linux
 SOURCES += stubs/UBCryptoUtils_stub.cpp
 
-# UBDocumentProxy stubs (UBSettings, UBFeature, UBDocumentManager, UBDocumentProxy)
-HEADERS += stubs/UBSettings_stub.h \
-           stubs/UBFeature_stub.h \
-           stubs/UBDocumentManager_stub.h \
-           stubs/UBDocumentProxy_stub.h
+# UBDocumentProxy stubs — not in HEADERS to avoid moc parse errors on Linux
 SOURCES += stubs/UBSettings_stub.cpp \
            stubs/UBDocumentManager_stub.cpp \
            stubs/UBDocumentProxy_stub.cpp
 
-# UBPlatformUtils stub
-HEADERS += stubs/UBPlatformUtils_stub.h
+# UBPlatformUtils stub — not in HEADERS
 SOURCES += stubs/UBPlatformUtils_stub.cpp
 
 # Test headers
