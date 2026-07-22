@@ -23,12 +23,11 @@ SOURCES += ../src/frameworks/UBStringUtils.cpp \
            ../src/frameworks/UBGeometryUtils.cpp
 
 # For UBFileSystemUtils we need a minimal version without OpenSSL/QuaZip deps
-# We provide a test stub instead
-HEADERS += stubs/UBFileSystemUtils_stub.h
+# We provide a test stub instead (not in HEADERS to avoid moc issues on Linux)
 SOURCES += stubs/UBFileSystemUtils_stub.cpp
 
 # UBCryptoUtils stub (bypasses UBApplication singleton)
-HEADERS += stubs/UBCryptoUtils_stub.h
+# Not in HEADERS to avoid moc parsing system headers on Linux
 SOURCES += stubs/UBCryptoUtils_stub.cpp
 
 # UBDocumentProxy stubs (UBSettings, UBFeature, UBDocumentManager, UBDocumentProxy)
