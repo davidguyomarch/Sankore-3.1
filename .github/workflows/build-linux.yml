@@ -40,6 +40,7 @@ jobs:
             libxkbcommon-dev \
             libfontconfig1-dev \
             libpulse-dev \
+            qt6-base-dev-tools \
             pkg-config \
             lcov
 
@@ -63,10 +64,8 @@ jobs:
       - name: Run qmake
         run: |
           mkdir -p build/linux/release/moc build/linux/release/objects build/linux/release/rcc build/linux/release/ui build/linux/release/product
-          qmake Sankore_3.1.pro CONFIG+=no_webengine
-          # Fix: aqtinstall moc includes wrong aarch64 system paths — patch them out
-          find . -name "Makefile*" -exec sed -i 's|-I/usr/include/aarch64-linux-gnu[^ ]*||g' {} \;
-          find . -name "Makefile*" -exec sed -i 's|-I/usr/lib/gcc/aarch64-linux-gnu[^ ]*||g' {} \;
+          # Use system moc (from qt6-base-dev-tools) — aqtinstall's moc has broken include paths
+          qmake Sankore_3.1.pro CONFIG+=no_webengine "QMAKE_MOC=/usr/lib/qt6/libexec/moc"
 
       - name: Build
         run: |
