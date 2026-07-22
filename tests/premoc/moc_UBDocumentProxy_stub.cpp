@@ -1,83 +1,103 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'UBDocumentProxy_stub.h'
 **
-** Created by: The Qt Meta Object Compiler version 69 (Qt 6.11.0)
+** Created by: The Qt Meta Object Compiler version 68 (Qt 6.2.4)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../stubs/UBDocumentProxy_stub.h"
-#include <QtCore/qmetatype.h>
-
-#include <QtCore/qtmochelpers.h>
-
 #include <memory>
-
-
-#include <QtCore/qxptype_traits.h>
+#include "../stubs/UBDocumentProxy_stub.h"
+#include <QtCore/qbytearray.h>
+#include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'UBDocumentProxy_stub.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 69
-#error "This file was generated using the moc from 6.11.0. It"
+#elif Q_MOC_OUTPUT_REVISION != 68
+#error "This file was generated using the moc from 6.2.4. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
-#ifndef Q_CONSTINIT
-#define Q_CONSTINIT
-#endif
-
+QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-QT_WARNING_DISABLE_GCC("-Wuseless-cast")
-namespace {
-struct qt_meta_tag_ZN15UBDocumentProxyE_t {};
-} // unnamed namespace
+struct qt_meta_stringdata_UBDocumentProxy_t {
+    const uint offsetsAndSize[6];
+    char stringdata0[44];
+};
+#define QT_MOC_LITERAL(ofs, len) \
+    uint(offsetof(qt_meta_stringdata_UBDocumentProxy_t, stringdata0) + ofs), len 
+static const qt_meta_stringdata_UBDocumentProxy_t qt_meta_stringdata_UBDocumentProxy = {
+    {
+QT_MOC_LITERAL(0, 15), // "UBDocumentProxy"
+QT_MOC_LITERAL(16, 26), // "defaultDocumentSizeChanged"
+QT_MOC_LITERAL(43, 0) // ""
 
-template <> constexpr inline auto UBDocumentProxy::qt_create_metaobjectdata<qt_meta_tag_ZN15UBDocumentProxyE_t>()
-{
-    namespace QMC = QtMocConstants;
-    QtMocHelpers::StringRefStorage qt_stringData {
-        "UBDocumentProxy",
-        "defaultDocumentSizeChanged",
-        ""
-    };
+    },
+    "UBDocumentProxy\0defaultDocumentSizeChanged\0"
+    ""
+};
+#undef QT_MOC_LITERAL
 
-    QtMocHelpers::UintData qt_methods {
-        // Signal 'defaultDocumentSizeChanged'
-        QtMocHelpers::SignalData<void()>(1, 2, QMC::AccessPublic, QMetaType::Void),
-    };
-    QtMocHelpers::UintData qt_properties {
-    };
-    QtMocHelpers::UintData qt_enums {
-    };
-    return QtMocHelpers::metaObjectData<UBDocumentProxy, qt_meta_tag_ZN15UBDocumentProxyE_t>(QMC::MetaObjectFlag{}, qt_stringData,
-            qt_methods, qt_properties, qt_enums);
-}
-Q_CONSTINIT const QMetaObject UBDocumentProxy::staticMetaObject = { {
-    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
-    qt_staticMetaObjectStaticContent<qt_meta_tag_ZN15UBDocumentProxyE_t>.stringdata,
-    qt_staticMetaObjectStaticContent<qt_meta_tag_ZN15UBDocumentProxyE_t>.data,
-    qt_static_metacall,
-    nullptr,
-    qt_staticMetaObjectRelocatingContent<qt_meta_tag_ZN15UBDocumentProxyE_t>.metaTypes,
-    nullptr
-} };
+static const uint qt_meta_data_UBDocumentProxy[] = {
+
+ // content:
+      10,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       1,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       1,       // signalCount
+
+ // signals: name, argc, parameters, tag, flags, initial metatype offsets
+       1,    0,   20,    2, 0x06,    1 /* Public */,
+
+ // signals: parameters
+    QMetaType::Void,
+
+       0        // eod
+};
 
 void UBDocumentProxy::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    auto *_t = static_cast<UBDocumentProxy *>(_o);
     if (_c == QMetaObject::InvokeMetaMethod) {
+        auto *_t = static_cast<UBDocumentProxy *>(_o);
+        (void)_t;
         switch (_id) {
         case 0: _t->defaultDocumentSizeChanged(); break;
         default: ;
         }
+    } else if (_c == QMetaObject::IndexOfMethod) {
+        int *result = reinterpret_cast<int *>(_a[0]);
+        {
+            using _t = void (UBDocumentProxy::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UBDocumentProxy::defaultDocumentSizeChanged)) {
+                *result = 0;
+                return;
+            }
+        }
     }
-    if (_c == QMetaObject::IndexOfMethod) {
-        if (QtMocHelpers::indexOfMethod<void (UBDocumentProxy::*)()>(_a, &UBDocumentProxy::defaultDocumentSizeChanged, 0))
-            return;
-    }
+    (void)_a;
 }
+
+const QMetaObject UBDocumentProxy::staticMetaObject = { {
+    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
+    qt_meta_stringdata_UBDocumentProxy.offsetsAndSize,
+    qt_meta_data_UBDocumentProxy,
+    qt_static_metacall,
+    nullptr,
+qt_incomplete_metaTypeArray<qt_meta_stringdata_UBDocumentProxy_t
+, QtPrivate::TypeAndForceComplete<UBDocumentProxy, std::true_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
+
+
+
+>,
+    nullptr
+} };
+
 
 const QMetaObject *UBDocumentProxy::metaObject() const
 {
@@ -87,7 +107,7 @@ const QMetaObject *UBDocumentProxy::metaObject() const
 void *UBDocumentProxy::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_staticMetaObjectStaticContent<qt_meta_tag_ZN15UBDocumentProxyE_t>.strings))
+    if (!strcmp(_clname, qt_meta_stringdata_UBDocumentProxy.stringdata0))
         return static_cast<void*>(this);
     return QObject::qt_metacast(_clname);
 }
@@ -101,8 +121,7 @@ int UBDocumentProxy::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         if (_id < 1)
             qt_static_metacall(this, _c, _id, _a);
         _id -= 1;
-    }
-    if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         if (_id < 1)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
         _id -= 1;
@@ -116,3 +135,4 @@ void UBDocumentProxy::defaultDocumentSizeChanged()
     QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
 }
 QT_WARNING_POP
+QT_END_MOC_NAMESPACE
