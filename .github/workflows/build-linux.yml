@@ -64,6 +64,9 @@ jobs:
         run: |
           mkdir -p build/linux/release/moc build/linux/release/objects build/linux/release/rcc build/linux/release/ui build/linux/release/product
           qmake Sankore_3.1.pro CONFIG+=no_webengine
+          # Fix: aqtinstall moc includes wrong aarch64 system paths — patch them out
+          find . -name "Makefile*" -exec sed -i 's|-I/usr/include/aarch64-linux-gnu[^ ]*||g' {} \;
+          find . -name "Makefile*" -exec sed -i 's|-I/usr/lib/gcc/aarch64-linux-gnu[^ ]*||g' {} \;
 
       - name: Build
         run: |
