@@ -61,10 +61,10 @@ jobs:
       - name: Run qmake
         run: |
           mkdir -p build/linux/release/moc build/linux/release/objects build/linux/release/rcc build/linux/release/ui build/linux/release/product
-          # Remove aarch64 cross-compiler that confuses moc
-          sudo apt-get remove -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu 2>/dev/null || true
-          sudo rm -rf /usr/include/aarch64-linux-gnu /usr/lib/gcc/aarch64-linux-gnu 2>/dev/null || true
           qmake6 Sankore_3.1.pro CONFIG+=no_webengine
+          # Patch: remove aarch64 paths that moc can't handle
+          find . -name "Makefile.Release" -exec sed -i 's|-I/usr/include/aarch64-linux-gnu[/a-z0-9+]*||g' {} \;
+          find . -name "Makefile.Release" -exec sed -i 's|-I/usr/lib/gcc/aarch64-linux-gnu[/a-z0-9+]*||g' {} \;
 
       - name: Build
         run: |
