@@ -39,6 +39,7 @@ jobs:
             libomp-dev \
             libxkbcommon-dev \
             libfontconfig1-dev \
+            libpulse-dev \
             pkg-config \
             lcov
 
