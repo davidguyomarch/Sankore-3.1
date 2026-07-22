@@ -30,14 +30,14 @@ SOURCES += stubs/UBFileSystemUtils_stub.cpp
 # Not in HEADERS to avoid moc parsing system headers on Linux
 SOURCES += stubs/UBCryptoUtils_stub.cpp
 
-# UBDocumentProxy stubs — need moc (they have Q_OBJECT for signals)
-# On Linux, moc may fail (Qt 6.2 bug) but test build is continue-on-error
-HEADERS += stubs/UBSettings_stub.h \
-           stubs/UBDocumentManager_stub.h \
-           stubs/UBDocumentProxy_stub.h
+# UBDocumentProxy stubs — pre-generated moc files used to avoid moc parsing issues on Linux
+# To regenerate: moc -I../src -I. -Istubs stubs/UBSettings_stub.h -o premoc/moc_UBSettings_stub.cpp
 SOURCES += stubs/UBSettings_stub.cpp \
            stubs/UBDocumentManager_stub.cpp \
-           stubs/UBDocumentProxy_stub.cpp
+           stubs/UBDocumentProxy_stub.cpp \
+           premoc/moc_UBSettings_stub.cpp \
+           premoc/moc_UBDocumentManager_stub.cpp \
+           premoc/moc_UBDocumentProxy_stub.cpp
 
 # UBPlatformUtils stub
 SOURCES += stubs/UBPlatformUtils_stub.cpp
