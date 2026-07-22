@@ -18,29 +18,27 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Install Qt 6 via aqtinstall
-        run: |
-          pip install aqtinstall
-          aqt install-qt linux desktop 6.8.2 linux_gcc_64 -m qt5compat qtmultimedia --outputdir /opt/Qt
-          echo "/opt/Qt/6.8.2/gcc_64/bin" >> $GITHUB_PATH
-          echo "Qt6_DIR=/opt/Qt/6.8.2/gcc_64" >> $GITHUB_ENV
-          echo "LD_LIBRARY_PATH=/opt/Qt/6.8.2/gcc_64/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
-
-      - name: Install system dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
             build-essential \
             cmake \
+            qt6-base-dev \
+            qt6-base-dev-tools \
+            qt6-declarative-dev \
+            libqt6svg6-dev \
+            qt6-multimedia-dev \
+            qt6-tools-dev \
+            qt6-tools-dev-tools \
+            qt6-l10n-tools \
+            libqt6opengl6-dev \
+            libqt6core5compat6-dev \
             libgl1-mesa-dev \
             libssl-dev \
             zlib1g-dev \
             libx11-dev \
             libomp-dev \
-            libxkbcommon-dev \
-            libfontconfig1-dev \
-            libpulse-dev \
-            qt6-base-dev-tools \
             pkg-config \
             lcov
 
@@ -49,7 +47,6 @@ jobs:
           git clone --depth 1 --branch v1.4 https://github.com/stachenov/quazip.git /tmp/quazip-src
           cmake -S /tmp/quazip-src -B /tmp/quazip-build \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_PREFIX_PATH=/opt/Qt/6.8.2/gcc_64 \
             -DCMAKE_INSTALL_PREFIX=/usr/local \
             -DQUAZIP_QT_MAJOR_VERSION=6 \
             -DBUILD_SHARED_LIBS=ON \
@@ -64,8 +61,7 @@ jobs:
       - name: Run qmake
         run: |
           mkdir -p build/linux/release/moc build/linux/release/objects build/linux/release/rcc build/linux/release/ui build/linux/release/product
-          # Use system moc (from qt6-base-dev-tools) — aqtinstall's moc has broken include paths
-          qmake Sankore_3.1.pro CONFIG+=no_webengine "QMAKE_MOC=/usr/lib/qt6/libexec/moc"
+          qmake6 Sankore_3.1.pro CONFIG+=no_webengine
 
       - name: Build
         run: |
@@ -80,7 +76,7 @@ jobs:
       - name: Build unit tests
         run: |
           cd tests
-          qmake tests.pro
+          qmake6 tests.pro
           make -j$(nproc)
 
       - name: Run unit tests with coverage
