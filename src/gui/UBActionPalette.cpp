@@ -22,6 +22,7 @@
 
 
 #include "UBActionPalette.h"
+#include <QAction>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QMouseEvent>

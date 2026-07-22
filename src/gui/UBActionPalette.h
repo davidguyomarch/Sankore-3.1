@@ -25,6 +25,7 @@
 #define UBACTIONPALETTE_H_
 
 #include <QWidget>
+#include <QAction>
 #include <QApplication>
 #include <QPainter>
 #include <QPoint>
