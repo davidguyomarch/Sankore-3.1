@@ -17,7 +17,6 @@
 
 class UBFileSystemUtils : public QObject
 {
-    Q_OBJECT
 
 public:
     UBFileSystemUtils();

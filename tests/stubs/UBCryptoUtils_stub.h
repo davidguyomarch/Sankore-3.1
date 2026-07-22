@@ -33,7 +33,6 @@
  */
 class UBCryptoUtils : public QObject
 {
-    Q_OBJECT
 
 public:
     static UBCryptoUtils* instance();
