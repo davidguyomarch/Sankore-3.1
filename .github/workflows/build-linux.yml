@@ -18,28 +18,27 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Install dependencies
+      - name: Install Qt 6 via aqtinstall
+        run: |
+          pip install aqtinstall
+          aqt install-qt linux desktop 6.8.2 linux_gcc_64 -m qt5compat qtmultimedia --outputdir /opt/Qt
+          echo "/opt/Qt/6.8.2/gcc_64/bin" >> $GITHUB_PATH
+          echo "Qt6_DIR=/opt/Qt/6.8.2/gcc_64" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=/opt/Qt/6.8.2/gcc_64/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+
+      - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
             build-essential \
             cmake \
-            qt6-base-dev \
-            qt6-base-dev-tools \
-            qt6-declarative-dev \
-            libqt6svg6-dev \
-            qt6-multimedia-dev \
-            qt6-tools-dev \
-            qt6-tools-dev-tools \
-            qt6-l10n-tools \
-            libqt6opengl6-dev \
-            libqt6core5compat6-dev \
             libgl1-mesa-dev \
             libssl-dev \
             zlib1g-dev \
             libx11-dev \
             libomp-dev \
-            qmake6 \
+            libxkbcommon-dev \
+            libfontconfig1-dev \
             pkg-config \
             lcov
 
@@ -48,6 +47,7 @@ jobs:
           git clone --depth 1 --branch v1.4 https://github.com/stachenov/quazip.git /tmp/quazip-src
           cmake -S /tmp/quazip-src -B /tmp/quazip-build \
             -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_PREFIX_PATH=/opt/Qt/6.8.2/gcc_64 \
             -DCMAKE_INSTALL_PREFIX=/usr/local \
             -DQUAZIP_QT_MAJOR_VERSION=6 \
             -DBUILD_SHARED_LIBS=ON \
@@ -62,7 +62,7 @@ jobs:
       - name: Run qmake
         run: |
           mkdir -p build/linux/release/moc build/linux/release/objects build/linux/release/rcc build/linux/release/ui build/linux/release/product
-          qmake6 Sankore_3.1.pro CONFIG+=no_webengine
+          qmake Sankore_3.1.pro CONFIG+=no_webengine
 
       - name: Build
         run: |
@@ -75,25 +75,19 @@ jobs:
           ls -la build/linux/release/product/ 2>/dev/null || echo "Product dir not found"
 
       - name: Build unit tests
-        continue-on-error: true
         run: |
           cd tests
-          qmake6 tests.pro
-          make -j$(nproc) 2>&1 || echo "WARNING: Test build failed (moc Qt 6.2 bug) - skipping tests"
+          qmake tests.pro
+          make -j$(nproc)
 
       - name: Run unit tests with coverage
-        continue-on-error: true
         run: |
           cd tests
-          if [ -f build/OpenSankoreTests ]; then
-            export QT_QPA_PLATFORM=offscreen
-            ./build/OpenSankoreTests -v2 -o build/test-results.txt,txt || true
-            echo "=== Test Results ==="
-            cat build/test-results.txt 2>/dev/null || echo "No test results"
-            echo "=== End Results ==="
-          else
-            echo "Test binary not built - skipping"
-          fi
+          export QT_QPA_PLATFORM=offscreen
+          ./build/OpenSankoreTests -v2 -o build/test-results.txt,txt || true
+          echo "=== Test Results ==="
+          cat build/test-results.txt 2>/dev/null || echo "No test results"
+          echo "=== End Results ==="
 
       - name: Generate coverage report
         run: |
