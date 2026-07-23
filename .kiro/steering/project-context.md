@@ -8,20 +8,26 @@ Linux builds (x64/arm64) are next.
 
 ## Current Status
 
-- **Windows x64 build**: ✅ DONE — Open-Sankore.exe produced via GitHub Actions CI
+- **Windows x64 build**: ✅ DONE — Open-Sankore.exe + installer (.exe) via GitHub Actions CI
 - **windeployqt**: ✅ Added — artifact is self-contained with Qt DLLs
-- **Linux builds**: 🔜 Pending (issues #3, #4)
-- **Functional testing**: 🔜 Pending (issue #1)
+- **Linux x64 build**: ✅ DONE — binary + .deb + .rpm via GitHub Actions CI
+- **Linux ARM64 build**: 🔜 Pending (issue #4)
+- **Unit tests**: ✅ 6 suites, coverage 93.3% sur le code testé
+- **App coverage**: ✅ ~20.7% (smoke test startup)
+- **Combined coverage**: ✅ ~23.1% (app + unit tests)
+- **Coverage badge**: ✅ Dynamic (shields.io + gist)
+- **Functional testing**: 🔜 Pending (issue #37)
 
 ## Architecture
 
 - **Build system**: qmake (`.pro` / `.pri` files)
 - **Language**: C++17
-- **Framework**: Qt 6.8.3
-- **Target platforms**: Windows x64 (MSVC 2022), Linux x64/arm64 (GCC)
-- **CI**: GitHub Actions (`build-windows.yml`)
+- **Framework**: Qt 6.8.2 (Windows), Qt 6.2 (Linux)
+- **Target platforms**: Windows x64 (MSVC 2022), Linux x64 (GCC 11), Linux arm64 (planned)
+- **CI**: GitHub Actions (`build-windows.yml`, `build-linux.yml`, `release.yml`)
 - **Docker dev**: `sankore-qt6` image (Ubuntu 24.04, Qt 6, aarch64)
 - **Issue tracking**: GitHub Issues (https://github.com/davidguyomarch/Sankore-3.1/issues)
+- **CI/CD doc**: `.kiro/steering/ci-cd.md`
 
 ## Key Directories
 
@@ -109,25 +115,33 @@ docker run --rm -v $(pwd):/src -w /src sankore-qt6 bash -c 'qmake6 Sankore_3.1.p
 
 ## GitHub Issues (Backlog)
 
-| # | Title | Priority |
-|---|-------|----------|
-| 1 | Test fonctionnel Windows | Immédiat |
-| 2 | Tests unitaires dans le CI Windows | Court terme |
-| 3 | Build Linux x64 dans le CI | Court terme |
-| 4 | Build Linux ARM64 dans le CI | Moyen terme |
-| 5 | Packaging .deb (Debian/Ubuntu) x64+arm64 | Moyen terme |
-| 6 | Packaging .rpm (Fedora/RedHat) x64+arm64 | Moyen terme |
-| 7 | CI matrix build (5 artefacts en parallèle) | Après #3-6 |
-| 8 | Réactiver QtWebEngine (widgets HTML5) | Long terme |
-| 9 | Réécrire podcast avec Qt Multimedia | Long terme |
+| # | Title | Priority | Status |
+|---|-------|----------|--------|
+| 4 | Build Linux ARM64 dans le CI | Moyen terme | Open |
+| 9 | Réécrire podcast avec Qt Multimedia | Long terme | Open |
+| 16 | Réactiver UBDockTeacherGuideWidget | Moyen terme | Open |
+| 25 | CI: Warning Node 20 deprecated | Faible | Open |
+| 29 | Réactiver le module browser/ | Long terme | Open |
+| 30 | CI: Warning vcpkg VCPKG_ROOT mismatch | Faible | Open |
+| 35 | CI: Ajouter un cache pour les dépendances | Court terme | Open |
+| 36 | CI: Publier les résultats de tests (annotations) | Court terme | Open |
+| 37 | Tests fonctionnels automatisés | Moyen terme | Open |
+| 38 | Augmenter la couverture de tests (>50%) | Moyen terme | Open |
+| 39 | CI: Unifier la version Qt | Moyen terme | Open |
+| 40 | Produire un AppImage Linux | Moyen terme | Open |
+| 41 | Tests de non-régression visuelle | Long terme | Open |
+| 42 | CI: Matrice de test multi-OS | Long terme | Open |
+| 43 | CI: Séparer build rapide / build complet | Moyen terme | Open |
+| 46 | Runtime warnings Qt 6.2 (signaux dépréciés) | Moyenne | Open |
 
 ## Distribution Targets
 
 | Platform | Architecture | Format | Status |
 |----------|-------------|--------|--------|
-| Windows | x64 | .zip (windeployqt) | ✅ Done |
-| Linux | x64 | .deb + .rpm | 🔜 Issues #5, #6 |
-| Linux | ARM64 | .deb + .rpm | 🔜 Issues #5, #6 |
+| Windows | x64 | .zip (windeployqt) + .exe (Inno Setup) | ✅ Done |
+| Linux | x64 | .deb + .rpm | ✅ Done |
+| Linux | ARM64 | .deb + .rpm | 🔜 Issue #4 |
+| Linux | x64 | AppImage | 🔜 Issue #40 |
 
 ## Important Notes for Development
 
