@@ -142,7 +142,7 @@ jobs:
           copy "C:\Qt\6.8.2\msvc2022_64\plugins\platforms\qoffscreen.dll" build\platforms\ 2>NUL
           copy "C:\Qt\6.8.2\msvc2022_64\bin\Qt6Widgets.dll" build\ 2>NUL
           set QT_QPA_PLATFORM=offscreen
-          build\OpenSankoreTests.exe -v2 -o build\test-results.txt,txt || ver>nul
+          build\OpenSankoreTests.exe -v2 -o build\test-results.txt,txt -o build\test-results.xml,junitxml || ver>nul
           set TEST_EXIT=%ERRORLEVEL%
           echo.
           echo === Test Results ===
@@ -154,6 +154,15 @@ jobs:
             exit /b %TEST_EXIT%
           )
           echo All unit tests passed!
+
+      - name: Publish test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Windows Unit Tests
+          path: tests/build/test-results.xml
+          reporter: java-junit
+          fail-on-error: false
 
       - name: Deploy Qt DLLs
         if: success()

@@ -144,13 +144,22 @@ jobs:
           cd tests
           if [ -f build/OpenSankoreTests ]; then
             export QT_QPA_PLATFORM=offscreen
-            ./build/OpenSankoreTests -v2 -o build/test-results.txt,txt || true
+            ./build/OpenSankoreTests -v2 -o build/test-results.txt,txt -o build/test-results.xml,junitxml || true
             echo "=== Test Results ==="
             cat build/test-results.txt 2>/dev/null || echo "No results"
             echo "=== End Results ==="
           else
             echo "Test binary not available - skipping"
           fi
+
+      - name: Publish test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Linux Unit Tests
+          path: tests/build/test-results.xml
+          reporter: java-junit
+          fail-on-error: false
 
       - name: Generate coverage report
         continue-on-error: true
