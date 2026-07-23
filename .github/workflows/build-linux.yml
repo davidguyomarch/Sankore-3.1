@@ -200,11 +200,18 @@ jobs:
           cat /tmp/coverage.json
           # Update gist (requires GIST_TOKEN secret with gist scope)
           if [ -n "$GIST_TOKEN" ]; then
-            curl -s -X PATCH \
-              -H "Authorization: token $GIST_TOKEN" \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/gists/0b042ec6f4db15ba496d37215c18a649 \
-              -d "{\"files\":{\"coverage.json\":{\"content\":$(cat /tmp/coverage.json | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read()))')}}}"
+            python3 -c "
+import urllib.request, json, sys
+gist_id = '0b042ec6f4db15ba496d37215c18a649'
+token = '$GIST_TOKEN'
+data = json.dumps({'files': {'coverage.json': {'content': open('/tmp/coverage.json').read()}}}).encode()
+req = urllib.request.Request(f'https://api.github.com/gists/{gist_id}', data=data, method='PATCH')
+req.add_header('Authorization', f'token {token}')
+req.add_header('Accept', 'application/vnd.github.v3+json')
+req.add_header('Content-Type', 'application/json')
+resp = urllib.request.urlopen(req)
+print(f'Gist updated (HTTP {resp.status})')
+"
             echo "Badge updated!"
           else
             echo "GIST_TOKEN not set — badge not updated"
