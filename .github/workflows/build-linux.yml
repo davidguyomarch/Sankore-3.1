@@ -149,7 +149,7 @@ jobs:
           cd tests
           if [ -f build/OpenSankoreTests ]; then
             export QT_QPA_PLATFORM=offscreen
-            ./build/OpenSankoreTests -v2 -o build/test-results.xml,junitxml 2>&1 | tee build/test-results.txt
+            ./build/OpenSankoreTests -v2 -o -,txt -o build/test-results.xml,junitxml 2>&1 | tee build/test-results.txt
             TEST_EXIT=${PIPESTATUS[0]}
             echo ""
             echo "=== Tests exit code: $TEST_EXIT ==="
