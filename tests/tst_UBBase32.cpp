@@ -11,11 +11,11 @@ void TestUBBase32::testDecodeRFC4648Vectors()
 {
     // RFC 4648 test vectors (without padding)
     QCOMPARE(UBBase32::decode("MY"), QByteArray("f"));
-    QCOMPARE(UBBase32::decode("MFRA"), QByteArray("fo"));
-    QCOMPARE(UBBase32::decode("MFRGG"), QByteArray("foo"));
-    QCOMPARE(UBBase32::decode("MFRGGZA"), QByteArray("foob"));
-    QCOMPARE(UBBase32::decode("MFRGGZDF"), QByteArray("fooba"));
-    QCOMPARE(UBBase32::decode("MFRGGZDFMY"), QByteArray("foobar"));
+    QCOMPARE(UBBase32::decode("MZXQ"), QByteArray("fo"));
+    QCOMPARE(UBBase32::decode("MZXW6"), QByteArray("foo"));
+    QCOMPARE(UBBase32::decode("MZXW6YQ"), QByteArray("foob"));
+    QCOMPARE(UBBase32::decode("MZXW6YTB"), QByteArray("fooba"));
+    QCOMPARE(UBBase32::decode("MZXW6YTBOI"), QByteArray("foobar"));
 }
 
 void TestUBBase32::testDecodeCaseInsensitive()
