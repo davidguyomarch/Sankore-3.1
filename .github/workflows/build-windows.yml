@@ -167,7 +167,7 @@ jobs:
           fail_on_failure: false
 
       - name: Deploy Qt DLLs
-        if: success()
+        if: success() && github.event_name == 'push'
         shell: cmd
         run: |
           windeployqt --release --no-translations build\win32\release\product\Open-Sankore.exe
@@ -177,7 +177,7 @@ jobs:
           dir build\win32\release\product\
 
       - name: Smoke test (launch and verify no crash)
-        if: success()
+        if: success() && github.event_name == 'push'
         shell: pwsh
         run: |
           $exe = "build\win32\release\product\Open-Sankore.exe"
@@ -209,14 +209,14 @@ jobs:
           Write-Host "Process terminated. Smoke test passed!"
 
       - name: Build installer
-        if: success()
+        if: success() && github.event_name == 'push'
         shell: cmd
         run: |
           choco install innosetup -y --no-progress
           "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" scripts\installer.iss
 
       - name: Upload artifact
-        if: success()
+        if: success() && github.event_name == 'push'
         uses: actions/upload-artifact@v4
         with:
           name: Open-Sankore-Windows-x64
@@ -224,7 +224,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Upload installer
-        if: success()
+        if: success() && github.event_name == 'push'
         uses: actions/upload-artifact@v4
         with:
           name: Open-Sankore-Windows-x64-Setup
