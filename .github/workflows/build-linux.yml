@@ -85,34 +85,26 @@ jobs:
         run: |
           export QT_QPA_PLATFORM=offscreen
           export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-          # Launch app briefly to generate gcov data
-          build/linux/release/product/Open-Sankore &
-          APP_PID=$!
-          sleep 3
-          # Send SIGTERM for clean shutdown (writes .gcda files)
-          kill -TERM $APP_PID 2>/dev/null || true
-          wait $APP_PID 2>/dev/null || true
-          sleep 1
-          echo "App smoke test completed (PID $APP_PID)"
-          # Check if .gcda files were generated
-          GCDA_COUNT=$(find build/linux/release/objects -name "*.gcda" 2>/dev/null | wc -l)
+          # Launch app with --quit-after for clean exit (writes .gcda coverage files)
+          build/linux/release/product/Open-Sankore --quit-after=5
+          echo "App smoke test completed (clean exit)"
+          GCDA_COUNT=$(find . -name "*.gcda" 2>/dev/null | wc -l)
           echo "Found $GCDA_COUNT .gcda files"
 
       - name: Collect app coverage
         continue-on-error: true
         run: |
-          # Find where .gcda files were written
           echo "=== Searching for .gcda files ==="
-          find / -name "*.gcda" -path "*/release/*" 2>/dev/null | head -20
-          GCDA_DIR=$(find / -name "*.gcda" -path "*/release/*" -printf '%h\n' 2>/dev/null | sort -u | head -1)
-          if [ -n "$GCDA_DIR" ]; then
-            echo "Found .gcda files in: $GCDA_DIR"
-            lcov --capture --directory "$GCDA_DIR" --output-file build/app-coverage.info || true
-            lcov --remove build/app-coverage.info '/usr/*' '*/moc_*' '*/qrc_*' --output-file build/app-coverage-filtered.info || true
+          find . -name "*.gcda" -not -path "*/tests/*" 2>/dev/null | head -20
+          GCDA_COUNT=$(find . -name "*.gcda" -not -path "*/tests/*" 2>/dev/null | wc -l)
+          echo "Found $GCDA_COUNT app .gcda files"
+          if [ "$GCDA_COUNT" -gt 0 ]; then
+            lcov --capture --directory . --output-file build/app-coverage.info --no-external || true
+            lcov --remove build/app-coverage.info '*/moc_*' '*/qrc_*' '*/tests/*' --output-file build/app-coverage-filtered.info || true
             echo "=== App Coverage Summary ==="
             lcov --summary build/app-coverage-filtered.info 2>&1 || true
           else
-            echo "No .gcda files found — app may not have generated coverage data"
+            echo "No .gcda files found — app coverage not available"
           fi
 
       - name: Build unit tests
@@ -150,10 +142,16 @@ jobs:
           lcov --remove build/test-coverage.info '/usr/*' '*/moc_*' --output-file build/test-coverage-filtered.info || true
           echo "=== Unit Test Coverage ==="
           lcov --summary build/test-coverage-filtered.info 2>&1 || true
-          # Merge app + test coverage
-          lcov --add-tracefile build/test-coverage-filtered.info --add-tracefile ../build/app-coverage-filtered.info --output-file build/combined-coverage.info 2>/dev/null || cp build/test-coverage-filtered.info build/combined-coverage.info
-          echo "=== Combined Coverage (App + Tests) ==="
-          lcov --summary build/combined-coverage.info 2>&1 || true
+          # Merge app + test coverage if both exist
+          if [ -f ../build/app-coverage-filtered.info ]; then
+            lcov --add-tracefile build/test-coverage-filtered.info --add-tracefile ../build/app-coverage-filtered.info --output-file build/combined-coverage.info 2>/dev/null || cp build/test-coverage-filtered.info build/combined-coverage.info
+            echo "=== Combined Coverage (App + Tests) ==="
+            lcov --summary build/combined-coverage.info 2>&1 || true
+          else
+            cp build/test-coverage-filtered.info build/combined-coverage.info 2>/dev/null || true
+            echo "=== Coverage (Tests only, no app coverage available) ==="
+            lcov --summary build/combined-coverage.info 2>&1 || true
+          fi
           genhtml build/combined-coverage.info --output-directory build/coverage_html --title "Open-Sankoré Coverage" || true
 
       - name: Package .deb and .rpm
