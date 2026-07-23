@@ -163,6 +163,38 @@ jobs:
           echo ""
           genhtml build/combined-coverage.info --output-directory build/coverage_html --title "Open-Sankoré Coverage" || true
 
+      - name: Update coverage badge
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        continue-on-error: true
+        env:
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+        run: |
+          cd tests
+          # Extract line coverage percentage from combined report
+          COV_PCT=$(lcov --summary build/combined-coverage.info 2>&1 | grep 'lines' | grep -oP '[\d.]+(?=%)' || echo "0")
+          echo "Coverage: ${COV_PCT}%"
+          # Determine badge color
+          COV_INT=${COV_PCT%.*}
+          if [ "$COV_INT" -ge 80 ]; then COLOR="brightgreen"
+          elif [ "$COV_INT" -ge 60 ]; then COLOR="green"
+          elif [ "$COV_INT" -ge 40 ]; then COLOR="yellowgreen"
+          elif [ "$COV_INT" -ge 20 ]; then COLOR="yellow"
+          else COLOR="red"; fi
+          # Write shields.io endpoint JSON
+          echo "{\"schemaVersion\":1,\"label\":\"coverage\",\"message\":\"${COV_PCT}%\",\"color\":\"${COLOR}\"}" > /tmp/coverage.json
+          cat /tmp/coverage.json
+          # Update gist (requires GIST_TOKEN secret with gist scope)
+          if [ -n "$GIST_TOKEN" ]; then
+            curl -s -X PATCH \
+              -H "Authorization: token $GIST_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/gists/0b042ec6f4db15ba496d37215c18a649 \
+              -d "{\"files\":{\"coverage.json\":{\"content\":$(cat /tmp/coverage.json | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read()))')}}}"
+            echo "Badge updated!"
+          else
+            echo "GIST_TOKEN not set — badge not updated"
+          fi
+
       - name: Package .deb and .rpm
         if: success()
         run: |
