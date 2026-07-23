@@ -17,6 +17,7 @@
 #include "tst_UBVersion.h"
 #include "tst_UBBase32.h"
 #include "tst_UBIniFileParser.h"
+#include "tst_UBMetadataDcSubsetAdaptor.h"
 
 int main(int argc, char *argv[])
 {
@@ -67,6 +68,11 @@ int main(int argc, char *argv[])
 
     {
         TestUBIniFileParser test;
+        status |= QTest::qExec(&test, argc, argv);
+    }
+
+    {
+        TestUBMetadataDcSubsetAdaptor test;
         status |= QTest::qExec(&test, argc, argv);
     }
 

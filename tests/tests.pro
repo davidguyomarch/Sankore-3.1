@@ -35,6 +35,9 @@ SOURCES += stubs/UBFileSystemUtils_stub.cpp
 # Not in HEADERS to avoid moc parsing system headers on Linux
 SOURCES += stubs/UBCryptoUtils_stub.cpp
 
+# UBMetadataDcSubsetAdaptor stub (only load(), no persist())
+SOURCES += stubs/UBMetadataDcSubsetAdaptor_stub.cpp
+
 # UBDocumentProxy stubs — pre-generated moc files used to avoid moc parsing issues on Linux
 # To regenerate: moc -I../src -I. -Istubs stubs/UBSettings_stub.h -o premoc/moc_UBSettings_stub.cpp
 SOURCES += stubs/UBSettings_stub.cpp \
@@ -63,6 +66,7 @@ SOURCES += main.cpp \
            tst_UBVersion.cpp \
            tst_UBBase32.cpp \
            tst_UBIniFileParser.cpp \
+           tst_UBMetadataDcSubsetAdaptor.cpp \
            premoc/moc_tst_UBStringUtils.cpp \
            premoc/moc_tst_UBFileSystemUtils.cpp \
            premoc/moc_tst_UBGeometryUtils.cpp \
@@ -71,7 +75,8 @@ SOURCES += main.cpp \
            premoc/moc_tst_UBSettings.cpp \
            premoc/moc_tst_UBVersion.cpp \
            premoc/moc_tst_UBBase32.cpp \
-           premoc/moc_tst_UBIniFileParser.cpp
+           premoc/moc_tst_UBIniFileParser.cpp \
+           premoc/moc_tst_UBMetadataDcSubsetAdaptor.cpp
 
 # Build output
 DESTDIR = build
