@@ -99,11 +99,21 @@ jobs:
           echo "Found $GCDA_COUNT .gcda files"
 
       - name: Collect app coverage
+        continue-on-error: true
         run: |
-          lcov --capture --directory build/linux/release/objects --output-file build/app-coverage.info || true
-          lcov --remove build/app-coverage.info '/usr/*' '*/moc_*' '*/qrc_*' --output-file build/app-coverage-filtered.info || true
-          echo "=== App Coverage Summary ==="
-          lcov --summary build/app-coverage-filtered.info 2>&1 || true
+          # Find where .gcda files were written
+          echo "=== Searching for .gcda files ==="
+          find / -name "*.gcda" -path "*/release/*" 2>/dev/null | head -20
+          GCDA_DIR=$(find / -name "*.gcda" -path "*/release/*" -printf '%h\n' 2>/dev/null | sort -u | head -1)
+          if [ -n "$GCDA_DIR" ]; then
+            echo "Found .gcda files in: $GCDA_DIR"
+            lcov --capture --directory "$GCDA_DIR" --output-file build/app-coverage.info || true
+            lcov --remove build/app-coverage.info '/usr/*' '*/moc_*' '*/qrc_*' --output-file build/app-coverage-filtered.info || true
+            echo "=== App Coverage Summary ==="
+            lcov --summary build/app-coverage-filtered.info 2>&1 || true
+          else
+            echo "No .gcda files found — app may not have generated coverage data"
+          fi
 
       - name: Build unit tests
         continue-on-error: true
