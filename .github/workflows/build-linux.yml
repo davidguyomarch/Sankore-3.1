@@ -81,12 +81,22 @@ jobs:
           ls -la build/linux/release/product/ 2>/dev/null || echo "Product dir not found"
 
       - name: Smoke test (app coverage)
+        continue-on-error: true
         run: |
           export QT_QPA_PLATFORM=offscreen
           export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-          # Launch app briefly to generate gcov data for startup code paths
-          timeout 5 build/linux/release/product/Open-Sankore || true
-          echo "App smoke test completed"
+          # Launch app briefly to generate gcov data
+          build/linux/release/product/Open-Sankore &
+          APP_PID=$!
+          sleep 3
+          # Send SIGTERM for clean shutdown (writes .gcda files)
+          kill -TERM $APP_PID 2>/dev/null || true
+          wait $APP_PID 2>/dev/null || true
+          sleep 1
+          echo "App smoke test completed (PID $APP_PID)"
+          # Check if .gcda files were generated
+          GCDA_COUNT=$(find build/linux/release/objects -name "*.gcda" 2>/dev/null | wc -l)
+          echo "Found $GCDA_COUNT .gcda files"
 
       - name: Collect app coverage
         run: |
