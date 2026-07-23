@@ -41,24 +41,39 @@ jobs:
             libomp-dev \
             pkg-config \
             lcov \
-            rpm
+            rpm \
+            curl \
+            python3
 
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
+      - name: Cache QuaZip
+        id: cache-quazip
+        uses: actions/cache@v4
+        with:
+          path: /tmp/quazip-install
+          key: quazip-1.4-ubuntu2204-qt6.2-v1
+
       - name: Build QuaZip from source
+        if: steps.cache-quazip.outputs.cache-hit != 'true'
         run: |
           git clone --depth 1 --branch v1.4 https://github.com/stachenov/quazip.git /tmp/quazip-src
           cmake -S /tmp/quazip-src -B /tmp/quazip-build \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_INSTALL_PREFIX=/usr/local \
+            -DCMAKE_INSTALL_PREFIX=/tmp/quazip-install \
             -DQUAZIP_QT_MAJOR_VERSION=6 \
             -DBUILD_SHARED_LIBS=ON \
             -DQUAZIP_BZIP2=OFF
           cmake --build /tmp/quazip-build -j$(nproc)
           cmake --install /tmp/quazip-build
+
+      - name: Install QuaZip
+        run: |
+          cp -a /tmp/quazip-install/lib/* /usr/local/lib/ 2>/dev/null || true
+          cp -a /tmp/quazip-install/include/* /usr/local/include/ 2>/dev/null || true
           ldconfig
 
       - name: Generate git version header
