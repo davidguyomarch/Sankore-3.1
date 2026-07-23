@@ -142,6 +142,7 @@ jobs:
           make -j$(nproc)
 
       - name: Run unit tests with coverage
+        shell: bash
         run: |
           set +e
           cd tests
