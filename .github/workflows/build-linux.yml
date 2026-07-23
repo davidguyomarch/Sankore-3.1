@@ -68,7 +68,7 @@ jobs:
       - name: Run qmake
         run: |
           mkdir -p build/linux/release/moc build/linux/release/objects build/linux/release/rcc build/linux/release/ui build/linux/release/product
-          qmake6 Sankore_3.1.pro CONFIG+=no_webengine
+          qmake6 Sankore_3.1.pro CONFIG+=no_webengine "QMAKE_CXXFLAGS+=--coverage" "QMAKE_LFLAGS+=--coverage"
 
       - name: Build
         run: |
@@ -79,6 +79,21 @@ jobs:
         run: |
           find build -name "Open-Sankore*" 2>/dev/null || echo "No output found"
           ls -la build/linux/release/product/ 2>/dev/null || echo "Product dir not found"
+
+      - name: Smoke test (app coverage)
+        run: |
+          export QT_QPA_PLATFORM=offscreen
+          export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+          # Launch app briefly to generate gcov data for startup code paths
+          timeout 5 build/linux/release/product/Open-Sankore || true
+          echo "App smoke test completed"
+
+      - name: Collect app coverage
+        run: |
+          lcov --capture --directory build/linux/release/objects --output-file build/app-coverage.info || true
+          lcov --remove build/app-coverage.info '/usr/*' '*/moc_*' '*/qrc_*' --output-file build/app-coverage-filtered.info || true
+          echo "=== App Coverage Summary ==="
+          lcov --summary build/app-coverage-filtered.info 2>&1 || true
 
       - name: Build unit tests
         continue-on-error: true
@@ -110,11 +125,16 @@ jobs:
         continue-on-error: true
         run: |
           cd tests
-          lcov --capture --directory build/objects --output-file build/coverage.info || true
-          lcov --remove build/coverage.info '/usr/*' '*/Qt6/*' '*/moc_*' --output-file build/coverage-filtered.info || true
-          echo "=== Coverage Summary ==="
-          lcov --summary build/coverage-filtered.info 2>&1 || true
-          genhtml build/coverage-filtered.info --output-directory build/coverage_html --title "Open-Sankoré Tests" || true
+          # Test coverage
+          lcov --capture --directory build/objects --output-file build/test-coverage.info || true
+          lcov --remove build/test-coverage.info '/usr/*' '*/moc_*' --output-file build/test-coverage-filtered.info || true
+          echo "=== Unit Test Coverage ==="
+          lcov --summary build/test-coverage-filtered.info 2>&1 || true
+          # Merge app + test coverage
+          lcov --add-tracefile build/test-coverage-filtered.info --add-tracefile ../build/app-coverage-filtered.info --output-file build/combined-coverage.info 2>/dev/null || cp build/test-coverage-filtered.info build/combined-coverage.info
+          echo "=== Combined Coverage (App + Tests) ==="
+          lcov --summary build/combined-coverage.info 2>&1 || true
+          genhtml build/combined-coverage.info --output-directory build/coverage_html --title "Open-Sankoré Coverage" || true
 
       - name: Package .deb and .rpm
         if: success()
