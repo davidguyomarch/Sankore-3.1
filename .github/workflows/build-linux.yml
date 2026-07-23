@@ -194,37 +194,17 @@ jobs:
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
         run: |
           cd tests
-          # Extract line coverage percentage from combined report
           COV_PCT=$(lcov --summary build/combined-coverage.info 2>&1 | grep 'lines' | grep -oP '[\d.]+(?=%)' || echo "0")
           echo "Coverage: ${COV_PCT}%"
-          # Determine badge color
           COV_INT=${COV_PCT%.*}
           if [ "$COV_INT" -ge 80 ]; then COLOR="brightgreen"
           elif [ "$COV_INT" -ge 60 ]; then COLOR="green"
           elif [ "$COV_INT" -ge 40 ]; then COLOR="yellowgreen"
           elif [ "$COV_INT" -ge 20 ]; then COLOR="yellow"
           else COLOR="red"; fi
-          # Write shields.io endpoint JSON
           echo "{\"schemaVersion\":1,\"label\":\"coverage\",\"message\":\"${COV_PCT}%\",\"color\":\"${COLOR}\"}" > /tmp/coverage.json
           cat /tmp/coverage.json
-          # Update gist (requires GIST_TOKEN secret with gist scope)
-          if [ -n "$GIST_TOKEN" ]; then
-            python3 -c "
-import urllib.request, json, sys
-gist_id = '0b042ec6f4db15ba496d37215c18a649'
-token = '$GIST_TOKEN'
-data = json.dumps({'files': {'coverage.json': {'content': open('/tmp/coverage.json').read()}}}).encode()
-req = urllib.request.Request(f'https://api.github.com/gists/{gist_id}', data=data, method='PATCH')
-req.add_header('Authorization', f'token {token}')
-req.add_header('Accept', 'application/vnd.github.v3+json')
-req.add_header('Content-Type', 'application/json')
-resp = urllib.request.urlopen(req)
-print(f'Gist updated (HTTP {resp.status})')
-"
-            echo "Badge updated!"
-          else
-            echo "GIST_TOKEN not set — badge not updated"
-          fi
+          python3 ../scripts/update_coverage_badge.py /tmp/coverage.json
 
       - name: Package .deb and .rpm
         if: success()
