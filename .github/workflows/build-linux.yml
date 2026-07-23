@@ -189,6 +189,29 @@ jobs:
           echo ""
           genhtml build/combined-coverage.info --output-directory build/coverage_html --title "Open-Sankoré Coverage" || true
 
+      - name: Coverage summary
+        if: always()
+        continue-on-error: true
+        run: |
+          cd tests
+          # Extract metrics
+          APP_LINES=$(lcov --summary ../build/app-coverage-filtered.info 2>&1 | grep 'lines' | grep -oP '[\d.]+(?=%)' || echo "N/A")
+          APP_FUNCS=$(lcov --summary ../build/app-coverage-filtered.info 2>&1 | grep 'functions' | grep -oP '[\d.]+(?=%)' || echo "N/A")
+          TEST_LINES=$(lcov --summary build/test-coverage-filtered.info 2>&1 | grep 'lines' | grep -oP '[\d.]+(?=%)' || echo "N/A")
+          TEST_FUNCS=$(lcov --summary build/test-coverage-filtered.info 2>&1 | grep 'functions' | grep -oP '[\d.]+(?=%)' || echo "N/A")
+          COMBINED_LINES=$(lcov --summary build/combined-coverage.info 2>&1 | grep 'lines' | grep -oP '[\d.]+(?=%)' || echo "N/A")
+          COMBINED_FUNCS=$(lcov --summary build/combined-coverage.info 2>&1 | grep 'functions' | grep -oP '[\d.]+(?=%)' || echo "N/A")
+          COMBINED_LINES_DETAIL=$(lcov --summary build/combined-coverage.info 2>&1 | grep 'lines' | grep -oP '\(\d+ of \d+' | tr -d '(' || echo "")
+          # Write to job summary
+          echo "## 📊 Code Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | App (smoke test) | Unit Tests | Combined |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-----------------|------------|----------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Lines | ${APP_LINES}% | ${TEST_LINES}% | **${COMBINED_LINES}%** ${COMBINED_LINES_DETAIL} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Functions | ${APP_FUNCS}% | ${TEST_FUNCS}% | **${COMBINED_FUNCS}%** |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "> Coverage report HTML available as artifact: \`coverage-report-linux\`" >> $GITHUB_STEP_SUMMARY
+
       - name: Update coverage badge
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         continue-on-error: true
