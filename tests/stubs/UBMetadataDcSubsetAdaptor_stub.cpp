@@ -18,7 +18,8 @@ namespace { struct FakeApp {}; }
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
-#include <QtXml>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 #include <QScreen>
 #include <QGuiApplication>
 
