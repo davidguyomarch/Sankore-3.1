@@ -73,7 +73,7 @@ jobs:
       - name: Install Qt 6.8.2 via aqtinstall
         if: steps.cache-qt.outputs.cache-hit != 'true'
         run: |
-          pip3 install aqtinstall --break-system-packages
+          pip3 install aqtinstall
           aqt install-qt linux desktop 6.8.2 linux_gcc_64 -m qt5compat qtmultimedia --outputdir /opt/qt
 
       - name: Set Qt environment
