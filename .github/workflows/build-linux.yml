@@ -146,10 +146,14 @@ jobs:
           cd tests
           if [ -f build/OpenSankoreTests ]; then
             export QT_QPA_PLATFORM=offscreen
-            ./build/OpenSankoreTests -v2 -o build/test-results.txt,txt -o build/test-results.xml,junitxml
+            ./build/OpenSankoreTests -v2 -o build/test-results.txt,txt -o build/test-results.xml,junitxml || TEST_FAILED=1
             echo "=== Test Results ==="
             cat build/test-results.txt 2>/dev/null || echo "No results"
             echo "=== End Results ==="
+            if [ "${TEST_FAILED:-0}" = "1" ]; then
+              echo "FAILED: Unit tests returned failures"
+              exit 1
+            fi
           else
             echo "ERROR: Test binary not found"
             exit 1
