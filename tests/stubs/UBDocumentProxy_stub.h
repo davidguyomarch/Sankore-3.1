@@ -75,7 +75,7 @@ class UBDocumentProxy : public QObject
         QDateTime lastUpdate();
 
         void setHasDefaultImageBackground(const bool hasDefault);
-        const bool hasDefaultImageBackground() const;
+        bool hasDefaultImageBackground() const;
         void setDefaultImageBackground(const UBFeature& item);
         UBFeature& defaultImageBackground();
         const UBFeature& defaultImageBackground() const;

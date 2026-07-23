@@ -127,10 +127,12 @@ bool UBFileSystemUtils::deleteFilesContaining(const QString& pDirPath, const QSt
         return false;
 
     QDir dir(pDirPath);
-    if (dir.exists())
-        foreach (QString dirContent, dir.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name))
+    if (dir.exists()) {
+        foreach (QString dirContent, dir.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name)) {
             if (dirContent.contains(pFileName))
                 QFile::remove(pDirPath + "/" + dirContent);
+        }
+    }
     return true;
 }
 
