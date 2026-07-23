@@ -16,11 +16,16 @@ INCLUDEPATH += .
 # Headers under test
 HEADERS += ../src/frameworks/UBStringUtils.h \
            ../src/frameworks/UBGeometryUtils.h \
+           ../src/frameworks/UBVersion.h \
+           ../src/frameworks/UBBase32.h \
            ../src/core/UB.h
 
 # Sources under test (only self-contained utilities)
 SOURCES += ../src/frameworks/UBStringUtils.cpp \
-           ../src/frameworks/UBGeometryUtils.cpp
+           ../src/frameworks/UBGeometryUtils.cpp \
+           ../src/frameworks/UBVersion.cpp \
+           ../src/frameworks/UBBase32.cpp \
+           ../src/adaptors/UBIniFileParser.cpp
 
 # For UBFileSystemUtils we need a minimal version without OpenSSL/QuaZip deps
 # We provide a test stub instead (not in HEADERS to avoid moc issues on Linux)
@@ -42,6 +47,9 @@ SOURCES += stubs/UBSettings_stub.cpp \
 # UBPlatformUtils stub
 SOURCES += stubs/UBPlatformUtils_stub.cpp
 
+# Test headers — simple ones that moc can handle directly
+# NOTE: moved to premoc/ due to moc bug on Linux CI (cannot parse system C++ headers)
+
 # Test headers — not in HEADERS (premoc used instead to avoid moc issues on Linux)
 
 # Test sources
@@ -52,12 +60,18 @@ SOURCES += main.cpp \
            tst_UBCryptoUtils.cpp \
            tst_UBDocumentProxy.cpp \
            tst_UBSettings.cpp \
+           tst_UBVersion.cpp \
+           tst_UBBase32.cpp \
+           tst_UBIniFileParser.cpp \
            premoc/moc_tst_UBStringUtils.cpp \
            premoc/moc_tst_UBFileSystemUtils.cpp \
            premoc/moc_tst_UBGeometryUtils.cpp \
            premoc/moc_tst_UBCryptoUtils.cpp \
            premoc/moc_tst_UBDocumentProxy.cpp \
-           premoc/moc_tst_UBSettings.cpp
+           premoc/moc_tst_UBSettings.cpp \
+           premoc/moc_tst_UBVersion.cpp \
+           premoc/moc_tst_UBBase32.cpp \
+           premoc/moc_tst_UBIniFileParser.cpp
 
 # Build output
 DESTDIR = build

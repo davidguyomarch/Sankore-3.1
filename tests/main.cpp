@@ -14,6 +14,9 @@
 #include "tst_UBCryptoUtils.h"
 #include "tst_UBDocumentProxy.h"
 #include "tst_UBSettings.h"
+#include "tst_UBVersion.h"
+#include "tst_UBBase32.h"
+#include "tst_UBIniFileParser.h"
 
 int main(int argc, char *argv[])
 {
@@ -49,6 +52,21 @@ int main(int argc, char *argv[])
 
     {
         TestUBSettings test;
+        status |= QTest::qExec(&test, argc, argv);
+    }
+
+    {
+        TestUBVersion test;
+        status |= QTest::qExec(&test, argc, argv);
+    }
+
+    {
+        TestUBBase32 test;
+        status |= QTest::qExec(&test, argc, argv);
+    }
+
+    {
+        TestUBIniFileParser test;
         status |= QTest::qExec(&test, argc, argv);
     }
 
