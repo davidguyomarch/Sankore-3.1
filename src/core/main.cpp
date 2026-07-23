@@ -148,6 +148,7 @@ static void unixSignalHandler(int sig)
 
 #include "UBApplication.h"
 #include "UBSettings.h"
+#include "board/UBBoardController.h"
 
 /* Uncomment this for memory leaks detection */
 /*
@@ -223,9 +224,13 @@ int main(int argc, char *argv[])
 
     // --quit-after=N : automatically quit after N seconds (for CI smoke tests / coverage)
     int quitAfterSec = 0;
+    bool smokeScenario = false;
     for (const QString &arg : args) {
         if (arg.startsWith("--quit-after=")) {
             quitAfterSec = arg.mid(13).toInt();
+        }
+        if (arg == "--smoke-scenario") {
+            smokeScenario = true;
         }
     }
     if (quitAfterSec > 0) {
@@ -270,6 +275,32 @@ int main(int argc, char *argv[])
 
     qDebug() << "file name argument" << fileToOpen;
 
+    // CI smoke scenario: exercise core features after startup
+    if (smokeScenario) {
+        QTimer::singleShot(2000, [&]() {
+            qDebug() << "=== Smoke scenario: starting ===";
+            if (UBApplication::boardController) {
+                auto *bc = UBApplication::boardController;
+                qDebug() << "Smoke: addScene";
+                bc->addScene();
+                qDebug() << "Smoke: addScene (2)";
+                bc->addScene();
+                qDebug() << "Smoke: previousScene";
+                bc->previousScene();
+                qDebug() << "Smoke: nextScene";
+                bc->nextScene();
+                qDebug() << "Smoke: persistCurrentScene";
+                bc->persistCurrentScene();
+                qDebug() << "Smoke: firstScene";
+                bc->firstScene();
+                qDebug() << "Smoke: lastScene";
+                bc->lastScene();
+                qDebug() << "=== Smoke scenario: done ===";
+            } else {
+                qDebug() << "Smoke: boardController is null, skipping";
+            }
+        });
+    }
 
     int result = app.exec(fileToOpen);
 

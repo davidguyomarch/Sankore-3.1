@@ -104,7 +104,7 @@ jobs:
           export QT_QPA_PLATFORM=offscreen
           export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
           # Launch app with --quit-after for clean exit (writes .gcda coverage files)
-          build/linux/release/product/Open-Sankore --quit-after=5
+          build/linux/release/product/Open-Sankore --quit-after=8 --smoke-scenario
           echo "App smoke test completed (clean exit)"
           GCDA_COUNT=$(find . -name "*.gcda" 2>/dev/null | wc -l)
           echo "Found $GCDA_COUNT .gcda files"
