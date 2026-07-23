@@ -101,8 +101,12 @@ jobs:
           if [ "$GCDA_COUNT" -gt 0 ]; then
             lcov --capture --directory . --output-file build/app-coverage.info --no-external || true
             lcov --remove build/app-coverage.info '*/moc_*' '*/qrc_*' '*/tests/*' --output-file build/app-coverage-filtered.info || true
-            echo "=== App Coverage Summary ==="
+            echo ""
+            echo "╔══════════════════════════════════════════════╗"
+            echo "║    APP COVERAGE (smoke test startup only)    ║"
+            echo "╚══════════════════════════════════════════════╝"
             lcov --summary build/app-coverage-filtered.info 2>&1 || true
+            echo ""
           else
             echo "No .gcda files found — app coverage not available"
           fi
@@ -137,21 +141,26 @@ jobs:
         continue-on-error: true
         run: |
           cd tests
-          # Test coverage
+          # Unit test coverage — lines exercised by unit tests
           lcov --capture --directory build/objects --output-file build/test-coverage.info || true
-          lcov --remove build/test-coverage.info '/usr/*' '*/moc_*' --output-file build/test-coverage-filtered.info || true
-          echo "=== Unit Test Coverage ==="
+          lcov --remove build/test-coverage.info '/usr/*' '*/moc_*' '*/premoc/*' --output-file build/test-coverage-filtered.info || true
+          echo ""
+          echo "╔══════════════════════════════════════════════╗"
+          echo "║       UNIT TEST COVERAGE (tests only)       ║"
+          echo "╚══════════════════════════════════════════════╝"
           lcov --summary build/test-coverage-filtered.info 2>&1 || true
+          echo ""
           # Merge app + test coverage if both exist
           if [ -f ../build/app-coverage-filtered.info ]; then
             lcov --add-tracefile build/test-coverage-filtered.info --add-tracefile ../build/app-coverage-filtered.info --output-file build/combined-coverage.info 2>/dev/null || cp build/test-coverage-filtered.info build/combined-coverage.info
-            echo "=== Combined Coverage (App + Tests) ==="
+            echo "╔══════════════════════════════════════════════╗"
+            echo "║     COMBINED COVERAGE (App + Unit Tests)    ║"
+            echo "╚══════════════════════════════════════════════╝"
             lcov --summary build/combined-coverage.info 2>&1 || true
           else
             cp build/test-coverage-filtered.info build/combined-coverage.info 2>/dev/null || true
-            echo "=== Coverage (Tests only, no app coverage available) ==="
-            lcov --summary build/combined-coverage.info 2>&1 || true
           fi
+          echo ""
           genhtml build/combined-coverage.info --output-directory build/coverage_html --title "Open-Sankoré Coverage" || true
 
       - name: Package .deb and .rpm
