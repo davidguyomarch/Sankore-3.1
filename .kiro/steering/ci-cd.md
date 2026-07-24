@@ -10,9 +10,17 @@ Le projet utilise GitHub Actions avec 3 workflows :
 
 | Workflow | Fichier | Déclencheur | Durée |
 |----------|---------|-------------|-------|
-| Build Windows | `build-windows.yml` | push master, PR | ~15 min |
-| Build Linux x64 | `build-linux.yml` | push master, PR | ~10 min |
+| Build Windows | `build-windows.yml` | push (toutes branches), PR vers master | ~8-15 min |
+| Build Linux x64 | `build-linux.yml` | push (toutes branches), PR vers master | ~8-12 min |
 | Release | `release.yml` | tag `v*` | ~25 min |
+
+### Build rapide vs Build complet (#43)
+
+| Contexte | Compile + Tests | Smoke + Coverage | Packaging | Badge |
+|----------|----------------|-----------------|-----------|-------|
+| Push sur feature branch | ✅ | ❌ | ❌ | ❌ |
+| PR vers master | ✅ | ✅ | ✅ | ❌ |
+| Push sur master | ✅ | ✅ | ✅ | ✅ |
 
 ## Workflow : Build Windows (`build-windows.yml`)
 
@@ -42,7 +50,7 @@ Le projet utilise GitHub Actions avec 3 workflows :
 ### Environnement
 
 - Container `ubuntu:22.04` (sur ubuntu-latest runner)
-- Qt 6.2 via packages système (`qt6-base-dev`, etc.)
+- Qt 6.8.2 via aqtinstall (même version que Windows)
 - GCC 11, C++17
 
 ### Étapes principales

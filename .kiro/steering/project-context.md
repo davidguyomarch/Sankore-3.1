@@ -3,8 +3,7 @@
 ## Overview
 
 Open-Sankoré is a C++/Qt interactive whiteboard application originally built with Qt 4.8.
-It has been migrated to Qt 6 and compiles successfully for Windows x64.
-Linux builds (x64/arm64) are next.
+It has been migrated to Qt 6 and compiles successfully for Windows x64 and Linux x64.
 
 ## Current Status
 
@@ -12,17 +11,18 @@ Linux builds (x64/arm64) are next.
 - **windeployqt**: ✅ Added — artifact is self-contained with Qt DLLs
 - **Linux x64 build**: ✅ DONE — binary + .deb + .rpm via GitHub Actions CI
 - **Linux ARM64 build**: 🔜 Pending (issue #4)
-- **Unit tests**: ✅ 6 suites, coverage 93.3% sur le code testé
-- **App coverage**: ✅ ~20.7% (smoke test startup)
-- **Combined coverage**: ✅ ~23.1% (app + unit tests)
+- **Unit tests**: ✅ 11 suites (~55 tests), coverage ~94% sur le code testé
+- **App coverage**: ✅ ~21% (smoke test with scenario)
+- **Combined coverage**: ✅ ~24.5% (app + unit tests)
 - **Coverage badge**: ✅ Dynamic (shields.io + gist)
+- **CI split**: ✅ Fast build on branches, full build on PR/master
 - **Functional testing**: 🔜 Pending (issue #37)
 
 ## Architecture
 
 - **Build system**: qmake (`.pro` / `.pri` files)
 - **Language**: C++17
-- **Framework**: Qt 6.8.2 (Windows), Qt 6.2 (Linux)
+- **Framework**: Qt 6.8.2 (Windows + Linux, unified via aqtinstall)
 - **Target platforms**: Windows x64 (MSVC 2022), Linux x64 (GCC 11), Linux arm64 (planned)
 - **CI**: GitHub Actions (`build-windows.yml`, `build-linux.yml`, `release.yml`)
 - **Docker dev**: `sankore-qt6` image (Ubuntu 24.04, Qt 6, aarch64)
@@ -120,19 +120,19 @@ docker run --rm -v $(pwd):/src -w /src sankore-qt6 bash -c 'qmake6 Sankore_3.1.p
 | 4 | Build Linux ARM64 dans le CI | Moyen terme | Open |
 | 9 | Réécrire podcast avec Qt Multimedia | Long terme | Open |
 | 16 | Réactiver UBDockTeacherGuideWidget | Moyen terme | Open |
-| 25 | CI: Warning Node 20 deprecated | Faible | Open |
 | 29 | Réactiver le module browser/ | Long terme | Open |
 | 30 | CI: Warning vcpkg VCPKG_ROOT mismatch | Faible | Open |
-| 35 | CI: Ajouter un cache pour les dépendances | Court terme | Open |
-| 36 | CI: Publier les résultats de tests (annotations) | Court terme | Open |
 | 37 | Tests fonctionnels automatisés | Moyen terme | Open |
-| 38 | Augmenter la couverture de tests (>50%) | Moyen terme | Open |
-| 39 | CI: Unifier la version Qt | Moyen terme | Open |
+| 38 | Augmenter la couverture de tests (>50%) | En cours | Open |
 | 40 | Produire un AppImage Linux | Moyen terme | Open |
 | 41 | Tests de non-régression visuelle | Long terme | Open |
 | 42 | CI: Matrice de test multi-OS | Long terme | Open |
-| 43 | CI: Séparer build rapide / build complet | Moyen terme | Open |
-| 46 | Runtime warnings Qt 6.2 (signaux dépréciés) | Moyenne | Open |
+| 49 | Refactoring: forward-declares headers | En cours | Open |
+| 50 | Refactoring: types partagés (UBTypes.h) | En cours | Open |
+| 51 | Refactoring: découper UBBoardController | Moyen terme | Open |
+| 52 | Refactoring: injection dépendances UBSettings | Moyen terme | Open |
+| 53 | Refactoring: dialogs hors des delegates | Moyen terme | Open |
+| 54 | Refactoring: bibliothèques statiques | Long terme | Open |
 
 ## Distribution Targets
 
