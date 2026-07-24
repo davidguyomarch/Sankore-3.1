@@ -26,6 +26,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QPushButton>
 #include <math.h>
 
 #include "core/UBApplication.h"
