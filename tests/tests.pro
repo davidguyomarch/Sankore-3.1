@@ -4,7 +4,7 @@ TEMPLATE = app
 CONFIG += testcase console c++17
 CONFIG -= app_bundle
 
-QT += core gui widgets testlib network xml
+QT += core gui widgets testlib xml
 
 # Paths
 INCLUDEPATH += ../src
@@ -36,8 +36,7 @@ SOURCES += stubs/UBFileSystemUtils_stub.cpp
 SOURCES += stubs/UBCryptoUtils_stub.cpp
 
 # UBOEmbedParser stub (parsing only, no network/signals)
-HEADERS += ../src/web/UBOEmbedParser.h
-SOURCES += stubs/UBOEmbedParser_stub.cpp
+# NOT compiled — too complex for moc. Test uses standalone parsing functions instead.
 
 # UBMetadataDcSubsetAdaptor stub (only load(), no persist())
 SOURCES += stubs/UBMetadataDcSubsetAdaptor_stub.cpp
