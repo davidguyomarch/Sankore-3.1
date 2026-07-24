@@ -28,6 +28,8 @@
 #include <QPainter>
 #include <QDesktopServices>
 #include <QStandardPaths>
+#include <QSettings>
+#include <QNetworkProxy>
 
 
 #include "frameworks/UBPlatformUtils.h"

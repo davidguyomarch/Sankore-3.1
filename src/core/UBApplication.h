@@ -33,7 +33,7 @@
 
 #include "qtsingleapplication.h"
 
-#include "transition/UniboardSankoreTransition.h"
+class UniboardSankoreTransition;
 
 namespace Ui
 {

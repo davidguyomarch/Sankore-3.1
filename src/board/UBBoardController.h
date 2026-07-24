@@ -25,13 +25,10 @@
 #define UBBOARDCONTROLLER_H_
 
 #include <QWidget>
-#include <QApplication>
-#include <QPainter>
 
 #include <QObject>
 #include "document/UBDocumentContainer.h"
 #include "UBFeaturesController.h"
-#include "gui/UBActionPalette.h"
 #include "domain/UBShapeFactory.h"
 
 

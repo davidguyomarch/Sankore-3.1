@@ -34,7 +34,7 @@
 
 #include "UBItem.h"
 #include "tools/UBGraphicsCurtainItem.h"
-#include "board/UBFeaturesController.h"
+#include "core/UBTypes.h"
 
 class UBGraphicsPixmapItem;
 class UBGraphicsProxyWidget;
