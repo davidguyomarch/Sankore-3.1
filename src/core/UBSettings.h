@@ -24,19 +24,13 @@
 #ifndef UBSETTINGS_H_
 #define UBSETTINGS_H_
 
-#include <QObject>
-#include <QString>
-#include <QStringList>
+#include <QtCore>
 #include <QColor>
-#include <QSize>
-#include <QMap>
-#include <QVariant>
 
 #include "UB.h"
 #include "UBSetting.h"
 
 class QNetworkProxy;
-class QSettings;
 
 class UBSettings : public QObject
 {
