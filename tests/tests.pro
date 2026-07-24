@@ -25,8 +25,7 @@ SOURCES += ../src/frameworks/UBStringUtils.cpp \
            ../src/frameworks/UBGeometryUtils.cpp \
            ../src/frameworks/UBVersion.cpp \
            ../src/frameworks/UBBase32.cpp \
-           ../src/adaptors/UBIniFileParser.cpp \
-           ../src/web/UBOEmbedParser.cpp
+           ../src/adaptors/UBIniFileParser.cpp
 
 # For UBFileSystemUtils we need a minimal version without OpenSSL/QuaZip deps
 # We provide a test stub instead (not in HEADERS to avoid moc issues on Linux)
@@ -35,6 +34,10 @@ SOURCES += stubs/UBFileSystemUtils_stub.cpp
 # UBCryptoUtils stub (bypasses UBApplication singleton)
 # Not in HEADERS to avoid moc parsing system headers on Linux
 SOURCES += stubs/UBCryptoUtils_stub.cpp
+
+# UBOEmbedParser stub (parsing only, no network/signals)
+HEADERS += ../src/web/UBOEmbedParser.h
+SOURCES += stubs/UBOEmbedParser_stub.cpp
 
 # UBMetadataDcSubsetAdaptor stub (only load(), no persist())
 SOURCES += stubs/UBMetadataDcSubsetAdaptor_stub.cpp
