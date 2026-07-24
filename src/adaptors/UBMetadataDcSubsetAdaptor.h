@@ -29,6 +29,7 @@
 #include <QPainter>
 
 class UBDocumentProxy;
+class UBSettings;
 
 class UBMetadataDcSubsetAdaptor
 {
@@ -37,7 +38,7 @@ class UBMetadataDcSubsetAdaptor
         virtual ~UBMetadataDcSubsetAdaptor();
 
         static void persist(UBDocumentProxy* proxy);
-        static QMap<QString, QVariant> load(QString pPath);
+        static QMap<QString, QVariant> load(QString pPath, UBSettings* settings = nullptr);
 
         static const QString nsRdf;
         static const QString nsDc;

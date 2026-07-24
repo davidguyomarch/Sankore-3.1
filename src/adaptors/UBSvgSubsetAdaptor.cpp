@@ -473,9 +473,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 QStringView pageDpi = mXmlReader.attributes().value("pageDpi");
 
                 if (!pageDpi.isNull())
-                    UBSettings::settings()->pageDpi->set(pageDpi.toString());
+                    mProxy->settings()->pageDpi->set(pageDpi.toString());
                 else
-                    UBSettings::settings()->pageDpi->set(QGuiApplication::primaryScreen()->physicalDotsPerInchX());
+                    mProxy->settings()->pageDpi->set(QGuiApplication::primaryScreen()->physicalDotsPerInchX());
 
                 bool darkBackground = false;
                 bool crossedBackground = false;
@@ -993,7 +993,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     {
                         QScreen* desktop = QGuiApplication::primaryScreen();
                         qreal currentDpi = (desktop->physicalDotsPerInchX() + desktop->physicalDotsPerInchY()) / 2;
-                        qreal pdfScale = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
+                        qreal pdfScale = mProxy->settings()->pageDpi->get().toReal()/currentDpi;
                         pdfItem->setScale(pdfScale);
                         pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                         pdfItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -1070,7 +1070,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     {
                         QScreen* desktop = QGuiApplication::primaryScreen();
                         qreal currentDpi = (desktop->physicalDotsPerInchX() + desktop->physicalDotsPerInchY()) / 2;
-                        qreal textSizeMultiplier = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
+                        qreal textSizeMultiplier = mProxy->settings()->pageDpi->get().toReal()/currentDpi;
                         textDelegate->scaleTextSize(textSizeMultiplier);
                     }
 
@@ -1288,7 +1288,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "version", UBSettings::currentFileVersion);
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(mScene->uuid()));
 
-    int margin = UBSettings::settings()->svgViewBoxMargin->get().toInt();
+    int margin = mpDocument->settings()->svgViewBoxMargin->get().toInt();
     QRect normalized = mScene->normalizedSceneRect().toRect();
     normalized.translate(margin * -1, margin * -1);
     normalized.setWidth(normalized.width() + (margin * 2));

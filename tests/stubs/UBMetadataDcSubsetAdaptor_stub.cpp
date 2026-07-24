@@ -42,8 +42,11 @@ void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* /*proxy*/)
     // No-op in test stub — persist() requires UBApplication/UBBoardController
 }
 
-QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
+QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath, UBSettings* settings)
 {
+    if (!settings)
+        settings = UBSettings::settings();
+
     QMap<QString, QVariant> metadata;
 
     QString fileName = pPath + "/" + metadataFilename;
@@ -112,7 +115,7 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
 
                         if (width == 1024 && height == 768)
                         {
-                            docSize = UBSettings::settings()->pageSize->get().toSize();
+                            docSize = settings->pageSize->get().toSize();
                         }
 
                         metadata.insert(UBSettings::documentSize, QVariant(docSize));

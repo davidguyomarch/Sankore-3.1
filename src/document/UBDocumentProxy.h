@@ -66,7 +66,14 @@ class UBDocumentProxy : public QObject
         UBDocumentProxy(const UBDocumentProxy &rValue);
         UBDocumentProxy(const QString& pPersistencePath);        
 
-        virtual ~UBDocumentProxy();        
+        virtual ~UBDocumentProxy();
+
+        /**
+         * @brief Inject a UBSettings instance (for testing).
+         * If not called, defaults to UBSettings::settings() singleton.
+         */
+        void setSettings(UBSettings* settings) { mSettings = settings; }
+        UBSettings* settings() const { return mSettings; }        
 
         QString persistencePath() const;
 
@@ -120,6 +127,8 @@ class UBDocumentProxy : public QObject
     private:
 
         void init();
+
+        UBSettings* mSettings;  // injected or defaults to UBSettings::settings()
 
         QString mPersistencePath;
 
