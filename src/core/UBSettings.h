@@ -28,11 +28,10 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QtNetwork>
 
 #include "UB.h"
 #include "UBSetting.h"
-
-class QNetworkProxy;
 
 class UBSettings : public QObject
 {
