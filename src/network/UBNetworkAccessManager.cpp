@@ -180,7 +180,7 @@ void UBNetworkAccessManager::sslErrors(QNetworkReply *reply, const QList<QSslErr
         messageBox.setIcon(QMessageBox::Question);
         messageBox.exec();
 
-        if(messageBox.clickedButton() == yesButton) {
+        if(messageBox.clickedButton() == static_cast<QAbstractButton*>(yesButton)) {
             reply->ignoreSslErrors();
             sslTrustedHostList.append(replyHost);
         }
