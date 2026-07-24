@@ -24,6 +24,7 @@
 #include "UBNetworkAccessManager.h"
 #include <QElapsedTimer>
 #include <QMessageBox>
+#include <QPushButton>
 
 #include <QWidget>
 #include <QApplication>
