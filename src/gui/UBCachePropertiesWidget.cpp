@@ -22,6 +22,7 @@
 
 
 #include <QColor>
+#include "core/UBSettings.h"
 #include <QPainter>
 #include <QPixmap>
 #include <QColorDialog>

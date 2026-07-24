@@ -29,6 +29,7 @@
 
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
+#include "core/UBSettings.h"
 
 #include "board/UBBoardView.h"
 

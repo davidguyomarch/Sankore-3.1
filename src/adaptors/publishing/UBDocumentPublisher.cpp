@@ -21,6 +21,7 @@
 
 
 #include <QFileInfo>
+#include "core/UBSettings.h"
 
 #include "UBDocumentPublisher.h"
 

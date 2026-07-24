@@ -22,6 +22,7 @@
 
 
 #include <QDomDocument>
+#include "core/UBSettings.h"
 #ifdef SANKORE_WEBENGINE
 #include <QWebEngineProfile>
 #endif

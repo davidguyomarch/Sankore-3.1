@@ -21,6 +21,7 @@
 
 
 #include "UBDocumentContainer.h"
+#include "core/UBSettings.h"
 #include "adaptors/UBThumbnailAdaptor.h"
 
 #include "core/UBPersistenceManager.h"

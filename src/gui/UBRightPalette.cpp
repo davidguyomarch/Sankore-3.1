@@ -22,6 +22,7 @@
 
 
 #include "core/UBApplication.h"
+#include "core/UBSettings.h"
 #include "board/UBBoardController.h"
 
 #include "UBRightPalette.h"
