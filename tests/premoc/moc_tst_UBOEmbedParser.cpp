@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_TestUBOEmbedParser_t {
     const uint offsetsAndSize[20];
-    char stringdata0[215];
+    char stringdata0[217];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(offsetof(qt_meta_stringdata_TestUBOEmbedParser_t, stringdata0) + ofs), len 
@@ -33,12 +33,12 @@ QT_MOC_LITERAL(0, 18), // "TestUBOEmbedParser"
 QT_MOC_LITERAL(19, 22), // "testGetJSONInfos_video"
 QT_MOC_LITERAL(42, 0), // ""
 QT_MOC_LITERAL(43, 22), // "testGetJSONInfos_photo"
-QT_MOC_LITERAL(66, 25), // "testGetJSONInfos_emptyJson"
-QT_MOC_LITERAL(92, 21), // "testGetXMLInfos_video"
-QT_MOC_LITERAL(114, 21), // "testGetXMLInfos_photo"
-QT_MOC_LITERAL(136, 24), // "testGetXMLInfos_emptyXml"
-QT_MOC_LITERAL(161, 27), // "testGetJSONInfos_partialData"
-QT_MOC_LITERAL(189, 25) // "testGetXMLInfos_allFields"
+QT_MOC_LITERAL(66, 26), // "testGetJSONInfos_emptyJson"
+QT_MOC_LITERAL(93, 21), // "testGetXMLInfos_video"
+QT_MOC_LITERAL(115, 21), // "testGetXMLInfos_photo"
+QT_MOC_LITERAL(137, 24), // "testGetXMLInfos_emptyXml"
+QT_MOC_LITERAL(162, 28), // "testGetJSONInfos_partialData"
+QT_MOC_LITERAL(191, 25) // "testGetXMLInfos_allFields"
 
     },
     "TestUBOEmbedParser\0testGetJSONInfos_video\0"
