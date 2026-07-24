@@ -64,6 +64,8 @@ bool UBDocumentProxy::theSameDocument(UBDocumentProxy *proxy)
 
 void UBDocumentProxy::init()
 {
+    mSettings = UBSettings::settings();
+
     setMetaData(UBSettings::documentGroupName, "");
 
     QDateTime now = QDateTime::currentDateTime();
@@ -71,8 +73,7 @@ void UBDocumentProxy::init()
 
     setUuid(QUuid::createUuid());
 
-    //qDebug() << UBSettings::settings()->pageSize->get().toSize();
-    setDefaultDocumentSize(UBSettings::settings()->pageSize->get().toSize());
+    setDefaultDocumentSize(mSettings->pageSize->get().toSize());
 
     //teacherGuide metadata
     setMetaData(UBSettings::sessionTitle,"");
@@ -202,7 +203,7 @@ QSize UBDocumentProxy::defaultDocumentSize() const
     if (mMetaDatas.contains(UBSettings::documentSize))
         return metaData(UBSettings::documentSize).toSize();
     else
-        return UBSettings::settings()->pageSize->get().toSize();
+        return mSettings->pageSize->get().toSize();
 }
 
 void UBDocumentProxy::setDefaultDocumentSize(QSize pSize)
