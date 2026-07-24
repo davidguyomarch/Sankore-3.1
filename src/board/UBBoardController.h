@@ -29,6 +29,7 @@
 #include <QObject>
 #include "document/UBDocumentContainer.h"
 #include "UBFeaturesController.h"
+#include "gui/UBActionPalette.h"
 #include "domain/UBShapeFactory.h"
 
 
