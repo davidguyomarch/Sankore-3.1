@@ -27,6 +27,11 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+#include <QLayout>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QStyleOptionToolButton>
+#include <QToolButton>
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
