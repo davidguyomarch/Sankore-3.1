@@ -72,7 +72,8 @@ class UBDocumentProxy : public QObject
          * @brief Inject a UBSettings instance (for testing).
          * If not called, defaults to UBSettings::settings() singleton.
          */
-        void setSettings(UBSettings* settings) { mSettings = settings; }        
+        void setSettings(UBSettings* settings) { mSettings = settings; }
+        UBSettings* settings() const { return mSettings; }        
 
         QString persistencePath() const;
 
