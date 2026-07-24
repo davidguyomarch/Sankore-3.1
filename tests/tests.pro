@@ -4,7 +4,7 @@ TEMPLATE = app
 CONFIG += testcase console c++17
 CONFIG -= app_bundle
 
-QT += core gui widgets testlib
+QT += core gui widgets testlib network xml
 
 # Paths
 INCLUDEPATH += ../src
@@ -25,7 +25,8 @@ SOURCES += ../src/frameworks/UBStringUtils.cpp \
            ../src/frameworks/UBGeometryUtils.cpp \
            ../src/frameworks/UBVersion.cpp \
            ../src/frameworks/UBBase32.cpp \
-           ../src/adaptors/UBIniFileParser.cpp
+           ../src/adaptors/UBIniFileParser.cpp \
+           ../src/web/UBOEmbedParser.cpp
 
 # For UBFileSystemUtils we need a minimal version without OpenSSL/QuaZip deps
 # We provide a test stub instead (not in HEADERS to avoid moc issues on Linux)
@@ -67,6 +68,7 @@ SOURCES += main.cpp \
            tst_UBBase32.cpp \
            tst_UBIniFileParser.cpp \
            tst_UBMetadataDcSubsetAdaptor.cpp \
+           tst_UBOEmbedParser.cpp \
            premoc/moc_tst_UBStringUtils.cpp \
            premoc/moc_tst_UBFileSystemUtils.cpp \
            premoc/moc_tst_UBGeometryUtils.cpp \
@@ -76,7 +78,8 @@ SOURCES += main.cpp \
            premoc/moc_tst_UBVersion.cpp \
            premoc/moc_tst_UBBase32.cpp \
            premoc/moc_tst_UBIniFileParser.cpp \
-           premoc/moc_tst_UBMetadataDcSubsetAdaptor.cpp
+           premoc/moc_tst_UBMetadataDcSubsetAdaptor.cpp \
+           premoc/moc_tst_UBOEmbedParser.cpp
 
 # Build output
 DESTDIR = build
