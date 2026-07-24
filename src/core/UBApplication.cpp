@@ -26,6 +26,9 @@
 #include <QWidget>
 #include <QApplication>
 #include <QPainter>
+
+#include "transition/UniboardSankoreTransition.h"
+
 #ifdef SANKORE_WEBENGINE
 #include <QWebEngineView>
 #include <QWebEngineProfile>

@@ -75,14 +75,7 @@ enum UBFeatureElementType
     FEATURE_RTE
 };
 
-enum UBFeatureBackgroundDisposition
-{
-    Center,
-    Adjust,
-    Mosaic,
-    Fill,
-    Extend
-};
+#include "core/UBTypes.h"
 
 class UBFeature
 {

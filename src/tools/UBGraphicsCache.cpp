@@ -22,6 +22,7 @@
 
 
 #include <QDebug>
+#include "core/UBSettings.h"
 
 #include "UBGraphicsCache.h"
 

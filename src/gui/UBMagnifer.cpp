@@ -22,6 +22,7 @@
 
 
 #include <QWidget>
+#include "core/UBSettings.h"
 #include <QApplication>
 #include <QPainter>
 #include "UBMagnifer.h"

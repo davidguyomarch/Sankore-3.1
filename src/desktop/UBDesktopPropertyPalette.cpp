@@ -21,6 +21,7 @@
 
 
 #include "UBDesktopPropertyPalette.h"
+#include "core/UBSettings.h"
 
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
