@@ -25,7 +25,9 @@
 #define UBSETTINGS_H_
 
 #include <QtCore>
-#include <QColor>
+#include <QWidget>
+#include <QApplication>
+#include <QPainter>
 
 #include "UB.h"
 #include "UBSetting.h"
